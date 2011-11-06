@@ -1,0 +1,59 @@
+to compile run
+make -f build/Makefile_[arch]
+where arch is the target architectue _code_ you want to compile
+
+it should be noted that the make files do not create crossbuild
+ready libraries, you need to use the right architecture makefile
+as the host pc you're using to compile.
+
+As an example, using the PowerPC makefile on a AMD64 system will
+compile a AMD64 lbrary using PowerPC code, it may work.  But it
+could fail.  If it does work, then you'll only be using code optimized
+for the PowerPC architecture on an AMD64 system.  There are currently
+two supported architectures.
+
+x86_64
+PowerPC
+
+x86_64 covers a rather large amount of architextures from AMD64
+all the way to i386's and just about any x86 system.
+
+So for example:
+If you're running a AMD64,x86,x86_64, or IA64 / IA32 system use
+make -f build/Makefile_x86_64
+
+If you're running a PowerPC architecture system you'd used
+make -f build/Makefile_PowerPC
+
+the makefiles will output a ccaprice.a file, which is a _static_
+library.  To use this library you'd link in the ccaprice.a file during
+the linking process ( the invocaton to ldd ) to link in this code.
+Much like you would link in a .o file.
+
+To take advantage of resolving functions durign compilation point the 
+compiler to include the "inc/" directory to ccaprice.  
+It should be noted that you should not #define CCAPRICE_COMPILING inside
+any of your source code projects or as a compiler option ( -D for gcc ) 
+as this will force the prevent the inclusion of the headers in "inc/"
+from being externed, making the linking process fail.
+
+If you do however add support to ccaprice, #define CCAPRICE_COMPILING 
+should be used or as a compiler command line argument like 
+-DCCAPRICE_COMPILING for gcc, and alike so that the compiler does not
+expand function prototypes to externs, otherwise the creation of the
+static library _could_ fail.
+
+The whole process will eventualyl become automated one day, so that
+users can cross-compiler for multiple architectures, and change things
+via a config.h file.  Thus the compiler, the linker, and other tiny
+things can be more find-tuned for the target system, such as LOAD and
+STORE optimizations, to SSE optimizations, and pointing to OS specific
+APIs that implement the _core_ runtime or C runtime (CRT) to make this
+library work.  Such as macros to memcpy() and free(), as well as other
+things such as fopen() and fclose() -- which depend on OS specific calls
+which are not defined by the C standard.
+
+As well as this there is also going to be other options for using this
+library inside kernels, or other thinsg that have absolutly no support
+for a working runtime.  As to stay self reliant this library might also
+re-implement OS specific API's as a result to stay more portable.
