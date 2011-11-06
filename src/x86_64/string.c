@@ -11,8 +11,8 @@ void *memcpy(void *dst, const void *src, register size_t count)
 		unsigned char data[32];
 	} memcpy_data;
 	
-	memcpy_data* dst32 = (memcpy_data*)dst;
-	memcpy_data* src32 = (memcpy_data*)src;
+	register memcpy_data* dst32 = (memcpy_data*)dst;
+	register memcpy_data* src32 = (memcpy_data*)src;
 	
 	/*
 	 * Copy all the words we can
