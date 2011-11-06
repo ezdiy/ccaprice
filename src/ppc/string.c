@@ -79,6 +79,6 @@ char *strncpy(char *dst, const char *src, register size_t count)
 	return dst;
 }
 
-char *strncp(char *dst, const char *src) {
+char *strncpy(char *dst, const char *src) {
 	return strncpy(dst, src, strlen(src));
 }
