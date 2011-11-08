@@ -20,10 +20,24 @@ CCAPRICE_EXPORT int     strncmp(const char*, const char*, register size_t);
 CCAPRICE_EXPORT int     strcmp (const char*, const char*);
 
 /* Searching */
-CCAPRICE_EXPORT void    *memchr(const void*, int, register size_t);
-CCAPRICE_EXPORT char    *strchr(const char*, int);
+CCAPRICE_EXPORT void   *memchr (const void*, int, register size_t);
+CCAPRICE_EXPORT char   *strchr (const char*, int);
 
 /* Others */
 CCAPRICE_EXPORT size_t  strlen (const char*);
+
+
+/*
+ * Fast bit-scan-forward table
+ */
+#define CCAPRICE_BSF_TABLE_EXPAND \
+	7,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
+	5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
+	6,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
+	5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
+	7,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
+	5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
+	6,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
+	5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0
 
 #endif /* !CCAPRICE_STRING_HDR */
