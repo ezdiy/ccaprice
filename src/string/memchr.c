@@ -7,7 +7,7 @@ static const size_t memchr_bsf_table[256] = {
 void *memchr(const void *src, int cmp, register size_t cnt)
 {
 	#ifdef STRING_MEMCHR_OPTIMAL
-		#ifdef STRING_MEMCHR_X86_64
+		#if defined(STRING_MEMCHR_X86_64) || defined(STRING_MEMCHR_X86)
 		/*
 		 * SSE optimized version of memchr.  Handles 16-bit alligned
 		 * data first, then 32-bit alligned data. Then collects any

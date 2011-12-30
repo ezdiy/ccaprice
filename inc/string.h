@@ -24,6 +24,7 @@ CCAPRICE_EXPORT void   *memchr (const void*, int, register size_t);
 CCAPRICE_EXPORT char   *strchr (const char*, int);
 
 /* Others */
+CCAPRICE_EXPORT void   *memset (void *, int, register size_t);
 CCAPRICE_EXPORT size_t  strlen (const char*);
 
 

@@ -2,7 +2,7 @@
 
 void *memcpy(void *dst, const void *src, register size_t cnt) {	
 	#ifdef STRING_MEMCPY_OPTIMAL
-		#ifdef STRING_MEMCPY_X86_64
+		#if defined(STRING_MEMCPY_X86_64) || defined(STRING_MEMCHR_X86) 
 		/*
 		 * "rep movs"  is optimized in  microcode on
 		 * modern  Intel  CPU's.  This  method works
@@ -67,7 +67,7 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 	#endif /* !STRING_MEMCPY_OPTIMAL */
 	
 	#ifdef STRING_MEMCPY_NONE
-		\	#warning "[ccaprice] no optimized memcpy implementation, using naive method (could be slow)"
+		#warning "[ccaprice] no optimized memcpy implementation, using naive method (could be slow)"
 		/*
 		 * Naive platform neutral implementation
 		 * this copys via byte-per-byte src->dst

@@ -1,8 +1,9 @@
-CFLAGS  = -g -O3 -Wall -nostdlib -fno-builtin -pedantic-errors -DCCAPRICE_COMPILING
+CFLAGS  = -g -O3 -Wall -nostdlib -std=c99 -fno-builtin -pedantic-errors -DCCAPRICE_COMPILING -DCCAPRICE_TARGET_X86_64
 CCC     = gcc
 SRC     = src/string/memchr.c  \
           src/string/memcmp.c  \
           src/string/memcpy.c  \
+          src/string/memset.c  \
           src/string/memmove.c \
           src/string/strcat.c  \
           src/string/strchr.c  \
