@@ -9,7 +9,8 @@ SRC     = src/string/memchr.c  \
           src/string/strchr.c  \
           src/string/strcmp.c  \
           src/string/strcpy.c  \
-          src/string/strlen.c
+          src/string/strlen.c  \
+          src/assert.c
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
 INC     = -I.
