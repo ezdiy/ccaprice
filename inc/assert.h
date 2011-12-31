@@ -8,7 +8,9 @@
 #define assert(expr) /* Do nothing */
 #endif
 
-
-CCAPRICE_EXPORT void ccaprice_assert(const char*,int,int);
+/*
+ * Internal function not to be used outside scope of library
+ */
+CCAPRICE_EXPORT static void ccaprice_assert(const char*,int,int);
 
 #endif

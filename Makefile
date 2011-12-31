@@ -10,6 +10,8 @@ SRC     = src/string/memchr.c  \
           src/string/strcmp.c  \
           src/string/strcpy.c  \
           src/string/strlen.c  \
+          src/stdlib/abs.c     \
+          src/stdlib/exit.c    \
           src/assert.c
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
