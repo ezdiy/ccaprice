@@ -1,7 +1,5 @@
-#define CCAPRICE_NO_SIZE_T 1
-#include <xmmintrin.h>
 #include "inc/string.h"
-#undef  CCAPRICE_NO_SIZE_T
+
 #define CCAPRICE_MALLOC_RAMSIZE ((void*)0x100000)
 
 /* cheap slow and nasty malloc implementation */
@@ -14,20 +12,21 @@ static int   ccaprice_malloc_inited = 0;
 static void *ccaprice_malloc_start  = NULL;
 static void *ccaprice_malloc_last   = NULL;
 
-extern void* _end; /* this is nasty ... */
+extern char _end[];
+void* ccaprice_malloc_end = (void*)_end; /* this is nasty ... */
 static void* ccaprice_malloc_sbrk(size_t byte) {
 	static void *heap = NULL;
 	void        *base;
 	
 	if (heap == NULL)
-		heap = (void*)&_end;
+		heap = ccaprice_malloc_end;
 		
-	if (((uintptr_t)CCAPRICE_MALLOC_RAMSIZE - (uintptr_t)heap) >= 0) {
+	//if (((uintptr_t)CCAPRICE_MALLOC_RAMSIZE - (uintptr_t)heap) >= 0) {
 		base = heap;
 		heap = (void*)((uintptr_t)heap + byte);
 		return (base);
-	}
-	return ((void*)-1);
+	//}
+	//return ((void*)-1);
 }
 
 static void  ccaprice_malloc_init() {

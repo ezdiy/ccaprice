@@ -18,13 +18,14 @@ SRC     = src/assert.c         \
           src/stdlib/abs.c     \
           src/stdlib/atoi.c    \
           src/stdlib/exit.c    \
-          src/stdlib/fclose.c  \
-          src/stdlib/fopen.c   \
-          src/stdlib/fputc.c   \
-          src/stdlib/fputs.c   \
-          src/stdlib/fwrite.c  \
           src/stdlib/malloc.c  \
-          src/stdlib/puts.c
+          src/stdlib/puts.c    \
+          src/stdio/fclose.c   \
+          src/stdio/fflush.c   \
+          src/stdio/fopen.c    \
+          src/stdio/fputc.c    \
+          src/stdio/fputs.c    \
+          src/stdio/fwrite.c
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
 INC     = -I.

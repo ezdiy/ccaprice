@@ -40,6 +40,9 @@ int close(int fd) {
 int kill(pid_t pid, int sig) {
 	return ccaprice_syscall(SYS_kill, pid, sig);
 }
+int brk(int p) {
+	return ccaprice_syscall(SYS_brk, p);
+}
 pid_t getpid() {
 	return ccaprice_syscall(SYS_getpid);
 }

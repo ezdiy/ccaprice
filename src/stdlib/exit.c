@@ -33,8 +33,8 @@ void atexit(void (*fun)()) {
 /* This is magical */
 void _start(int argc, char **argv) {
 	/* setup stdout at startup */
-	ccaprice_i_dat = malloc(sizeof(FILE));
-	ccaprice_o_dat = malloc(sizeof(FILE));
+	ccaprice_i_dat = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
+	ccaprice_o_dat = &ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));
 	
 	ccaprice_i_dat->fd = 0;
 	ccaprice_o_dat->fd = 1;

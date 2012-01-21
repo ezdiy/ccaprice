@@ -10,6 +10,7 @@ CCAPRICE_EXPORT ssize_t read (int, void      *, size_t);
 CCAPRICE_EXPORT int     open (const char     *, int);
 CCAPRICE_EXPORT int     close(int);
 CCAPRICE_EXPORT int     kill (pid_t, int);
+CCAPRICE_EXPORT void   *sbrk (int);
 CCAPRICE_EXPORT void   _exit (int);
 CCAPRICE_EXPORT pid_t  getpid();
 
