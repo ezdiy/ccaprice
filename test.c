@@ -4,7 +4,7 @@
 int main() {
 	
 	char v[255], *b = v, c;
-	puts("Hello World, This is the place to be\n");
+	puts("Hello World, This is the place to be");
 	while (c != '\n') {
 		read (1, &c, 1);
 		*b++ = c;
