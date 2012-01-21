@@ -1,8 +1,6 @@
 #include "inc/stdlib.h"
 #include "inc/signal.h"
-#include "inc/assert.h"
 #include "inc/stdio.h"
-#include "src/crt/runtime.h"
 
 /* this is nasty ... */
 FILE *ccaprice_o_dat = ((void*)0);
@@ -41,7 +39,6 @@ void _start(int argc, char **argv) {
 	ccaprice_i_dat->fd = 0;
 	ccaprice_o_dat->fd = 1;
 	extern int main();
-	assert((int)&main);
 	exit(((int (*)(int, char**))main)(argc, argv));
 }
 

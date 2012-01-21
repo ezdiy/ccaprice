@@ -1,7 +1,5 @@
 #include "inc/stdlib.h"
-#include "inc/assert.h"
-
-#include <fcntl.h> 
+#include "inc/stdio.h"
 int main() {
 	
 	char v[255], *b = v, c;
@@ -10,9 +8,10 @@ int main() {
 		read (1, &c, 1);
 		*b++ = c;
 	}
-	int fd = open("test.txt", O_CREAT | O_RDWR);
-	write(0, v, strlen(v));
-	write(fd, v, strlen(v));
-	close(fd);
+	FILE *fp = fopen("test.txt", "w");
+	fputs(v, fp);
+	fwrite(v, strlen(v), 1, fp);
+	fclose(fp);
+	
 	return 0;
 }

@@ -14,11 +14,16 @@ SRC     = src/assert.c         \
           src/string/strlen.c  \
           src/string/strdup.c  \
           src/string/strpbrk.c \
-          src/stdlib/malloc.c  \
-          src/stdlib/atoi.c    \
-          src/stdlib/abs.c     \
-          src/stdlib/exit.c    \
           src/stdlib/abort.c   \
+          src/stdlib/abs.c     \
+          src/stdlib/atoi.c    \
+          src/stdlib/exit.c    \
+          src/stdlib/fclose.c  \
+          src/stdlib/fopen.c   \
+          src/stdlib/fputc.c   \
+          src/stdlib/fputs.c   \
+          src/stdlib/fwrite.c  \
+          src/stdlib/malloc.c  \
           src/stdlib/puts.c
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
