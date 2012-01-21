@@ -1,6 +1,7 @@
 CFLAGS += -g -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -pedantic-errors -DCCAPRICE_COMPILING
 CCC     = gcc
 SRC     = src/assert.c         \
+		  src/crt/runtime.c    \
           src/string/memchr.c  \
           src/string/memcmp.c  \
           src/string/memcpy.c  \

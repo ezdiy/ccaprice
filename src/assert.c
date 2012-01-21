@@ -4,6 +4,6 @@
 
 void ccaprice_assert(const char *file, int line, int expr) {
 	if (!expr) {
-		ccaprice_raise(SIGABRT);
+		raise(SIGABRT);
 	}
 }

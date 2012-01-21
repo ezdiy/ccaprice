@@ -1,33 +1,7 @@
 #include "inc/stdlib.h"
 #include "inc/signal.h"
 #include "inc/assert.h"
-#include <syscall.h>
-
-/*
- * These error handlers should really go
- * somewhere else.  This seems fine for
- * now though :).
- */
-#ifdef __x86_64__
-int ccaprice_syscall_error() {
-	register int no __asm__("%rcx");
-	__asm__ __volatile__ (
-		"mov %rax, %rcx\n\t"
-		"neg %rcx      \n\t"
-	);
-	return no;
-}
-#endif
-#ifdef __i386__
-int ccaprice_syscall_error() {
-	register int no __asm__("%edx");
-	__asm__ __volatile__ (
-		"mov  %eax, %edx\n\t"
-		"negl %edx      \n\t"
-	);
-	return no;
-}
-#endif
+#include "src/crt/runtime.h"
 
 /*
  * C++ requires as least 32 atexit functions, C does not
@@ -69,5 +43,5 @@ void exit(int status) {
 				ccaprice_atexit_functions[i](); /* call in reverse order */
 		}
 	}
-	ccaprice_syscall(SYS_exit,  1);
+	_exit(status);
 }

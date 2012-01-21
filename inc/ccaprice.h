@@ -18,8 +18,10 @@
 	typedef unsigned short      uint16_t;
 	typedef unsigned int        uint32_t;
 	typedef unsigned long       uint64_t;
+	typedef int                 int32_t;
 	#ifndef CCAPRICE_NO_SIZE_T
 	typedef unsigned int        size_t;
+	typedef int                 ssize_t;
 	#endif /* !CCAPRICE_NO_SIZE_T */
 #elif defined(CCAPRICE_TARGET_X86) || defined(__x86__)
 	#define STRING_STRLEN_X86
@@ -30,8 +32,10 @@
 	typedef unsigned short      uint16_t;
 	typedef unsigned int        uint32_t;
 	typedef unsigned long long  uint64_t;
+	typedef int                 int32_t;
 	#ifndef CCAPRICE_NO_SIZE_T
 	typedef unsigned int        size_t;
+	typedef long                ssize_t;
 	#endif /* !CCAPRICE_NO_SIZE_T */
 #else
 	#include <stdint.h>
