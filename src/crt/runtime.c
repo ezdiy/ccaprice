@@ -34,6 +34,9 @@ ssize_t read (int fd, void *buf, size_t count) {
 int open(const char *name, int flags) {
 	return ccaprice_syscall(SYS_open, name, flags);
 }
+int close(int fd) {
+	return ccaprice_syscall(SYS_close, fd);
+}
 int kill(pid_t pid, int sig) {
 	return ccaprice_syscall(SYS_kill, pid, sig);
 }

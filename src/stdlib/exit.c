@@ -1,7 +1,14 @@
 #include "inc/stdlib.h"
 #include "inc/signal.h"
 #include "inc/assert.h"
+#include "inc/stdio.h"
 #include "src/crt/runtime.h"
+
+/* this is nasty ... */
+FILE *ccaprice_o_dat = ((void*)0);
+FILE *ccaprice_i_dat = ((void*)0);
+FILE *ccaprice_stdout() { return ccaprice_o_dat; }
+FILE *ccaprice_stdin () { return ccaprice_i_dat; }
 
 /*
  * C++ requires as least 32 atexit functions, C does not
@@ -27,6 +34,12 @@ void atexit(void (*fun)()) {
 
 /* This is magical */
 void _start(int argc, char **argv) {
+	/* setup stdout at startup */
+	ccaprice_i_dat = malloc(sizeof(FILE));
+	ccaprice_o_dat = malloc(sizeof(FILE));
+	
+	ccaprice_i_dat->fd = 0;
+	ccaprice_o_dat->fd = 1;
 	extern int main();
 	assert((int)&main);
 	exit(((int (*)(int, char**))main)(argc, argv));
