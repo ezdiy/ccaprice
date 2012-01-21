@@ -3,8 +3,6 @@
 #include "ccaprice.h"
 #include "stddef.h"    /* size_t */
 
-#include <xmmintrin.h> /* SSE    */
-
 /* Copying */
 CCAPRICE_EXPORT void   *memcpy (void*, const void*, register size_t);
 CCAPRICE_EXPORT void   *memmove(void*, const void*, register size_t);

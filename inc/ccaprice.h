@@ -9,7 +9,7 @@
 #define CCAPRICE_COMPILE_TIME_ASSERT(name, x) \
 	typedef int CompileTimeAssertFailed_##name[(x)*2-1]
 
-#ifdef CCAPRICE_TARGET_X86_64
+#if defined(CCAPRICE_TARGET_X86_64) || defined(__x86_64__)
 	#define STRING_STRLEN_X86_64
 	#define STRING_MEMCHR_X86_64
 	#define STRING_MEMCPY_X86_64
@@ -18,7 +18,10 @@
 	typedef unsigned short      uint16_t;
 	typedef unsigned int        uint32_t;
 	typedef unsigned long       uint64_t;
-#elif defined(CCAPRICE_TARGET_X86)
+	#ifndef CCAPRICE_NO_SIZE_T
+	typedef unsigned int        size_t;
+	#endif /* !CCAPRICE_NO_SIZE_T */
+#elif defined(CCAPRICE_TARGET_X86) || defined(__x86__)
 	#define STRING_STRLEN_X86
 	#define STRING_MEMCHR_X86
 	#define STRING_MEMCPY_X86
@@ -27,6 +30,9 @@
 	typedef unsigned short      uint16_t;
 	typedef unsigned int        uint32_t;
 	typedef unsigned long long  uint64_t;
+	#ifndef CCAPRICE_NO_SIZE_T
+	typedef unsigned int        size_t;
+	#endif /* !CCAPRICE_NO_SIZE_T */
 #else
 	#include <stdint.h>
 #endif /* !CCAPRICE_TARGET_X86_64 */

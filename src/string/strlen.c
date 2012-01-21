@@ -1,4 +1,7 @@
+#define CCAPRICE_NO_SIZE_T 1
+#include <xmmintrin.h>
 #include "inc/string.h"
+#undef  CCAPRICE_NO_SIZE_T
 
 static const unsigned char strlen_bsf_table[256] = {
 	CCAPRICE_BSF_TABLE_EXPAND

@@ -2,7 +2,9 @@
 #define CCAPRICE_STDDEF_HDR
 #include "ccaprice.h"
 
-#define NULL (void*)0
+#ifndef CCAPRICE_NO_SIZE_T
+#	define NULL (void*)0
+#endif
 
 #ifndef uintptr_t
 	typedef unsigned long uintptr_t;

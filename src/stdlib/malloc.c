@@ -1,5 +1,7 @@
+#define CCAPRICE_NO_SIZE_T 1
+#include <xmmintrin.h>
 #include "inc/string.h"
-
+#undef  CCAPRICE_NO_SIZE_T
 #define CCAPRICE_MALLOC_RAMSIZE ((void*)0x100000)
 
 /* cheap slow and nasty malloc implementation */

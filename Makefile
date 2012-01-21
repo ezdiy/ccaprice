@@ -4,7 +4,6 @@ SRC     = src/string/memchr.c  \
           src/string/memcmp.c  \
           src/string/memcpy.c  \
           src/string/memset.c  \
-          src/string/malloc.c  \
           src/string/memmove.c \
           src/string/strcat.c  \
           src/string/strchr.c  \
@@ -13,6 +12,8 @@ SRC     = src/string/memchr.c  \
           src/string/strlen.c  \
           src/string/strdup.c  \
           src/string/strpbrk.c \
+          src/stdlib/malloc.c  \
+          src/stdlib/atoi.c    \
           src/stdlib/abs.c     \
           src/stdlib/exit.c    \
           src/stdlib/abort.c   \

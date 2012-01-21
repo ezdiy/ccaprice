@@ -1,7 +1,6 @@
 #include "inc/stdlib.h"
 #include "inc/signal.h"
 
-#include <unistd.h>
 /*
  * C++ requires as least 32 atexit functions, C does not
  * however this needs to stay backwards compatible with
@@ -30,8 +29,6 @@ void _start() {
 	exit(main());
 }
 
-#include <asm/unistd.h>
-
 void exit(int status) {
 	
 	/* only perform atexit calls if first one exists */
@@ -44,12 +41,14 @@ void exit(int status) {
 	}
 	
 	
-	char *hello = "returned!\n";
+	char *ret = "returned\n";
+	
+	/* write() sys call */
 	__asm__ __volatile__("\
 		movl $4, %%eax\n\
 		movl %0, %%ecx\n\
 		movl $10,%%edx\n\
-		int $0x80" : :"g"(hello)
+		int $0x80" : :"g"(ret)
 	);
 
 	/* exit() sys call */

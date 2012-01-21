@@ -9,4 +9,8 @@ CCAPRICE_EXPORT void abort ();
 /* Internal functions */
 CCAPRICE_EXPORT void ccaprice_abort(int);
 
+/* malloc / free */
+CCAPRICE_EXPORT void *malloc(size_t);
+CCAPRICE_EXPORT void  free  (void *);
+
 #endif
