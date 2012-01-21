@@ -1,6 +1,7 @@
 CFLAGS += -g -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -pedantic-errors -DCCAPRICE_COMPILING
 CCC     = gcc
-SRC     = src/string/memchr.c  \
+SRC     = src/assert.c         \
+          src/string/memchr.c  \
           src/string/memcmp.c  \
           src/string/memcpy.c  \
           src/string/memset.c  \
@@ -16,8 +17,7 @@ SRC     = src/string/memchr.c  \
           src/stdlib/atoi.c    \
           src/stdlib/abs.c     \
           src/stdlib/exit.c    \
-          src/stdlib/abort.c   \
-          src/assert.c         
+          src/stdlib/abort.c   
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
 INC     = -I.

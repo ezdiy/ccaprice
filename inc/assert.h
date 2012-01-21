@@ -11,6 +11,6 @@
 /*
  * Internal function not to be used outside scope of library
  */
-CCAPRICE_EXPORT static void ccaprice_assert(const char*,int,int);
+CCAPRICE_EXPORT void ccaprice_assert(const char*,int,int);
 
 #endif

@@ -1,5 +1,6 @@
 #include "inc/stdlib.h"
 #include "inc/signal.h"
+#include "inc/assert.h"
 #include <syscall.h>
 
 /*
@@ -53,6 +54,7 @@ void atexit(void (*fun)()) {
 /* This is magical */
 void _start(int argc, char **argv) {
 	extern int main();
+	assert((int)&main);
 	exit(((int (*)(int, char**))main)(argc, argv));
 }
 
