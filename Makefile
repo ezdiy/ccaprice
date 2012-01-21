@@ -18,7 +18,8 @@ SRC     = src/assert.c         \
           src/stdlib/atoi.c    \
           src/stdlib/abs.c     \
           src/stdlib/exit.c    \
-          src/stdlib/abort.c   
+          src/stdlib/abort.c   \
+          src/stdlib/puts.c
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
 INC     = -I.

@@ -6,4 +6,7 @@ typedef struct ccaprice_file {
 	char   buffer[2048];
 	long   bufpos;
 } FILE;
+
+CCAPRICE_EXPORT int puts(const char *);
+
 #endif /* !CCAPRICE_STDIO_HDR      */

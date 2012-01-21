@@ -5,10 +5,7 @@
 CCAPRICE_EXPORT void atexit(void (*)());
 CCAPRICE_EXPORT void exit  (int);
 CCAPRICE_EXPORT void abort ();
-
-/* Internal functions */
-CCAPRICE_EXPORT void ccaprice_abort(int);
-CCAPRICE_EXPORT int  ccaprice_raise(int);
+CCAPRICE_EXPORT int  raise (int);
 
 /* malloc / free */
 CCAPRICE_EXPORT void *malloc(size_t);

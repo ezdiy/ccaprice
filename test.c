@@ -2,8 +2,13 @@
 #include "inc/assert.h"
 
 int main() {
-	char  *test = "Hello World, This is the place to be :D\n";
-	int    size = strlen(test);
-	write(0, test, size);
+	
+	char v[255], *b = v, c;
+	puts("Hello World, This is the place to be\n");
+	while (c != '\n') {
+		read (1, &c, 1);
+		*b++ = c;
+	}
+	write(0, v, strlen(v));
 	return 0;
 }
