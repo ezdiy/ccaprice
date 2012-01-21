@@ -4,7 +4,9 @@
 
 #define NULL (void*)0
 
-//typedef unsigned long uintptr_t;
+#ifndef uintptr_t
+	typedef unsigned long uintptr_t;
+#endif
 
 /*
  * Take advantage  of GCC builtins, as  the  latter  method, despite

@@ -12,6 +12,7 @@ SRC     = src/string/memchr.c  \
           src/string/strcpy.c  \
           src/string/strlen.c  \
           src/string/strdup.c  \
+          src/string/strpbrk.c \
           src/stdlib/abs.c     \
           src/stdlib/exit.c    \
           src/stdlib/abort.c   \
