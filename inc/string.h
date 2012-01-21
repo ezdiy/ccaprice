@@ -1,8 +1,9 @@
 #ifndef  CCAPRICE_STRING_HDR
 #define  CCAPRICE_STRING_HDR
 #include "ccaprice.h"
-#include "stddef.h"  /* size_t */
-#include <xmmintrin.h>
+#include "stddef.h"    /* size_t */
+
+#include <xmmintrin.h> /* SSE    */
 
 /* Copying */
 CCAPRICE_EXPORT void   *memcpy (void*, const void*, register size_t);

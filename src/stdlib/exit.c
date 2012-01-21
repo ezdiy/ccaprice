@@ -1,6 +1,7 @@
 #include "inc/stdlib.h"
 #include "inc/signal.h"
 
+#include <unistd.h>
 /*
  * C++ requires as least 32 atexit functions, C does not
  * however this needs to stay backwards compatible with
@@ -23,15 +24,38 @@ void atexit(void (*fun)()) {
 	}
 }
 
+/* This is magical */
+void _start() {
+	extern int main(); // we can't pass arguments :(
+	exit(main());
+}
+
+#include <asm/unistd.h>
+
 void exit(int status) {
-	int  i=32;
-	for (; i>0; i--) {
-		ccaprice_atexit_functions[i](); /* call in reverse order */
+	
+	/* only perform atexit calls if first one exists */
+	if (ccaprice_atexit_functions[0]) {
+		int  i=32;
+		for (; i>0; i--) {
+			if (ccaprice_atexit_functions[i])
+				ccaprice_atexit_functions[i](); /* call in reverse order */
+		}
 	}
 	
-	raise(SIGKILL);
 	
-	/* fall back method, will work every time */
-	int  *a = 0; *a = 0;
-	exit(*a);
+	char *hello = "returned!\n";
+	__asm__ __volatile__("\
+		movl $4, %%eax\n\
+		movl %0, %%ecx\n\
+		movl $10,%%edx\n\
+		int $0x80" : :"g"(hello)
+	);
+
+	/* exit() sys call */
+	__asm__(
+		"movl $1,%eax;"
+        "xorl %ebx,%ebx;"
+        "int  $0x80"
+    );
 }

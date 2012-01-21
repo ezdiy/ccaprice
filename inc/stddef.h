@@ -4,14 +4,17 @@
 
 #define NULL (void*)0
 
-typedef unsigned long uintptr_t;
+//typedef unsigned long uintptr_t;
 
 /*
  * Take advantage  of GCC builtins, as  the  latter  method, despite
- * working, is  considered  undefined behaviour. The  reasong  being
+ * working, is  considered  undefined behaviour. The  reason   being
  * is it derefrences a null pointer, and uses a  cast  that voilates
  * C's aliasing rules.  It can also lead to cofusing compiler errors
- * if an argument is misspelled.
+ * if an argument is misspelled.  None the less it's a genuis way at
+ * implementing the behaviour of offsetof.  There might be a  better
+ * way at implementing this functionality  for another compiler. I.E
+ * a compiler builtin like GCC.
  */
 #ifdef __GCC__
 #	define offsetof(TYPE,MEMBER) __builtin_offsetof(TYPE,MEMBER)
