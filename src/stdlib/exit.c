@@ -1,5 +1,32 @@
 #include "inc/stdlib.h"
 #include "inc/signal.h"
+#include <syscall.h>
+
+/*
+ * These error handlers should really go
+ * somewhere else.  This seems fine for
+ * now though :).
+ */
+#ifdef __x86_64__
+int ccaprice_syscall_error() {
+	register int no __asm__("%rcx");
+	__asm__ __volatile__ (
+		"mov %rax, %rcx\n\t"
+		"neg %rcx      \n\t"
+	);
+	return no;
+}
+#endif
+#ifdef __i386__
+int ccaprice_syscall_error() {
+	register int no __asm__("%edx");
+	__asm__ __volatile__ (
+		"mov  %eax, %edx\n\t"
+		"negl %edx      \n\t"
+	);
+	return no;
+}
+#endif
 
 /*
  * C++ requires as least 32 atexit functions, C does not
@@ -24,11 +51,12 @@ void atexit(void (*fun)()) {
 }
 
 /* This is magical */
-void _start() {
-	extern int main(); // we can't pass arguments :(
-	exit(main());
+void _start(int argc, char **argv) {
+	extern int main();
+	exit(((int (*)(int, char**))main)(argc, argv));
 }
 
+extern int ccaprice_syscall(int, ...);
 void exit(int status) {
 	
 	/* only perform atexit calls if first one exists */
@@ -39,22 +67,5 @@ void exit(int status) {
 				ccaprice_atexit_functions[i](); /* call in reverse order */
 		}
 	}
-	
-	
-	char *ret = "returned\n";
-	
-	/* write() sys call */
-	__asm__ __volatile__("\
-		movl $4, %%eax\n\
-		movl %0, %%ecx\n\
-		movl $10,%%edx\n\
-		int $0x80" : :"g"(ret)
-	);
-
-	/* exit() sys call */
-	__asm__(
-		"movl $1,%eax;"
-        "xorl %ebx,%ebx;"
-        "int  $0x80"
-    );
+	ccaprice_syscall(SYS_exit,  1);
 }

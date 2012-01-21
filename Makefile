@@ -1,4 +1,4 @@
-CFLAGS  = -g -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -pedantic-errors -DCCAPRICE_COMPILING -DCCAPRICE_TARGET_X86_64
+CFLAGS += -g -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -pedantic-errors -DCCAPRICE_COMPILING
 CCC     = gcc
 SRC     = src/string/memchr.c  \
           src/string/memcmp.c  \
@@ -17,17 +17,30 @@ SRC     = src/string/memchr.c  \
           src/stdlib/abs.c     \
           src/stdlib/exit.c    \
           src/stdlib/abort.c   \
-          src/assert.c
+          src/assert.c         
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
 INC     = -I.
+
+ifneq (,$(findstring -DCCAPRICE_TARGET_X86_64,$(CFLAGS)))
+ASM     = src/crt/x86_64.S
+AFLAGS  =
+else
+ifneq (,$(findstring -DCCAPRICE_TARGET_X86,$(CFLAGS)))
+ASM     = src/crt/i386.S
+CFLAGS += -m32
+AFLAGS  = -m32
+endif
+endif
+
+BIN = $(ASM:.S=.o)
 
 .c.o:
 	$(CCC) $(INC) $(CFLAGS) -c $< -o $@
 	
 $(OUT): $(OBJ)
-	ar rcs $(OUT) $(OBJ)
+	$(CCC) $(AFLAGS) $(ASM) -c -o $(BIN)
+	ar rcs $(OUT) $(BIN) $(OBJ)
 	
 clean:
-	rm -f $(OBJ) $(OUT)
-
+	rm -f $(OBJ) $(BIN) $(OUT)

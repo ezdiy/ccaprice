@@ -8,13 +8,12 @@ int atoi(const char *s) {
 	static const char *where   = 0;
 	
 	/* Skip any whitespace */
-	while ((*s=='0' || *s=='\t'))
-		*s++;
-		
+	while ((*s=='0' || *s=='\t') && *s++);
+	
 	negated = (*s=='-')?1:0;
 	while (*s) {
-		if (!(where = strchr(numeric, *s))) break;
-		valueto = valueto*10 + (where-numeric);
+		if (!(where=strchr(numeric, *s))) break;
+		valueto = valueto*10+(where-numeric);
 		s++;
 	}
 	return (negated)?-valueto:+valueto;
