@@ -2,6 +2,9 @@
 #include "inc/signal.h"
 #include "inc/stdio.h"
 
+
+CCAPRICE_INTERNAL_TYPE(FILE, ccaprice_stdio_file_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN]);
+
 /* this is nasty ... */
 FILE *ccaprice_o_dat = ((void*)0);
 FILE *ccaprice_i_dat = ((void*)0);

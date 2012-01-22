@@ -18,9 +18,6 @@ typedef struct ccaprice_file {
 CCAPRICE_EXPORT FILE *ccaprice_stdout(); /* because symbol of alignment issues */
 CCAPRICE_EXPORT FILE *ccaprice_stdin (); /* because symbol of alignment issues */
 
-extern FILE   ccaprice_stdio_file_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN];
-extern size_t ccaprice_stdio_file_pos;
-
 CCAPRICE_EXPORT int    fclose(FILE *);
 CCAPRICE_EXPORT int    feof  (FILE *);
 CCAPRICE_EXPORT int    fflush(FILE *);

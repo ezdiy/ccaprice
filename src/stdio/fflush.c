@@ -1,5 +1,8 @@
 #include "inc/stdio.h"
 
+
+CCAPRICE_INTERNAL_TYPE(size_t, ccaprice_stdio_file_pos);
+CCAPRICE_INTERNAL_TYPE(FILE  , ccaprice_stdio_file_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN]);
 /*
  * fflush() is used to write out buffered data stuck in
  * the fp->buffer_dat.
