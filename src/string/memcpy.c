@@ -16,7 +16,7 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 		 * faster than any SSE routine.
 		 * 
 		 * See: https://lkml.org/lkml/2011/9/1/229
-		 * for more informationr egarding the matter.
+		 * for more information regarding the matter.
 		 */
 		__asm__("cld; rep movsb" :: 
 			"c"(cnt),

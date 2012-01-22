@@ -8,10 +8,6 @@ FILE *ccaprice_i_dat = ((void*)0);
 FILE *ccaprice_stdout() { return ccaprice_o_dat; }
 FILE *ccaprice_stdin () { return ccaprice_i_dat; }
 
-void ccaprice_syscall_trace() {
-	/* TODO */
-}
-
 /*
  * C++ requires as least 32 atexit functions, C does not
  * however this needs to stay backwards compatible with
@@ -46,7 +42,6 @@ void _start(int argc, char **argv) {
 	exit(((int (*)(int, char**))main)(argc, argv));
 }
 
-extern int ccaprice_syscall(int, ...);
 void exit(int status) {
 	
 	/* only perform atexit calls if first one exists */

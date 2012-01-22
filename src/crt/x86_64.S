@@ -1,9 +1,8 @@
 .text
-.global ccaprice_syscall
-.type   ccaprice_syscall,%function
+.global ccaprice_syscall_core
+.type   ccaprice_syscall_core,%function
 
-ccaprice_syscall:
-	call ccaprice_syscall_trace
+ccaprice_syscall_core:
 	movq %rdi   , %rax
 	movq %rsi   , %rdi
 	movq %rdx   , %rsi
@@ -17,7 +16,4 @@ ccaprice_syscall:
 	jae ccaprice_syscall_error
 	ret
 
-.size ccaprice_syscall,.-ccaprice_syscall
-
-_start:
-	
+.size ccaprice_syscall_core,.-ccaprice_syscall_core

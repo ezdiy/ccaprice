@@ -1,6 +1,5 @@
 #include "inc/string.h"
-
-#define CCAPRICE_MALLOC_RAMSIZE ((void*)0x100000)
+#include <syscall.h>
 
 /* cheap slow and nasty malloc implementation */
 struct ccaprice_malloc_block {
@@ -11,22 +10,59 @@ struct ccaprice_malloc_block {
 static int   ccaprice_malloc_inited = 0;
 static void *ccaprice_malloc_start  = NULL;
 static void *ccaprice_malloc_last   = NULL;
+static void *ccaprice_malloc_curbrk = NULL;
 
-extern char _end[];
-void* ccaprice_malloc_end = (void*)_end; /* this is nasty ... */
-static void* ccaprice_malloc_sbrk(size_t byte) {
-	static void *heap = NULL;
-	void        *base;
+static int   ccaprice_malloc_brk (void *address) {
+	#ifdef CCAPRICE_TARGET_X86
+		void *vfbrk, *vfscr;
+		__asm__ __volatile__ (
+			"movl %%ebx , %1   \n\t"
+			"movl %3    , %%ebx\n\t"
+			"int  $0x80 # %2   \n\t"
+			"movl %1    , %%ebx\n\t" :
+				"=a"(vfbrk),
+				"=r"(vfscr) : 
+					"0"(SYS_brk),
+					"g"(address)
+		);
+		ccaprice_malloc_curbrk = vfbrk;
+		return (vfbrk < address)?-1:0;
+	#elif defined(CCAPRICE_TARGET_X86_64)
+		void *vfbrk;
+		register unsigned long res;
+		register unsigned long adr __asm__("rdi") = (unsigned long)address;
+		__asm__ __volatile__ (
+			"movq %1, %%rax\n\t"
+			"syscall       \n\t" :
+				"=a"(res) :
+					"i"(SYS_brk), "r"(adr) :
+						"memory","cc", "r11", "cx"
+		);
+		if ((unsigned long)res>=(unsigned long)-4095)
+			res = (unsigned long)-1;
+			
+		ccaprice_malloc_curbrk = vfbrk = (void*)res;
+		return (vfbrk < address)?-1:0;
+	#endif
+}
 	
-	if (heap == NULL)
-		heap = ccaprice_malloc_end;
+static void* ccaprice_malloc_sbrk(size_t byte) {
+	
+	void *old;
+	
+	if (ccaprice_malloc_curbrk == NULL) {
+		if (ccaprice_malloc_brk(0) < 0)
+			return (void*)-1;
+	}
+	
+	if (byte == 0)
+		return ccaprice_malloc_curbrk;
 		
-	//if (((uintptr_t)CCAPRICE_MALLOC_RAMSIZE - (uintptr_t)heap) >= 0) {
-		base = heap;
-		heap = (void*)((uintptr_t)heap + byte);
-		return (base);
-	//}
-	//return ((void*)-1);
+	old = ccaprice_malloc_curbrk;
+	if (ccaprice_malloc_brk((void*)((uintptr_t)old + byte)) < 0)
+		return (void*)-1;
+		
+	return old;
 }
 
 static void  ccaprice_malloc_init() {

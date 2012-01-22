@@ -4,8 +4,13 @@ int main() {
 	
 	char v[255], *b = v, c;
 	
-	fputs ("Hello World", stdout);
-	fflush(stdout);
+	//fputs ("Hello World\n", stdout);
+	//fflush(stdout);
+	puts("Hello World");
+	
+	int *p = malloc(9000);
+	*p = 100;
+	free(p);
 	
 	while (c != '\n') {
 		read (1, &c, 1);

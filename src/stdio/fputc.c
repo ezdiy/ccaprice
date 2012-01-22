@@ -7,6 +7,7 @@ int fputc(int c, FILE *fp) {
 		fflush(fp);
 	
 	/* buffer the data */
-	fp->buffer_dat[++fp->buffer_pos] = c;	
+	fp->buffer_dat[fp->buffer_pos] = c;	
+	fp->buffer_pos ++;
 	return 0;
 }

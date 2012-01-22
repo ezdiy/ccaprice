@@ -1,7 +1,7 @@
 #ifndef CCAPRICE_STDARG_HDR
 #define CCAPRICE_STDARG_HDR
 
-#ifndef __GCC__
+#ifndef __GNUC__
 /*
  * We're not on a GCC compiler, lets try implementing out own
  * stdarg system.  This is undefined behaviour.  But it works.
@@ -26,9 +26,9 @@
  * GCC has builtins, these are much safer and faster.
  */
 #	define va_list        __builtin_va_list
-#	define va_start(v,f)  __builtin_va_start(v,f);
-#	define va_end(v)      __builtin_va_end  (v);
-#	define va_arg(v,a)    __builtin_va_arg  (v,a);
+#	define va_start(v,f)  __builtin_va_start(v,f)
+#	define va_end(v)      __builtin_va_end(v)
+#	define va_arg(v,a)    __builtin_va_arg(v,a)
 #endif
 
 #endif
