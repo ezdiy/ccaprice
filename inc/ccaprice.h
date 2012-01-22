@@ -46,6 +46,8 @@
 	typedef int                 ssize_t;
 	#endif
 #elif defined(CCAPRICE_TARGET_X86) || defined(__x86__)
+	#define _LARGEFILE64_SOURCE /* EXTENSION */
+	
 	#define STRING_STRLEN_X86
 	#define STRING_MEMCHR_X86
 	#define STRING_MEMCPY_X86

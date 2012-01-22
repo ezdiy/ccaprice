@@ -48,6 +48,18 @@ FILE *fopen(const char *file, const char *mode) {
 	if (other) {
 		flags = (flags &~(O_RDONLY|O_WRONLY))|O_RDWR;
 	}
+	/*
+	 * On 32-bit systems  O_LARGEFILE needs  to be used to
+	 * ensure file opens are 64-bit safe; otherwise errors
+	 * could occur.
+	 */
+	#ifdef CCAPRICE_TARGET_X86
+		/*
+		 * (LFS) Allow files whose sizes cannot be represented in an off_t 
+		 * (but can be represented in an off64_t) to be opened.
+		 **/
+		flags |= O_LARGEFILE;
+	#endif
 	
 	FILE *fp       = &ccaprice_stdio_file_dat[++ccaprice_stdio_file_pos];
 	fp->fd         = open(file, flags);

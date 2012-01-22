@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-text
+.text
 .global ccaprice_syscall_core
 .type   ccaprice_syscall_core,%function
 
