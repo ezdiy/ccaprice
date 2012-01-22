@@ -10,5 +10,6 @@ FILE *fopen(const char *file, const char *mode) {
 	fp->fd         = open(file, O_CREAT | O_RDWR);
 	fp->buffer_pos = 0;
 	fp->eof        = 0;
+	fp->err        = 0;
 	return fp;
 }
