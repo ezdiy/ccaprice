@@ -23,29 +23,20 @@ int ccaprice_syscall_error() {
 	return no;
 }
 #endif
-
 extern int ccaprice_syscall_core(int, ...); /* syscall :D */
-ssize_t write(int fd, const void *buf, size_t count) {
-	return ccaprice_syscall_core(SYS_write, fd, buf, count);
-}
-ssize_t read(int fd, void *buf, size_t count) {
-	return ccaprice_syscall_core(SYS_read, fd, buf, count);
-}
-int open(const char *name, int flags) {
-	return ccaprice_syscall_core(SYS_open, name, flags);
-}
-int close(int fd) {
-	return ccaprice_syscall_core(SYS_close, fd);
-}
-int kill(pid_t pid, int sig) {
-	return ccaprice_syscall_core(SYS_kill, pid, sig);
-}
-int brk(int p) {
-	return ccaprice_syscall_core(SYS_brk, p);
-}
-pid_t getpid() {
-	return ccaprice_syscall_core(SYS_getpid);
-}
-void _exit(int status) {
-	ccaprice_syscall_core(SYS_exit, status);
-}
+
+/*
+ * SYSCALL0 doesn't return
+ * SYSCALL1 does    return
+ */
+#define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST {        (TYPE)ccaprice_syscall_core CORE; }
+#define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)ccaprice_syscall_core CORE; }
+
+SYSCALL1(ssize_t,write, (int f,const void *b,size_t c),(SYS_write,f,b,c))
+SYSCALL1(ssize_t,read,  (int f,void *b,size_t c),      (SYS_read, f,b,c))
+SYSCALL1(int,    open,  (const char *f,int b),         (SYS_open, f,b))
+SYSCALL1(int,    kill,  (pid_t f,int b),               (SYS_kill, f,b))
+SYSCALL1(int,    close, (int f),                       (SYS_close,f))
+SYSCALL1(int,    brk,   (int f),                       (SYS_brk,  f))
+SYSCALL0(void,  _exit,  (int f),                       (SYS_exit, f))
+SYSCALL1(pid_t,  getpid,(),                            (SYS_getpid))
