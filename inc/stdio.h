@@ -2,9 +2,11 @@
 #define CCAPRICE_STDIO_HDR
 #include "ccaprice.h"
 #include "src/crt/runtime.h" /* sycalls */
+
+#define CCAPRICE_STDIO_FILE_BUFFER_LEN 2048
 typedef struct ccaprice_file {
 	int    fd;
-	char   buffer_dat[1024];
+	char   buffer_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN];
 	size_t buffer_pos;
 }  FILE;
 
@@ -14,7 +16,7 @@ typedef struct ccaprice_file {
 CCAPRICE_EXPORT FILE *ccaprice_stdout(); /* because symbol of alignment issues */
 CCAPRICE_EXPORT FILE *ccaprice_stdin (); /* because symbol of alignment issues */
 
-extern FILE   ccaprice_stdio_file_dat[1024];
+extern FILE   ccaprice_stdio_file_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN];
 extern size_t ccaprice_stdio_file_pos;
 
 CCAPRICE_EXPORT int    fclose(FILE *);
