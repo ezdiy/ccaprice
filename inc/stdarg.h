@@ -29,15 +29,15 @@
  * stdarg system.  This is undefined behaviour.  But it works.
  */
 #if defined(CCAPRICE_TARGET_X86) || defined(__x86__)
-	typedef int            va_item;
-	typedef unsigned char *va_list;
+	typedef int   va_item;
+	typedef char *va_list;
 #elif defined(CCAPRICE_TARGET_X86_64) || defined(__x86_64__)
-	typedef long           va_item;
-	typedef unsigned char *va_list;
+	typedef long  va_item;
+	typedef char *va_list;
+	#define
 #else
 #	error "Cannot find sutible target for stdarh.h"
 #endif
-
 #	define va_start(A,L) (A =((va_list)&(L)+va_size(L)))
 #	define va_arg(A,T)   (A+=va_rsize(T),*((T*)(A-va_rsize(T))))
 #	define va_rsize(T)   (((sizeof(T)+sizeof(int)-1)/sizeof(int))*sizeof(int))
