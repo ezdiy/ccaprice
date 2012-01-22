@@ -22,7 +22,6 @@
  */
 #include "inc/stdio.h"
 
-CCAPRICE_INTERNAL_FUNC(void*, malloc, (size_t));
 /* manage list of all open files here */
 FILE   ccaprice_stdio_file_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN];
 size_t ccaprice_stdio_file_pos = 0;

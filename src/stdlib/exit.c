@@ -48,19 +48,18 @@ void atexit(void (*fun)()) {
 	if (fun && ccaprice_atexit_position + 1 < 32) {
 		ccaprice_atexit_functions[ccaprice_atexit_position] = fun;
 		ccaprice_atexit_position ++;
-	} else {
-		if (ccaprice_atexit_position +1 >= 32) {
-			ccaprice_atexit_position =0;
-		}
+		return;
 	}
+	if (ccaprice_atexit_position +1 >= 32)
+		ccaprice_atexit_position =0;
+	atexit(fun); /* try again */
 }
 
 /* This is magical */
 void _start(int argc, char **argv) {
 	/* setup stdout at startup */
-	ccaprice_i_dat = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
-	ccaprice_o_dat = &ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));
-	
+	ccaprice_i_dat     = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
+	ccaprice_o_dat     = &ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));
 	ccaprice_i_dat->fd = 0;
 	ccaprice_o_dat->fd = 1;
 	
@@ -69,13 +68,15 @@ void _start(int argc, char **argv) {
 }
 
 void exit(int status) {
-	
-	/* only perform atexit calls if first one exists */
-	if (ccaprice_atexit_functions[0]) {
-		int  i=32;
-		for (; i>0; i--) {
-			if (ccaprice_atexit_functions[i])
-				ccaprice_atexit_functions[i](); /* call in reverse order */
+	/* This is a hack to fix a stupid bug */
+	ccaprice_i_dat     = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
+	ccaprice_o_dat     = &ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));
+	ccaprice_i_dat->fd = 0;
+	ccaprice_o_dat->fd = 1;
+	int   i=sizeof(ccaprice_atexit_functions)/sizeof(*ccaprice_atexit_functions);
+	while(i-->0) {
+		if (ccaprice_atexit_functions[i]) {
+			ccaprice_atexit_functions[i](); /* call in reverse order */
 		}
 	}
 	_exit(status);

@@ -28,7 +28,7 @@
 CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
 
 /* MALLOC Requires this */
-static void *ccaprice_runtime_curbrk = NULL;
+void *ccaprice_runtime_curbrk = NULL;
 #if defined(CCAPRICE_TARGET_X86) || defined(__i386__)
 int ccaprice_syscall_error() {
 	register int no __asm__("%edx");
