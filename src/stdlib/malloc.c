@@ -110,3 +110,12 @@ void* malloc(size_t bytes) {
 	memp  = (void*)((uintptr_t)memp + sizeof(struct ccaprice_malloc_block));
 	return memp;
 }
+
+void *calloc(size_t nmemb, size_t size) {
+	/* TODO: check for overflow ...*/
+	size *= nmemb;
+	void *ret = malloc(size);
+	if (ret)
+		memset(ret, 0, size);
+	return ret;
+}

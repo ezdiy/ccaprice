@@ -31,6 +31,7 @@ CCAPRICE_EXPORT int  raise (int);
 
 /* malloc / free */
 CCAPRICE_EXPORT void *malloc(size_t);
+CCAPRICE_EXPORT void *calloc(size_t, size_t);
 CCAPRICE_EXPORT void  free  (void *);
 
 #endif
