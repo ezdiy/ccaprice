@@ -21,6 +21,7 @@ SRC     = src/assert.c         \
           src/stdlib/malloc.c  \
           src/stdlib/puts.c    \
           src/stdio/fclose.c   \
+          src/stdio/feof.c     \
           src/stdio/fflush.c   \
           src/stdio/fopen.c    \
           src/stdio/fputc.c    \

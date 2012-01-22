@@ -6,6 +6,7 @@
 #define CCAPRICE_STDIO_FILE_BUFFER_LEN 2048
 typedef struct ccaprice_file {
 	int    fd;
+	int    eof;
 	char   buffer_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN];
 	size_t buffer_pos;
 }  FILE;
@@ -20,6 +21,7 @@ extern FILE   ccaprice_stdio_file_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN];
 extern size_t ccaprice_stdio_file_pos;
 
 CCAPRICE_EXPORT int    fclose(FILE *);
+CCAPRICE_EXPORT int    feof  (FILE *);
 CCAPRICE_EXPORT int    fflush(FILE *);
 CCAPRICE_EXPORT FILE * fopen (const char *, const char *);
 CCAPRICE_EXPORT int    fputc (int, FILE*);

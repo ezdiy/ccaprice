@@ -9,5 +9,6 @@ FILE *fopen(const char *file, const char *mode) {
 	FILE *fp       = &ccaprice_stdio_file_dat[++ccaprice_stdio_file_pos];
 	fp->fd         = open(file, O_CREAT | O_RDWR);
 	fp->buffer_pos = 0;
+	fp->eof        = 0;
 	return fp;
 }
