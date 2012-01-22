@@ -1,6 +1,5 @@
 /* Implement runtime sycalls here */
 #include "runtime.h"
-
 #ifdef __x86_64__
 int ccaprice_syscall_error() {
 	register int no __asm__("%rcx");

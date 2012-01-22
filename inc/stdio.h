@@ -13,8 +13,8 @@ typedef struct ccaprice_file {
 }  FILE;
 
 #define EOF -1
-#define stdout (ccaprice_stdout())       /* because symbol of alignment issues */
-#define stdin  (ccaprice_stdin ())       /* because symbol of alignment issues */
+#define stdout        ccaprice_stdout()  /* because symbol of alignment issues */
+#define stdin         ccaprice_stdin ()  /* because symbol of alignment issues */
 CCAPRICE_EXPORT FILE *ccaprice_stdout(); /* because symbol of alignment issues */
 CCAPRICE_EXPORT FILE *ccaprice_stdin (); /* because symbol of alignment issues */
 
@@ -29,5 +29,6 @@ CCAPRICE_EXPORT int    fputc (int, FILE*);
 CCAPRICE_EXPORT int    fputs (const char *, FILE*);
 CCAPRICE_EXPORT size_t fwrite(const void *, size_t, size_t, FILE*);
 CCAPRICE_EXPORT int    fputs (const char *, FILE*);
+CCAPRICE_EXPORT int    puts  (const char*);
 
 #endif /* !CCAPRICE_STDIO_HDR      */

@@ -3,6 +3,7 @@
 .type   ccaprice_syscall,%function
 
 ccaprice_syscall:
+	call ccaprice_syscall_trace
 	pushl %ebp
 	pushl %edi
 	pushl %esi
