@@ -42,7 +42,7 @@
  * way at implementing this functionality  for another compiler. I.E
  * a compiler builtin like GCC.
  */
-#ifdef __GCC__
+#ifdef __GNUC__
 #	define offsetof(TYPE,MEMBER) __builtin_offsetof(TYPE,MEMBER)
 #else
 #	define offsetof(TYPE,MEMBER) \
