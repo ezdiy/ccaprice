@@ -63,7 +63,8 @@ void _start(int argc, char **argv) {
 	
 	ccaprice_i_dat->fd = 0;
 	ccaprice_o_dat->fd = 1;
-	extern int main();
+	
+	CCAPRICE_INTERNAL_FUNC(int, main, ());
 	exit(((int (*)(int, char**))main)(argc, argv));
 }
 
