@@ -22,49 +22,6 @@
  */
 #include "inc/stdlib.h"
 #include "inc/stdio.h"
-#define STRN(X) #X
-#define EXIT(X) void exit ## X (){puts("atexit called exit"STRN(X));}
-EXIT(1) EXIT(2)
-EXIT(3) EXIT(4)
-EXIT(5) EXIT(6)
-EXIT(7) EXIT(8)
-EXIT(9) EXIT(10)
-EXIT(11) EXIT(12)
-EXIT(13) EXIT(14)
-EXIT(15) EXIT(16)
-EXIT(17) EXIT(18)
-EXIT(19) EXIT(20)
-int main(int argc, char **argv) {
-	atexit(&exit1);atexit(&exit2);
-	atexit(&exit3);atexit(&exit4);
-	atexit(&exit5);atexit(&exit6);
-	atexit(&exit7);atexit(&exit8);
-	atexit(&exit9);atexit(&exit10);
-	atexit(&exit11);atexit(&exit12);
-	atexit(&exit13);atexit(&exit14);
-	atexit(&exit15);atexit(&exit16);
-	atexit(&exit17);atexit(&exit18);
-	atexit(&exit19);atexit(&exit20);
-	char v[255], *b = v, c;
-	puts("Hello World");
-	puts(argv[0]);
-	if (argv[1]) puts(argv[1]);
-	
-	char buffer[] = "this is a buffer of data";
-	
-	puts(buffer);
-	int *p = malloc(100);
-	while (c != '\n') {
-		read (1, &c, 1);
-		*b++ = c;
-	}
-	
-	FILE *fp = fopen("test.txt", "w");
-	fputs(v, fp);
-	fwrite(v, strlen(v), 1, fp);
-	//fwrite(&*p, sizeof(int), 1, fp);
-	fclose(fp);
-	//free(p);
-	
-	return strlen(buffer);
+int (char **argv) {
+
 }

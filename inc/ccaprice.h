@@ -23,10 +23,12 @@
 #ifndef CCAPRICE_CCAPRICE_HDR
 #define CCAPRICE_CCAPRICE_HDR
 
+#ifdef __SSE2__
 #define STRING_STRLEN_OPTIMAL
 #define STRING_MEMCHR_OPTIMAL
 #define STRING_MEMCPY_OPTIMAL
 #define STRING_MEMSET_OPTIMAL
+#endif
 
 #define CCAPRICE_COMPILE_TIME_ASSERT(name, x) \
 	typedef int CompileTimeAssertFailed_##name[(x)*2-1]
