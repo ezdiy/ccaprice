@@ -39,11 +39,12 @@ _start:
 	
 	
 ccaprice_syscall_core:
+	pushl %ebp
+	pushl %edi
+	pushl %esi
+	pushl %ebx
+	
 	#ifndef BSD
-		pushl %ebp
-		pushl %edi
-		pushl %esi
-		pushl %ebx
 		movl 44(%esp),%ebp
 		movl 40(%esp),%edi
 		movl 36(%esp),%esi
@@ -52,25 +53,22 @@ ccaprice_syscall_core:
 		movl 24(%esp),%ebx
 		movl 20(%esp),%eax
 	#else
+		movl  20(%esp),%eax /* syscall id always EAX */
 		pushl 24(%esp)
 		pushl 28(%esp)
 		pushl 32(%esp)
 		pushl 36(%esp)
 		pushl 40(%esp)
 		pushl 44(%esp)
-		movl  20(%esp),%eax
 		pushl %eax
 	#endif
 	
 	int $0x80
 	
-	#ifndef BSD
-		popl %ebx
-		popl %esi
-		popl %edi
-		popl %ebp
-	#endif
-	
+	popl %ebx
+	popl %esi
+	popl %edi
+	popl %ebp
 	cmpl $-4095,%eax
 	jae  ccaprice_syscall_error
 	ret
