@@ -1,4 +1,4 @@
-CFLAGS += -g -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -pedantic-errors -DCCAPRICE_COMPILING
+CFLAGS += -g -mstackrealign -mms-bitfields -mincoming-stack-boundary=4 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -pedantic-errors -DCCAPRICE_COMPILING
 CCC     = gcc
 SRC     = src/assert.c         \
 		  src/crt/runtime.c    \
@@ -27,7 +27,8 @@ SRC     = src/assert.c         \
           src/stdio/fopen.c    \
           src/stdio/fputc.c    \
           src/stdio/fputs.c    \
-          src/stdio/fwrite.c
+          src/stdio/fwrite.c   \
+          src/stdio/vsnprintf.c
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
 INC     = -I.

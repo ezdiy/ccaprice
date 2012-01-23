@@ -56,7 +56,8 @@ void atexit(void (*fun)()) {
 }
 
 /* This is magical */
-void _start(int argc, char **argv) {
+int  paddlen = 0;
+void _start()  {
 	/* setup stdout at startup */
 	ccaprice_i_dat     = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
 	ccaprice_o_dat     = &ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));
@@ -64,10 +65,33 @@ void _start(int argc, char **argv) {
 	ccaprice_o_dat->fd = 1;
 	
 	CCAPRICE_INTERNAL_FUNC(int, main, ());
-	exit(((int (*)(int, char**))main)(argc, argv));
-}
+	
+	/* Align the stack */
+	#if defined(CCAPRICE_TARGET_X86) || defined(__x86__)
+	__asm__ __volatile__ (
+		"pushfl       %esp\n\t"
+		"subl   %16  ,%esp\n\t"
+		"andl  $-0x10,%esp\n\t"
+	);
+	exit(main()); /* call main now */
+	__asm__ __volatile__ (
+		"popl         %esp\n\t"
+	);
+	#elif defined(CCAPRICE_TARGET_X86_64) || defined(__x86_64__)
+	__asm__ __volatile__ (
+		"push         %rsp\n\t"
+		"sub    $16  ,%rsp\n\t"
+		"and   $-0x10,%rsp\n\t"
+	);
+	exit(main()); /* call main now */
+	__asm__ __volatile__ (
+		"pop          %rsp\n\t"
+	);
+	#endif
+} 
 
 void exit(int status) {
+	status -= paddlen;
 	/* This is a hack to fix a stupid bug */
 	ccaprice_i_dat     = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
 	ccaprice_o_dat     = &ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));

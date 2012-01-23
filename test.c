@@ -48,9 +48,12 @@ int main() {
 	char v[255], *b = v, c;
 	puts("Hello World");
 	
-	int *p = malloc(9000);
-	*p = 100;
-	free(p);
+	//int *p = malloc(1024);
+	//int *q = malloc(2048);
+	//*p = 100;
+	//*q = 200;
+	//free(p);
+	//free(q);
 	
 	while (c != '\n') {
 		read (1, &c, 1);
@@ -60,9 +63,9 @@ int main() {
 	FILE *fp = fopen("test.txt", "w");
 	fputs(v, fp);
 	fwrite(v, strlen(v), 1, fp);
-	fwrite(&*p, sizeof(int), 1, fp);
+	//fwrite(&*p, sizeof(int), 1, fp);
 	fclose(fp);
-	free(p);
+	//free(p);
 	
 	return 0;
 }
