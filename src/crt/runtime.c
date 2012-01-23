@@ -55,7 +55,7 @@ int ccaprice_runtime_brk(void *address) {
 	void *vfbrk;
 	#ifndef BSD
 	int pathsel = SYS_brk;
-	#else BSD
+	#else
 	int pathsel = SYS_break;
 	#endif
 	
