@@ -64,7 +64,6 @@ ccaprice_syscall_core:
 		pushl %edi
 		pushl %ebp
 		call ccaprice_syscall_freebsd
-		add %esp, 24 /* clean stack */
 	#else
 		int  $0x80
 	#endif
