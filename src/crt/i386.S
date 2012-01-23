@@ -44,13 +44,23 @@ ccaprice_syscall_core:
 	pushl %esi
 	pushl %ebx
 	
-	movl 44(%esp),%ebp
-	movl 40(%esp),%edi
-	movl 36(%esp),%esi
-	movl 32(%esp),%edx
-	movl 28(%esp),%ecx
-	movl 24(%esp),%ebx
-	movl 20(%esp),%eax
+	#ifndef BSD
+		movl 44(%esp),%ebp
+		movl 40(%esp),%edi
+		movl 36(%esp),%esi
+		movl 32(%esp),%edx
+		movl 28(%esp),%ecx
+		movl 24(%esp),%ebx
+		movl 20(%esp),%eax
+	#else
+		push 44(%esp)
+		push 40(%esp)
+		push 36(%esp)
+		push 32(%esp)
+		push 28(%esp)
+		push 24(%esp)
+		push 20(%esp)
+	#endif
 	
 	int $0x80
 	
