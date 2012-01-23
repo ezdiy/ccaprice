@@ -58,8 +58,8 @@ ccaprice_syscall_core:
 		pushl %ecx
 		pushl %ebx
 		
-		pushl %eax /* extra dword shave off cycle */
 		int $0x80
+		addl $24, %esp
 	#else
 		int $0x80
 	#endif
