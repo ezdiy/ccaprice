@@ -52,13 +52,14 @@ ccaprice_syscall_core:
 		movl 24(%esp),%ebx
 		movl 20(%esp),%eax
 	#else
-		push 20(%esp)
-		push 24(%esp)
-		push 28(%esp)
-		push 32(%esp)
-		push 36(%esp)
-		push 40(%esp)
-		push 44(%esp)
+		pushl 24(%esp)
+		pushl 28(%esp)
+		pushl 32(%esp)
+		pushl 36(%esp)
+		pushl 40(%esp)
+		pushl 44(%esp)
+		movl  20(%esp),%eax
+		pushl %eax
 	#endif
 	
 	int $0x80
