@@ -54,15 +54,23 @@ int ccaprice_syscall_error() {
 int ccaprice_runtime_brk(void *address) {
 	void *vfbrk;
 	int   pathsel = SYS_brk;
-	#if BSD
+	#ifdef BSD
 		  pathsel = SYS_break;
 	#endif
 	
 	__asm__ __volatile__ (
 		"pushl    %%ebx\n\t"
+		#ifndef BSD
 		"movl %2, %%ebx\n\t"
+		#else
+		"pushl %2      \n\t"
+		#endif
 		"int  $0x80    \n\t"
-		"popl     %%ebx\n\t" :
+		"popl     %%ebx\n\t"
+		#ifdef BSD
+		"addl $4  %%esp\n\t" /* Clear the Stack */
+		#endif
+		:
 			"=a"(vfbrk) :
 				"0"(pathsel),
 				"g"(address)
