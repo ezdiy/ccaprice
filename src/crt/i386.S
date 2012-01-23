@@ -37,6 +37,12 @@ _start:
 	call ccaprice_main
 	hlt
 	
+#ifdef BSD
+ccaprice_syscall_bsd:
+	int $0x80
+	ret
+#endif
+	
 ccaprice_syscall_core:
 	pushl %ebp
 	pushl %edi
@@ -57,8 +63,7 @@ ccaprice_syscall_core:
 		pushl %edx
 		pushl %ecx
 		pushl %ebx
-		
-		int $0x80
+		call ccaprice_syscall_bsd
 		addl $24, %esp
 	#else
 		int $0x80
