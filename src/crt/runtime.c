@@ -125,7 +125,7 @@ void ccaprice_main(int argc, char **argv) {
 
 SYSCALL1(ssize_t,write, (int f,const void *b,size_t c),(SYS_write,f,b,c))
 SYSCALL1(ssize_t,read,  (int f,void *b,size_t c),      (SYS_read, f,b,c))
-SYSCALL1(int,    open,  (const char *f,int b),         (SYS_open, f,b))
+SYSCALL1(int,    open,  (const char *f,int b),         (SYS_open, f,b,0777))
 SYSCALL1(int,    kill,  (pid_t f,int b),               (SYS_kill, f,b))
 SYSCALL1(int,    close, (int f),                       (SYS_close,f))
 SYSCALL0(void,  _exit,  (int f),                       (SYS_exit, f))
