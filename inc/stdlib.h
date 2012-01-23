@@ -24,6 +24,9 @@
 #define CCAPRICE_STDLIB
 #include "ccaprice.h"
 
+#define EXIT_SUCCESS (0x00)
+#define EXIT_FAILURE (0xFF)
+
 CCAPRICE_EXPORT void atexit(void (*)());
 CCAPRICE_EXPORT void exit  (int);
 CCAPRICE_EXPORT void abort ();

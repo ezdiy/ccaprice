@@ -55,6 +55,10 @@ int main() {
 	//free(p);
 	//free(q);
 	
+	char buffer[] = "this is a buffer of data";
+	
+	puts(buffer);
+	
 	while (c != '\n') {
 		read (1, &c, 1);
 		*b++ = c;
@@ -67,5 +71,5 @@ int main() {
 	fclose(fp);
 	//free(p);
 	
-	return 0;
+	return strlen(buffer);
 }

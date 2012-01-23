@@ -80,5 +80,18 @@ void exit(int status) {
 			ccaprice_atexit_functions[i](); /* call in reverse order */
 		}
 	}
+	
+	status = status&0xFF;
+	
+	const char *table[] = {
+		"00","01","02","03","04","05","06","07","08","09","10",
+		"11","12","13","14","15","16","17","18","19","20","21",
+		"22","23","24","25","26","27","28","29","30","31","32",
+		"33","34","35","36","37","38","39","40","41","42","43"
+	};
+	fputs("Returned with: ", stdout);
+	fputs(table[status]    , stdout);
+	fputc('\n'             , stdout);
+	fflush(stdout);
 	_exit(status);
 }
