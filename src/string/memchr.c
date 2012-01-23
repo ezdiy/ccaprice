@@ -20,10 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#define CCAPRICE_NO_SIZE_T 1
-#include <emmintrin.h>
-#include "inc/string.h"
-#undef  CCAPRICE_NO_SIZE_T
+#ifdef STRING_MEMCHR_OPTIMAL_SSE2
+	#define CCAPRICE_NO_SIZE_T 1
+	#include <emmintrin.h>
+	#include "inc/string.h"
+	#undef  CCAPRICE_NO_SIZE_T
+#else
+	#include "inc/ccaprice.h"
+	#include "inc/string.h"
+#endif
 static const size_t memchr_bsf_table[256] = {
 	CCAPRICE_BSF_TABLE_EXPAND
 };
@@ -31,7 +36,7 @@ static const size_t memchr_bsf_table[256] = {
 void *memchr(const void *src, int cmp, register size_t cnt)
 {
 	#ifdef STRING_MEMCHR_OPTIMAL
-		#if (defined(STRING_MEMCHR_X86_64) || defined(STRING_MEMCHR_X86)) && defined(STRING_MEMCHR_OPTIMAL_SSE2)
+		#ifdef STRING_MEMCHR_OPTIMAL_SSE2
 		/*
 		 * SSE optimized version of memchr.  Handles 16-bit alligned
 		 * data first, then 32-bit alligned data. Then collects any
