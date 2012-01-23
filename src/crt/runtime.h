@@ -25,6 +25,10 @@
 #include "inc/ccaprice.h"
 #include <sys/syscall.h>
 
+#ifdef BSD
+	#define SYS_brk SYS_break
+#endif
+
 typedef int32_t pid_t;
 
 CCAPRICE_EXPORT ssize_t write (int, const void*, size_t);

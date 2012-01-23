@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 #include "inc/string.h"
-#include <syscall.h>
 
 /* Internal Imports */
 CCAPRICE_INTERNAL_TYPE(void*,ccaprice_runtime_curbrk); 
