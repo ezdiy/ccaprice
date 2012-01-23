@@ -28,12 +28,15 @@
 .type   _start,%function
 
 _start:
-	pushfl %esp
-	subl   $16,    %esp
-	andl   $-0x10, %esp
-	call   ccaprice_main
-	popl   %esp
-	ret
+	xorl %ebp,%ebp
+	popl %esi
+	movl %esp,%ecx
+	andl $0xfffffff0,%esp
+	pushl %ecx
+	pushl %esi
+	call ccaprice_main
+	hlt
+	
 	
 ccaprice_syscall_core:
 	pushl %ebp

@@ -23,7 +23,7 @@
 #include "inc/stdio.h"
 #include "inc/string.h"
 int fputs(const char *str, FILE *fp) {
-	
+	if (!str) return EOF;
 	/*
 	 * Invalid file pointer passed to fputs
 	 * return EOF.

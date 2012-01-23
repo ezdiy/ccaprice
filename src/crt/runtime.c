@@ -86,14 +86,14 @@ int ccaprice_runtime_brk(void *address) {
 }
 #endif
 
-void ccaprice_main()  {
+void ccaprice_main(int argc, char **argv) {	
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_init, ());
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_exit, (int));
-	CCAPRICE_INTERNAL_FUNC(int, main, ());
+	CCAPRICE_INTERNAL_FUNC(int, main, (int, char **));
 	
 	/* initialize CCAPRICE*/
 	ccaprice_init();
-	ccaprice_exit(main()); /* call main now */
+	ccaprice_exit(main(argc, argv)); /* call main now */
 }
 
 /*

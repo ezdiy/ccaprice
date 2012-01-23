@@ -28,12 +28,15 @@
 .type   _start,%function
 
 _start:
-	push         %rsp
-	sub   $16   ,%rsp
-	and   $-0x10,%rsp
+	xorq %rbp,%rbp
+	popq %rsi
+	movq %rsi,%rdi
+	movq %rsp,%rsi
+	andq $~15,%rsp
+	pushq %rax
+	pushq %rsp
 	call ccaprice_main
-	pop          %rsp
-	ret
+	hlt
 	
 ccaprice_syscall_core:
 	movq %rdi   , %rax

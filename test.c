@@ -34,7 +34,7 @@ EXIT(13) EXIT(14)
 EXIT(15) EXIT(16)
 EXIT(17) EXIT(18)
 EXIT(19) EXIT(20)
-int main() {
+int main(int argc, char **argv) {
 	atexit(&exit1);atexit(&exit2);
 	atexit(&exit3);atexit(&exit4);
 	atexit(&exit5);atexit(&exit6);
@@ -47,13 +47,8 @@ int main() {
 	atexit(&exit19);atexit(&exit20);
 	char v[255], *b = v, c;
 	puts("Hello World");
-	
-	//int *p = malloc(1024);
-	//int *q = malloc(2048);
-	//*p = 100;
-	//*q = 200;
-	//free(p);
-	//free(q);
+	puts(argv[0]);
+	if (argv[1]) puts(argv[1]);
 	
 	char buffer[] = "this is a buffer of data";
 	
