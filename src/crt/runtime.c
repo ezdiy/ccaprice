@@ -28,6 +28,12 @@
 /* In [arch].S */
 CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
 
+#ifdef BSD
+	#define SYS_BRK SYS_break
+#else
+	#define SYS_BRK SYS_brk
+#endif
+
 /* MALLOC Requires this */
 void *ccaprice_runtime_curbrk = NULL;
 #if defined(CCAPRICE_TARGET_X86) || defined(__i386__)
@@ -53,12 +59,6 @@ int ccaprice_syscall_error() {
 #ifdef CCAPRICE_TARGET_X86
 int ccaprice_runtime_brk(void *address) {
 	void *vfbrk;
-	#ifndef BSD
-	int pathsel = SYS_brk;
-	#else
-	int pathsel = SYS_break;
-	#endif
-	
 	__asm__ __volatile__ (
 		"pushl    %%ebx   \n\t"
 		#ifndef BSD
@@ -74,7 +74,7 @@ int ccaprice_runtime_brk(void *address) {
 		#endif
 		:
 			"=a"(vfbrk) :
-				"0"(pathsel),
+				"0"(SYS_BRK),
 				"g"(address)
 	);
 	
@@ -86,16 +86,11 @@ int ccaprice_runtime_brk(void *address) {
 	void *vfbrk;
 	register unsigned long res;
 	register unsigned long adr __asm__("rdi") = (unsigned long)address;
-	#ifndef BSD
-	int pathsel = SYS_brk;
-	#else
-	int	pathsel = SYS_break;
-	#endif
 	__asm__ __volatile__ (
 		"movq %1, %%rax\n\t"
 		"syscall       \n\t" :
 			"=a"(res) :
-				"i"(pathsel), "r"(adr) :
+				"i"(SYS_BRK), "r"(adr) :
 					"memory","cc", "r11", "cx"
 	);
 	if ((unsigned long)res>=(unsigned long)-4095)

@@ -22,10 +22,8 @@
  */
 #include "inc/ccaprice.h"
 #ifdef STRING_MEMCHR_OPTIMAL_SSE2
-	#define CCAPRICE_NO_SIZE_T 1
 	#include <emmintrin.h>
 	#include "inc/string.h"
-	#undef  CCAPRICE_NO_SIZE_T
 #else
 	#include "inc/string.h"
 #endif

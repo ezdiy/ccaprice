@@ -43,16 +43,9 @@
 	#define STRING_MEMCHR_X86_64
 	#define STRING_MEMCPY_X86_64
 	#define STRING_MEMSET_X86_64
-	typedef unsigned char       uint8_t;
-	typedef unsigned short      uint16_t;
-	typedef unsigned int        uint32_t;
-	typedef unsigned long       uint64_t;
-	typedef uint64_t            intptr_t;
-	typedef int                 int32_t;
-	#if !defined(CCAPRICE_NO_SIZE_T) || defined(BSD)
-	typedef unsigned int        size_t;
+	#include <stdint.h>
+	#include <stddef.h>
 	typedef int                 ssize_t;
-	#endif
 #elif defined(CCAPRICE_TARGET_X86) || defined(__x86__)
 	#define _LARGEFILE64_SOURCE /* EXTENSION */
 	
@@ -60,18 +53,11 @@
 	#define STRING_MEMCHR_X86
 	#define STRING_MEMCPY_X86
 	#define STRING_MEMSET_X86
-	typedef unsigned char       uint8_t;
-	typedef unsigned short      uint16_t;
-	typedef unsigned int        uint32_t;
-	typedef unsigned long long  uint64_t;
-	typedef int                 int32_t;
-	typedef uint64_t            intptr_t;
-	#if !defined(CCAPRICE_NO_SIZE_T) || defined(BSD)
-	typedef unsigned int        size_t;
-	typedef long                ssize_t;
-	#endif
-#else
 	#include <stdint.h>
+	#include <stddef.h>
+	typedef long                ssize_t;
+#else
+	#error "[ccaprice] Target not supported"
 #endif /* !CCAPRICE_TARGET_X86_64 */
 
 #define CCAPRICE_BITS2BYTES(X) (X>>3)

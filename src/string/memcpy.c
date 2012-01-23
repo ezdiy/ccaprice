@@ -20,11 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#define CCAPRICE_NO_SIZE_T 1
-#include <xmmintrin.h>
 #include "inc/string.h"
-#undef  CCAPRICE_NO_SIZE_T
-
 void *memcpy(void *dst, const void *src, register size_t cnt) {	
 	#ifdef STRING_MEMCPY_OPTIMAL
 		#if defined(STRING_MEMCPY_X86_64) || defined(STRING_MEMCHR_X86) 

@@ -22,10 +22,8 @@
  */
 #include "inc/ccaprice.h"
 #ifdef STRING_STRLEN_OPTIMAL_SSE2
-	#define CCAPRICE_NO_SIZE_T 1
-	#include <xmmintrin.h>
+	#include <emmintrin.h>
 	#include "inc/string.h"
-	#undef  CCAPRICE_NO_SIZE_T
 #else
 	#include "inc/string.h"
 #endif
@@ -35,8 +33,8 @@ static const unsigned char strlen_bsf_table[256] = {
 };
 
 size_t strlen(const char *src) {
-	#ifdef STRING_STRLEN_OPTIMAL
-		#if defined(STRING_STRLEN_X86_64) && defined(STRING_STRLEN_OPTIMAL_SSE2)
+	#ifdef STRING_STRLEN_OPTIMAL_SSE2
+		#if defined(STRING_STRLEN_X86_64)
 			/*
 			 * Fast strlen using SSE, counts data till allignment
 			 * the counts in chunks of sizeof(__m128i).
