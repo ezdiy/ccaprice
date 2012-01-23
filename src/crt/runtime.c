@@ -22,6 +22,7 @@
  */
 #include "runtime.h"
 #include "inc/stdarg.h"
+#include "inc/stdio.h"
 #include "inc/string.h"
 
 /* In [arch].S */
@@ -84,6 +85,45 @@ int ccaprice_runtime_brk(void *address) {
 	return (vfbrk < address)?-1:0;
 }
 #endif
+
+/*
+ * Initial entry point, this is really annoying since the stack needs
+ * to be realigned properly for SSE to work.  Sadly this could break
+ * in the future do note that if SSE code randomly starst to fail.
+ */
+void _start()  {
+	CCAPRICE_INTERNAL_FUNC(void, ccaprice_init, ());
+	CCAPRICE_INTERNAL_FUNC(void, ccaprice_exit, (int));
+	
+	CCAPRICE_INTERNAL_FUNC(int, main, ());
+	
+	/* initialize CCAPRICE*/
+	ccaprice_init();
+	
+	/* REAlign the stack */
+	#if defined(CCAPRICE_TARGET_X86) || defined(__x86__)
+	__asm__ __volatile__ (
+		"pushfl       %esp\n\t"
+		"subl   %16  ,%esp\n\t"
+		"andl  $-0x10,%esp\n\t"
+	);
+	ccaprice_exit(main()); /* call main now */
+	__asm__ __volatile__ (
+		"popl         %esp\n\t"
+	);
+	#elif defined(CCAPRICE_TARGET_X86_64) || defined(__x86_64__)
+	__asm__ __volatile__ (
+		"push         %rsp\n\t"
+		"sub    $16  ,%rsp\n\t"
+		"and   $-0x10,%rsp\n\t"
+	);
+	ccaprice_exit(main()); /* call main now */
+	__asm__ __volatile__ (
+		"pop          %rsp\n\t"
+	);
+	#endif
+} 
+
 /*
  * SYSCALL0 doesn't return
  * SYSCALL1 does    return

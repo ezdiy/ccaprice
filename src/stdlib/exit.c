@@ -33,6 +33,24 @@ FILE *ccaprice_i_dat = ((void*)0);
 FILE *ccaprice_stdout() { return ccaprice_o_dat; }
 FILE *ccaprice_stdin () { return ccaprice_i_dat; }
 
+void ccaprice_init() {
+	/* setup stdout at startup */
+	ccaprice_i_dat     = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
+	ccaprice_o_dat     = &ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));
+	ccaprice_i_dat->fd = 0;
+	ccaprice_o_dat->fd = 1;
+}
+
+void ccaprice_exit(int status) {
+	/*
+	 * libc needs to be reinitialized when we
+	 * arrive here for some odd reason.  Thats
+	 * okay though.  This causes no harm.
+	 */
+	ccaprice_init();
+	exit(status);
+}
+
 /*
  * C++ requires as least 32 atexit functions, C does not
  * however this needs to stay backwards compatible with
@@ -55,46 +73,7 @@ void atexit(void (*fun)()) {
 	atexit(fun); /* try again */
 }
 
-/* This is magical */
-void _start()  {
-	/* setup stdout at startup */
-	ccaprice_i_dat     = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
-	ccaprice_o_dat     = &ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));
-	ccaprice_i_dat->fd = 0;
-	ccaprice_o_dat->fd = 1;
-	
-	CCAPRICE_INTERNAL_FUNC(int, main, ());
-	
-	/* Align the stack */
-	#if defined(CCAPRICE_TARGET_X86) || defined(__x86__)
-	__asm__ __volatile__ (
-		"pushfl       %esp\n\t"
-		"subl   %16  ,%esp\n\t"
-		"andl  $-0x10,%esp\n\t"
-	);
-	exit(main()); /* call main now */
-	__asm__ __volatile__ (
-		"popl         %esp\n\t"
-	);
-	#elif defined(CCAPRICE_TARGET_X86_64) || defined(__x86_64__)
-	__asm__ __volatile__ (
-		"push         %rsp\n\t"
-		"sub    $16  ,%rsp\n\t"
-		"and   $-0x10,%rsp\n\t"
-	);
-	exit(main()); /* call main now */
-	__asm__ __volatile__ (
-		"pop          %rsp\n\t"
-	);
-	#endif
-} 
-
 void exit(int status) {
-	/* This is a hack to fix a stupid bug */
-	ccaprice_i_dat     = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
-	ccaprice_o_dat     = &ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));
-	ccaprice_i_dat->fd = 0;
-	ccaprice_o_dat->fd = 1;
 	int   i=sizeof(ccaprice_atexit_functions)/sizeof(*ccaprice_atexit_functions);
 	while(i-->0) {
 		if (ccaprice_atexit_functions[i]) {
