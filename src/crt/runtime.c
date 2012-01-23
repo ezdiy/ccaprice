@@ -60,16 +60,17 @@ int ccaprice_runtime_brk(void *address) {
 	#endif
 	
 	__asm__ __volatile__ (
-		"pushl    %%ebx\n\t"
+		"pushl    %%ebx   \n\t"
 		#ifndef BSD
-		"movl %2, %%ebx\n\t"
+		"movl %2, %%ebx   \n\t"
 		#else
-		"pushl %2      \n\t"
+		"movl  $17, %%eax \n\t"
+		"push  %%eax      \n\t" /* EXTRA DWORD */
 		#endif
-		"int  $0x80    \n\t"
-		"popl     %%ebx\n\t"
+		"int  $0x80       \n\t"
+		"popl  %%ebx      \n\t"
 		#ifdef BSD
-		"addl $4, %%esp\n\t" /* Clear the Stack */
+		"addl $4, %%esp   \n\t" /* Clear the Stack */
 		#endif
 		:
 			"=a"(vfbrk) :
