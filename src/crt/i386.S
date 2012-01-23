@@ -39,12 +39,11 @@ _start:
 	
 	
 ccaprice_syscall_core:
-	pushl %ebp
-	pushl %edi
-	pushl %esi
-	pushl %ebx
-	
 	#ifndef BSD
+		pushl %ebp
+		pushl %edi
+		pushl %esi
+		pushl %ebx
 		movl 44(%esp),%ebp
 		movl 40(%esp),%edi
 		movl 36(%esp),%esi
@@ -64,10 +63,12 @@ ccaprice_syscall_core:
 	
 	int $0x80
 	
-	popl %ebx
-	popl %esi
-	popl %edi
-	popl %ebp
+	#ifndef BSD
+		popl %ebx
+		popl %esi
+		popl %edi
+		popl %ebp
+	#endif
 	
 	cmpl $-4095,%eax
 	jae  ccaprice_syscall_error
