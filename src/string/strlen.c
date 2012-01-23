@@ -31,7 +31,7 @@ static const unsigned char strlen_bsf_table[256] = {
 
 size_t strlen(const char *src) {
 	#ifdef STRING_STRLEN_OPTIMAL
-		#ifdef STRING_STRLEN_X86_64
+		#if defined(STRING_STRLEN_X86_64) && defined(STRING_STRLEN_OPTIMAL_SSE2)
 			/*
 			 * Fast strlen using SSE, counts data till allignment
 			 * the counts in chunks of sizeof(__m128i).
