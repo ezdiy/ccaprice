@@ -36,7 +36,7 @@ size_t strlen(const char *src) {
 			 * Fast strlen using SSE, counts data till allignment
 			 * the counts in chunks of sizeof(__m128i).
 			 */
-			__m128i         __attribute__((__aligned__(16))) xmm1;
+			__m128i         xmm1;
 			register int    mask = 0;
 			register size_t len  = 0;
 			
