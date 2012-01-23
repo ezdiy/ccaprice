@@ -1,4 +1,4 @@
-CFLAGS += -g -mstackrealign -mms-bitfields -mincoming-stack-boundary=4 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -pedantic-errors -DCCAPRICE_COMPILING
+CFLAGS += -g -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -pedantic-errors -DCCAPRICE_COMPILING
 CCC     = gcc
 SRC     = src/assert.c         \
 		  src/crt/runtime.c    \

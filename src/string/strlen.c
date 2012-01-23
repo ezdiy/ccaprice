@@ -29,7 +29,7 @@ static const unsigned char strlen_bsf_table[256] = {
 	CCAPRICE_BSF_TABLE_EXPAND
 };
 
-size_t __attribute__((__aligned__(16))) strlen(const char *src) {
+size_t strlen(const char *src) {
 	#ifdef STRING_STRLEN_OPTIMAL
 		#ifdef STRING_STRLEN_X86_64
 			/*

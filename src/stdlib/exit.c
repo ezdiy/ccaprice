@@ -56,7 +56,6 @@ void atexit(void (*fun)()) {
 }
 
 /* This is magical */
-int  paddlen = 0;
 void _start()  {
 	/* setup stdout at startup */
 	ccaprice_i_dat     = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
@@ -91,7 +90,6 @@ void _start()  {
 } 
 
 void exit(int status) {
-	status -= paddlen;
 	/* This is a hack to fix a stupid bug */
 	ccaprice_i_dat     = &ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
 	ccaprice_o_dat     = &ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));
