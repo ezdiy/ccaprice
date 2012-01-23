@@ -20,21 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_STDLIB_HDR
-#define CCAPRICE_STDLIB_HDR
-#include "ccaprice.h"
-
-#define EXIT_SUCCESS (0x00)
-#define EXIT_FAILURE (0xFF)
-
-CCAPRICE_EXPORT void atexit(void (*)());
-CCAPRICE_EXPORT void exit  (int);
-CCAPRICE_EXPORT void abort ();
-CCAPRICE_EXPORT int  raise (int);
-
-/* malloc / free */
-CCAPRICE_EXPORT void *malloc(size_t);
-CCAPRICE_EXPORT void *calloc(size_t, size_t);
-CCAPRICE_EXPORT void  free  (void *);
-
+#ifndef CCAPRICE_ISO646_HDR
+#define CCAPRICE_ISO646_HDR
+	#define and     &&
+	#define and_eq  &=
+	#define bitand  &
+	#define bitor   |
+	#define compl   ~
+	#define not     !=
+	#define or      ||
+	#define or_eq   |=
+	#define xor     ^
+	#define xor_eq  ^=
 #endif
