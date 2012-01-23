@@ -53,7 +53,7 @@ int ccaprice_syscall_error() {
 #ifdef CCAPRICE_TARGET_X86
 int ccaprice_runtime_brk(void *address) {
 	void *vfbrk;
-	int   pathsek = SYS_brk;
+	int   pathsel = SYS_brk;
 	#if BSD
 		  pathsel = SYS_break;
 	#endif
