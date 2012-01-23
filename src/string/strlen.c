@@ -20,13 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include "inc/ccaprice.h"
 #ifdef STRING_STRLEN_OPTIMAL_SSE2
 	#define CCAPRICE_NO_SIZE_T 1
 	#include <xmmintrin.h>
 	#include "inc/string.h"
 	#undef  CCAPRICE_NO_SIZE_T
 #else
-	#include "inc/ccaprice.h"
 	#include "inc/string.h"
 #endif
 

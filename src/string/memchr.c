@@ -20,21 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include "inc/ccaprice.h"
 #ifdef STRING_MEMCHR_OPTIMAL_SSE2
 	#define CCAPRICE_NO_SIZE_T 1
 	#include <emmintrin.h>
 	#include "inc/string.h"
 	#undef  CCAPRICE_NO_SIZE_T
 #else
-	#include "inc/ccaprice.h"
 	#include "inc/string.h"
 #endif
 static const size_t memchr_bsf_table[256] = {
 	CCAPRICE_BSF_TABLE_EXPAND
 };
 
-void *memchr(const void *src, int cmp, register size_t cnt)
-{
+void *memchr(const void *src, int cmp, register size_t cnt) {
 	#ifdef STRING_MEMCHR_OPTIMAL
 		#ifdef STRING_MEMCHR_OPTIMAL_SSE2
 		/*
