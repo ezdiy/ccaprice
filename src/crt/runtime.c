@@ -53,9 +53,10 @@ int ccaprice_syscall_error() {
 #ifdef CCAPRICE_TARGET_X86
 int ccaprice_runtime_brk(void *address) {
 	void *vfbrk;
-	int   pathsel = SYS_brk;
-	#ifdef BSD
-		  pathsel = SYS_break;
+	#ifndef BSD
+	int pathsel = SYS_brk;
+	#else BSD
+	int pathsel = SYS_break;
 	#endif
 	
 	__asm__ __volatile__ (
@@ -68,7 +69,7 @@ int ccaprice_runtime_brk(void *address) {
 		"int  $0x80    \n\t"
 		"popl     %%ebx\n\t"
 		#ifdef BSD
-		"addl $4  %%esp\n\t" /* Clear the Stack */
+		"addl $4, %%esp\n\t" /* Clear the Stack */
 		#endif
 		:
 			"=a"(vfbrk) :
@@ -84,11 +85,16 @@ int ccaprice_runtime_brk(void *address) {
 	void *vfbrk;
 	register unsigned long res;
 	register unsigned long adr __asm__("rdi") = (unsigned long)address;
+	#ifndef BSD
+	int pathsel = SYS_brk;
+	#else BSD
+	int	pathsel = SYS_break;
+	#endif
 	__asm__ __volatile__ (
 		"movq %1, %%rax\n\t"
 		"syscall       \n\t" :
 			"=a"(res) :
-				"i"(SYS_brk), "r"(adr) :
+				"i"(pathsel), "r"(adr) :
 					"memory","cc", "r11", "cx"
 	);
 	if ((unsigned long)res>=(unsigned long)-4095)
