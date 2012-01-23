@@ -36,12 +36,6 @@ _start:
 	pushl %esi
 	call ccaprice_main
 	hlt
-
-#ifdef BSD
-ccaprice_syscall_freebsd:
-	int $0x80
-	ret
-#endif
 	
 ccaprice_syscall_core:
 	pushl %ebp
@@ -63,10 +57,11 @@ ccaprice_syscall_core:
 		pushl %edx
 		pushl %ecx
 		pushl %ebx
-		call ccaprice_syscall_freebsd
-		addl %esp, 32
+		
+		pushl %eax /* extra dword shave off cycle */
+		int $0x80
 	#else
-		int  $0x80
+		int $0x80
 	#endif
 	
 	popl %ebx
