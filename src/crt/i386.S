@@ -57,7 +57,6 @@ ccaprice_syscall_core:
 	movl 24(%esp),%ebx
 	movl 20(%esp),%eax
 	#ifdef BSD
-		movl  20(%esp),%eax /* syscall id always EAX */
 		pushl %ebx
 		pushl %ecx
 		pushl %edx
