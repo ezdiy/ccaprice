@@ -22,8 +22,19 @@
  */
 .text
 .global ccaprice_syscall_core
+.global ccaprice_main
+.global _start
 .type   ccaprice_syscall_core,%function
+.type   _start,%function
 
+_start:
+	push         %rsp
+	sub   $16   ,%rsp
+	and   $-0x10,%rsp
+	call ccaprice_main
+	pop          %rsp
+	ret
+	
 ccaprice_syscall_core:
 	movq %rdi   , %rax
 	movq %rsi   , %rdi
@@ -39,3 +50,4 @@ ccaprice_syscall_core:
 	ret
 
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
+.size _start,.-_start

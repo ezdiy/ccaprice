@@ -67,10 +67,12 @@
 	#include <stdint.h>
 #endif /* !CCAPRICE_TARGET_X86_64 */
 
+#define CCAPRICE_BITS2BYTES(X) (X>>3)
+#define CCAPRICE_BYTES2BITS(X) (X<<3)
 /* Ensure type sizes */
-CCAPRICE_COMPILE_TIME_ASSERT(uint32_t, sizeof(uint32_t)==4);
-CCAPRICE_COMPILE_TIME_ASSERT(uint16_t, sizeof(uint16_t)==2);
-CCAPRICE_COMPILE_TIME_ASSERT(uint64_t, sizeof(uint64_t)==8);
+CCAPRICE_COMPILE_TIME_ASSERT(uint16_t, sizeof(uint16_t) == CCAPRICE_BITS2BYTES(16));
+CCAPRICE_COMPILE_TIME_ASSERT(uint32_t, sizeof(uint32_t) == CCAPRICE_BITS2BYTES(32));
+CCAPRICE_COMPILE_TIME_ASSERT(uint64_t, sizeof(uint64_t) == CCAPRICE_BITS2BYTES(64));
 
 #define CCAPRICE_INTERNAL_TYPE(TYPE, NAME)       \
 	extern TYPE NAME

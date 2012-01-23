@@ -22,8 +22,19 @@
  */
 .text
 .global ccaprice_syscall_core
+.global ccaprice_main
+.global _start
 .type   ccaprice_syscall_core,%function
+.type   _start,%function
 
+_start:
+	pushfl %esp
+	subl   $16,    %esp
+	andl   $-0x10, %esp
+	call   ccaprice_main
+	popl   %esp
+	ret
+	
 ccaprice_syscall_core:
 	pushl %ebp
 	pushl %edi
@@ -50,4 +61,5 @@ ccaprice_syscall_core:
 	ret
 	
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
+.size _start,.-_start
 	
