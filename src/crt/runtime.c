@@ -61,7 +61,7 @@ int ccaprice_runtime_brk(void *address) {
 		"movl %1    , %%ebx\n\t" :
 			"=a"(vfbrk),
 			"=r"(vfscr) : 
-				"0"(SYS_brk),
+				"0"(SYS_break),
 				"g"(address)
 	);
 	#else
@@ -72,7 +72,7 @@ int ccaprice_runtime_brk(void *address) {
 		"movl %1    , %%ebx\n\t" :
 			"=a"(vfbrk),
 			"=r"(vfscr) : 
-				"0"(SYS_brk),
+				"0"(SYS_break),
 				"g"(address)
 	);
 	#endif
