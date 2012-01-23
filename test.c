@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
 	char buffer[] = "this is a buffer of data";
 	
 	puts(buffer);
-	
+	int *p = malloc(100);
 	while (c != '\n') {
 		read (1, &c, 1);
 		*b++ = c;
