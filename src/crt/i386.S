@@ -57,12 +57,12 @@ ccaprice_syscall_core:
 	movl 24(%esp),%ebx
 	movl 20(%esp),%eax
 	#ifdef BSD
-		pushl %ebx
-		pushl %ecx
-		pushl %edx
-		pushl %esi
-		pushl %edi
 		pushl %ebp
+		pushl %edi
+		pushl %esi
+		pushl %edx
+		pushl %ecx
+		pushl %ebx
 		call ccaprice_syscall_freebsd
 	#else
 		int  $0x80
