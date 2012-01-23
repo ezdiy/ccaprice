@@ -87,7 +87,7 @@ int ccaprice_runtime_brk(void *address) {
 	register unsigned long adr __asm__("rdi") = (unsigned long)address;
 	#ifndef BSD
 	int pathsel = SYS_brk;
-	#else BSD
+	#else
 	int	pathsel = SYS_break;
 	#endif
 	__asm__ __volatile__ (
