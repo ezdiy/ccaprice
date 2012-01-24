@@ -35,41 +35,41 @@ ccaprice_locale_t  ccaprice_localed[CCAPRICE_LOCALE_MAX]; /* Array of Locales   
 	N11,N12,N13,N14,N15,N16,N17,N18,N19,N20,N21,\
 	N22,N23,N24,N25,N26,N27,N28,N29,N30,N31     \
 )                                               \
-	static int N00##_isalnum (int c) {N01}      \
-	static int N00##_isalpha (int c) {N02}      \
-	static int N00##_iscntrl (int c) {N03}      \
-	static int N00##_isdigit (int c) {N04}      \
-	static int N00##_isgraph (int c) {N05}      \
-	static int N00##_islower (int c) {N06}      \
-	static int N00##_isprint (int c) {N07}      \
-	static int N00##_ispunct (int c) {N08}      \
-	static int N00##_isspace (int c) {N09}      \
-	static int N00##_isupper (int c) {N10}      \
-	static int N00##_isxdigit(int c) {N11}      \
-	static int N00##_toupper (int c) {N12}      \
-	static int N00##_tolower (int c) {N13}      \
-	ccaprice_locale_t N00##_locale = {          \
-	    .ctype = {                              \
-	        .fn_isalnum  = &N00##_isalnum,      \
-	        .fn_isalpha  = &N00##_isalpha,      \
-	        .fn_iscntrl  = &N00##_iscntrl,      \
-	        .fn_isdigit  = &N00##_isdigit,      \
-	        .fn_isgraph  = &N00##_isgraph,      \
-	        .fn_islower  = &N00##_islower,      \
-	        .fn_isprint  = &N00##_isprint,      \
-	        .fn_ispunct  = &N00##_ispunct,      \
-	        .fn_isspace  = &N00##_isspace,      \
-	        .fn_isupper  = &N00##_isupper,      \
-	        .fn_isxdigit = &N00##_isxdigit,     \
-	        .fn_toupper  = &N00##_toupper,      \
-	        .fn_tolower  = &N00##_tolower       \
-	    },                                      \
-	    .lconv = {                              \
+    static int N00##_isalnum (int c) {N01}      \
+    static int N00##_isalpha (int c) {N02}      \
+    static int N00##_iscntrl (int c) {N03}      \
+    static int N00##_isdigit (int c) {N04}      \
+    static int N00##_isgraph (int c) {N05}      \
+    static int N00##_islower (int c) {N06}      \
+    static int N00##_isprint (int c) {N07}      \
+    static int N00##_ispunct (int c) {N08}      \
+    static int N00##_isspace (int c) {N09}      \
+    static int N00##_isupper (int c) {N10}      \
+    static int N00##_isxdigit(int c) {N11}      \
+    static int N00##_toupper (int c) {N12}      \
+    static int N00##_tolower (int c) {N13}      \
+    ccaprice_locale_t N00##_locale = {          \
+        .ctype = {                              \
+            .fn_isalnum  = &N00##_isalnum,      \
+            .fn_isalpha  = &N00##_isalpha,      \
+            .fn_iscntrl  = &N00##_iscntrl,      \
+            .fn_isdigit  = &N00##_isdigit,      \
+            .fn_isgraph  = &N00##_isgraph,      \
+            .fn_islower  = &N00##_islower,      \
+            .fn_isprint  = &N00##_isprint,      \
+            .fn_ispunct  = &N00##_ispunct,      \
+            .fn_isspace  = &N00##_isspace,      \
+            .fn_isupper  = &N00##_isupper,      \
+            .fn_isxdigit = &N00##_isxdigit,     \
+            .fn_toupper  = &N00##_toupper,      \
+            .fn_tolower  = &N00##_tolower       \
+        },                                      \
+        .lconv = {                              \
             N14,N15,N16,N17,N18,N19,N20,N21,N22,\
             N23,N24,N25,N26,N27,N28,N29,N30,N31 \
-		},                                      \
-	    .ident = #N00                           \
-	}
+        },                                      \
+        .ident = #N00                           \
+    }
 
 void ccaprice_locale_define(ccaprice_locale_t *l) {
 	if (!ccaprice_locales)
