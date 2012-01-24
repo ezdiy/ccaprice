@@ -102,6 +102,7 @@ int ccaprice_runtime_brk(void *address) {
 #endif
 
 void ccaprice_main(int argc, char **argv) {	
+	CCAPRICE_INTERNAL_FUNC(void, ccaprice_locale_init, ());
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_init, ());
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_exit, (int));
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_posix_errno_set, (int*));
@@ -110,6 +111,7 @@ void ccaprice_main(int argc, char **argv) {
 	int function_only_errno;
 	ccaprice_posix_errno_set(&function_only_errno);
 	
+	ccaprice_locale_init();
 	ccaprice_init();
 	ccaprice_exit(main(argc, argv)); /* call main now */
 }
