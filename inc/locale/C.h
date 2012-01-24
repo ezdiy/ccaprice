@@ -53,6 +53,11 @@ static const char C_data [257] = {
  * 
  * The integral value for the charcater passed into the functions
  * is of name `c`, type lvalue int.
+ *
+ * you can use already specified locale specific functions inside the
+ * use of another function by using the name as a prefix.  For example
+ * C_isupper, and C_islower.  They DO need to created before the usage
+ * i.e isalnum can't use tolower.
  */
 LOCALE_DEFINE(C,
 	{/*isalnum */ return C_data[(unsigned char)(c+1)]&0x07; },
@@ -66,8 +71,8 @@ LOCALE_DEFINE(C,
 	{/*isspace */ return C_data[(unsigned char)(c+1)]&0x08; },
 	{/*isupper */ return C_data[(unsigned char)(c+1)]&0x01; },
 	{/*isxdigit*/ return C_data[(unsigned char)(c+1)]&0x80; },
-	{/*tolower */ return isupper(c)?(c-'A'+'a'):c; },
-	{/*toupper */ return islower(c)?(c-'a'+'A'):c; }
+	{/*tolower */ return C_isupper(c)?(c-'A'+'a'):c; },
+	{/*toupper */ return C_islower(c)?(c-'a'+'A'):c; }
 );
 
 #endif
