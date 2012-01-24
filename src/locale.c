@@ -65,8 +65,8 @@ ccaprice_locale_t  ccaprice_localed[CCAPRICE_LOCALE_MAX]; /* Array of Locales   
 	        .fn_tolower  = &N00##_tolower       \
 	    },                                      \
 	    .lconv = {                              \
-			N14,N15,N16,N17,N18,N19,N20,N21,N22,\
-			N23,N24,N25,N26,N27,N28,N29,N30,N31 \
+            N14,N15,N16,N17,N18,N19,N20,N21,N22,\
+            N23,N24,N25,N26,N27,N28,N29,N30,N31 \
 		},                                      \
 	    .ident = #N00                           \
 	}
