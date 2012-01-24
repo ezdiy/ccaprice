@@ -20,46 +20,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/ctype.h"
+#include "inc/locale.h"
 
 ccaprice_locale_t  ccaprice_localec;                      /* Current Selected Locale */
 ccaprice_locale_t *ccaprice_locales = NULL;               /* Pointer to array below  */
 ccaprice_locale_t  ccaprice_localed[CCAPRICE_LOCALE_MAX]; /* Array of Locales        */
 
-#define LOCALE_INIT(N0)                    \
-	extern ccaprice_locale_t N0##_locale;  \
-	ccaprice_locale_define (&N0##_locale)
-#define LOCALE_DEFINE(N0,N1,N2,N3,N4,N5,N6,N7,N8,N9,N10,N11,N12,N13)  \
-	static int N0##_isalnum (int c) {N1}      \
-	static int N0##_isalpha (int c) {N2}      \
-	static int N0##_iscntrl (int c) {N3}      \
-	static int N0##_isdigit (int c) {N4}      \
-	static int N0##_isgraph (int c) {N5}      \
-	static int N0##_islower (int c) {N6}      \
-	static int N0##_isprint (int c) {N7}      \
-	static int N0##_ispunct (int c) {N8}      \
-	static int N0##_isspace (int c) {N9}      \
-	static int N0##_isupper (int c) {N10}     \
-	static int N0##_isxdigit(int c) {N11}     \
-	static int N0##_toupper (int c) {N12}     \
-	static int N0##_tolower (int c) {N13}     \
-	ccaprice_locale_t N0##_locale = {         \
-	    .ctype = {                            \
-	        .fn_isalnum  = &N0##_isalnum,     \
-	        .fn_isalpha  = &N0##_isalpha,     \
-	        .fn_iscntrl  = &N0##_iscntrl,     \
-	        .fn_isdigit  = &N0##_isdigit,     \
-	        .fn_isgraph  = &N0##_isgraph,     \
-	        .fn_islower  = &N0##_islower,     \
-	        .fn_isprint  = &N0##_isprint,     \
-	        .fn_ispunct  = &N0##_ispunct,     \
-	        .fn_isspace  = &N0##_isspace,     \
-	        .fn_isupper  = &N0##_isupper,     \
-	        .fn_isxdigit = &N0##_isxdigit,    \
-	        .fn_toupper  = &N0##_toupper,     \
-	        .fn_tolower  = &N0##_tolower      \
-	    },                                    \
-	    .ident = #N0                          \
+#define LOCALE_INIT(N0)                         \
+	extern ccaprice_locale_t N0##_locale_ctype; \
+	ccaprice_locale_define (&N0##_locale_ctype)
+	
+#define LOCALE_DEFINE(                          \
+	N00,N01,N02,N03,N04,N05,N06,N07,N08,N09,N10,\
+	N11,N12,N13,N14,N15,N16,N17,N18,N19,N20,N21,\
+	N22,N23,N24,N25,N26,N27,N28,N29,N30,N31     \
+)                                               \
+	static int N00##_isalnum (int c) {N01}      \
+	static int N00##_isalpha (int c) {N02}      \
+	static int N00##_iscntrl (int c) {N03}      \
+	static int N00##_isdigit (int c) {N04}      \
+	static int N00##_isgraph (int c) {N05}      \
+	static int N00##_islower (int c) {N06}      \
+	static int N00##_isprint (int c) {N07}      \
+	static int N00##_ispunct (int c) {N08}      \
+	static int N00##_isspace (int c) {N09}      \
+	static int N00##_isupper (int c) {N10}      \
+	static int N00##_isxdigit(int c) {N11}      \
+	static int N00##_toupper (int c) {N12}      \
+	static int N00##_tolower (int c) {N13}      \
+	ccaprice_locale_t N00##_locale = {          \
+	    .ctype = {                              \
+	        .fn_isalnum  = &N00##_isalnum,      \
+	        .fn_isalpha  = &N00##_isalpha,      \
+	        .fn_iscntrl  = &N00##_iscntrl,      \
+	        .fn_isdigit  = &N00##_isdigit,      \
+	        .fn_isgraph  = &N00##_isgraph,      \
+	        .fn_islower  = &N00##_islower,      \
+	        .fn_isprint  = &N00##_isprint,      \
+	        .fn_ispunct  = &N00##_ispunct,      \
+	        .fn_isspace  = &N00##_isspace,      \
+	        .fn_isupper  = &N00##_isupper,      \
+	        .fn_isxdigit = &N00##_isxdigit,     \
+	        .fn_toupper  = &N00##_toupper,      \
+	        .fn_tolower  = &N00##_tolower       \
+	    },                                      \
+	    .lconv = {                              \
+			N14,N15,N16,N17,N18,N19,N20,N21,N22,\
+			N23,N24,N25,N26,N27,N28,N29,N30,N31 \
+		},                                      \
+	    .ident = #N00                           \
 	}
 
 void ccaprice_locale_define(ccaprice_locale_t *l) {
@@ -69,6 +78,9 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
 	ccaprice_locales = l;
 	ccaprice_locales++;
 }
+
+/* Include locales here */
+#include "inc/locale/C.h"
 
 void ccaprice_locale_init() {
 	/*
@@ -84,9 +96,6 @@ void ccaprice_locale_init() {
 	 */
 	ccaprice_localec = C_locale;
 }
-
-/* Include locales here */
-#include "inc/locale/C.h"
 
 /*
  * Undefine this really nasty macro so people don't get

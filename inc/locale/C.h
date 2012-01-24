@@ -72,7 +72,26 @@ LOCALE_DEFINE(C,
 	{/*isupper */ return C_data[(unsigned char)(c+1)]&0x01; },
 	{/*isxdigit*/ return C_data[(unsigned char)(c+1)]&0x80; },
 	{/*tolower */ return C_islower(c)?(c-'a'+'A'):c; },
-	{/*toupper */ return C_isupper(c)?(c-'A'+'a'):c; }
+	{/*toupper */ return C_isupper(c)?(c-'A'+'a'):c; },
+	
+	/*decimal_point    */ ".",
+	/*thousands_sep    */ "",
+	/*grouping         */ "",
+	/*int_curr_symbol  */ "",
+	/*currency_symbol  */ "",
+	/*mon_decimal_point*/ "",
+	/*mon_thousands_sep*/ "",
+	/*mon_grouping     */ "",
+	/*positive_sign    */ "",
+	/*negative_sign    */ "",
+	/*int_fract_digits */ 0xFF,
+	/*fract_digits     */ 0xFF,
+	/*p_cs_precedes    */ 0xFF,
+	/*n_cs_precedes    */ 0xFF,
+	/*p_sep_by_space   */ 0xFF,
+	/*n_sep_by_space   */ 0xFF,
+	/*p_sign_posn      */ 0xFF,
+	/*n_sign_posn      */ 0xFF
 );
 
 #endif

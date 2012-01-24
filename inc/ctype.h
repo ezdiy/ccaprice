@@ -24,23 +24,6 @@
 #define CCAPRICE_CTYPE_HDR
 #include "ccaprice.h"
 /*
- * Increase this number if more locales are ever required
- * There is a high probability this number will have to be
- * increased since there is simply too many languages and
- * varations of languages on this earth.  It seems like a
- * sad waste when we have English.  The universal everyone
- * likes language that is viable for any situation.  It's
- * a pity others don't learn it. Oh well who cares? No one
- * speaks properly these days, and many languages borrow
- * from each other.  For example English borrows a lot from
- * old latin.  I thought you should know this, it's nice to
- * learn something new and interesting while reading source
- * code comments.  Anyways go learn English if you can't
- * read this.
- */
-#define CCAPRICE_LOCALE_MAX 512
-
-/*
  * Standard says these need to be locale conformant
  * We'll use a structure to define the ctype locale
  * data.
@@ -64,13 +47,19 @@ typedef struct {
 	int (*fn_toupper) (int);
 } ccaprice_ctypes_t;
 
-typedef struct {
-	ccaprice_ctypes_t  ctype;
-	const char        *ident; /* Name of the locale    */
-} ccaprice_locale_t;
+/*
+ * The macros below need access to an external global
+ * ccaprice_localec locale object. thus the include.
+ */
+#include "inc/locale.h"
 
-CCAPRICE_EXPORT ccaprice_locale_t ccaprice_localec;
-
+/*
+ * I'm sure these can be made into functions but macros
+ * are fine for now. Also I don't think the C standard
+ * says anything about these not being allowed to be a
+ * macro.  None the less this is applicable enough for
+ * now.
+ */
 #define isalnum(X)  (ccaprice_localec.ctype.fn_isalnum (X))
 #define isalpha(X)  (ccaprice_localec.ctype.fn_isalpha (X))
 #define iscntrl(X)  (ccaprice_localec.ctype.fn_iscntrl (X))

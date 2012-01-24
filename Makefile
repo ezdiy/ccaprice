@@ -1,7 +1,7 @@
 CFLAGS += -ggdb3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -DCCAPRICE_COMPILING
 CCC     = gcc
 SRC     = src/assert.c         \
-          src/ctype.c          \
+          src/locale.c         \
 		  src/crt/runtime.c    \
           src/string/memchr.c  \
           src/string/memcmp.c  \
