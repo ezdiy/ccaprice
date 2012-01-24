@@ -47,9 +47,9 @@ static const char C_data [257] = {
  * Locale creation is dead simple; create a new locale file like this
  * one in /inc/locale.  Copy this and change the name, and functions
  * to meet the critera for your locale.  After you're finished add a
- * #include "inc/locale/[yourlocale.h]" inside "inc/locale.c". Then add
+ * #include "inc/locale/[yourlocale.h]" inside "src/locale.c". Then add
  * a LOCALE_INIT([yourlocale]); inside ccaprice_locale_init() as well
- * inside "inc/locale.c" and you're finished.
+ * inside "src/locale.c" and you're finished.
  * 
  * The integral value for the charcater passed into the functions
  * is of name `c`, type lvalue int.
