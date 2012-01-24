@@ -27,7 +27,8 @@ SRC     = src/assert.c         \
           src/stdio/fopen.c    \
           src/stdio/fputc.c    \
           src/stdio/fputs.c    \
-          src/stdio/fwrite.c
+          src/stdio/fwrite.c   \
+          src/posix/errno.c
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
 INC     = -I.

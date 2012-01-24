@@ -29,6 +29,7 @@
 typedef struct ccaprice_file {
 	int    fd;
 	int    eof;
+	int    self; /* SELF'ed itself? */
 	int    err;
 	char   buffer_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN];
 	size_t buffer_pos;

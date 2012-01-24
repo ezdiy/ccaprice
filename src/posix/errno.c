@@ -20,18 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdio.h"
-#include "inc/stdlib.h"
 #include "inc/posix/errno.h"
 
-CCAPRICE_INTERNAL_TYPE(int*, ccaprice_posix_errno);
-int fclose(FILE *fp) {
-	if (!fp) {
-		errno = EBADF;
-		return EOF;
-	}
-		
-	fflush(fp);
-	
-	return close(fp->fd);
+int *ccaprice_posix_errno;
+/* Sets errno pointer. */
+void ccaprice_posix_errno_set(int *ptr) {
+	ccaprice_posix_errno = (ptr)?ptr:0;
 }

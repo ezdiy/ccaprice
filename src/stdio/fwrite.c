@@ -23,6 +23,7 @@
 #include "inc/stdio.h"
 
 size_t fwrite(const void *p, size_t size, size_t count, FILE *fp) {
+	/* TODO use fputc ... */
 	size_t times = count;
 	while (times-->0)
 		if(write(fp->fd, p, size) == -1)

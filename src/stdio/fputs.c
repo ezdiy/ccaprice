@@ -22,14 +22,20 @@
  */
 #include "inc/stdio.h"
 #include "inc/string.h"
+#include "inc/posix/errno.h"
+
+CCAPRICE_INTERNAL_TYPE(int *, ccaprice_posix_errno);
+
 int fputs(const char *str, FILE *fp) {
 	if (!str) return EOF;
 	/*
 	 * Invalid file pointer passed to fputs
 	 * return EOF.
 	 */
-	if (!fp)
+	if (!fp) {
+		errno = EBADF;
 		return EOF;
+	}
 	
 	/* 
 	 * The function begins copying from the address specified (str) 

@@ -20,18 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdio.h"
-#include "inc/stdlib.h"
+#ifndef CCAPRICE_ERRNO_HDR
+#define CCAPRICE_ERRNO_HDR
 #include "inc/posix/errno.h"
 
-CCAPRICE_INTERNAL_TYPE(int*, ccaprice_posix_errno);
-int fclose(FILE *fp) {
-	if (!fp) {
-		errno = EBADF;
-		return EOF;
-	}
-		
-	fflush(fp);
-	
-	return close(fp->fd);
-}
+/*
+ * errno is a macro that expands to (*ccaprice_posix_errno)
+ * the macro is defined in <inc/posix/errno.h>.  The pointer
+ * if defined in errno.c in <src/posic/errno.c>.
+ */
+CCAPRICE_EXPORT int* ccaprice_posix_errno;
+#endif
