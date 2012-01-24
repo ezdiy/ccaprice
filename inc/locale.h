@@ -19,6 +19,13 @@
  */
 #define CCAPRICE_LOCALE_MAX 512
 
+#define LC_ALL      (1<<1)
+#define LC_COLLATE  (1<<2)
+#define LC_CTYPE    (1<<3)
+#define LC_MONETARY (1<<4)
+#define LC_NUMERIC  (1<<5)
+#define LC_TIME     (1<<6)
+
 /*
  * setlocale() depends on two paramaters:
  * 	-catageory
