@@ -22,6 +22,7 @@
  */
 #include "inc/stdlib.h"
 #include "inc/stdio.h"
+#include "inc/ctype.h"
 #define STRN(X) #X
 #define EXIT(X) void exit ## X (){puts("atexit called exit"STRN(X));}
 EXIT(1) EXIT(2)
@@ -53,6 +54,10 @@ int main(int argc, char **argv) {
 	char buffer[] = "this is a buffer of data";
 	
 	puts(buffer);
+	char vv = 'v';
+	char VV = toupper(vv);
+	puts("the upper is: ");
+	puts(&VV);
 	
 	while (c != '\n') {
 		read (1, &c, 1);

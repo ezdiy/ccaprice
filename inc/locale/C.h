@@ -71,8 +71,8 @@ LOCALE_DEFINE(C,
 	{/*isspace */ return C_data[(unsigned char)(c+1)]&0x08; },
 	{/*isupper */ return C_data[(unsigned char)(c+1)]&0x01; },
 	{/*isxdigit*/ return C_data[(unsigned char)(c+1)]&0x80; },
-	{/*tolower */ return C_isupper(c)?(c-'A'+'a'):c; },
-	{/*toupper */ return C_islower(c)?(c-'a'+'A'):c; }
+	{/*tolower */ return C_islower(c)?(c-'a'+'A'):c; },
+	{/*toupper */ return C_isupper(c)?(c-'A'+'a'):c; }
 );
 
 #endif
