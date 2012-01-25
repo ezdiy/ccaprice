@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/string.h"
+#include "inc/errno.h"
 
 /* Internal Imports */
 CCAPRICE_INTERNAL_TYPE(void*,ccaprice_runtime_curbrk); 
@@ -107,6 +108,10 @@ void* malloc(size_t bytes) {
 		curm->size            = bytes;
 	}
 	memp  = (void*)((uintptr_t)memp + sizeof(struct ccaprice_malloc_block));
+	if (!memp) {
+		errno = ENOMEM;
+		return NULL;
+	}
 	return memp;
 }
 

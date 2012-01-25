@@ -22,6 +22,7 @@
  */
 #ifndef CCAPRICE_ERRNO_HDR
 #define CCAPRICE_ERRNO_HDR
+#include "ccaprice.h"
 #include "inc/posix/errno.h"
 
 /*

@@ -21,9 +21,30 @@
  * SOFTWARE.
  */
 #include "inc/signal.h"
+#include "inc/errno.h"
 #include "src/crt/runtime.h"
 
 int raise(int sig) {
+	/*
+	 * Validate sig is a valid signal if it's not
+	 * we have to set an error code in errno. This
+	 * is so odd; SUSv3 says it has to be though.
+	 * There must be a faster way at doing this?
+	 */
+	 
+	if (sig != SIGABRT && sig != SIGALRM   && sig != SIGBUS  && 
+		sig != SIGCHLD && sig != SIGCONT   && sig != SIGFPE  &&
+		sig != SIGHUP  && sig != SIGILL    && sig != SIGINT  &&
+		sig != SIGKILL && sig != SIGPIPE   && sig != SIGQUIT &&
+		sig != SIGSEGV && sig != SIGSTOP   && sig != SIGTERM &&
+		sig != SIGTSTP && sig != SIGTTIN   && sig != SIGTTOU &&
+		sig != SIGUSR1 && sig != SIGUSR2   && sig != SIGPOLL &&
+		sig != SIGPROF && sig != SIGSYS    && sig != SIGTRAP &&
+		sig != SIGURG  && sig != SIGVTALRM && sig != SIGXCPU && sig != SIGXFSZ) {
+			errno = EINVAL;
+			return 1;
+	}
+	
 	return kill(getpid(), sig);
 }
 
