@@ -22,6 +22,13 @@
  */
 #ifndef CCAPRICE_ISO646_HDR
 #define CCAPRICE_ISO646_HDR
+/*
+ * C++ defines these as actual _language_ keywords
+ * it's most likely safer to use those then these
+ * since this could easily cause confustion if you
+ * run it through a preprocessor.
+ */
+#ifndef __cplusplus
 	#define and     &&
 	#define and_eq  &=
 	#define bitand  &
@@ -32,4 +39,5 @@
 	#define or_eq   |=
 	#define xor     ^
 	#define xor_eq  ^=
+#endif
 #endif
