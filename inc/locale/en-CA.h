@@ -72,7 +72,7 @@ LOCALE_DEFINE(en_CA,
 	{/*toupper */ return en_CA_isupper(c)?(c-'A'+'a'):c; },
 	
 	/*decimal_point    */ ".",
-	/*thoCAands_sep    */ ",",
+	/*thousands_sep    */ ",",
 	/*grouping         */ "3",
 	/*int_curr_symbol  */ "CAD",
 	/*currency_symbol  */ "$",
