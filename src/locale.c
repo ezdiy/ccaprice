@@ -87,6 +87,7 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
 /* Include locales here */
 #include "inc/locale/C.h"
 #include "inc/locale/en-US.h"
+#include "inc/locale/en-CA.h"
 
 #undef LOCALE_CODEPAGE_IBM850   /* ????? */
 #undef LOCALE_CODEPAGE_UTF8     /* UTF8  */
@@ -99,6 +100,7 @@ void ccaprice_locale_init() {
 	 */
 	LOCALE_INIT(C);
 	LOCALE_INIT(en_US);
+	LOCALE_INIT(en_CA);
 	
 	/*
 	 * This is not to be changed, this sets the DEFAULT
