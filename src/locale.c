@@ -80,13 +80,10 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
 #define LOCALE_CODEPAGE_ISO88591 "" /* ascii should be nothing */
 #define LOCALE_CODEPAGE_UTF8     ".utf8"
 #define LOCALE_CODEPAGE_IBM850   ".ibm-850"
-
-/* Include locales here */
 #include "inc/locale/C.h"
 #include "inc/locale/en-US.h"
 #include "inc/locale/en-CA.h"
 #include "inc/locale/en-AU.h"
-
 #undef LOCALE_CODEPAGE_IBM850   /* ????? */
 #undef LOCALE_CODEPAGE_UTF8     /* UTF8  */
 #undef LOCALE_CODEPAGE_ISO88591 /* ASCII */
