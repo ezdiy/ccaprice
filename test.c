@@ -81,6 +81,14 @@ int main(int argc, char **argv, char **argp) {
 	puts("int_curr_symbol");
 	puts(l->int_curr_symbol);
 	
+	int ppf = 100;
+	int vvf = 200;
+	int kkf = MAX(ppf,vvf);
+	int jjj = MIN(ppf,vvf);
+	
+	int *ADS = 0; *ADS = 0;
+	fputc(kkf, stdout);
+	
 	puts(buffer);
 	char vv = 'v';
 	char VV = toupper(vv);
