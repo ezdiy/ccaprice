@@ -32,7 +32,7 @@
 	
 #define MIN(X,Y) ({               \
 	CCAPRICE_SIGNEXTEND((X)-(Y)); \
-	(Y)+(((X)-(Y))&(signext.H);   \
+	(Y)+(((X)-(Y))& (signext.H);  \
 })
 #define MAX(X,Y) ({               \
 	CCAPRICE_SIGNEXTEND((X)-(Y)); \
