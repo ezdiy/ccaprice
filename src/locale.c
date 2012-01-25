@@ -166,7 +166,13 @@ char *setlocale(int cat, const char *cap) {
 				ccaprice_localec = &ccaprice_localed[i];
 				return (char*)ccaprice_localed[i].ident;
 			}
-		}		
+		}
+		/*
+		 * We could not find anything, bail, looks like the user doesn't
+		 * speak at all. Perhaps he's mute or worse a caveman.  We should
+		 * probably just return NULL.
+		 */
+		return NULL;	
 	}
 	/* 
 	 * Search for locale in list of all locales.
