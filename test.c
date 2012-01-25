@@ -66,6 +66,21 @@ int main(int argc, char **argv, char **argp) {
 	if(strstr(pizzaf, "pizza"))
 		puts("pizza false true"); /* never print or bug!> */
 	
+	struct lconv *l = localeconv();
+	puts(ccaprice_localec->ident);
+	
+	puts("trying en_US");
+	setlocale(LC_ALL, "en_US");
+	l = localeconv();
+	puts("int_curr_symbol");
+	puts(l->int_curr_symbol);
+	
+	puts("trying NULL (system locale)");
+	setlocale(LC_ALL, NULL);
+	l = localeconv();
+	puts("int_curr_symbol");
+	puts(l->int_curr_symbol);
+	
 	puts(buffer);
 	char vv = 'v';
 	char VV = toupper(vv);
@@ -88,5 +103,5 @@ int main(int argc, char **argv, char **argp) {
 	fclose(fp);
 	//free(p);
 	
-	return strlen(buffer);
+	return 0;
 }

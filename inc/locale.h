@@ -77,27 +77,27 @@
  * specified by ccaprice. A null string ("") or NULL should select the
  * default enviroment locale.
  */
-struct lconv {
-	char *decimal_point;
-	char *thousands_sep;
-	char *grouping;
-	char *int_curr_symbol;
-	char *currency_symbol;
-	char *mon_decimal_point;
-	char *mon_thousands_sep;
-	char *mon_grouping;
-	char *positive_sign;
-	char *negative_sign;
+typedef struct lconv {
+	 char *decimal_point;
+	 char *thousands_sep;
+	 char *grouping;
+	 char *int_curr_symbol;
+	 char *currency_symbol;
+	 char *mon_decimal_point;
+	 char *mon_thousands_sep;
+	 char *mon_grouping;
+	 char *positive_sign;
+	 char *negative_sign;
 	
-	char  int_fract_digits;
-	char  fract_digits;
-	char  p_cs_precedes;
-	char  n_cs_precedes;
-	char  p_sep_by_space;
-	char  n_sep_by_space;
-	char  p_sign_posn;
-	char  n_sign_posn;
-};
+	 char  int_fract_digits;
+	 char  fract_digits;
+	 char  p_cs_precedes;
+	 char  n_cs_precedes;
+	 char  p_sep_by_space;
+	 char  n_sep_by_space;
+	 char  p_sign_posn;
+	 char  n_sign_posn;
+} ccaprice_locale_c;
 
 typedef struct {
 	ccaprice_ctypes_t  ctype;
@@ -105,7 +105,7 @@ typedef struct {
 	const char        *ident; /* Name of the locale    */
 } ccaprice_locale_t;
 
-CCAPRICE_EXPORT ccaprice_locale_t ccaprice_localec;
+CCAPRICE_EXPORT ccaprice_locale_t* ccaprice_localec;
 
 CCAPRICE_EXPORT struct lconv *localeconv();
 CCAPRICE_EXPORT char         *setlocale (int, const char*);

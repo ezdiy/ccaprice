@@ -60,18 +60,18 @@ typedef struct {
  * macro.  None the less this is applicable enough for
  * now.
  */
-#define isalnum(X)  (ccaprice_localec.ctype.fn_isalnum (X))
-#define isalpha(X)  (ccaprice_localec.ctype.fn_isalpha (X))
-#define iscntrl(X)  (ccaprice_localec.ctype.fn_iscntrl (X))
-#define isdigit(X)  (ccaprice_localec.ctype.fn_iscntrl (X))
-#define isgraph(X)  (ccaprice_localec.ctype.fn_isgraph (X))
-#define islower(X)  (ccaprice_localec.ctype.fn_islower (X))
-#define isprint(X)  (ccaprice_localec.ctype.fn_isprint (X))
-#define ispunct(X)  (ccaprice_localec.ctype.fn_isprint (X))
-#define isspace(X)  (ccaprice_localec.ctype.fn_isspace (X))
-#define isupper(X)  (ccaprice_localec.ctype.fn_isupper (X))
-#define isxdigit(X) (ccaprice_localec.ctype.fn_isxdigit(X))
-#define tolower(X)  (ccaprice_localec.ctype.fn_tolower (X))
-#define toupper(X)  (ccaprice_localec.ctype.fn_toupper (X))
+#define isalnum(X)  (ccaprice_localec->ctype.fn_isalnum (X))
+#define isalpha(X)  (ccaprice_localec->ctype.fn_isalpha (X))
+#define iscntrl(X)  (ccaprice_localec->ctype.fn_iscntrl (X))
+#define isdigit(X)  (ccaprice_localec->ctype.fn_iscntrl (X))
+#define isgraph(X)  (ccaprice_localec->ctype.fn_isgraph (X))
+#define islower(X)  (ccaprice_localec->ctype.fn_islower (X))
+#define isprint(X)  (ccaprice_localec->ctype.fn_isprint (X))
+#define ispunct(X)  (ccaprice_localec->ctype.fn_isprint (X))
+#define isspace(X)  (ccaprice_localec->ctype.fn_isspace (X))
+#define isupper(X)  (ccaprice_localec->ctype.fn_isupper (X))
+#define isxdigit(X) (ccaprice_localec->ctype.fn_isxdigit(X))
+#define tolower(X)  (ccaprice_localec->ctype.fn_tolower (X))
+#define toupper(X)  (ccaprice_localec->ctype.fn_toupper (X))
 
 #endif

@@ -21,7 +21,7 @@ ctype.h:
 	toupper ()
 	
 errno.h:
-	int errno
+	errno
 
 iso646.h:
 	and
