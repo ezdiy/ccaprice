@@ -28,7 +28,13 @@
 #define EXIT_FAILURE (0xFF)
 
 #define CCAPRICE_SIGNEXTEND(V) \
-	union { long W; struct{int L,H;}; } signext = {.W=V};
+    union {                    \
+        long W;                \
+        struct {               \
+            int L;             \
+            int H;             \
+        };                     \
+    } signext = { V }
 	
 #define MIN(X,Y) ({               \
 	CCAPRICE_SIGNEXTEND((X)-(Y)); \
