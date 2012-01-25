@@ -91,6 +91,8 @@ stdio.h:
 stdlib.h:
 	EXIT_SUCCESS
 	EXIT_FAILURE
+	MIN   ()
+	MAX   ()
 	abort ()
 	abs   ()
 	atoi  ()
@@ -99,6 +101,8 @@ stdlib.h:
 	malloc()
 	calloc()
 	puts  ()
+	rand  ()
+	srand ()
 	
 string.h:
 	memchr ()
