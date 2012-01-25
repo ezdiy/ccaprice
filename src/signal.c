@@ -33,14 +33,14 @@ int raise(int sig) {
 	 */
 	 
 	if (sig != SIGABRT && sig != SIGALRM   && sig != SIGBUS  && 
-		sig != SIGCHLD && sig != SIGCONT   && sig != SIGFPE  &&
-		sig != SIGHUP  && sig != SIGILL    && sig != SIGINT  &&
-		sig != SIGKILL && sig != SIGPIPE   && sig != SIGQUIT &&
-		sig != SIGSEGV && sig != SIGSTOP   && sig != SIGTERM &&
-		sig != SIGTSTP && sig != SIGTTIN   && sig != SIGTTOU &&
-		sig != SIGUSR1 && sig != SIGUSR2   && sig != SIGPOLL &&
-		sig != SIGPROF && sig != SIGSYS    && sig != SIGTRAP &&
-		sig != SIGURG  && sig != SIGVTALRM && sig != SIGXCPU && sig != SIGXFSZ) {
+	    sig != SIGCHLD && sig != SIGCONT   && sig != SIGFPE  &&
+	    sig != SIGHUP  && sig != SIGILL    && sig != SIGINT  &&
+	    sig != SIGKILL && sig != SIGPIPE   && sig != SIGQUIT &&
+	    sig != SIGSEGV && sig != SIGSTOP   && sig != SIGTERM &&
+	    sig != SIGTSTP && sig != SIGTTIN   && sig != SIGTTOU &&
+	    sig != SIGUSR1 && sig != SIGUSR2   && sig != SIGPOLL &&
+	    sig != SIGPROF && sig != SIGSYS    && sig != SIGTRAP &&
+	    sig != SIGURG  && sig != SIGVTALRM && sig != SIGXCPU && sig != SIGXFSZ) {
 			errno = EINVAL;
 			return 1;
 	}
