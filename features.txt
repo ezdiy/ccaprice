@@ -211,5 +211,5 @@ unistd.h:
 	
 The current supported locales for ccaprice
 	C      -- default C locale
-	en_CA  -- Enlgish Canada
+	en_CA  -- English Canada
 	en_US  -- English United States
