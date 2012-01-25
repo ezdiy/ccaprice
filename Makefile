@@ -13,12 +13,14 @@ SRC     = src/assert.c         \
           src/string/strchr.c  \
           src/string/strcmp.c  \
           src/string/strcpy.c  \
+          src/string/strcspn.c \
           src/string/strlen.c  \
           src/string/strncat.c \
           src/string/strncmp.c \
           src/string/strncpy.c \
           src/string/strdup.c  \
           src/string/strpbrk.c \
+          src/string/strspn.c  \
           src/string/strstr.c  \
           src/stdlib/abort.c   \
           src/stdlib/abs.c     \
