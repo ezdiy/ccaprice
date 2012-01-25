@@ -14,6 +14,9 @@ SRC     = src/assert.c         \
           src/string/strcmp.c  \
           src/string/strcpy.c  \
           src/string/strlen.c  \
+          src/string/strncat.c \
+          src/string/strncmp.c \
+          src/string/strncpy.c \
           src/string/strdup.c  \
           src/string/strpbrk.c \
           src/stdlib/abort.c   \

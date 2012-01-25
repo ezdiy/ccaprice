@@ -22,8 +22,6 @@
  */
 #include "inc/string.h"
 
-char *strcat(char *dst, const char *src) {
-	size_t off = strlen(dst);
-	strcpy(dst+off,src);
-	return dst;
+char *strncpy(char *dst, const char *src, register size_t count) {
+	return memcpy(dst, src, count);
 }

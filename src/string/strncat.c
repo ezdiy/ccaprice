@@ -22,8 +22,8 @@
  */
 #include "inc/string.h"
 
-char *strcat(char *dst, const char *src) {
+char *strncat(char *dst, const char *src, register size_t cnt) {
 	size_t off = strlen(dst);
-	strcpy(dst+off,src);
+	strncpy(dst+off, src, cnt);
 	return dst;
 }
