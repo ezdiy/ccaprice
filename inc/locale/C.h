@@ -91,7 +91,9 @@ LOCALE_DEFINE(C,
 	/*p_sep_by_space   */ 0xFF,
 	/*n_sep_by_space   */ 0xFF,
 	/*p_sign_posn      */ 0xFF,
-	/*n_sign_posn      */ 0xFF
+	/*n_sign_posn      */ 0xFF,
+	
+	LOCALE_CODEPAGE_ISO88591
 );
 
 #endif

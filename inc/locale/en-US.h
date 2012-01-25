@@ -81,7 +81,7 @@ LOCALE_DEFINE(en_US,
 	/*currency_symbol  */ "$",
 	/*mon_decimal_point*/ ".",
 	/*mon_thousands_sep*/ ",",
-	/*mon_grouping     */ "3;-1",
+	/*mon_grouping     */ "\3",
 	/*positive_sign    */ "+",
 	/*negative_sign    */ "-",
 	/*int_fract_digits */ 2,
@@ -91,7 +91,9 @@ LOCALE_DEFINE(en_US,
 	/*p_sep_by_space   */ 2,
 	/*n_sep_by_space   */ 2,
 	/*p_sign_posn      */ 3,
-	/*n_sign_posn      */ 3
+	/*n_sign_posn      */ 3,
+	
+	LOCALE_CODEPAGE_ISO88591
 );
 
 #endif

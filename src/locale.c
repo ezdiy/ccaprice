@@ -34,7 +34,7 @@ ccaprice_locale_t  ccaprice_localed[CCAPRICE_LOCALE_MAX]; /* Array of Locales   
 #define LOCALE_DEFINE(                          \
 	N00,N01,N02,N03,N04,N05,N06,N07,N08,N09,N10,\
 	N11,N12,N13,N14,N15,N16,N17,N18,N19,N20,N21,\
-	N22,N23,N24,N25,N26,N27,N28,N29,N30,N31     \
+	N22,N23,N24,N25,N26,N27,N28,N29,N30,N31,N32 \
 )                                               \
     static int N00##_isalnum (int c) {N01}      \
     static int N00##_isalpha (int c) {N02}      \
@@ -69,7 +69,7 @@ ccaprice_locale_t  ccaprice_localed[CCAPRICE_LOCALE_MAX]; /* Array of Locales   
             N14,N15,N16,N17,N18,N19,N20,N21,N22,\
             N23,N24,N25,N26,N27,N28,N29,N30,N31 \
         },                                      \
-        .ident = #N00                           \
+        .ident = #N00 N32                       \
     }
 
 void ccaprice_locale_define(ccaprice_locale_t *l) {
@@ -80,9 +80,17 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
 	ccaprice_locales++;
 }
 
+#define LOCALE_CODEPAGE_ISO88591 ".iso8859-1"
+#define LOCALE_CODEPAGE_UTF8     ".utf-8"
+#define LOCALE_CODEPAGE_IBM850   ".ibm-850"
+
 /* Include locales here */
 #include "inc/locale/C.h"
 #include "inc/locale/en-US.h"
+
+#undef LOCALE_CODEPAGE_IBM850   /* ????? */
+#undef LOCALE_CODEPAGE_UTF8     /* UTF8  */
+#undef LOCALE_CODEPAGE_ISO88591 /* ASCII */
 
 void ccaprice_locale_init() {
 	/*
@@ -109,11 +117,12 @@ void ccaprice_locale_init() {
 #undef LOCALE_INIT
 
 /*
- * setlocale sets the specified locale given an input name
- * the input name is based on the LOCALE_INIT() name as
- * seen above in ccaprice_locale_init().  Example
- * to load the en_US locale one would pass "en_US" for the
- * locale argument.
+ * setlocale sets  the  specified  locale given an input name
+ * the input  name  is  based on  the LOCALE_INIT()  name  as
+ * seen above in ccaprice_locale_init(), as  well as the code
+ * page type ".utf-8" for example.  Demostration if we wanted
+ * to load the en_US.utf-8 locale one would pass "en_US.utf-8"
+ * for the locale argument.
  */
 char *setlocale(int cat, const char *cap) {
 	/* 
