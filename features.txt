@@ -76,6 +76,7 @@ stdlib.h:
 	abs   ()
 	atoi  ()
 	exit  ()
+	getenv()
 	malloc()
 	calloc()
 	puts  ()
