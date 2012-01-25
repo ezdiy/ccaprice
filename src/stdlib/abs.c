@@ -23,5 +23,6 @@
 #include "inc/stdlib.h"
 
 int abs(int i) {
-	return i>=0?i:-i;
+	CCAPRICE_SIGNEXTEND(i);
+	return (i^signext.H)-signext.H;
 }

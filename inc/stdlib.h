@@ -27,6 +27,18 @@
 #define EXIT_SUCCESS (0x00)
 #define EXIT_FAILURE (0xFF)
 
+#define CCAPRICE_SIGNEXTEND(V) \
+	union { long W; struct{int L,H;}; } signext = {.W=V};
+	
+#define MIN(X,Y) ({           \
+	CCAPRICE_SIGNEXTEND(X-Y); \
+	Y+((X-Y)& signext.H;      \
+})
+#define MAX(X,Y) ({           \
+	CCAPRICE_SIGNEXTEND(X-Y); \
+	X+((Y-X)&~signext.H;      \
+})
+
 CCAPRICE_EXPORT void  atexit(void (*)());
 CCAPRICE_EXPORT void  exit  (int);
 CCAPRICE_EXPORT void  abort ();
