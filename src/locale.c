@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/locale.h"
+#include "inc/string.h"
 
 ccaprice_locale_t  ccaprice_localec;                      /* Current Selected Locale */
 ccaprice_locale_t *ccaprice_locales = NULL;               /* Pointer to array below  */
@@ -106,3 +107,36 @@ void ccaprice_locale_init() {
  */
 #undef LOCALE_DEFINE
 #undef LOCALE_INIT
+
+/*
+ * setlocale sets the specified locale given an input name
+ * the input name is based on the LOCALE_INIT() name as
+ * seen above in ccaprice_locale_init().  Example
+ * to load the en_US locale one would pass "en_US" for the
+ * locale argument.
+ */
+char *setlocale(int cat, const char *cap) {
+	/* 
+	 * Search for locale in list of all locales.
+	 * This could be made a lot faster with a hash
+	 * table or something of that nature. TODO!
+	 */
+	size_t i;
+	for (i=0; i<sizeof(ccaprice_localed)/sizeof(*ccaprice_localed); i++) {
+		if (strncmp(cap, ccaprice_localed[i].ident, strlen(cap)) == 0) {
+			ccaprice_localec = ccaprice_localed[i];
+			return (char*)ccaprice_localed[i].ident;
+			break;
+		}
+	}
+	return NULL;
+}
+
+/*
+ * Retrives the current lconv structure from the current selected
+ * locale.  One recently set by the user via setlocale() or, one
+ * set by ccaprice by default "C"
+ */
+struct lconv *localeconv() {
+	return &ccaprice_localec.lconv;
+}

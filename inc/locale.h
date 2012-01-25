@@ -85,4 +85,7 @@ typedef struct {
 
 CCAPRICE_EXPORT ccaprice_locale_t ccaprice_localec;
 
+CCAPRICE_EXPORT struct lconv *localeconv();
+CCAPRICE_EXPORT char         *setlocale (int, const char*);
+
 #endif
