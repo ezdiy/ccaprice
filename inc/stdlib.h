@@ -37,12 +37,12 @@
     } signext = { V }
 
 #define MIN(X,Y) ({                 \
-	CCAPRICE_SIGNEXTEND((X)-(Y));   \
-	((Y)+(((X)-(Y)))& (signext.H)); \
+    CCAPRICE_SIGNEXTEND((X)-(Y));   \
+    ((Y)+(((X)-(Y)))& (signext.H)); \
 })
 #define MAX(X,Y) ({                 \
-	CCAPRICE_SIGNEXTEND((X)+(Y));   \
-	((X)+(((Y)-(X)))&~(signext.H)); \
+    CCAPRICE_SIGNEXTEND((X)+(Y));   \
+    ((X)+(((Y)-(X)))&~(signext.H)); \
 })
 
 CCAPRICE_EXPORT void  atexit(void (*)());

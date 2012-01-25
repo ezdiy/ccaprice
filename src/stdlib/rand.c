@@ -50,8 +50,6 @@
 		static const unsigned int data_##X[4]
 			
 		inline int rand() {
-			unsigned int ret;
-			
 			__m128i split;
 			__m128i multi;
 			__m128i adder;
@@ -92,8 +90,7 @@
 			store                 = _mm_srai_epi32(ccaprice_stdlib_rseed, 0x10);
 			store                 = _mm_and_si128 (store, smask);
 			
-			_mm_storeu_si128((__m128i*)&ret, store);
-			return ret;
+			return (unsigned int)_mm_cvtsi128_si32(store);
 			
 			#undef CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
 			#undef CCAPRICE_STDLIB_RAND_SSE_STAIRS2
