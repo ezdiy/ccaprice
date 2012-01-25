@@ -81,6 +81,7 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
 
 /* Include locales here */
 #include "inc/locale/C.h"
+#include "inc/locale/en-US.h"
 
 void ccaprice_locale_init() {
 	/*
@@ -88,9 +89,10 @@ void ccaprice_locale_init() {
 	 * can add the locale into it self for usage.
 	 */
 	LOCALE_INIT(C);
+	LOCALE_INIT(en_US);
 	
 	/*
-	 * This is no to be changed, this sets the DEFAULT
+	 * This is not to be changed, this sets the DEFAULT
 	 * locale used by ccaprice.  This is the _DEFAULT_
 	 * locale, DO NOT TOUCH.
 	 */
