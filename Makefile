@@ -26,6 +26,7 @@ SRC     = src/assert.c         \
           src/stdlib/abs.c     \
           src/stdlib/atoi.c    \
           src/stdlib/exit.c    \
+          src/stdlib/getenv.c  \
           src/stdlib/malloc.c  \
           src/stdlib/puts.c    \
           src/stdio/fclose.c   \

@@ -36,7 +36,7 @@ EXIT(13) EXIT(14)
 EXIT(15) EXIT(16)
 EXIT(17) EXIT(18)
 EXIT(19) EXIT(20)
-int main(int argc, char **argv) {
+int main(int argc, char **argv, char **argp) {
 	atexit(&exit1);atexit(&exit2);
 	atexit(&exit3);atexit(&exit4);
 	atexit(&exit5);atexit(&exit6);
@@ -51,6 +51,10 @@ int main(int argc, char **argv) {
 	puts("Hello World");
 	puts(argv[0]);
 	if (argv[1]) puts(argv[1]);
+	
+	size_t i = 0;
+	while(argp[i] != 0)
+		puts(argp[i]), i++;
 	
 	char buffer[] = "this is a buffer of data";
 	
@@ -67,6 +71,10 @@ int main(int argc, char **argv) {
 	char VV = toupper(vv);
 	puts("the upper is: ");
 	puts(&VV);
+	
+	char *mail = getenv("MAIL");
+	puts("mail is: ");
+	puts(mail);
 	
 	while (c != '\n') {
 		read (1, &c, 1);

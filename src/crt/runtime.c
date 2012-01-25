@@ -35,6 +35,9 @@ CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
 	#define SYS_BRK SYS_brk
 #endif
 
+/* ENVIROMENT */
+char **ccaprice_enviroment;
+
 /* MALLOC Requires this */
 void *ccaprice_runtime_curbrk = NULL;
 #if defined(CCAPRICE_TARGET_X86) || defined(__i386__)
@@ -107,14 +110,14 @@ void ccaprice_main(int argc, char **argv) {
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_init, ());
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_exit, (int));
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_posix_errno_set, (int*));
-	CCAPRICE_INTERNAL_FUNC(int, main, (int, char **));
+	CCAPRICE_INTERNAL_FUNC(int, main, (int, char **, char **));
 	
 	int function_only_errno;
 	ccaprice_posix_errno_set(&function_only_errno);
-	
+	ccaprice_enviroment = &argv[argc+1];
 	ccaprice_locale_init();
 	ccaprice_init();
-	ccaprice_exit(main(argc, argv)); /* call main now */
+	ccaprice_exit(main(argc, argv, ccaprice_enviroment));
 }
 
 /*

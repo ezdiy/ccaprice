@@ -20,22 +20,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_STDLIB_HDR
-#define CCAPRICE_STDLIB_HDR
-#include "ccaprice.h"
+#include "inc/ccaprice.h"
 
-#define EXIT_SUCCESS (0x00)
-#define EXIT_FAILURE (0xFF)
-
-CCAPRICE_EXPORT void  atexit(void (*)());
-CCAPRICE_EXPORT void  exit  (int);
-CCAPRICE_EXPORT void  abort ();
-CCAPRICE_EXPORT int   raise (int);
-CCAPRICE_EXPORT char* getenv(const char *);
-
-/* malloc / free */
-CCAPRICE_EXPORT void *malloc(size_t);
-CCAPRICE_EXPORT void *calloc(size_t, size_t);
-CCAPRICE_EXPORT void  free  (void *);
-
-#endif
+char *getenv(const char *name) {
+	CCAPRICE_INTERNAL_TYPE(char **, ccaprice_enviroment);
+		
+	size_t finds;
+	size_t grabs;
+	const char  *equal;
+	char        *fills;
+	char       **lists;
+	
+	if(!name || !ccaprice_enviroment)
+		return NULL;
+	
+	for   (equal = name; *equal && *equal != '='; ++equal) ;
+	finds =equal - name;
+	
+	for (lists = ccaprice_enviroment; (fills = *lists) != NULL; ++lists) {
+		for (equal = name, grabs = finds; grabs && *fills; grabs--)
+			if (*fills++ != *equal++)
+				break;
+		if (!grabs && *fills++ == '=')
+			return fills;
+	}
+	return NULL;
+}
