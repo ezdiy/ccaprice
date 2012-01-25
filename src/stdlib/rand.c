@@ -47,7 +47,7 @@
 		}
 		
 		#define DATA(X) \
-		static const unsigned int data_##X
+		static const unsigned int data_##X[4]
 			
 		inline int rand() {
 			unsigned int ret;
@@ -59,10 +59,10 @@
 			__m128i smask;
 			__m128i store;
 			
-			DATA(multi)[4]={0x000343FD,0x000043FD,0x000343FD,0x00010DCD};
-			DATA(adder)[4]={0x00269EC3,0x009E9EC3,0x00D19EC3,0x00000001};
-			DATA(mmask)[4]={0xFFFFFFFF,0x00000000,0xFFFFFFFF,0x00000000};
-			DATA(smask)[4]={0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF};
+			DATA(multi)={0x000343FD,0x000043FD,0x000343FD,0x00010DCD};
+			DATA(adder)={0x00269EC3,0x009E9EC3,0x00D19EC3,0x00000001};
+			DATA(mmask)={0xFFFFFFFF,0x00000000,0xFFFFFFFF,0x00000000};
+			DATA(smask)={0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF};
 			#undef DATA
 			
 			adder = _mm_load_si128   ((__m128i*)data_adder);
