@@ -20,9 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdlib.h"
 #include "inc/signal.h"
+#include "src/crt/runtime.h"
 
-void abort() {
-	raise(SIGABRT);
+int raise(int sig) {
+	return kill(getpid(), sig);
 }
+
+
