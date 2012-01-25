@@ -23,6 +23,7 @@
 #include "inc/stdlib.h"
 #include "inc/stdio.h"
 #include "inc/ctype.h"
+#include "inc/locale.h"
 #define STRN(X) #X
 #define EXIT(X) void exit ## X (){puts("atexit called exit"STRN(X));}
 EXIT(1) EXIT(2)
@@ -52,6 +53,14 @@ int main(int argc, char **argv) {
 	if (argv[1]) puts(argv[1]);
 	
 	char buffer[] = "this is a buffer of data";
+	
+	char *pizzat = "pizza 2";
+	char *pizzaf = "pi 1";
+	
+	if(strstr(pizzat, "pizza"))
+		puts("pizza true pass");
+	if(strstr(pizzaf, "pizza"))
+		puts("pizza false true"); /* never print or bug!> */
 	
 	puts(buffer);
 	char vv = 'v';

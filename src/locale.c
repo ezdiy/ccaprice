@@ -27,9 +27,8 @@ ccaprice_locale_t  ccaprice_localec;                      /* Current Selected Lo
 ccaprice_locale_t *ccaprice_locales = NULL;               /* Pointer to array below  */
 ccaprice_locale_t  ccaprice_localed[CCAPRICE_LOCALE_MAX]; /* Array of Locales        */
 
-#define LOCALE_INIT(N0)                         \
-	extern ccaprice_locale_t N0##_locale_ctype; \
-	ccaprice_locale_define (&N0##_locale_ctype)
+#define LOCALE_INIT(N0) \
+	ccaprice_locale_define (&N0##_locale)
 	
 #define LOCALE_DEFINE(                          \
 	N00,N01,N02,N03,N04,N05,N06,N07,N08,N09,N10,\

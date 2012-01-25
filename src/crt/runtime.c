@@ -24,6 +24,7 @@
 #include "inc/stdarg.h"
 #include "inc/stdio.h"
 #include "inc/string.h"
+#include "inc/locale.h"
 
 /* In [arch].S */
 CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));

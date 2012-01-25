@@ -43,6 +43,7 @@ CCAPRICE_EXPORT int     strcmp (const char*, const char*);
 /* Searching */
 CCAPRICE_EXPORT void   *memchr (const void*, int, register size_t);
 CCAPRICE_EXPORT char   *strchr (const char*, int);
+CCAPRICE_EXPORT char   *strstr (const char*, const char *);
 
 /* Others */
 CCAPRICE_EXPORT void   *memset (void *, int, register size_t);

@@ -19,6 +19,7 @@ SRC     = src/assert.c         \
           src/string/strncpy.c \
           src/string/strdup.c  \
           src/string/strpbrk.c \
+          src/string/strstr.c  \
           src/stdlib/abort.c   \
           src/stdlib/abs.c     \
           src/stdlib/atoi.c    \
