@@ -92,10 +92,12 @@ string.h:
 	strcmp ()
 	strncmp()
 	strcpy ()
+	strcspn()
 	strncpy()
 	strdup ()
 	strlen ()
 	strpbrk()
+	strspn ()
 	strstr ()
 
 POSIX features are below.  Note these do not clash with the C
