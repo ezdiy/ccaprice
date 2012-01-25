@@ -30,7 +30,7 @@ size_t strcspn(const char *src, const char *reg) {
 	
 	size_t i;
 	ccaprice_strspn_init((const unsigned char*)reg, 1);
-	for (i = 0; ccaprice_strspn_table[(size_t)s[i]] != ccaprice_strspn_cycle; i++);
+	for (i = 0; ccaprice_strspn_table[s[i]] != ccaprice_strspn_cycle; i++);
 		
 	return i;
 }
