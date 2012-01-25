@@ -1,0 +1,214 @@
+The current supported features so far
+note the functions or headers in here may not be complete
+in terms of functionality (their bare minimum requirement)
+
+assert.h:
+	assert()
+	
+ctype.h:
+	isalnum ()
+	isalpha ()
+	iscntrl ()
+	isdigit ()
+	isgraph ()
+	islower ()
+	isprint ()
+	ispunct ()
+	isspace ()
+	isupper ()
+	isxdigit()
+	tolower ()
+	toupper ()
+	
+errno.h:
+	int errno
+
+iso646.h:
+	and
+	and_eq
+	bitand
+	bitor
+	compl
+	not
+	or
+	or_eq
+	xor
+	xor_eq
+	
+locale.h:
+	struct lconv
+	setlocale ()
+	localeconv()
+	
+signal.h:
+	raise()
+	
+stdarg.h:
+	va_list
+	va_start()
+	va_end  ()
+	va_arg  ()
+	
+stddef.h:
+	ptrdiff_t
+	size_t
+	offsetof()
+	NULL
+	
+stdio.h:
+	FILE
+	EOF
+	stdout
+	stdin
+	fclose()
+	feof  ()
+	ferror()
+	fflush()
+	fopen ()
+	fputc ()
+	fputs ()
+	fwrite()
+	
+stdlib.h:
+	EXIT_SUCCESS
+	EXIT_FAILURE
+	abort ()
+	abs   ()
+	atoi  ()
+	exit  ()
+	malloc()
+	puts  ()
+	
+string.h:
+	memchr ()
+	memcmp ()
+	memcpy ()
+	memmove()
+	memset ()
+	strcat ()
+	strncat()
+	strchr ()
+	strcmp ()
+	strncmp()
+	strcpy ()
+	strncpy()
+	strdup ()
+	strlen ()
+	strpbrk()
+
+POSIX features are below.  Note these do not clash with the C
+library functions above, they actually meld well.
+
+errno.h:
+	errno
+	E2BIG
+	EACCES
+	EADDRINUSE
+	EADDRNOTAVAIL
+	EAFNOSUPPORT
+	EAGAIN
+	EALREADY
+	EBADF
+	EBADMSG
+	EBUSY
+	ECANCELED
+	ECHILD
+	ECONNABORTED
+	ECONNREFUSED
+	ECONNRESET
+	EDEADLK
+	EDESTADDRREQ
+	EDOM
+	EDQUOT
+	EEXIST
+	EFAULT
+	EFBIG
+	EHOSTUNREACH
+	EIDRM
+	EILSEQ
+	EINPROGRESS
+	EINTR
+	EINVAL
+	EIO
+	EISCONN
+	EISDIR
+	ELOOP
+	EMFILE
+	EMLINK
+	EMSGSIZE
+	EMULTIHOP
+	ENAMETOOLONG
+	ENETDOWN
+	ENETRESET
+	ENETUNREACH
+	ENFILE
+	ENOBUFS
+	ENODATA
+	ENODEV
+	ENOENT
+	ENOEXEC
+	ENOLCK
+	ENOLINK
+	ENOMEM
+	ENOMSG
+	ENOPROTOOPT
+	ENOSPC
+	ENOSR
+	ENOSTR
+	ENOSYS
+	ENOTCONN
+	ENOTDIR
+	ENOTEMPTY
+	ENOTSOCK
+	ENOTSUP
+	ENOTTY
+	ENXIO
+	EOPNOTSUPP
+	EOVERFLOW
+	EPERM
+	EPIPE
+	EPROTO
+	EPROTONOSUPPORT
+	EPROTOTYPE
+	ERANGE
+	EROFS
+	ESPIPE
+	ESRCH
+	ESTALE
+	ETIME
+	ETIMEDOUT
+	ETXTBSY
+	EWOULDBLOCK
+	EXDEV
+	
+sysexit.h:
+	EX_OK
+	EX_USAGE
+	EX_DATAERR
+	EX_NOINPUT
+	EX_NOUSER
+	EX_NOHOST
+	EX_UNAVAILABLE
+	EX_SOFTWARE
+	EX_OSERR
+	EX_OSFILE
+	EX_CANTCREAT
+	EX_IOERR
+	EX_TEMPFAIL
+	EX_PROTOCOL
+	EX_NOPERM
+	EX_CONFIG
+	
+unistd.h:
+	write ()
+	read  ()
+	open  ()
+	kill  ()
+	close ()
+	_exit ()
+	getpid()
+	
+The current supported locales for ccaprice
+	C      -- default C locale
+	en_CA  -- Enlgish Canada
+	en_US  -- English United States
