@@ -2,23 +2,43 @@ The current supported features so far
 note the functions or headers in here may not be complete
 in terms of functionality (their bare minimum requirement)
 
+legend:
+	[LOCALE SUPPORT] == The code for the function supports custom locale,
+	                    or system locale; or BOTH.
+	                    
+	[GPR]            == The code for the function is optimized by using 
+	                    general purpose registers to do vector math.
+	                    
+	[naive]          == The code for the function is a naive implementation
+	                    which means it could be slow and should be improved
+	                    
+	[SSE2]           == The code for the function is optimized for SSE2
+	                    ready systems.
+	                    
+	[branchless]     == The code for the function is optimized for all 
+	                    systems; the optimization benefit arises from
+	                    the fact that the function uses no branches.
+	                    
+	[OPT]            == The code for the function is optimized using a 
+	                    different method not in this legend.
+
 assert.h:
 	assert()
 	
-ctype.h: [LOCALE SUPPORT]
-	isalnum ()
-	isalpha ()
-	iscntrl ()
-	isdigit ()
-	isgraph ()
-	islower ()
-	isprint ()
-	ispunct ()
-	isspace ()
-	isupper ()
-	isxdigit()
-	tolower ()
-	toupper ()
+ctype.h:
+	isalnum () [LOCALE SUPPORT]
+	isalpha () [LOCALE SUPPORT]
+	iscntrl () [LOCALE SUPPORT]
+	isdigit () [LOCALE SUPPORT]
+	isgraph () [LOCALE SUPPORT]
+	islower () [LOCALE SUPPORT]
+	isprint () [LOCALE SUPPORT]
+	ispunct () [LOCALE SUPPORT]
+	isspace () [LOCALE SUPPORT]
+	isupper () [LOCALE SUPPORT]
+	isxdigit() [LOCALE SUPPORT]
+	tolower () [LOCALE SUPPORT]
+	toupper () [LOCALE SUPPORT]
 	
 errno.h:
 	errno
@@ -36,7 +56,7 @@ iso646.h:
 	xor_eq
 	
 locale.h:
-	struct lconv
+	struct lconv  [LOCALE SUPPORT]
 		decimal_point;
 		thousands_sep;
 		grouping;
@@ -56,8 +76,8 @@ locale.h:
 		p_sign_posn;
 		n_sign_posn;
 		
-	setlocale ()
-	localeconv()
+	setlocale () [LOCALE SUPPORT]
+	localeconv() [LOCALE SUPPORT]
 	
 signal.h:
 	raise()
@@ -91,23 +111,23 @@ stdio.h:
 stdlib.h:
 	EXIT_SUCCESS
 	EXIT_FAILURE
-	MIN   ()
-	MAX   ()
-	abort ()
-	abs   ()
-	atoi  ()
-	exit  ()
-	getenv()
-	malloc()
-	calloc()
-	puts  ()
-	rand  ()
-	srand ()
+	MIN    () [branchless]
+	MAX    () [branchless]
+	abort  ()
+	abs    () [branchless]
+	atoi   ()
+	exit   ()
+	getenv ()
+	malloc ()
+	calloc ()
+	puts   ()
+	rand   () [SSE2/naive]
+	srand  () [SSE2/naive]
 	
 string.h:
-	memchr ()
+	memchr () [SSE2/naive]
 	memcmp ()
-	memcpy ()
+	memcpy () [OPT/naive]
 	memmove()
 	memset ()
 	strcat ()
@@ -115,7 +135,7 @@ string.h:
 	strcmp ()
 	strcspn()
 	strdup ()
-	strlen ()
+	strlen () [SSE2/GPR/naive]
 	strncat()
 	strncmp()
 	strncpy()

@@ -26,7 +26,7 @@
 		#include <emmintrin.h>
 		#define CCAPRICE_STDLIB_RAND_SSE_STAIRS1 0x00
 		#define CCAPRICE_STDLIB_RAND_SSE_STAIRS2 0x01
-		#define CCAPRICE_STDLIB_RAND_SSE_SHUFFLE (2,3,0,1)
+		#define CCAPRICE_STDLIB_RAND_SSE_SHUFFLE _MM_SHUFFLE(2,3,0,1)
 		static __m128i ccaprice_stdlib_rseed;
 	#else
 	static unsigned int ccaprice_stdlib_rseed;
@@ -70,20 +70,20 @@
 			
 			split = _mm_shuffle_epi32(
 				ccaprice_stdlib_rseed,
-				_MM_SHUFFLE CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
+				CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
 			);
 			
 			ccaprice_stdlib_rseed = _mm_mul_epu32(ccaprice_stdlib_rseed, multi);
 			multi                 = _mm_shuffle_epi32(
 				multi,
-				_MM_SHUFFLE CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
+				CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
 			);
 			split                 = _mm_mul_epu32(split, multi);
 			ccaprice_stdlib_rseed = _mm_and_si128(ccaprice_stdlib_rseed, mmask);
 			split                 = _mm_and_si128(split, mmask);
 			split                 = _mm_shuffle_epi32(
 				split,
-				_MM_SHUFFLE CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
+				CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
 			);
 			ccaprice_stdlib_rseed = _mm_or_si128  (ccaprice_stdlib_rseed, split);
 			ccaprice_stdlib_rseed = _mm_add_epi32 (ccaprice_stdlib_rseed, adder);

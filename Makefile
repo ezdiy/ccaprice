@@ -1,4 +1,4 @@
-CFLAGS += -ggdb3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -DCCAPRICE_COMPILING
+CFLAGS += -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -DCCAPRICE_COMPILING
 CCC     = gcc
 SRC     = src/assert.c         \
           src/locale.c         \
