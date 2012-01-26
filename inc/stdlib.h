@@ -29,10 +29,10 @@
 
 #define CCAPRICE_SIGNEXTEND(V) \
     union {                    \
-        long W;                \
+        int64_t W;             \
         struct {               \
-            int L;             \
-            int H;             \
+            int32_t L;         \
+            int32_t H;         \
         };                     \
     } signext = { V }
 
