@@ -30,7 +30,7 @@ ccaprice_locale_t  ccaprice_localed[CCAPRICE_LOCALE_MAX]; /* Array of Locales   
 
 #define LOCALE_INIT(N0) \
 	ccaprice_locale_define (&N0##_locale)
-	
+#define LOCALE_INT LOCALE_INIT
 #define LOCALE_DEFINE(                          \
 	N00,N01,N02,N03,N04,N05,N06,N07,N08,N09,N10,\
 	N11,N12,N13,N14,N15,N16,N17,N18,N19,N20,N21,\
@@ -80,23 +80,63 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
 #define LOCALE_CODEPAGE_ISO88591 "" /* ascii should be nothing */
 #define LOCALE_CODEPAGE_UTF8     ".utf8"
 #define LOCALE_CODEPAGE_IBM850   ".ibm-850"
+
+/*
+ * This locale always gets included it's the default locale
+ * for ccarpice. It's known as the "C" locale in the standard.
+ */
 #include "inc/locale/C.h"
-#include "inc/locale/en-US.h"
-#include "inc/locale/en-CA.h"
-#include "inc/locale/en-AU.h"
+
+/*
+ * If all locale support is selected we'll include ALL
+ * locales.  This takes up a insane amount of code space
+ * because these are STATICALLY stored in the library.
+ * 
+ * Most of the time the library should only be compiled for
+ * the target locale.
+ */
+#ifndef CCAPRICE_LOCALE_SET
+	/*
+	 * We should warn the person compiling that all locales are
+	 * being built into the library since he/she did not specify
+	 * which locale to use for the build.
+	 */
+	#warning "[ccaprice] No locale specified for CCAPRICE_LOCALE_SET compiling with all locales, this could take a lot of space"
+	#include "inc/locale/en_US.h"
+	#include "inc/locale/en_CA.h"
+	#include "inc/locale/en_AU.h"
+#else
+	/*
+	 * This just includes one LOCALE, the one set by CCAPRICE_LOCALE_SET
+	 * the build file could search for this localed by checking the LANG
+	 * enviroment variable.
+	 */
+	#undef   LOCALE_INT
+	#define  LOCALE_INT(X)                   LOCALE_INIT ( X )  
+	#define  LOCALE_STR(X)                   #X
+	#define  LOCALE_INC(X)                   LOCALE_STR(inc/locale/X.h)
+	#include LOCALE_INC(CCAPRICE_LOCALE_SET)
+	#undef   LOCALE_STR
+	#undef   LOCALE_INC
+#endif
 #undef LOCALE_CODEPAGE_IBM850   /* ????? */
 #undef LOCALE_CODEPAGE_UTF8     /* UTF8  */
 #undef LOCALE_CODEPAGE_ISO88591 /* ASCII */
 
 void ccaprice_locale_init() {
+	LOCALE_INIT(C);
+	
 	/*
 	 * Add LOCALE initializations here so ccaprice
 	 * can add the locale into it self for usage.
 	 */
-	LOCALE_INIT(C);
-	LOCALE_INIT(en_US);
-	LOCALE_INIT(en_CA);
-	LOCALE_INIT(en_AU);
+	#ifndef CCAPRICE_LOCALE_SET
+		LOCALE_INT(en_US);
+		LOCALE_INT(en_CA);
+		LOCALE_INT(en_AU);
+	#else
+		LOCALE_INT(CCAPRICE_LOCALE_SET);
+	#endif
 	
 	/*
 	 * This is not to be changed, this sets the DEFAULT
@@ -113,6 +153,7 @@ void ccaprice_locale_init() {
  */
 #undef LOCALE_DEFINE
 #undef LOCALE_INIT
+#undef LOCALE_INT
 
 /*
  * setlocale sets  the  specified  locale given an input name
