@@ -1,9 +1,5 @@
 CFLAGS += -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -fno-strict-aliasing -DCCAPRICE_COMPILING -DCCAPRICE_LOCALE_SET=en_US
-ifeq ($(shell uname), "FreeBSD")
 CCC     = $(CC)
-else
-CCC     = gcc
-endif
 SRC     = src/assert.c         \
           src/locale.c         \
           src/signal.c         \
