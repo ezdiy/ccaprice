@@ -62,7 +62,7 @@ int ccaprice_syscall_error() {
 
 #ifdef CCAPRICE_TARGET_X86
 int ccaprice_runtime_brk(void *address) {
-	void *vfbrk;
+	void *vfbrk = NULL;
 	#ifndef BSD
 	__asm__ __volatile__ (
 		"pushl    %%ebx   \n\t"
@@ -75,7 +75,7 @@ int ccaprice_runtime_brk(void *address) {
 				"g"(address)
 	);
 	#else
-	caprice_syscall_core(SYS_BRK, vfbrk, address);
+	ccaprice_syscall_core(SYS_BRK, vfbrk, address);
 	#endif
 	
 	ccaprice_runtime_curbrk = vfbrk;
