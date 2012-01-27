@@ -111,5 +111,8 @@ int main(int argc, char **argv, char **argp) {
 	fclose(fp);
 	//free(p);
 	
+	int *p = malloc(1090);
+	*p = 100;
+	
 	return 0;
 }

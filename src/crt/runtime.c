@@ -75,7 +75,18 @@ int ccaprice_runtime_brk(void *address) {
 				"g"(address)
 	);
 	#else
-	ccaprice_syscall_core(SYS_BRK, vfbrk, address);
+	__asm__ __volatile__ (
+		"mov  0x4(%%esp), %%edx   \n\t"
+		"mov  %1,         %%eax   \n\t" /*SYS_BRK */
+		"push %%ebx               \n\t"
+		"mov  %%edx,%%ebx         \n\t"
+		"call ccaprice_syscall_bsd\n\t"
+		"pop  %%ebx               \n\t"
+		"cmp  %%edx,%%eax         \n\t"
+		"mov  %%eax,$0x00         \n\t"
+		"sbb  %%eax,%%eax         \n\t"
+		"ret"
+	);
 	#endif
 	
 	ccaprice_runtime_curbrk = vfbrk;
