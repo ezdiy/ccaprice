@@ -32,6 +32,16 @@ int raise(int sig) {
 	 * There must be a faster way at doing this?
 	 */
 	 
+	/*
+	 * Work around systems with  no  SIGPOLL
+	 * use SIGUSR1  again, double  check is
+	 * of no harm.  It's just not all sytems
+	 * have SIGPOLL.
+	 */
+	#ifndef SIGPOLL
+		#define SIGPOLL SIGUSR1
+	#endif
+	
 	if (sig != SIGABRT && sig != SIGALRM   && sig != SIGBUS  && 
 	    sig != SIGCHLD && sig != SIGCONT   && sig != SIGFPE  &&
 	    sig != SIGHUP  && sig != SIGILL    && sig != SIGINT  &&
