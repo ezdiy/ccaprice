@@ -63,31 +63,20 @@ int ccaprice_syscall_error() {
 #ifdef CCAPRICE_TARGET_X86
 int ccaprice_runtime_brk(void *address) {
 	void *vfbrk = NULL;
-	#ifndef BSD
 	__asm__ __volatile__ (
-		"pushl    %%ebx   \n\t"
-		"movl %2, %%ebx   \n\t"
-		"int  $0x80       \n\t"
-		"popl %%ebx       \n\t"
+		"pushl    %%ebx            \n\t"
+		"movl %2, %%ebx            \n\t"
+		#ifdef BSD
+		"call ccaprice_syscall_bsd \n\t"
+		#else
+		"int  $0x80                \n\t"
+		#endif
+		"popl %%ebx                \n\t"
 		:
 			"=a"(vfbrk) :
 				"0"(SYS_BRK),
 				"g"(address)
 	);
-	#else
-	__asm__ __volatile__ (
-		"mov  $0x4(%%esp), %%edx  \n\t"
-		"push %%ebx               \n\t"
-		"mov  %%edx,%%ebx         \n\t"
-		"call ccaprice_syscall_bsd\n\t"
-		"pop  %%ebx               \n\t"
-		"cmp  %%edx,%%eax         \n\t"
-		"mov  %%eax,$0x00         \n\t"
-		"sbb  %%eax,%%eax         \n\t"
-		"ret" : :
-			"0"(SYS_BRK)
-	);
-	#endif
 	
 	ccaprice_runtime_curbrk = vfbrk;
 	return (vfbrk < address)?-1:0;
