@@ -82,10 +82,10 @@ ccaprice_syscall_core:
 	cmpl $-4095,%eax
 	jae  ccaprice_syscall_error
 	ret
+	
 #ifdef BSD
 .size ccaprice_syscall_bsd,.-ccaprice_syscall_bsd
 #endif
-
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
 .size _start,.-_start
 	
