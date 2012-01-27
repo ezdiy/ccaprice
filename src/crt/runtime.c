@@ -63,30 +63,20 @@ int ccaprice_syscall_error() {
 #ifdef CCAPRICE_TARGET_X86
 int ccaprice_runtime_brk(void *address) {
 	void *vfbrk;
-	#ifdef BSD
+	#ifndef BSD
 	__asm__ __volatile__ (
-		"bsd_syscall: \n\t"
-		"int $0x80    \n\t"
-		"ret          \n\t"
-	);
-	#endif
-	__asm__ __volatile__ (
-		#ifndef BSD
 		"pushl    %%ebx   \n\t"
 		"movl %2, %%ebx   \n\t"
 		"int  $0x80       \n\t"
 		"popl %%ebx       \n\t"
-		#else
-		"movl %2, %%ebx   \n\t"
-		"pushl    %%ebx   \n\t"
-		"call bsd_syscall \n\t"
-		"addl $4, %%esp   \n\t" /* realign the stack pointer */
-		#endif
 		:
 			"=a"(vfbrk) :
 				"0"(SYS_BRK),
 				"g"(address)
 	);
+	#else
+	caprice_syscall_core(SYS_BRK, vfbrk);
+	#endif
 	
 	ccaprice_runtime_curbrk = vfbrk;
 	return (vfbrk < address)?-1:0;
