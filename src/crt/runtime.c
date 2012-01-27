@@ -75,7 +75,7 @@ int ccaprice_runtime_brk(void *address) {
 				"g"(address)
 	);
 	#else
-	caprice_syscall_core(SYS_BRK, vfbrk);
+	caprice_syscall_core(SYS_BRK, vfbrk, address);
 	#endif
 	
 	ccaprice_runtime_curbrk = vfbrk;
