@@ -77,7 +77,7 @@ int ccaprice_runtime_brk(void *address) {
 	#else
 	__asm__ __volatile__ (
 		"mov  0x4(%%esp), %%edx   \n\t"
-		"mov  %1,         %%eax   \n\t" /*SYS_BRK */
+		"mov  %0,         %%eax   \n\t" /*SYS_BRK */
 		"push %%ebx               \n\t"
 		"mov  %%edx,%%ebx         \n\t"
 		"call ccaprice_syscall_bsd\n\t"
