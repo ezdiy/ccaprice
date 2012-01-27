@@ -1,4 +1,4 @@
-CFLAGS += -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -DCCAPRICE_COMPILING -DCCAPRICE_LOCALE_SET=en_US
+CFLAGS += -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -fno-strict-aliasing -DCCAPRICE_COMPILING -DCCAPRICE_LOCALE_SET=en_US
 CCC     = gcc
 SRC     = src/assert.c         \
           src/locale.c         \
@@ -64,4 +64,6 @@ $(OUT): $(OBJ)
 	ar rcs $(OUT) $(BIN) $(OBJ)
 	
 clean:
-	rm -f $(OBJ) $(BIN) $(OUT)
+	rm -f src/crt/i386.o
+	rm -f src/crt/x86_64.o
+	rm -f $(OBJ) $(OUT)
