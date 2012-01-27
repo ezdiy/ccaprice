@@ -75,7 +75,7 @@ int ccaprice_runtime_brk(void *address) {
 		"movl %2, %%ebx   \n\t"
 		#ifdef BSD
 		"int  $0x80       \n\t"
-		"popl  %%ebx      \n\t"
+		"popl %%ebx       \n\t"
 		#else
 		"call bsd_syscall \n\t"
 		"addl $4, %esp    \n\t"
