@@ -80,9 +80,9 @@ int ccaprice_runtime_brk(void *address) {
 		"movl %2, %%ebx    \n\t"
 		"pushl    %%ebx    \n\t"
 		"int  $0x80        \n\t"
-		"movl 4(%esp), %eax\n\t"
-		"movl %eax, %3     \n\t"
-		"movl $0, %eax     \n\t"
+		"movl 4(%esp), %%eax\n\t"
+		"movl %%eax, %3     \n\t"
+		"movl $0, %%eax     \n\t"
 		"ret" :
 			"=a"(vfbrk) :
 				"0"(SYS_BRK),
