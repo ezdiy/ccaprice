@@ -1,4 +1,4 @@
-CFLAGS += -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -fno-strict-aliasing -DCCAPRICE_COMPILING -DCCAPRICE_LOCALE_SET=en_US
+CFLAGS += -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
 CCC     = $(CC)
 SRC     = src/assert.c         \
           src/locale.c         \
@@ -23,7 +23,6 @@ SRC     = src/assert.c         \
           src/string/strspn.c  \
           src/string/strstr.c  \
           src/stdlib/abort.c   \
-          src/stdlib/abs.c     \
           src/stdlib/atoi.c    \
           src/stdlib/exit.c    \
           src/stdlib/getenv.c  \
@@ -38,6 +37,10 @@ SRC     = src/assert.c         \
           src/stdio/fputc.c    \
           src/stdio/fputs.c    \
           src/stdio/fwrite.c   \
+          src/math/abs.c       \
+          src/math/fabs.c      \
+          src/math/isnan.c     \
+          src/math/finite.c    \
           src/posix/errno.c
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a

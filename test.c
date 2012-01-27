@@ -24,6 +24,7 @@
 #include "inc/stdio.h"
 #include "inc/ctype.h"
 #include "inc/locale.h"
+#include "inc/math.h"
 #define STRN(X) #X
 #define EXIT(X) void exit ## X (){puts("atexit called exit"STRN(X));}
 EXIT(1) EXIT(2)
@@ -86,7 +87,6 @@ int main(int argc, char **argv, char **argp) {
 	int kkf = MAX(ppf,vvf);
 	int jjj = MIN(ppf,vvf);
 	
-	//int *ADS = 0; *ADS = 0;
 	fputc(kkf, stdout);
 	
 	puts(buffer);
@@ -94,6 +94,8 @@ int main(int argc, char **argv, char **argp) {
 	char VV = toupper(vv);
 	puts("the upper is: ");
 	puts(&VV);
+	
+	double d = fabs(3.1416);
 	
 	char *mail = getenv("MAIL");
 	puts("mail is: ");
@@ -107,9 +109,7 @@ int main(int argc, char **argv, char **argp) {
 	FILE *fp = fopen("test.txt", "w");
 	fputs(v, fp);
 	fwrite(v, strlen(v), 1, fp);
-	//fwrite(&*p, sizeof(int), 1, fp);
 	fclose(fp);
-	//free(p);
 	
 	int *p = malloc(1090);
 	*p = 100;

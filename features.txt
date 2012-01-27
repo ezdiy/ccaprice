@@ -114,7 +114,6 @@ stdlib.h:
 	MIN    () [branchless]
 	MAX    () [branchless]
 	abort  ()
-	abs    () [branchless]
 	atoi   ()
 	exit   ()
 	getenv ()
@@ -142,6 +141,13 @@ string.h:
 	strpbrk()
 	strspn ()
 	ststr  ()
+	
+math.h:
+	abs    () [branchless]
+	fabs   ()
+	finite ()
+	isnan  ()
+	
 
 POSIX features are below.  Note these do not clash with the C
 library functions above, they actually meld well.

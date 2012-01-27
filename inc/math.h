@@ -20,9 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdlib.h"
+#include "inc/ccaprice.h"
+#ifndef CCAPRICE_MATH_HDR
+#define CCAPRICE_MATH_HDR
+#ifdef __LITTLE_ENDIAN
+	#define CCAPRICE_MATH_HI_L(X) *(1+((int*)(&X)))
+	#define CCAPRICE_MATH_LO_L(X) *(0+((int*)(&X)))
+	#define CCAPRICE_MATH_HI_P(X) *(1+((int*) (X)))
+	#define CCAPRICE_MATH_LO_P(X) *(0+((int*) (X)))
+#else
+	#define CCAPRICE_MATH_HI_L(X) *(0+((int*)(&X)))
+	#define CCAPRICE_MATH_LO_L(X) *(1+((int*)(&X)))
+	#define CCAPRICE_MATH_HI_P(X) *(0+((int*) (X)))
+	#define CCAPRICE_MATH_LO_P(X) *(1+((int*) (X)))
+#endif /* !__LITTLE_ENDIAN */
 
-int abs(int i) {
-	CCAPRICE_SIGNEXTEND(i);
-	return (i^signext.H)-signext.H;
-}
+CCAPRICE_EXPORT double fabs (double);
+CCAPRICE_EXPORT int    isnan(double);
+#endif /* !CCAPRICE_MATH_HDR */
