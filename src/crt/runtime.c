@@ -67,9 +67,7 @@ int ccaprice_runtime_brk(void *address) {
 		"pushl    %%ebx            \n\t"
 		"movl %2, %%ebx            \n\t"
 		#ifdef BSD
-		"pushl %%ebx               \n\t"
 		"call ccaprice_syscall_bsd \n\t"
-		"popl  %%ebx               \n\t"
 		"addl $0x4, %%esp          \n\t" /* realign stack */
 		#else
 		"int  $0x80                \n\t"
