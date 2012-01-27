@@ -85,7 +85,7 @@ int ccaprice_runtime_brk(void *address) {
 		"cmp  %%edx,%%eax         \n\t"
 		"mov  %%eax,$0x00         \n\t"
 		"sbb  %%eax,%%eax         \n\t"
-		"ret" :
+		"ret" : :
 			"0"(SYS_BRK)
 	);
 	#endif
