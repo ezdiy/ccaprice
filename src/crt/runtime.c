@@ -64,6 +64,9 @@ int ccaprice_syscall_error() {
 int ccaprice_runtime_brk(void *address) {
 	void *vfbrk = NULL;
 	__asm__ __volatile__ (
+		#ifdef BSD
+		".global ccaprice_syscall_bsd\n\t"
+		#endif
 		"pushl    %%ebx            \n\t"
 		"movl %2, %%ebx            \n\t"
 		#ifdef BSD
