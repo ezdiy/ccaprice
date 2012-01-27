@@ -76,12 +76,12 @@ int ccaprice_runtime_brk(void *address) {
 	);
 	#else
 	__asm__ __volatile__ (
-		"movl %1, %%eax    \n\t"
-		"movl %2, %%ebx    \n\t"
+		"movl %0, %%eax    \n\t"
+		"movl %1, %%ebx    \n\t"
 		"pushl    %%ebx    \n\t"
 		"int  $0x80        \n\t"
-		"movl 4(%esp), %%eax\n\t"
-		"movl %%eax, %3     \n\t"
+		"movl 4(%%esp), %%eax\n\t"
+		"movl %%eax, %2     \n\t"
 		"movl $0, %%eax     \n\t"
 		"ret" :
 			"=a"(vfbrk) :
