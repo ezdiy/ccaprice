@@ -76,14 +76,14 @@ int ccaprice_runtime_brk(void *address) {
 	);
 	#else
 	__asm__ __volatile__ (
-		"movl %0, %%eax    \n\t"
-		"movl %1, %%ebx    \n\t"
-		"pushl    %%ebx    \n\t"
-		"int  $0x80        \n\t"
-		"movl 4(%%esp), %%eax\n\t"
-		"movl %%eax, %2     \n\t"
-		"movl $0, %%eax     \n\t"
-		"ret" :
+		"movl %0, %%eax      \n\t" /* move address to eax */
+		"movl %1, %%ebx      \n\t" /* move SYS_brk to ebx */
+		"pushl    %%ebx      \n\t" /* push ebx on stack   */
+		"int  $0x80          \n\t" /* call the kernel.    */
+		"movl 4(%%esp), %%eax\n\t" /* realign stack       */
+		"movl %%eax, %2     \n\t"  /* drop  it            */
+		"movl $0, %%eax     \n\t"  /* clear it            */
+		"ret" :                    /* return from it all  */
 			"=a"(vfbrk) :
 				"0"(SYS_BRK),
 				"g"(address)

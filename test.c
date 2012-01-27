@@ -86,7 +86,7 @@ int main(int argc, char **argv, char **argp) {
 	int kkf = MAX(ppf,vvf);
 	int jjj = MIN(ppf,vvf);
 	
-	int *ADS = 0; *ADS = 0;
+	//int *ADS = 0; *ADS = 0;
 	fputc(kkf, stdout);
 	
 	puts(buffer);
