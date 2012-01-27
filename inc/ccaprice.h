@@ -40,7 +40,7 @@
 #endif
 
 #define CCAPRICE_COMPILE_TIME_ASSERT(name, x) \
-	typedef int CompileTimeAssertFailed_##name[(x)*2-1]
+	typedef int CompileTimeAssertFailed_##name[(x)?1:-1]
 
 #if defined(CCAPRICE_TARGET_X86_64) || defined(__x86_64__)
 	#define STRING_STRLEN_X86_64
