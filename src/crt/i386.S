@@ -22,9 +22,15 @@
  */
 .text
 .global ccaprice_syscall_core
+#ifdef BSD
+.global ccaprice_syscall_bsd
+#endif
 .global ccaprice_main
 .global _start
 .type   ccaprice_syscall_core,%function
+#ifdef BSD
+.type   ccaprice_syscall_bsd,%function
+#endif
 .type   _start,%function
 
 _start:
@@ -76,7 +82,10 @@ ccaprice_syscall_core:
 	cmpl $-4095,%eax
 	jae  ccaprice_syscall_error
 	ret
-	
+#ifdef BSD
+.size ccaprice_syscall_bsd,.-ccaprice_syscall_bsd
+#endif
+
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
 .size _start,.-_start
 	
