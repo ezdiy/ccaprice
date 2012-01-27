@@ -73,7 +73,7 @@ int ccaprice_runtime_brk(void *address) {
 	__asm__ __volatile__ (
 		"pushl    %%ebx   \n\t"
 		"movl %2, %%ebx   \n\t"
-		#ifdef BSD
+		#ifndef BSD
 		"int  $0x80       \n\t"
 		"popl %%ebx       \n\t"
 		#else
