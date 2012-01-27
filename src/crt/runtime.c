@@ -71,14 +71,16 @@ int ccaprice_runtime_brk(void *address) {
 	);
 	#endif
 	__asm__ __volatile__ (
+		#ifndef BSD
 		"pushl    %%ebx   \n\t"
 		"movl %2, %%ebx   \n\t"
-		#ifndef BSD
 		"int  $0x80       \n\t"
 		"popl %%ebx       \n\t"
 		#else
+		"movl %2, %%ebx   \n\t"
+		"pushl    %%ebx   \n\t"
 		"call bsd_syscall \n\t"
-		"addl $4, %esp    \n\t" /* realign the stack pointer */
+		"addl $4, %%esp   \n\t" /* realign the stack pointer */
 		#endif
 		:
 			"=a"(vfbrk) :
