@@ -1,4 +1,13 @@
 /*
+ * ====================================================
+ * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+ *
+ * Developed at SunSoft, a Sun Microsystems, Inc. business.
+ * Permission to use, copy, modify, and distribute this
+ * software is freely granted, provided that this notice 
+ * is preserved.
+ * ====================================================
+ *
  * Copyright (C) 2012 
  * 	Dale Weiler
  *
@@ -20,24 +29,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/ccaprice.h"
-#ifndef CCAPRICE_MATH_HDR
-#define CCAPRICE_MATH_HDR
-#ifdef  CCAPRICE_TARGET_X86
-	#define CCAPRICE_MATH_HI_L(X) *(1+((int*)(&X)))
-	#define CCAPRICE_MATH_LO_L(X) *(0+((int*)(&X)))
-	#define CCAPRICE_MATH_HI_P(X) *(1+((int*) (X)))
-	#define CCAPRICE_MATH_LO_P(X) *(0+((int*) (X)))
-#else
-	#define CCAPRICE_MATH_HI_L(X) *(0+((int*)(&X)))
-	#define CCAPRICE_MATH_LO_L(X) *(1+((int*)(&X)))
-	#define CCAPRICE_MATH_HI_P(X) *(0+((int*) (X)))
-	#define CCAPRICE_MATH_LO_P(X) *(1+((int*) (X)))
-#endif /* !CCAPRICE_TARGET_X86 */
-
-CCAPRICE_EXPORT int    abs   (int);
-CCAPRICE_EXPORT double fabs  (double);
-CCAPRICE_EXPORT int    finite(double);
-CCAPRICE_EXPORT int    isnan (double);
-CCAPRICE_EXPORT double frexp (double, int*);
-#endif /* !CCAPRICE_MATH_HDR */
+#include "inc/math.h"
+double frexp(double x, int *p) {
+	int x_hi = CCAPRICE_MATH_HI_L(x);
+	int x_lo = CCAPRICE_MATH_LO_L(x);
+	int iter = 0x7FFFFFFF & x_hi;
+	
+	*p = 0;
+	if (iter >=0x7FFFFFFF || ((iter | x_lo) == 0))
+		return x;
+		
+	if (iter < 0x00100000) {
+		x   *= 1.80143985094819840000e+16;
+		x_hi = CCAPRICE_MATH_HI_L(x);
+		x_lo = CCAPRICE_MATH_LO_L(x);
+		iter = x_hi & 0x7FFFFFFF;
+		*p   = -54;
+	}
+	*p  += (iter >> 20) - 1022;
+	x_hi = (x_hi & 0x800FFFFF) | 0x3FE00000;
+	
+	CCAPRICE_MATH_HI_L(x) = x_hi;
+	return x;
+}

@@ -95,7 +95,13 @@ int main(int argc, char **argv, char **argp) {
 	puts("the upper is: ");
 	puts(&VV);
 	
-	double d = fabs(3.1416);
+
+	double param, result;
+	int n;
+
+	param = 8.0;
+	result = frexp (param , &n);
+	int *vvvv = 0; *vvvv = 0;
 	
 	char *mail = getenv("MAIL");
 	puts("mail is: ");

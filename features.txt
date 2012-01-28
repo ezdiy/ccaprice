@@ -146,6 +146,7 @@ math.h:
 	abs    () [branchless]
 	fabs   ()
 	finite ()
+	frexp  ()
 	isnan  ()
 	
 

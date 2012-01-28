@@ -39,8 +39,9 @@ SRC     = src/assert.c         \
           src/stdio/fwrite.c   \
           src/math/abs.c       \
           src/math/fabs.c      \
-          src/math/isnan.c     \
           src/math/finite.c    \
+          src/math/isnan.c     \
+          src/math/frexp.c     \
           src/posix/errno.c
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
