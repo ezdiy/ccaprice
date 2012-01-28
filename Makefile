@@ -1,4 +1,4 @@
-CFLAGS += -O3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
+CFLAGS += -ggdb3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
 CCC     = $(CC)
 SRC     = src/assert.c         \
           src/locale.c         \
@@ -37,11 +37,13 @@ SRC     = src/assert.c         \
           src/stdio/fputc.c    \
           src/stdio/fputs.c    \
           src/stdio/fwrite.c   \
+          src/stdio/printf.c   \
           src/math/abs.c       \
           src/math/fabs.c      \
           src/math/finite.c    \
           src/math/isnan.c     \
           src/math/frexp.c     \
+          src/math/ilogb.c     \
           src/posix/errno.c
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a

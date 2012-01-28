@@ -25,100 +25,96 @@
 #include "inc/ctype.h"
 #include "inc/locale.h"
 #include "inc/math.h"
-#define STRN(X) #X
-#define EXIT(X) void exit ## X (){puts("atexit called exit"STRN(X));}
-EXIT(1) EXIT(2)
-EXIT(3) EXIT(4)
-EXIT(5) EXIT(6)
-EXIT(7) EXIT(8)
-EXIT(9) EXIT(10)
-EXIT(11) EXIT(12)
-EXIT(13) EXIT(14)
-EXIT(15) EXIT(16)
-EXIT(17) EXIT(18)
-EXIT(19) EXIT(20)
-int main(int argc, char **argv, char **argp) {
-	atexit(&exit1);atexit(&exit2);
-	atexit(&exit3);atexit(&exit4);
-	atexit(&exit5);atexit(&exit6);
-	atexit(&exit7);atexit(&exit8);
-	atexit(&exit9);atexit(&exit10);
-	atexit(&exit11);atexit(&exit12);
-	atexit(&exit13);atexit(&exit14);
-	atexit(&exit15);atexit(&exit16);
-	atexit(&exit17);atexit(&exit18);
-	atexit(&exit19);atexit(&exit20);
-	char v[255], *b = v, c;
-	puts("Hello World");
-	puts(argv[0]);
-	if (argv[1]) puts(argv[1]);
-	
-	size_t i = 0;
-	while(argp[i] != 0)
-		puts(argp[i]), i++;
-	
-	char buffer[] = "this is a buffer of data";
-	
-	char *pizzat = "pizza 2";
-	char *pizzaf = "pi 1";
-	
-	if(strstr(pizzat, "pizza"))
-		puts("pizza true pass");
-	if(strstr(pizzaf, "pizza"))
-		puts("pizza false true"); /* never print or bug!> */
-	
-	struct lconv *l = localeconv();
-	puts(ccaprice_localec->ident);
-	
-	puts("trying en_US");
-	setlocale(LC_ALL, "en_US");
-	l = localeconv();
-	puts("int_curr_symbol");
-	puts(l->int_curr_symbol);
-	
-	puts("trying NULL (system locale)");
-	setlocale(LC_ALL, NULL);
-	l = localeconv();
-	puts("int_curr_symbol");
-	puts(l->int_curr_symbol);
-	
-	int ppf = 100;
-	int vvf = 200;
-	int kkf = MAX(ppf,vvf);
-	int jjj = MIN(ppf,vvf);
-	
-	fputc(kkf, stdout);
-	
-	puts(buffer);
-	char vv = 'v';
-	char VV = toupper(vv);
-	puts("the upper is: ");
-	puts(&VV);
-	
 
-	double param, result;
-	int n;
-
-	param = 8.0;
-	result = frexp (param , &n);
-	int *vvvv = 0; *vvvv = 0;
-	
-	char *mail = getenv("MAIL");
-	puts("mail is: ");
-	puts(mail);
-	
-	while (c != '\n') {
-		read (1, &c, 1);
-		*b++ = c;
+#define TEST_DEF(NAME, CODE)                \
+	NAME##_test() {                         \
+		printf("Running test %s: ", #NAME); \
+		CODE                                \
 	}
+#define TEST_RET(CONDITIONS) return (CONDITIONS);
+#define TEST_TRY(NAME) printf("%s\n", NAME##_test()?"passed":"failed")
+
+TEST_DEF(abs, {
+	int n = abs(+23);
+	int m = abs(-11);	
+	TEST_RET(n==23&&m==11);
+})
+TEST_DEF(strstr, {
+	const char *needle = "stack";
+	const char *haystk = "data for hay stack string";
+	TEST_RET(strstr(haystk, needle));
+})
+TEST_DEF(strspn, {
+	const char *txt = "129";
+	const char *set = "1234567890";
+	TEST_RET(strspn(txt, set) == 3);
+})
+TEST_DEF(strpbrk, {
+	char        buf[10];
+	char       *ptr     = &buf[0];
+	const char *str     = "This is a sample string";
+	const char *key     = "aeiou";
+	char       *pch     = strpbrk(str, key);
+	while (pch != NULL) {
+		*ptr  = *pch;
+		 pch  = strpbrk(pch+1, key);
+		 ptr++;
+	}
+	TEST_RET(
+		buf[0] == 'i' && buf[1] == 'i' &&
+		buf[2] == 'a' && buf[3] == 'a' &&
+		buf[4] == 'e' && buf[5] == 'i'
+	);
+})
+TEST_DEF(ilogb, {
+	double f = 1024;
+	int    i = ilogb(f);
+	TEST_RET(i == 10);
+})
+
+int main(int argc, char **argv, char **argp) {
+	printf("Testing ...\n");
 	
-	FILE *fp = fopen("test.txt", "w");
-	fputs(v, fp);
-	fwrite(v, strlen(v), 1, fp);
-	fclose(fp);
+	printf("Printing all system enviroment variables\n");
+	int  i = 0;
+	while(*argp++ && *argp)
+		printf("%05d:%s\n", ++i, *argp);
+		
+	printf("Determining system laanguage ...\n");
+	char *l = getenv("LANG");
+	if (l != NULL)
+		printf("Language found: %s\n", l);
+	else {
+		printf("Failed to find language!\n");
+		l = "C";
+	}
+		
+	printf   ("Setting locale based on language %s\n", l);
+	char *t = setlocale(LC_ALL, l);
+	if (!t || strcmp(t,l) != 0)
+		printf("Failed to set language to %s, locale not implemented yet?\n", l);
+	else
+		printf("Language succesfully switched to %s\n", l);
 	
-	int *p = malloc(1090);
-	*p = 100;
+	TEST_TRY(abs);
+	TEST_TRY(strstr);
+	TEST_TRY(strspn);
+	TEST_TRY(strpbrk);
+	TEST_TRY(ilogb);
 	
+	printf("trying to print decmial value %f\n", 123.456f);
+	printf("accepting input from user ... PLEASE ENTER SOMETHING\n");
+	
+	char  buffer[1024];
+	char *bufptr = &buffer[0];
+	char  inputs;
+	while (inputs!='\n') {
+		read(1, &inputs, 1);
+		*bufptr++=inputs;
+	}
+	*bufptr--;        /* move backwards from '\0' */
+	*bufptr-- = '\0'; /* remove '\n'              */
+	printf("got input from stdin: %s\n", buffer);
+	printf("now returning from main ...\n");
 	return 0;
 }

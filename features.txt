@@ -107,6 +107,7 @@ stdio.h:
 	fputc ()
 	fputs ()
 	fwrite()
+	printf() [incompleted! only supports a few things]
 	
 stdlib.h:
 	EXIT_SUCCESS
@@ -147,6 +148,7 @@ math.h:
 	fabs   ()
 	finite ()
 	frexp  ()
+	ilogb  ()
 	isnan  ()
 	
 

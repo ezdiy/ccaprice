@@ -50,5 +50,6 @@ CCAPRICE_EXPORT int    fputs (const char *, FILE*);
 CCAPRICE_EXPORT size_t fwrite(const void *, size_t, size_t, FILE*);
 CCAPRICE_EXPORT int    fputs (const char *, FILE*);
 CCAPRICE_EXPORT int    puts  (const char*);
+CCAPRICE_EXPORT int    printf(const char *, ...);
 
 #endif /* !CCAPRICE_STDIO_HDR      */

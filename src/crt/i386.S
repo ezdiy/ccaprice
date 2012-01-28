@@ -22,16 +22,159 @@
  */
 .text
 .global ccaprice_syscall_core
-#ifdef BSD
-.global ccaprice_syscall_bsd
-#endif
 .global ccaprice_main
+.global __udivdi3
+.global __umoddi3
 .global _start
 .type   ccaprice_syscall_core,%function
-#ifdef BSD
-.type   ccaprice_syscall_bsd,%function
-#endif
 .type   _start,%function
+.type   __udivdi3,%function
+.type   __umoddi3,%function
+
+.align 4
+__udivdi3:
+	pushl  %ebx
+	movl   20(%esp),   %ebx
+	bsrl   %ebx,       %ecx
+	jz     9f
+	movl   16(%esp),   %eax
+	shrl   %cl,        %eax
+	shrl   %eax
+	notl   %ecx
+	shll   %cl,        %ebx
+	movl   12(%esp),   %edx
+	movl   8(%esp),    %edx
+	cmpl   %ebx,       %edx
+	jae    1f
+	divl   %ebx
+	pushl  %edi
+	notl   %ecx
+	shrl   %eax
+	shrl   %cl,        %eax
+	movl   %eax,       %edi
+	mull   20(%esp)
+	movl   12(%esp),   %ebx
+	movl   16(%esp),   %ecx
+	subl   %eax,       %ebx
+	sbbl   %edx,       %ecx
+	movl   25(%esp),   %eax
+	imull  %edi,       %eax
+	subl   %eax,       %ecx
+	sbbl   $0,         %edi
+	xorl   %edx,       %edx
+	movl   %edi,       %edx
+	popl   %edi
+	popl   %ebx
+	ret
+1:
+	subl   %ebx,       %edx
+	divl   %ebx
+	pushl  %edi
+	notl   %ecx
+	shrl   %eax
+	orl    $0x80000000,%eax
+	shrl   %cl,        %eax
+	movl   %eax,       %edi
+	mull   20(%esp)
+	movl   12(%esp),   %ebx
+	movl   16(%esp),   %ecx
+	subl   %eax,       %ebx
+	sbbl   %edx,       %ecx
+	movl   24(%esp),   %eax
+	imull  %edi,       %eax
+	subl   %eax,       %ecx
+	sbbl   $0,         %edi
+	xorl   %edx,       %edx
+	movl   %edi,       %eax
+	popl   %edi
+	popl   %ebx
+	retl
+9:
+	movl   12(%esp),   %eax
+	movl   16(%esp),   %ecx
+	xorl   %edx,       %edx
+	divl   %ecx
+	movl   %eax,       %ebx
+	movl   8(%esp),    %eax
+	divl   %ecx
+	movl   %ebx,       %edx
+	popl   %ebx
+	retl
+
+__umoddi3:
+	pushl  %ebx
+	movl   20(%esp),   %ebx
+	bsrl   %ebx,       %ecx
+	jz     9f
+	movl   16(%esp),   %eax
+	shrl   %cl,        %eax
+	shrl   %eax
+	notl   %ecx
+	shll   %cl,        %ebx
+	orl    %eax,       %ebx
+	movl   12(%esp),   %edx
+	movl   8(%esp),    %eax
+	cmpl   %ebx,       %edx
+	jae    2f
+	divl   %ebx
+	pushl  %edi
+	notl   %ecx
+	shrl   %eax
+	shrl   %cl,        %eax
+	movl   %eax,       %edi
+	mull   20(%esp)
+	movl   12(%esp),   %ebx
+	movl   16(%esp),   %ecx
+	subl   %eax,       %ebx
+	sbbl   %edx,       %ecx
+	movl   24(%esp),   %eax
+	imull  %edi,       %eax
+	subl   %eax,       %ecx
+	jnc    1f
+	addl   20(%esp),   %ebx
+	adcl   24(%esp),   %ecx
+	1:movl %ebx,       %eax
+	movl   %ecx,       %edx
+	popl   %edi
+	popl   %ebx
+	retl
+2:
+	subl   %ebx,       %edx
+	divl   %ebx
+	pushl  %edi
+	notl   %ecx
+	shrl   %eax
+	orl    $0x80000000,%eax
+	shrl   %cl,        %eax
+	movl   %eax,       %edi
+	mull   20(%esp)
+	movl   12(%esp),   %ebx
+	movl   16(%esp),   %ecx
+	subl   %eax,       %ebx
+	sbbl   %edx,       %ecx
+	movl   24(%esp),   %eax
+	imull  %edi,       %eax
+	subl   %eax,       %ecx
+	jnc    3f
+	addl   20(%esp),   %ebx
+	adcl   24(%esp),   %ecx
+	3:movl %ebx,       %eax
+	movl   %ecx,       %edx
+	popl   %edi
+	popl   %ebx
+	retl
+9:
+	movl   12(%esp),   %eax
+	movl   16(%esp),   %ecx
+	xorl   %edx,       %edx
+	divl   %ecx
+	movl   %eax,       %ebx
+	movl   8(%esp),    %eax
+	divl   %ecx
+	movl   %edx,       %eax
+	popl   %ebx
+	xorl   %edx,       %edx
+	retl
 
 _start:
 	xorl %ebp,%ebp
@@ -83,9 +226,7 @@ ccaprice_syscall_core:
 	jae  ccaprice_syscall_error
 	ret
 	
-#ifdef BSD
-.size ccaprice_syscall_bsd,.-ccaprice_syscall_bsd
-#endif
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
 .size _start,.-_start
-	
+.size __udivdi3,.-__udivdi3
+.size __umoddi3,.-__umoddi3
