@@ -26,6 +26,10 @@
 .global __udivdi3
 .global __umoddi3
 .global _start
+#ifdef BSD
+.global ccaprice_syscall_bsd
+.type   ccaprice_syscall_bsd,%function
+#endif
 .type   ccaprice_syscall_core,%function
 .type   _start,%function
 .type   __udivdi3,%function
@@ -225,7 +229,10 @@ ccaprice_syscall_core:
 	cmpl $-4095,%eax
 	jae  ccaprice_syscall_error
 	ret
-	
+
+#ifdef BSD
+.size ccaprice_syscall_bsd,.-ccaprice_syscall_bsd
+#endif
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
 .size _start,.-_start
 .size __udivdi3,.-__udivdi3
