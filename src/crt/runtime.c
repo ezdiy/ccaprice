@@ -28,8 +28,8 @@
 
 /* In [arch].S */
 CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
-
 #ifdef BSD
+	CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_bsd, (int, ...));
 	#define SYS_BRK SYS_break
 #else
 	#define SYS_BRK SYS_brk
