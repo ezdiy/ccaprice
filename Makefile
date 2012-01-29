@@ -56,7 +56,11 @@ else
 ifneq (,$(findstring -DCCAPRICE_TARGET_X86,$(CFLAGS)))
 ASM     = src/crt/i386.S
 CFLAGS += -m32
-AFLAGS  = -m32
+ifeq ($(shell uname), FreeBSD)
+	AFLAGS  = -m32 -DBSD
+else
+	AFLAGS  = -m32
+endif
 endif
 endif
 
