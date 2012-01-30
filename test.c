@@ -71,6 +71,11 @@ TEST_DEF(ilogb, {
 	int    i = ilogb(f);
 	TEST_RET(i == 10);
 })
+TEST_DEF(ceil, {
+	double f = 1024.654f;
+	double t = ceil(1024);
+	TEST_RET(t == 1024);
+});
 
 int main(int argc, char **argv, char **argp) {
 	printf("Testing ...\n");
@@ -101,6 +106,7 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(strspn);
 	TEST_TRY(strpbrk);
 	TEST_TRY(ilogb);
+	TEST_TRY(ceil);
 	
 	printf("trying to print decmial value %f\n", 123.456f);
 	printf("accepting input from user ... PLEASE ENTER SOMETHING\n");

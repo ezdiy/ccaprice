@@ -30,25 +30,57 @@
  * SOFTWARE.
  */
 #include "inc/math.h"
-#include "inc/errno.h"
-int ilogb(double x) {
-	if (x == 0) {
-		errno = EDOM;
-		return FP_ILOGB0;
-	}
+double ceil(double x) {
+	unsigned i,j;
 	
-	int ix = 0;
-	int hx = CCAPRICE_MATH_HI_L(x)&0x7FFFFFFF;
-	int lx = CCAPRICE_MATH_LO_L(x);
+	int x_hi = CCAPRICE_MATH_HI_L(x);
+	int x_lo = CCAPRICE_MATH_LO_L(x);
+	int iter = ((x_hi >> 20) & 0x7FF) - 0x3FF;
 	
-	if(hx<0x00100000) {
-		if((hx|lx)==0) 
-			return 0x80000001;
-		else {
-			if(hx==0) for (ix=-1043;        lx>0;lx<<=1) ix--;
-			else      for (ix=-1022,hx<<=11;hx>0;hx<<=1) ix--;
-			return ix;
+	if (iter < 20) {
+		if (iter < 0) {
+			if (1.0e300+x > 0.0) {
+				if (x_hi < 0)
+					x_hi = 0x80000000, x_lo = 0; 
+				else if ((x_hi|x_lo) != 0)
+					x_hi = 0x3ff00000, x_lo = 0;
+			}
+		} else {
+			i = (0x000FFFFF) >> iter;
+			
+			if (((x_hi&i)|x_lo)==0)
+				return x;
+				
+			if(1.0e300+x > 0.0) {	/* raise inexact flag */
+				if(x_hi > 0)
+					x_hi += (0x00100000) >> iter;
+				x_hi &= (~i);
+				x_lo  =  0;
+			}
 		}
 	}
-	return (hx<0x7FF00000) ? (hx>>20)-1023 : 0x7FFFFFFF;
+	else if (iter > 51)
+		return (iter == 0x400) ? x+x : x;
+	else {
+		i = ((unsigned)(0xFFFFFFFF)) >> (iter - 20);
+		
+		if ((x_lo&i) == 0)
+			return x;
+			
+		if (1.0e300+x > 0.0) {
+			if (x_hi > 0) {
+				if (iter == 20) x_hi++; 
+				else {
+					j = x_lo + (1 << (52 - iter));
+					if (j < x_lo)
+						x_hi ++;
+					x_lo = j;
+				}
+			}
+			x_lo &= (~i);
+		}
+	}
+	CCAPRICE_MATH_HI_L(x) = x_hi;
+	CCAPRICE_MATH_LO_L(x) = x_lo;
+	return x;
 }

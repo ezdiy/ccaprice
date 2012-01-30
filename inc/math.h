@@ -35,7 +35,13 @@
 	#define CCAPRICE_MATH_LO_P(X) *(1+((int*) (X)))
 #endif /* !CCAPRICE_TARGET_X86 */
 
+#if defined(CCAPRICE_TARGET_X86) || defined(CCAPRICE_TARGET_X86_64)
+	#define FP_ILOGB0      (-2147483647 - 1)
+	#define FP_ILOGBNAN    (-2147483647 - 1)
+#endif
+
 CCAPRICE_EXPORT int    abs   (int);
+CCAPRICE_EXPORT double ceil  (double);
 CCAPRICE_EXPORT double fabs  (double);
 CCAPRICE_EXPORT int    finite(double);
 CCAPRICE_EXPORT double frexp (double, int*);
