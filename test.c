@@ -76,6 +76,10 @@ TEST_DEF(ceil, {
 	double t = ceil(1024);
 	TEST_RET(t == 1024);
 });
+TEST_DEF(floor, {
+	double b = floor(3.8);
+	TEST_RET(b == 3.0);
+});
 
 int main(int argc, char **argv, char **argp) {
 	printf("Testing ...\n");
@@ -107,6 +111,7 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(strpbrk);
 	TEST_TRY(ilogb);
 	TEST_TRY(ceil);
+	TEST_TRY(floor);
 	
 	printf("trying to print decmial value %f\n", 123.456f);
 	printf("accepting input from user ... PLEASE ENTER SOMETHING\n");

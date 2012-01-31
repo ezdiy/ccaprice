@@ -43,7 +43,7 @@ double ceil(double x) {
 				if (x_hi < 0)
 					x_hi = 0x80000000, x_lo = 0; 
 				else if ((x_hi|x_lo) != 0)
-					x_hi = 0x3ff00000, x_lo = 0;
+					x_hi = 0x3FF00000, x_lo = 0;
 			}
 		} else {
 			i = (0x000FFFFF) >> iter;

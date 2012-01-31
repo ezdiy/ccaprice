@@ -148,6 +148,7 @@ math.h:
 	ceil   ()
 	fabs   ()
 	finite ()
+	floor  ()
 	frexp  ()
 	ilogb  ()
 	isnan  ()

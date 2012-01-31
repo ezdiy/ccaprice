@@ -44,6 +44,7 @@ CCAPRICE_EXPORT int    abs   (int);
 CCAPRICE_EXPORT double ceil  (double);
 CCAPRICE_EXPORT double fabs  (double);
 CCAPRICE_EXPORT int    finite(double);
+CCAPRICE_EXPORT double floor (double);
 CCAPRICE_EXPORT double frexp (double, int*);
 CCAPRICE_EXPORT int    ilogb (double);
 CCAPRICE_EXPORT int    isnan (double);
