@@ -65,15 +65,14 @@ int printf(const char *format, ...) {
 			case '%': fputc('%',                stdout); break;
 			case 'c': fputc(va_arg(ap, int)   , stdout); break;
 			case 's': fputs(va_arg(ap, char *), stdout); break;
-			case 'x': radix     = 16;
-			case 'u': is_signed = 00;
 			case 'f': ;
 				double f = va_arg(ap, double);
 				int   ip =  (int)f;
 				int   dp = ((int)(f*1000)%1000); // 3 decmials only
 				printf("%d.%d", ip, dp);
 				break; 
-				
+			case 'x': radix     = 16;
+			case 'u': is_signed = 00;
 			case 'd': ;
 				uint64_t x = (is_signed) ? (
 						(ll == 0)?(va_arg(ap, int               )) : (
