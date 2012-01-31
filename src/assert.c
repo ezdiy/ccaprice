@@ -25,6 +25,7 @@
 
 void ccaprice_assert(const char *file, int line, int expr) {
 	if (!expr) {
+		printf("assertion failed: %s on line %d\n", file, line);
 		abort();
 	}
 }
