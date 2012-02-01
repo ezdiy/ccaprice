@@ -66,20 +66,10 @@ TEST_DEF(strpbrk, {
 		buf[4] == 'e' && buf[5] == 'i'
 	);
 })
-TEST_DEF(ilogb, {
-	double f = 1024;
-	int    i = ilogb(f);
-	TEST_RET(i == 10);
-})
-TEST_DEF(ceil, {
-	double f = 1024.654f;
-	double t = ceil(1024);
-	TEST_RET(t == 1024);
-});
-TEST_DEF(floor, {
-	double b = floor(3.8);
-	TEST_RET(b == 3.0);
-});
+TEST_DEF(ilogb, { TEST_RET(ilogb(1024) == 10  ); })
+TEST_DEF(ceil , { TEST_RET(ceil (1024) == 1024); })
+TEST_DEF(floor, { TEST_RET(floor(3.8)  == 03.0); })
+TEST_DEF(atan , { TEST_RET(floor(atan (1.0)*180/3.14159265) == 45.0); })
 
 int main(int argc, char **argv, char **argp) {
 	printf("Testing ...\n");
@@ -112,6 +102,7 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(ilogb);
 	TEST_TRY(ceil);
 	TEST_TRY(floor);
+	TEST_TRY(atan);
 	
 	printf("trying to print decmial value %f\n", 123.456f);
 	printf("accepting input from user ... PLEASE ENTER SOMETHING\n");

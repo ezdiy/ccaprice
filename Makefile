@@ -39,6 +39,7 @@ SRC     = src/assert.c         \
           src/stdio/fwrite.c   \
           src/stdio/printf.c   \
           src/math/abs.c       \
+          src/math/atan.c      \
           src/math/ceil.c      \
           src/math/floor.c     \
           src/math/fabs.c      \

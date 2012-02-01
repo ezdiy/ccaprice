@@ -145,6 +145,7 @@ string.h:
 	
 math.h:
 	abs    () [branchless]
+	atan   ()
 	ceil   ()
 	fabs   ()
 	finite ()

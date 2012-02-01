@@ -41,6 +41,7 @@
 #endif
 
 CCAPRICE_EXPORT int    abs   (int);
+CCAPRICE_EXPORT double atan  (double);
 CCAPRICE_EXPORT double ceil  (double);
 CCAPRICE_EXPORT double fabs  (double);
 CCAPRICE_EXPORT int    finite(double);
