@@ -69,7 +69,7 @@ TEST_DEF(strpbrk, {
 TEST_DEF(ilogb, { TEST_RET(ilogb(1024) == 10  ); })
 TEST_DEF(ceil , { TEST_RET(ceil (1024) == 1024); })
 TEST_DEF(floor, { TEST_RET(floor(3.8)  == 03.0); })
-TEST_DEF(atan , { TEST_RET(floor(atan (1.0)*180/3.14159265) == 45.0); })
+TEST_DEF(atan , { TEST_RET(floor(atan (1.0)*180/M_PI) == 45.0); })
 
 int main(int argc, char **argv, char **argp) {
 	printf("Testing ...\n");
@@ -79,7 +79,7 @@ int main(int argc, char **argv, char **argp) {
 	while(*argp++ && *argp)
 		printf("%05d:%s\n", ++i, *argp);
 		
-	printf("Determining system laanguage ...\n");
+	printf("Determining system language ...\n");
 	char *l = getenv("LANG");
 	if (l != NULL)
 		printf("Language found: %s\n", l);

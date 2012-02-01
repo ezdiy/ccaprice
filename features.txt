@@ -144,6 +144,15 @@ string.h:
 	ststr  ()
 	
 math.h:
+	FP_ILOGB0
+	FP_ILOGBNAN
+	M_1_PI
+	M_2_PI
+	M_E
+	M_EULER
+	M_PI
+	M_PI_2
+	M_PI_4
 	abs    () [branchless]
 	atan   ()
 	ceil   ()

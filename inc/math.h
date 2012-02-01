@@ -40,6 +40,15 @@
 	#define FP_ILOGBNAN    (-2147483647 - 1)
 #endif
 
+/* Math constants */
+#define M_1_PI  (0.3183098861837907)
+#define M_2_PI  (0.6366197723675814)
+#define M_E     (2.7182818284590450)
+#define M_EULER (0.5772156649015329)
+#define M_PI    (3.1415926535897932)
+#define M_PI_2  (1.5707963267948966)
+#define M_PI_4  (0.7853981633974483)
+
 CCAPRICE_EXPORT int    abs   (int);
 CCAPRICE_EXPORT double atan  (double);
 CCAPRICE_EXPORT double ceil  (double);
