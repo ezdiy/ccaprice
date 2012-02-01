@@ -22,7 +22,7 @@
  */
 #ifndef  CCAPRICE_STRING_HDR
 #define  CCAPRICE_STRING_HDR
-#include "inc/ccaprice.h"
+#include "ccaprice.h"
 #include "stddef.h"    /* size_t */
 
 /* Copying */

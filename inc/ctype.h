@@ -51,8 +51,7 @@ typedef struct {
  * The macros below need access to an external global
  * ccaprice_localec locale object. thus the include.
  */
-#include "inc/locale.h"
-
+#include "locale.h"
 /*
  * I'm sure these can be made into functions but macros
  * are fine for now. Also I don't think the C standard
