@@ -23,7 +23,7 @@
 #include "inc/signal.h"
 #include "inc/errno.h"
 #include "src/crt/runtime.h"
-
+#include "inc/posix/errno.h"
 int raise(int sig) {
 	/*
 	 * Validate sig is a valid signal if it's not

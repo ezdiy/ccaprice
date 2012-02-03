@@ -23,7 +23,30 @@
 #ifndef CCAPRICE_LOCALE_HDR
 #define CCAPRICE_LOCALE_HDR
 #include "ccaprice.h"
-#include "inc/ctype.h"
+/*
+ * Standard says these need to be locale conformant
+ * We'll use a structure to define the ctype locale
+ * data.
+ * 
+ * Note: The only implemented locale is the default
+ * C locale, future locales will come when required.
+ */
+typedef struct {
+	int (*fn_isalnum) (int);
+	int (*fn_isalpha) (int);
+	int (*fn_iscntrl) (int);
+	int (*fn_isdigit) (int);
+	int (*fn_isgraph) (int);
+	int (*fn_islower) (int);
+	int (*fn_isprint) (int);
+	int (*fn_ispunct) (int);
+	int (*fn_isspace) (int);
+	int (*fn_isupper) (int);
+	int (*fn_isxdigit)(int);
+	int (*fn_tolower) (int);
+	int (*fn_toupper) (int);
+} ccaprice_ctypes_t;
+
 /*
  * Increase this number if more locales are ever required
  * There is a high probability this number will have to be
@@ -99,13 +122,16 @@ typedef struct lconv {
 	 char  n_sign_posn;
 } ccaprice_locale_c;
 
+/*
+ * The order of data inside this structure matters:
+ * 	infact changing the ordering of this will break
+ * 	all ctype code.  As well as all locale code.
+ */
 typedef struct {
 	ccaprice_ctypes_t  ctype;
 	struct lconv       lconv;
 	const char        *ident; /* Name of the locale    */
 } ccaprice_locale_t;
-
-CCAPRICE_EXPORT ccaprice_locale_t* ccaprice_localec;
 
 CCAPRICE_EXPORT struct lconv *localeconv();
 CCAPRICE_EXPORT char         *setlocale (int, const char*);

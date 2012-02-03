@@ -23,6 +23,7 @@
 #include "inc/string.h"
 #include "inc/stdlib.h"
 #include "inc/errno.h"
+#include "inc/posix/errno.h"
 char *strdup(const char *s) {
 	if (!s) return NULL;
 	

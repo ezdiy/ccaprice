@@ -22,7 +22,7 @@
  */
 #include "inc/string.h"
 #include "inc/errno.h"
-
+#include "inc/posix/errno.h"
 /* Internal Imports */
 CCAPRICE_INTERNAL_TYPE(void*,ccaprice_runtime_curbrk); 
 CCAPRICE_INTERNAL_FUNC(int,  ccaprice_runtime_brk, (void*));

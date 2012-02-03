@@ -23,8 +23,6 @@
 #ifndef CCAPRICE_ERRNO_HDR
 #define CCAPRICE_ERRNO_HDR
 #include "ccaprice.h"
-#include "inc/posix/errno.h"
-
 /*
  * errno is a macro that expands to (*ccaprice_posix_errno)
  * the macro is defined in <inc/posix/errno.h>.  The pointer

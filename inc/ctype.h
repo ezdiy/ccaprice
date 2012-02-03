@@ -24,53 +24,25 @@
 #define CCAPRICE_CTYPE_HDR
 #include "ccaprice.h"
 /*
- * Standard says these need to be locale conformant
- * We'll use a structure to define the ctype locale
- * data.
- * 
- * Note: The only implemented locale is the default
- * C locale, future locales will come when required.
- */
-typedef struct {
-	int (*fn_isalnum) (int);
-	int (*fn_isalpha) (int);
-	int (*fn_iscntrl) (int);
-	int (*fn_isdigit) (int);
-	int (*fn_isgraph) (int);
-	int (*fn_islower) (int);
-	int (*fn_isprint) (int);
-	int (*fn_ispunct) (int);
-	int (*fn_isspace) (int);
-	int (*fn_isupper) (int);
-	int (*fn_isxdigit)(int);
-	int (*fn_tolower) (int);
-	int (*fn_toupper) (int);
-} ccaprice_ctypes_t;
-
-/*
- * The macros below need access to an external global
- * ccaprice_localec locale object. thus the include.
- */
-#include "locale.h"
-/*
  * I'm sure these can be made into functions but macros
  * are fine for now. Also I don't think the C standard
  * says anything about these not being allowed to be a
  * macro.  None the less this is applicable enough for
  * now.
  */
-#define isalnum(X)  (ccaprice_localec->ctype.fn_isalnum (X))
-#define isalpha(X)  (ccaprice_localec->ctype.fn_isalpha (X))
-#define iscntrl(X)  (ccaprice_localec->ctype.fn_iscntrl (X))
-#define isdigit(X)  (ccaprice_localec->ctype.fn_iscntrl (X))
-#define isgraph(X)  (ccaprice_localec->ctype.fn_isgraph (X))
-#define islower(X)  (ccaprice_localec->ctype.fn_islower (X))
-#define isprint(X)  (ccaprice_localec->ctype.fn_isprint (X))
-#define ispunct(X)  (ccaprice_localec->ctype.fn_isprint (X))
-#define isspace(X)  (ccaprice_localec->ctype.fn_isspace (X))
-#define isupper(X)  (ccaprice_localec->ctype.fn_isupper (X))
-#define isxdigit(X) (ccaprice_localec->ctype.fn_isxdigit(X))
-#define tolower(X)  (ccaprice_localec->ctype.fn_tolower (X))
-#define toupper(X)  (ccaprice_localec->ctype.fn_toupper (X))
+CCAPRICE_INTERNAL_TYPE(void *, ccaprice_localep); /* to ccaprice_localec */
+#define isalnum(X)  ((*((int(**)(int))ccaprice_localep+0 ))(X)) // 4  -- 8
+#define isalpha(X)  ((*((int(**)(int))ccaprice_localep+1 ))(X)) // 8  -- 16
+#define iscntrl(X)  ((*((int(**)(int))ccaprice_localep+2 ))(X)) // 16 -- 24
+#define isdigit(X)  ((*((int(**)(int))ccaprice_localep+3 ))(X)) // 20 -- 32
+#define isgraph(X)  ((*((int(**)(int))ccaprice_localep+4 ))(X)) // 24 -- 40
+#define islower(X)  ((*((int(**)(int))ccaprice_localep+5 ))(X)) // 28 -- 48
+#define isprint(X)  ((*((int(**)(int))ccaprice_localep+6 ))(X)) // 32 -- 56
+#define ispunct(X)  ((*((int(**)(int))ccaprice_localep+7 ))(X)) // 36 -- 
+#define isspace(X)  ((*((int(**)(int))ccaprice_localep+8 ))(X)) // 40
+#define isupper(X)  ((*((int(**)(int))ccaprice_localep+9 ))(X)) // 44
+#define isxdigit(X) ((*((int(**)(int))ccaprice_localep+10))(X)) // 48
+#define tolower(X)  ((*((int(**)(int))ccaprice_localep+11))(X)) // 52
+#define toupper(X)  ((*((int(**)(int))ccaprice_localep+12))(X)) // 54
 
 #endif

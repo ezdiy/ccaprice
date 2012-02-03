@@ -31,6 +31,7 @@
  */
 #include "inc/math.h"
 #include "inc/errno.h"
+#include "inc/posix/errno.h"
 int ilogb(double x) {
 	if (x == 0) {
 		errno = EDOM;

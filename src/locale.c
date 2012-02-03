@@ -23,8 +23,8 @@
 #include "inc/locale.h"
 #include "inc/string.h"
 #include "inc/stdlib.h"
-
 ccaprice_locale_t *ccaprice_localec;                      /* Current Selected Locale */
+void              *ccaprice_localep;                      /* Void version of above   */
 ssize_t            ccaprice_locales = 0;                  /* Location in locales     */
 ccaprice_locale_t  ccaprice_localed[CCAPRICE_LOCALE_MAX]; /* Array of Locales        */
 
@@ -144,6 +144,7 @@ void ccaprice_locale_init() {
 	 * locale, DO NOT TOUCH.
 	 */
 	ccaprice_localec = &ccaprice_localed[0];
+	ccaprice_localep = ccaprice_localec;
 }
 
 /*
