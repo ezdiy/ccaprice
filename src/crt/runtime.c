@@ -95,7 +95,7 @@ int ccaprice_runtime_brk(void *address) {
 	return (vfbrk < address)?-1:0;
 }
 #endif
-void* ccaprice_malloc_sbrk(size_t byte) {
+void* ccaprice_runtime_sbrk(size_t byte) {
 	#ifndef BSD
 	void *old;
 	
