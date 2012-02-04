@@ -27,7 +27,7 @@
 CCAPRICE_INTERNAL_TYPE(void*,ccaprice_runtime_curbrk); 
 CCAPRICE_INTERNAL_FUNC(int,  ccaprice_runtime_brk, (void*));
 #ifdef BSD
-CCAPRICE_INTERNAL_TYPE(int,  ccaprice_syscall_sbrk, (char*));
+CCAPRICE_INTERNAL_FUNC(int,  ccaprice_syscall_sbrk, (char*));
 #endif
 
 /* cheap slow and nasty malloc implementation */
