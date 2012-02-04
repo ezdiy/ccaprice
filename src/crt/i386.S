@@ -27,7 +27,8 @@
 .global __umoddi3
 .global _start
 #ifdef BSD
-.gloval ccaprice_curbrk
+#include <sys/syscall.h>
+.global ccaprice_curbrk
 .global ccaprice_minbrk
 .global ccaprice_syscall_bsd
 .global ccaprice_syscall_brk
