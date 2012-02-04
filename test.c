@@ -26,20 +26,20 @@
 #include "inc/locale.h"
 #include "inc/math.h"
 
-#define PADD 40
+#define PADD 80
 #define TEST_DEF(NAME, CODE)                  \
 	NAME##_test() {                           \
 	    char  c[]= {                          \
-			"Running test " #NAME ":"         \
-		};                                    \
-		fwrite(c, strlen(c), 1, stdout);      \
-		fflush(stdout);                       \
-		size_t l=PADD-strlen(c);              \
-		while (l-->0) { fputc(' ', stdout); } \
-		CODE                                  \
+	        "Running test " #NAME ":"         \
+	    };                                    \
+	    fwrite(c, strlen(c), 1, stdout);      \
+	    fflush(stdout);                       \
+	    size_t l=PADD-strlen(c);              \
+	    while (l-->0) { fputc(' ', stdout); } \
+	    CODE                                  \
 	}
 #define TEST_RET(CONDITIONS) return (CONDITIONS);
-#define TEST_TRY(NAME) printf("%s\n", NAME##_test()?"passed":"failed")
+#define TEST_TRY(NAME) printf("%s\n", NAME##_test()?"\033[32mpassed\033[0m":"\033[31mfailed\033[0m")
 
 TEST_DEF(abs, {
 	int n = abs(+23);
