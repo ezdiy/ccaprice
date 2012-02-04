@@ -60,10 +60,12 @@ FILE *fopen(const char *file, const char *mode) {
 		flags |= O_LARGEFILE;
 	#endif
 	
-	FILE *fp       = &ccaprice_stdio_file_dat[++ccaprice_stdio_file_pos];
+	FILE *fp       = &ccaprice_stdio_file_dat[ccaprice_stdio_file_pos];
 	fp->fd         = open(file, flags);
 	fp->buffer_pos = 0;
 	fp->eof        = 0;
 	fp->err        = 0;
+	
+	ccaprice_stdio_file_pos ++;
 	return fp;
 }

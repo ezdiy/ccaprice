@@ -26,10 +26,17 @@
 #include "inc/locale.h"
 #include "inc/math.h"
 
-#define TEST_DEF(NAME, CODE)                \
-	NAME##_test() {                         \
-		printf("Running test %s: ", #NAME); \
-		CODE                                \
+#define PADD 40
+#define TEST_DEF(NAME, CODE)                  \
+	NAME##_test() {                           \
+	    char  c[]= {                          \
+			"Running test " #NAME ":"         \
+		};                                    \
+		fwrite(c, strlen(c), 1, stdout);      \
+		fflush(stdout);                       \
+		size_t l=PADD-strlen(c);              \
+		while (l-->0) { fputc(' ', stdout); } \
+		CODE                                  \
 	}
 #define TEST_RET(CONDITIONS) return (CONDITIONS);
 #define TEST_TRY(NAME) printf("%s\n", NAME##_test()?"passed":"failed")
@@ -66,12 +73,18 @@ TEST_DEF(strpbrk, {
 		buf[4] == 'e' && buf[5] == 'i'
 	);
 })
+TEST_DEF(file, {
+	FILE  *fp = fopen("Output", "w"); 
+	fputs("Output", fp);
+	TEST_RET(!fclose(fp));
+})
 TEST_DEF(ilogb  ,  { TEST_RET(ilogb(1024) == 10  ); })
 TEST_DEF(ceil   ,  { TEST_RET(ceil (1024) == 1024); })
 TEST_DEF(floor  ,  { TEST_RET(floor(3.8)  == 03.0); })
 TEST_DEF(atan   ,  { TEST_RET(floor(atan (1.0)*180/M_PI) == 45.0); })
 TEST_DEF(toupper,  { TEST_RET(toupper('a') == 'A'); })
 TEST_DEF(tolower,  { TEST_RET(tolower('A') == 'a'); })
+TEST_DEF(remove ,  { TEST_RET(!remove("Output"));   })
 
 int main(int argc, char **argv, char **argp) {
 	printf("Testing ...\n");
@@ -107,6 +120,8 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(atan);
 	TEST_TRY(toupper);
 	TEST_TRY(tolower);
+	TEST_TRY(file);
+	TEST_TRY(remove);
 	
 	printf("trying to print decmial value %f\n", 123.456f);
 	printf("accepting input from user ... PLEASE ENTER SOMETHING\n");

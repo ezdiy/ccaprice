@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/errno.h"
+#include "inc/posix/errno.h"
 static const char *ccaprice_strerror[] = {
 	[E2BIG]           = "Argument list too long",
 	[EACCES]          = "Permission denied",
