@@ -48,8 +48,9 @@ CCAPRICE_EXPORT size_t  strcspn(const char*, const char*);
 CCAPRICE_EXPORT size_t  strspn (const char*, const char*);
 
 /* Others */
-CCAPRICE_EXPORT void   *memset (void *, int, register size_t);
-CCAPRICE_EXPORT size_t  strlen (const char*);
+CCAPRICE_EXPORT char   *strerror(int);
+CCAPRICE_EXPORT void   *memset  (void *, int, register size_t);
+CCAPRICE_EXPORT size_t  strlen  (const char*);
 
 
 /*

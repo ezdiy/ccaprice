@@ -125,23 +125,24 @@ stdlib.h:
 	srand  () [SSE2/naive]
 	
 string.h:
-	memchr () [SSE2/naive]
-	memcmp ()
-	memcpy () [OPT/naive]
-	memmove()
-	memset ()
-	strcat ()
-	strchr ()
-	strcmp ()
-	strcspn()
-	strdup ()
-	strlen () [SSE2/GPR/naive]
-	strncat()
-	strncmp()
-	strncpy()
-	strpbrk()
-	strspn ()
-	ststr  ()
+	memchr  () [SSE2/naive]
+	memcmp  ()
+	memcpy  () [OPT/naive]
+	memmove ()
+	memset  ()
+	strcat  ()
+	strchr  ()
+	strcmp  ()
+	strcspn ()
+	strdup  ()
+	strerror()
+	strlen  () [SSE2/GPR/naive]
+	strncat ()
+	strncmp ()
+	strncpy ()
+	strpbrk ()
+	strspn  ()
+	ststr   ()
 	
 math.h:
 	FP_ILOGB0

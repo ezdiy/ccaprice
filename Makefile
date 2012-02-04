@@ -19,6 +19,7 @@ SRC     = src/assert.c         \
           src/string/strncmp.c \
           src/string/strncpy.c \
           src/string/strdup.c  \
+          src/string/strerror.c\
           src/string/strpbrk.c \
           src/string/strspn.c  \
           src/string/strstr.c  \
