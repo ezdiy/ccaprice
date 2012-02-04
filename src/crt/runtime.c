@@ -84,7 +84,7 @@ void *ccaprice_curbrk = NULL; /* assembly needs these */
 void *ccaprice_minbrk = NULL; /* assembly needs these */
 int ccaprice_runtime_brk(void *address) {
 	CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_brk, (void *));
-	ccaprice_syscall_brk(address);
+	ccaprice_syscall_brk((unsigned long)address);
 	
 	ccaprice_runtime_curbrk = ccaprice_curbrk;
 	return (ccaprice_curbrk < address)?-1:0;
