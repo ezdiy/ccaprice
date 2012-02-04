@@ -1,0 +1,102 @@
+body {
+	background:     #ffffff;
+	color:          #000000;
+	border-width:   20px;
+	border-color:   #E56717;
+	border-style:   solid;
+	margin:         0 0 0 0;
+	padding:        0 0 0 0;
+	font-family:    Calibri, arial, sans;
+	font-size:      100%;
+}
+#body {
+	float:          left;
+	font-size:      90%;
+	padding-right:  8px;
+}
+#body H2 {
+	font-size:      100%;
+	margin-bottom:  5px;
+}
+#body H3 {
+	color:           #441144;
+	font-size:       90%;
+	margin-bottom:   1px;
+	font-family:     Terminus, Monospace, Courier New;
+}
+#menu {
+	background:      #eeeeee;
+	width:           100%;
+	float:           left;
+	border-bottom:   1px solid #afbfbf;
+	padding-top:     3px;
+	padding-bottom:  3px;
+	padding-left:    0px;
+	padding-right:   0;
+	font-size:       90%;
+}
+#menu a {
+	color:           #0000ff;
+	text-decoration: none;
+	padding-right:   8px;
+	padding-left:    8px;
+}
+#menu a:hover {
+	text-decoration: underline;
+}
+#current {
+	font-weight:     bold;
+	font-size:       100%;
+}
+#console {
+	font-family:     Terminus, Monospace, Courier New;
+	font-size:       90%;
+}
+#console PRE {
+	background:      #f7f7f7;
+	border:          1px solid #d7d7d7;
+	margin:          1em 1.75em;
+	padding:         .25em;
+	overflow:        auto;
+	float:           left;
+	width:           768px;
+	font-family:     Terminus, Monospace, Courier New;
+	font-size:       100%;
+	margin:          0;
+	margin-bottom:   15px;
+}
+#align {
+	display:         block;
+	padding-left:    15px;
+	text-indent:    -15px;
+	font-family:     Terminus, Monospace, Courier New;
+}
+#container {
+	max-width:       768px;
+	margin:          0 auto;
+}
+// table and table header's rows
+table.dl {
+	border-width: 0px;
+	border-spacing: 0px;
+	border-style: none;
+	border-color: white;
+	border-collapse: collapse;
+	background-color: rgb(255, 255, 240);
+}
+table.dl th {
+	border-width: 0px;
+	padding: 5px;
+	border-style: outset;
+	border-color: white;
+	background-color: white;
+	-moz-border-radius: ;
+}
+table.dl td {
+	border-width: 0px;
+	padding: 2px;
+	border-style: outset;
+	border-color: white;
+	background-color: white;
+	-moz-border-radius: ;
+}
