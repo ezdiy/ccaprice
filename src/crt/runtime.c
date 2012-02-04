@@ -87,7 +87,7 @@ int ccaprice_runtime_brk(void *address) {
 	ccaprice_syscall_brk(address);
 	
 	ccaprice_runtime_curbrk = ccaprice_curbrk;
-	return (curbrk < address)?-1:0;
+	return (ccaprice_curbrk < address)?-1:0;
 }
 #elif defined(CCAPRICE_TARGET_X86_64)
 int ccaprice_runtime_brk(void *address) {
