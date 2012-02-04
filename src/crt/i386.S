@@ -197,15 +197,20 @@ _start:
 	
 #ifdef BSD
 ccaprice_syscall_brk:
-	movl  4(%esp),     %eax
-	cmpl  %eax,        ccaprice_minbrk
+	movl  4(%esp),         %eax
+	cmpl  %eax,            ccaprice_minbrk
 	jbe   okay
+	movl  ccaprice_minbrk, %eax
+	movl  %eax,            4(%esp)
 okay:
-	lea   SYS_break,   %eax
+	lea   SYS_break,       %eax
 	int   $0x80
-	movl  4(%esp),     %eax
-	movl  %eax,        ccaprice_curbrk
-	movl  $0,          %eax
+	jb    erro
+	movl  4(%esp),         %eax
+	movl  %eax,            ccaprice_curbrk
+	movl  $0,              %eax
+	ret
+erro:
 	ret
 	
 ccaprice_syscall_bsd:
