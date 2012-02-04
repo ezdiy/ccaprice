@@ -27,12 +27,8 @@
 .global __umoddi3
 .global _start
 #ifdef BSD
-#include <sys/syscall.h>
-.global ccaprice_curbrk
 .global ccaprice_syscall_bsd
-.global ccaprice_syscall_sbrk
 .type   ccaprice_syscall_bsd,%function
-.type   ccaprice_syscall_sbrk,%function
 #endif
 .type   ccaprice_syscall_core,%function
 .type   _start,%function
@@ -195,22 +191,6 @@ _start:
 	hlt
 	
 #ifdef BSD
-ccaprice_syscall_sbrk:
-	movl  4(%esp),         %ecx
-	movl  ccaprice_curbrk, %eax
-	testl %ecx,            %ecx
-	jz    back
-	addl  %eax,            4(%esp)
-	lea   SYS_break,       %eax
-	int   $0x80
-	jb    erro
-	movl  ccaprice_curbrk, %eax
-	addl  %ecx,            ccaprice_curbrk
-back:
-	ret
-erro:
-	ret
-	
 ccaprice_syscall_bsd:
 	int $0x80
 	ret
@@ -252,7 +232,6 @@ ccaprice_syscall_core:
 
 #ifdef BSD
 .size ccaprice_syscall_bsd,.-ccaprice_syscall_bsd
-.size ccaprice_syscall_sbrk,.-ccaprice_syscall_sbrk
 #endif
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
 .size _start,.-_start

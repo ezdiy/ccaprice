@@ -26,9 +26,6 @@
 /* Internal Imports */
 CCAPRICE_INTERNAL_TYPE(void*,ccaprice_runtime_curbrk); 
 CCAPRICE_INTERNAL_FUNC(int,  ccaprice_runtime_brk, (void*));
-#ifdef BSD
-CCAPRICE_INTERNAL_FUNC(int,  ccaprice_syscall_sbrk, (char*));
-#endif
 
 /* cheap slow and nasty malloc implementation */
 struct ccaprice_malloc_block {
@@ -40,7 +37,6 @@ static int   ccaprice_malloc_inited = 0;
 static void *ccaprice_malloc_start  = NULL;
 static void *ccaprice_malloc_last   = NULL;
 static void* ccaprice_malloc_sbrk(size_t byte) {
-	#ifndef BSD
 	void *old;
 	
 	if (ccaprice_runtime_curbrk == NULL)
@@ -54,9 +50,6 @@ static void* ccaprice_malloc_sbrk(size_t byte) {
 		return (void*)-1;
 		
 	return old;
-	#else
-	return ccaprice_syscall_sbrk(byte);
-	#endif
 }
 
 static void  ccaprice_malloc_init() {

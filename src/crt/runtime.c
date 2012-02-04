@@ -29,7 +29,6 @@
 /* In [arch].S */
 CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
 #ifdef BSD
-	void*   ccaprice_curbrk; /* curbrk for BSD */
 	#define SYS_BRK SYS_break
 #else
 	#define SYS_BRK SYS_brk
@@ -61,8 +60,9 @@ int ccaprice_syscall_error() {
 #endif
 
 /* linux only code */
-#if defined(CCAPRICE_TARGET_X86) && !defined(BSD)
+#if defined(CCAPRICE_TARGET_X86)
 int ccaprice_runtime_brk(void *address) {
+	#ifdef BSD
 	void *vfbrk = NULL;
 	__asm__ __volatile__ (
 		"pushl    %%ebx            \n\t"
@@ -76,6 +76,9 @@ int ccaprice_runtime_brk(void *address) {
 	);
 	ccaprice_runtime_curbrk = vfbrk;
 	return (vfbrk < address)?-1:0;
+	#else
+	return ccaprice_syscall_core(SYS_BRK, ccaprice_runtime_curbrk, address);
+	#endif
 }
 #elif defined(CCAPRICE_TARGET_X86_64)
 int ccaprice_runtime_brk(void *address) {
