@@ -59,7 +59,6 @@ static void  ccaprice_malloc_init() {
 	ccaprice_malloc_inited = 1;
 }
 
-
 /* malloc and free implementation */
 void free(void *p) {
 	struct ccaprice_malloc_block *m;

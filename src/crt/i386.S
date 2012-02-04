@@ -27,8 +27,12 @@
 .global __umoddi3
 .global _start
 #ifdef BSD
+.gloval ccaprice_curbrk
+.global ccaprice_minbrk
 .global ccaprice_syscall_bsd
+.global ccaprice_syscall_brk
 .type   ccaprice_syscall_bsd,%function
+.type   ccaprice_syscall_brk,%function
 #endif
 .type   ccaprice_syscall_core,%function
 .type   _start,%function
@@ -181,16 +185,28 @@ __umoddi3:
 	retl
 
 _start:
-	xorl %ebp,%ebp
-	popl %esi
-	movl %esp,%ecx
-	andl $0xfffffff0,%esp
+	xorl  %ebp,        %ebp
+	popl  %esi
+	movl  %esp,        %ecx
+	andl  $0xfffffff0, %esp
 	pushl %ecx
 	pushl %esi
-	call ccaprice_main
+	call  ccaprice_main
 	hlt
 	
 #ifdef BSD
+ccaprice_syscall_brk:
+	movl  4(%esp),     %eax
+	cmpl  %eax,        ccaprice_minbrk
+	jbe   okay
+okay:
+	lea   SYS_break,   %eax
+	int   $0x80
+	movl  4(%esp),     %eax
+	movl  %eax,        ccaprice_curbrk
+	movl  $0,          %eax
+	ret
+	
 ccaprice_syscall_bsd:
 	int $0x80
 	ret
@@ -232,6 +248,7 @@ ccaprice_syscall_core:
 
 #ifdef BSD
 .size ccaprice_syscall_bsd,.-ccaprice_syscall_bsd
+.size ccaprice_syscall_brk,.-ccaprice_syscall_brk
 #endif
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
 .size _start,.-_start
