@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/stdio.h"
+#include "src/crt/runtime.h"
 int remove(const char *filename) {
 	return unlink(filename);
 }
