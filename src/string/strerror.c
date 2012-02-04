@@ -23,7 +23,7 @@
 #include "inc/errno.h"
 static const char *ccaprice_strerror[] = {
 	[E2BIG]           = "Argument list too long",
-	[EACCES]          = "Permission defined",
+	[EACCES]          = "Permission denied",
 	[EADDRINUSE]      = "Address in use",
 	[EADDRNOTAVAIL]   = "Address not available",
 	[EAFNOSUPPORT]    = "Address family not supported",
@@ -61,7 +61,7 @@ static const char *ccaprice_strerror[] = {
 	[ENETDOWN]        = "Network is down",
 	[ENETRESET]       = "The connection was aborted by the network",
 	[ENETUNREACH]     = "Network unreachable",
-	[ENFILE]          = "Too many file open in system",
+	[ENFILE]          = "Too many files open in system",
 	[ENOBUFS]         = "No buffer space available",
 	[ENODATA]         = "No message available",
 	[ENODEV]          = "No such device",
