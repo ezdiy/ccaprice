@@ -24,6 +24,7 @@
 #include "inc/stdlib.h"
 
 void ccaprice_assert(const char *file, int line, int expr) {
+	CCAPRICE_INTERNAL_FUNC(int, printf, (const char *, ...));
 	if (!expr) {
 		printf("assertion failed: %s on line %d\n", file, line);
 		abort();
