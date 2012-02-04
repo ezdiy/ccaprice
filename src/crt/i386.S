@@ -29,11 +29,10 @@
 #ifdef BSD
 #include <sys/syscall.h>
 .global ccaprice_curbrk
-.global ccaprice_minbrk
 .global ccaprice_syscall_bsd
-.global ccaprice_syscall_brk
+.global ccaprice_syscall_sbrk
 .type   ccaprice_syscall_bsd,%function
-.type   ccaprice_syscall_brk,%function
+.type   ccaprice_syscall_sbrk,%function
 #endif
 .type   ccaprice_syscall_core,%function
 .type   _start,%function
@@ -196,19 +195,18 @@ _start:
 	hlt
 	
 #ifdef BSD
-ccaprice_syscall_brk:
-	movl  4(%esp),         %eax
-	cmpl  %eax,            ccaprice_minbrk
-	jbe   okay
-	movl  ccaprice_minbrk, %eax
-	movl  %eax,            4(%esp)
-okay:
+ccaprice_syscall_sbrk:
+	movl  4(%esp),         %ecx
+	movl  ccaprice_curbrk, %eax
+	testl %ecx,            %ecx
+	jz    back
+	addl  %eax,            4(%esp)
 	lea   SYS_break,       %eax
 	int   $0x80
 	jb    erro
-	movl  4(%esp),         %eax
-	movl  %eax,            ccaprice_curbrk
-	movl  $0,              %eax
+	movl  ccaprice_curbrk, %eax
+	addl  %ecx,            ccaprice_curbrk
+back:
 	ret
 erro:
 	ret
@@ -254,7 +252,7 @@ ccaprice_syscall_core:
 
 #ifdef BSD
 .size ccaprice_syscall_bsd,.-ccaprice_syscall_bsd
-.size ccaprice_syscall_brk,.-ccaprice_syscall_brk
+.size ccaprice_syscall_sbrk,.-ccaprice_syscall_sbrk
 #endif
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
 .size _start,.-_start

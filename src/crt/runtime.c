@@ -29,6 +29,7 @@
 /* In [arch].S */
 CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
 #ifdef BSD
+	void*   ccaprice_curbrk; /* curbrk for BSD */
 	#define SYS_BRK SYS_break
 #else
 	#define SYS_BRK SYS_brk
@@ -59,6 +60,7 @@ int ccaprice_syscall_error() {
 }
 #endif
 
+/* linux only code */
 #if defined(CCAPRICE_TARGET_X86) && !defined(BSD)
 int ccaprice_runtime_brk(void *address) {
 	void *vfbrk = NULL;
@@ -74,20 +76,6 @@ int ccaprice_runtime_brk(void *address) {
 	);
 	ccaprice_runtime_curbrk = vfbrk;
 	return (vfbrk < address)?-1:0;
-}
-#elif defined(CCAPRICE_TARGET_X86)
-/*
- * BSD brk code in i386.S, this just wraps the assembly code to
- * C in a sane way that looks nice.
- */
-void *ccaprice_curbrk = NULL; /* assembly needs these */
-void *ccaprice_minbrk = NULL; /* assembly needs these */
-int ccaprice_runtime_brk(void *address) {
-	CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_brk, (void *));
-	ccaprice_syscall_brk((unsigned long)address);
-	
-	ccaprice_runtime_curbrk = ccaprice_curbrk;
-	return (ccaprice_curbrk < address)?-1:0;
 }
 #elif defined(CCAPRICE_TARGET_X86_64)
 int ccaprice_runtime_brk(void *address) {
