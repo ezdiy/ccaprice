@@ -60,9 +60,8 @@ int ccaprice_syscall_error() {
 #endif
 
 /* linux only code */
-#if defined(CCAPRICE_TARGET_X86)
+#if defined(CCAPRICE_TARGET_X86) && !defined(BSD)
 int ccaprice_runtime_brk(void *address) {
-	#ifdef BSD
 	void *vfbrk = NULL;
 	__asm__ __volatile__ (
 		"pushl    %%ebx            \n\t"
@@ -76,9 +75,6 @@ int ccaprice_runtime_brk(void *address) {
 	);
 	ccaprice_runtime_curbrk = vfbrk;
 	return (vfbrk < address)?-1:0;
-	#else
-	return ccaprice_syscall_core(SYS_BRK, ccaprice_runtime_curbrk, address);
-	#endif
 }
 #elif defined(CCAPRICE_TARGET_X86_64)
 int ccaprice_runtime_brk(void *address) {
@@ -99,6 +95,25 @@ int ccaprice_runtime_brk(void *address) {
 	return (vfbrk < address)?-1:0;
 }
 #endif
+void* ccaprice_malloc_sbrk(size_t byte) {
+	#ifndef BSD
+	void *old;
+	
+	if (ccaprice_runtime_curbrk == NULL)
+		if (ccaprice_runtime_brk(0) < 0)
+			return (void*)-1;
+	if (byte == 0)
+		return ccaprice_runtime_curbrk;
+		
+	old = ccaprice_runtime_curbrk;
+	if (ccaprice_runtime_brk((void*)((uintptr_t)old + byte)) < 0)
+		return (void*)-1;
+		
+	return old;
+	#else
+	return (void*)ccaprice_syscall_core(SYS_BRK, byte);
+	#endif
+}
 
 void ccaprice_main(int argc, char **argv) {	
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_locale_init, ());

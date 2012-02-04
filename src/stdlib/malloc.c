@@ -24,9 +24,7 @@
 #include "inc/errno.h"
 #include "inc/posix/errno.h"
 /* Internal Imports */
-CCAPRICE_INTERNAL_TYPE(void*,ccaprice_runtime_curbrk); 
-CCAPRICE_INTERNAL_FUNC(int,  ccaprice_runtime_brk, (void*));
-
+CCAPRICE_INTERNAL_FUNC(void*,ccaprice_runtime_sbrk,(size_t));
 /* cheap slow and nasty malloc implementation */
 struct ccaprice_malloc_block {
 	int    used;
@@ -36,24 +34,9 @@ struct ccaprice_malloc_block {
 static int   ccaprice_malloc_inited = 0;
 static void *ccaprice_malloc_start  = NULL;
 static void *ccaprice_malloc_last   = NULL;
-static void* ccaprice_malloc_sbrk(size_t byte) {
-	void *old;
-	
-	if (ccaprice_runtime_curbrk == NULL)
-		if (ccaprice_runtime_brk(0) < 0)
-			return (void*)-1;
-	if (byte == 0)
-		return ccaprice_runtime_curbrk;
-		
-	old = ccaprice_runtime_curbrk;
-	if (ccaprice_runtime_brk((void*)((uintptr_t)old + byte)) < 0)
-		return (void*)-1;
-		
-	return old;
-}
 
 static void  ccaprice_malloc_init() {
-	ccaprice_malloc_last   = ccaprice_malloc_sbrk(0);
+	ccaprice_malloc_last   = ccaprice_runtime_sbrk(0);
 	ccaprice_malloc_start  = ccaprice_malloc_last;
 	ccaprice_malloc_inited = 1;
 }
@@ -97,7 +80,7 @@ void* malloc(size_t bytes) {
 		curp = (void*)((uintptr_t)curp + curm->size);
 	}
 	if (!memp) {
-		ccaprice_malloc_sbrk(bytes);
+		ccaprice_runtime_sbrk(bytes);
 		
 		memp                  = ccaprice_malloc_last;
 		ccaprice_malloc_last  = (void*)((uintptr_t)ccaprice_malloc_last + bytes);
