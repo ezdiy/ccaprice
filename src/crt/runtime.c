@@ -111,7 +111,8 @@ void* ccaprice_runtime_sbrk(size_t byte) {
 		
 	return old;
 	#else
-	return (void*)ccaprice_syscall_core(SYS_BRK, byte);
+	extern void *_end;
+	return (void*)ccaprice_syscall_core(SYS_BRK, (char*)((uintptr_t)_end + byte));
 	#endif
 }
 
