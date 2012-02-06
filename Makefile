@@ -71,14 +71,47 @@ endif
 
 BIN = $(ASM:.S=.o)
 
+ifeq (,$(VERBOSE))
+	AT = @
+endif
+
+ifneq ($(FLAV), Windows)
+	ifeq (,$(NOCOLOR))
+		RED    = -e "\033[1;31m
+		GREEN  = -e "\033[1;32m
+		BLUE   = -e "\033[1;34m
+		PURPLE = -e "\033[1;35m
+		CYAN   = \033[1;36m
+		RRED   = \033[1;31m
+		ENDCOL = \033[m"
+	endif
+endif
+
 .c.o:
-	$(CCC) $(INC) $(CFLAGS) -c $< -o $@
+ifneq ($(VERBOSE), 1)
+	@ if [[ $@ == *crt*    ]]; then echo $(PURPLE) [crt]    $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *stdio*  ]]; then echo $(PURPLE) [stdio]  $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *stdlib* ]]; then echo $(PURPLE) [stdlib] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *string* ]]; then echo $(PURPLE) [string] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *math*   ]]; then echo $(PURPLE) [math]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *posix*  ]]; then echo $(PURPLE) [posix]  $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+endif
+	$(AT) $(CCC) $(INC) $(CFLAGS) -c $< -o $@
 	
 $(OUT): $(OBJ)
-	$(CCC) $(AFLAGS) $(ASM) -c -o $(BIN)
-	ar rcs $(OUT) $(BIN) $(OBJ)
+ifneq ($(VERBOSE), 1)
+	@echo $(PURPLE) [crt]    $(RRED) Building a ASM object file $(CYAN) $(ASM) $(ENDCOL)
+endif
+	$(AT) $(CCC) $(AFLAGS) $(ASM) -c -o $(BIN)
+ifneq ($(VERBOSE), 1)
+	@echo $(BLUE) Creating static library ... $(ENDCOL)
+endif
+	$(AT) ar rcs $(OUT) $(BIN) $(OBJ)
+ifneq ($(VERBOSE), 1)
+	@echo $(GREEN) Completed $(ENDCOL)
+endif
 	
 clean:
-	rm -f src/crt/i386.o
-	rm -f src/crt/x86_64.o
-	rm -f $(OBJ) $(OUT)
+	$(AT) rm -f src/crt/i386.o
+	$(AT) rm -f src/crt/x86_64.o
+	$(AT) rm -f $(OBJ) $(OUT)
