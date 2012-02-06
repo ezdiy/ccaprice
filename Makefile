@@ -77,7 +77,6 @@ endif
 
 ifneq ($(FLAV), Windows)
 	ifeq (,$(NOCOLOR))
-		RED    = -e "\033[1;31m
 		GREEN  = -e "\033[1;32m
 		BLUE   = -e "\033[1;34m
 		PURPLE = -e "\033[1;35m
