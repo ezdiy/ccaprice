@@ -53,23 +53,10 @@ SRC     = src/assert.c         \
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
 INC     = -I.
-
-ifneq (,$(findstring -DCCAPRICE_TARGET_X86_64,$(CFLAGS)))
-ASM     = src/crt/x86_64.S
-AFLAGS  =
-else
-ifneq (,$(findstring -DCCAPRICE_TARGET_X86,$(CFLAGS)))
-ASM     = src/crt/i386.S
-CFLAGS += -m32
-ifeq ($(shell uname), FreeBSD)
-	AFLAGS  = -m32 -DBSD
-else
-	AFLAGS  = -m32
-endif
-endif
-endif
-
-BIN = $(ASM:.S=.o)
+EDGE    = -c $< -o $@
+#copies
+SRCD    = $(SRC)
+OBJD    = $(SRCD:.c=.o)
 
 ifeq (,$(VERBOSE))
 	AT = @
@@ -86,6 +73,78 @@ ifneq ($(FLAV), Windows)
 	endif
 endif
 
+# target selection
+ifneq (, $(TARG))
+	ifeq (x86_64, $(TARG))
+		TARGET  = x86_64
+		CFLAGS += -DCCAPRICE_TARGET_X86_64
+	else
+	ifeq (x86_32, $(TARG))
+		TARGET  = x86_32
+		CFLAGS += -DCCAPRICE_TARGET_X86_64
+	else
+	ifeq (amd64, $(TARG))
+		TARGET  = amd64
+		CFLAGS += -DCCAPRICE_TARGET_X86_64
+	else
+	ifeq (i386, $(TARG))
+		TARGET  = i386
+		CFLAGS += -DCCAPRICE_TARGET_X86
+	else
+	ifeq (i486, $(TARG))
+		TARGET  = i486
+		CFLAGS += -DCCAPRICE_TARGET_X86
+	else
+	ifeq (i586, $(TARG))
+		TARGET  = i586
+		CFLAGS += -DCCAPRICE_TARGET_X86
+	else
+	ifeq (i686, $(TARG))
+		TARGET  = i686
+		CFLAGS += -DCCAPRICE_TARGET_X86
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+endif
+
+ifneq (,$(findstring -DCCAPRICE_TARGET_X86_64,$(CFLAGS)))
+	ASM     = src/crt/x86_64.S
+	AFLAGS  =
+else
+	ifneq (,$(findstring -DCCAPRICE_TARGET_X86,$(CFLAGS)))
+		ASM     = src/crt/i386.S
+		CFLAGS += -m32
+		ifeq ($(shell uname), FreeBSD)
+			AFLAGS  = -m32 -DBSD
+		else
+			AFLAGS  = -m32
+		endif
+	else
+		# no suitable TARG is set we need to stop the build process
+		# this will ruin clean: so we must handle for clean after
+		
+		# replace compiler with echo
+		CC     := echo
+		# clear out include flags
+		INC    :=
+		# edge is the output command 
+		EDGE   :=
+		# only compile one source file (for one echo)
+		SRCD   := src/assert.c
+		# do not actually do creation of library
+		DONOT  := 1
+		# dissalow output of build process
+		VERBOSE:= 1
+		CFLAGS := $(GREEN)Error: No target specified; try $(CYAN)\`make TARG=$(shell uname -m)\`$(ENDCOL)
+	endif
+endif
+
+BIN = $(ASM:.S=.o)
+
 .c.o:
 ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *crt*    ]]; then echo $(PURPLE) [crt]    $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
@@ -95,19 +154,23 @@ ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *math*   ]]; then echo $(PURPLE) [math]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *posix*  ]]; then echo $(PURPLE) [posix]  $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 endif
-	$(AT) $(CCC) $(INC) $(CFLAGS) -c $< -o $@
-	
-$(OUT): $(OBJ)
+	$(AT) $(CCC) $(INC) $(CFLAGS) $(EDGE)
+
+$(OUT): $(OBJD)
 ifneq ($(VERBOSE), 1)
 	@echo $(PURPLE) [crt]    $(RRED) Building a ASM object file $(CYAN) $(ASM) $(ENDCOL)
 endif
+ifneq ($(DONOT), 1)
 	$(AT) $(CCC) $(AFLAGS) $(ASM) -c -o $(BIN)
+endif
 ifneq ($(VERBOSE), 1)
 	@echo $(BLUE) Creating static library ... $(ENDCOL)
 endif
+ifneq ($(DONOT), 1)
 	$(AT) ar rcs $(OUT) $(BIN) $(OBJ)
+endif
 ifneq ($(VERBOSE), 1)
-	@ echo $(GREEN) Completed $(ENDCOL)
+	@ echo $(GREEN) Completed Build for $(TARGET) $(ENDCOL)
 endif
 	
 clean:
