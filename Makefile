@@ -107,7 +107,7 @@ ifneq ($(VERBOSE), 1)
 endif
 	$(AT) ar rcs $(OUT) $(BIN) $(OBJ)
 ifneq ($(VERBOSE), 1)
-	@echo $(GREEN) Completed $(ENDCOL)
+	@ echo $(GREEN) Completed $(ENDCOL)
 endif
 	
 clean:

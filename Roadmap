@@ -1,0 +1,10 @@
+Implement posix compliant library in src/posix
+Implement C     compliant library in src/
+
+	TODO Currently:
+		Abstract posix runtime code to src/posix
+		Fix SYS_brk system call on BSD/FreeBSD for memory allocation
+		Write a proper memory allocator.
+		Cleanup runtime support assembly into seperate files
+		Work on supporting Windows
+		Fix some obvious bugs and non statndard conformant functions
