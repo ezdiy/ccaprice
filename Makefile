@@ -1,4 +1,4 @@
-CFLAGS += -ggdb3 -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
+CFLAGS += -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
 CCC     = $(CC)
 SRC     = src/assert.c         \
           src/locale.c         \
@@ -128,7 +128,7 @@ else
 		# this will ruin clean: so we must handle for clean after
 		
 		# replace compiler with echo
-		CC     := echo
+		CC     := @echo
 		# clear out include flags
 		INC    :=
 		# edge is the output command 
