@@ -1,4 +1,5 @@
 CFLAGS += -Wall -nostdlib -std=c99 -fno-builtin -Wno-uninitialized -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
+SHELL   = /bin/bash
 SRC     = src/assert.c         \
           src/locale.c         \
           src/signal.c         \
@@ -187,7 +188,7 @@ ifneq ($(DONOT), 1)
 	$(AT) ar rcs $(OUT) $(BIN) $(OBJ)
 endif
 ifneq ($(VERBOSE), 1)
-	@ echo $(GREEN) Completed Build for $(TARGET) $(ENDCOL)
+	@echo $(GREEN) Completed Build for $(TARGET) $(ENDCOL)
 endif
 	
 clean:

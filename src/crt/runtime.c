@@ -41,7 +41,7 @@ char **ccaprice_enviroment;
 void *ccaprice_runtime_curbrk = NULL;
 #if defined(CCAPRICE_TARGET_X86) || defined(__i386__)
 int ccaprice_syscall_error() {
-	register int no __asm__("%edx")
+	register int no __asm__("%edx");
 	__asm__ __volatile__ (
 		"mov  %eax, %edx\n\t"
 		"negl %edx      \n\t"
