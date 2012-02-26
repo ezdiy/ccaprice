@@ -73,14 +73,6 @@
 #elif defined(__clang__)
 #	define CCAPRICE_BUILD_COMP "CLANG"
 #	define CCAPRICE_USED __attribute__((__used__))
-#elif defined(__TINYC__) 
-#	define CCAPRICE_BUILD_COMP "TINYC"
-	/*
-	 * TinyC doesn't have a __used__ attribute. Instead lets setup
-	 * a section called .used for it.  It's guranteed not to be
-	 * removed then.
-	 */
-#	define CCAPRICE_USED __attribute__((__section__(".used")))
 #else
 #	error "Unsupported compiler"
 #endif
@@ -104,16 +96,16 @@
 #define CCAPRICE_COMPILE_TIME_ASSERT(name, x) \
 	typedef int CompileTimeAssertFailed_##name[(x)?1:-1]
 
-#if defined(CCAPRICE_TARGET_X86_64) || defined(__x86_64__)
+#if defined(CCAPRICE_TARGET_X86_64)
 	#define STRING_STRLEN_X86_64
 	#define STRING_MEMCHR_X86_64
 	#define STRING_MEMCPY_X86_64
 	#define STRING_MEMSET_X86_64
 	#include <stdint.h>
 	#include <stddef.h>
-	typedef int                 ssize_t;
-#elif defined(CCAPRICE_TARGET_X86) || defined(__x86__)
-	#define _LARGEFILE64_SOURCE /* EXTENSION */
+	#include <sys/types.h>
+#elif defined(CCAPRICE_TARGET_X86)
+	#define _LARGEFILE64_SOURCE
 	
 	#define STRING_STRLEN_X86
 	#define STRING_MEMCHR_X86
@@ -121,7 +113,7 @@
 	#define STRING_MEMSET_X86
 	#include <stdint.h>
 	#include <stddef.h>
-	typedef long                ssize_t;
+	#include <sys/types.h>
 #else
 	#error "[ccaprice] Target not supported"
 #endif /* !CCAPRICE_TARGET_X86_64 */

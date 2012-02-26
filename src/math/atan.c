@@ -63,7 +63,7 @@ double atan(double x) {
 		x_id = -1;
 	} else {
 		x = fabs(x);
-		if (iter < 0x3FF300000) {
+		if (iter < 0x3FF30000) {
 			if (iter < 0x3FE60000) x_id = 0, x = (2.0*x-1.0)/(2.0+x);
 			else                   x_id = 1, x = (x-1.0)/(x+1.0);
 		} else {

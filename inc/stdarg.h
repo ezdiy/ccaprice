@@ -34,7 +34,6 @@
 #elif defined(CCAPRICE_TARGET_X86_64) || defined(__x86_64__)
 	typedef long  va_item;
 	typedef char *va_list;
-	#define
 #else
 #	error "Cannot find sutible target for stdarh.h"
 #endif

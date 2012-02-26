@@ -44,7 +44,7 @@ int ccaprice_syscall_error() {
 	register int no __asm__("%edx");
 	__asm__ __volatile__ (
 		"mov  %eax, %edx\n\t"
-		"negl %edx      \n\t"
+		"negl %edx      \n\t" :"r"(no)
 	);
 	return no;
 }
