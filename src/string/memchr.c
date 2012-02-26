@@ -96,11 +96,12 @@ void *memchr(const void *src, int cmp, register size_t cnt) {
 		#warning "[ccaprice] no optimized memchr implementation, using naive method (could be slow)"
 		int   i;
 		char *s = (char*)src;
-		for (i=0; i<cnt; i++) {
-			if (*s == cmp) return s;
-			else s++;
+		for (i = 0; i < cnt; i++) {
+			if (*s == cmp)
+				return (void*)s;
+			else
+				s++;
 		}
-		return 0;
 	#endif /* !STRING_MEMCHR_NONE */
 	
 	return 0; /* Compiler warns no return */

@@ -96,7 +96,7 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 		char *d_byte = (char*)dst;
 		char *s_byte = (char*)src;
 		
-		while (cnt --) {
+		while (cnt-->0) {
 			/*
 			 * The compiler expands this to:
 			 * d_byte[0] = s_byte[0];
