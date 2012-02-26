@@ -44,7 +44,7 @@ int ccaprice_syscall_error() {
 	register int no __asm__("%edx");
 	__asm__ __volatile__ (
 		"mov  %eax, %edx\n\t"
-		"negl %edx      \n\t" :"r"(no)
+		"negl %edx      \n\t"
 	);
 	return no;
 }
@@ -147,12 +147,12 @@ void ccaprice_main(int argc, char **argv) {
  */
 #define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST {        (TYPE)ccaprice_syscall_core CORE; }
 #define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)ccaprice_syscall_core CORE; }
-
 SYSCALL1(ssize_t,write, (int f,const void *b,size_t c),(SYS_write,f,b,c))
 SYSCALL1(ssize_t,read,  (int f,void *b,size_t c),      (SYS_read, f,b,c))
 SYSCALL1(int,    open,  (const char *f,int b),         (SYS_open, f,b,0777))
 SYSCALL1(int,    kill,  (pid_t f,int b),               (SYS_kill, f,b))
 SYSCALL1(int,    unlink,(const char *f),               (SYS_unlink,f))
+SYSCALL1(int,    ioctl, (int f, int b, void *c),       (SYS_ioctl,f,b,c))
 SYSCALL1(int,    close, (int f),                       (SYS_close,f))
 SYSCALL0(void,  _exit,  (int f),                       (SYS_exit, f))
 SYSCALL1(pid_t,  getpid,(),                            (SYS_getpid))

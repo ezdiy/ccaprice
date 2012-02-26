@@ -1,55 +1,66 @@
 CFLAGS += -Wall -nostdlib -fno-builtin -Wno-uninitialized -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
 SHELL   = /bin/bash
-SRC     = src/assert.c         \
-          src/locale.c         \
-          src/signal.c         \
-		  src/crt/runtime.c    \
-          src/string/memchr.c  \
-          src/string/memcmp.c  \
-          src/string/memcpy.c  \
-          src/string/memset.c  \
-          src/string/memmove.c \
-          src/string/strcat.c  \
-          src/string/strchr.c  \
-          src/string/strcmp.c  \
-          src/string/strcpy.c  \
-          src/string/strcspn.c \
-          src/string/strlen.c  \
-          src/string/strncat.c \
-          src/string/strncmp.c \
-          src/string/strncpy.c \
-          src/string/strdup.c  \
-          src/string/strerror.c\
-          src/string/strpbrk.c \
-          src/string/strspn.c  \
-          src/string/strstr.c  \
-          src/stdlib/abort.c   \
-          src/stdlib/atoi.c    \
-          src/stdlib/exit.c    \
-          src/stdlib/getenv.c  \
-          src/stdlib/malloc.c  \
-          src/stdlib/puts.c    \
-          src/stdlib/rand.c    \
-          src/stdio/fclose.c   \
-          src/stdio/feof.c     \
-          src/stdio/ferror.c   \
-          src/stdio/fflush.c   \
-          src/stdio/fopen.c    \
-          src/stdio/fputc.c    \
-          src/stdio/fputs.c    \
-          src/stdio/fwrite.c   \
-          src/stdio/printf.c   \
-          src/stdio/remove.c   \
-          src/math/abs.c       \
-          src/math/atan.c      \
-          src/math/ceil.c      \
-          src/math/floor.c     \
-          src/math/fabs.c      \
-          src/math/finite.c    \
-          src/math/isnan.c     \
-          src/math/frexp.c     \
-          src/math/ilogb.c     \
-          src/posix/errno.c
+SRC     = src/assert.c                   \
+          src/locale.c                   \
+          src/signal.c                   \
+		  src/crt/runtime.c              \
+          src/string/memchr.c            \
+          src/string/memcmp.c            \
+          src/string/memcpy.c            \
+          src/string/memset.c            \
+          src/string/memmove.c           \
+          src/string/strcat.c            \
+          src/string/strchr.c            \
+          src/string/strcmp.c            \
+          src/string/strcpy.c            \
+          src/string/strcspn.c           \
+          src/string/strlen.c            \
+          src/string/strncat.c           \
+          src/string/strncmp.c           \
+          src/string/strncpy.c           \
+          src/string/strpbrk.c           \
+          src/string/strrchr.c           \
+          src/string/strdup.c            \
+          src/string/strerror.c          \
+          src/string/strpbrk.c           \
+          src/string/strspn.c            \
+          src/string/strstr.c            \
+          src/stdlib/abort.c             \
+          src/stdlib/atoi.c              \
+          src/stdlib/exit.c              \
+          src/stdlib/getenv.c            \
+          src/stdlib/malloc.c            \
+          src/stdlib/puts.c              \
+          src/stdlib/rand.c              \
+          src/stdio/fclose.c             \
+          src/stdio/feof.c               \
+          src/stdio/ferror.c             \
+          src/stdio/fflush.c             \
+          src/stdio/fopen.c              \
+          src/stdio/fputc.c              \
+          src/stdio/fputs.c              \
+          src/stdio/fwrite.c             \
+          src/stdio/printf.c             \
+          src/stdio/remove.c             \
+          src/math/abs.c                 \
+          src/math/atan.c                \
+          src/math/ceil.c                \
+          src/math/floor.c               \
+          src/math/fabs.c                \
+          src/math/finite.c              \
+          src/math/isnan.c               \
+          src/math/frexp.c               \
+          src/math/ilogb.c               \
+          src/posix/errno.c              \
+          src/posix/strings/bcmp.c       \
+          src/posix/strings/bcopy.c      \
+          src/posix/strings/bzero.c      \
+          src/posix/strings/ffs.c        \
+          src/posix/strings/index.c      \
+          src/posix/strings/rindex.c     \
+          src/posix/strings/strcasecmp.c \
+          src/posix/strings/strncasecmp.c
+          
 OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
 INC     = -I.
@@ -165,12 +176,12 @@ BIN = $(ASM:.S=.o)
 
 .c.o:
 ifneq ($(VERBOSE), 1)
-	@ if [[ $@ == *crt*    ]]; then echo $(PURPLE) [crt]    $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
-	@ if [[ $@ == *stdio*  ]]; then echo $(PURPLE) [stdio]  $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
-	@ if [[ $@ == *stdlib* ]]; then echo $(PURPLE) [stdlib] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
-	@ if [[ $@ == *string* ]]; then echo $(PURPLE) [string] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
-	@ if [[ $@ == *math*   ]]; then echo $(PURPLE) [math]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
-	@ if [[ $@ == *posix*  ]]; then echo $(PURPLE) [posix]  $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *crt/*    ]]; then echo $(PURPLE) [crt]    $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *stdio/*  ]]; then echo $(PURPLE) [stdio]  $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *stdlib/* ]]; then echo $(PURPLE) [stdlib] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *string/* ]]; then echo $(PURPLE) [string] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *math/*   ]]; then echo $(PURPLE) [math]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *posix/*  ]]; then echo $(PURPLE) [posix]  $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 endif
 	$(AT) $(CCC) $(INC) $(CFLAGS) $(EDGE)
 

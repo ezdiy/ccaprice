@@ -21,12 +21,12 @@
  * SOFTWARE.
  */
 #include "inc/ccaprice.h"
-#ifdef STDLIB_RAND_OPTIMAL
-	#ifdef STDLIB_RAND_OPTIMAL_SSE2
+#ifdef STDLIB_RANDOM_OPTIMAL
+	#ifdef STDLIB_RANDOM_OPTIMAL_SSE2
 		#include <emmintrin.h>
-		#define CCAPRICE_STDLIB_RAND_SSE_STAIRS1 0x00
-		#define CCAPRICE_STDLIB_RAND_SSE_STAIRS2 0x01
-		#define CCAPRICE_STDLIB_RAND_SSE_SHUFFLE _MM_SHUFFLE(2,3,0,1)
+		#define CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1 0x00
+		#define CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2 0x01
+		#define CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE _MM_SHUFFLE(2,3,0,1)
 		static __m128i ccaprice_stdlib_rseed;
 	#else
 	static unsigned int ccaprice_stdlib_rseed;
@@ -35,14 +35,14 @@
 	static unsigned int ccaprice_stdlib_rseed;
 #endif
 
-#ifdef STDLIB_RAND_OPTIMAL
-	#ifdef STDLIB_RAND_OPTIMAL_SSE2
+#ifdef STDLIB_RANDOM_OPTIMAL
+	#ifdef STDLIB_RANDOM_OPTIMAL_SSE2
 		void srand(unsigned int seed) {
 			ccaprice_stdlib_rseed = _mm_set_epi32(
-				seed+CCAPRICE_STDLIB_RAND_SSE_STAIRS1,
-				seed+CCAPRICE_STDLIB_RAND_SSE_STAIRS1,
-				seed+CCAPRICE_STDLIB_RAND_SSE_STAIRS2,
-				seed+CCAPRICE_STDLIB_RAND_SSE_STAIRS2
+				seed+CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1,
+				seed+CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1,
+				seed+CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2,
+				seed+CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2
 			);
 		}
 		
@@ -70,20 +70,20 @@
 			
 			split = _mm_shuffle_epi32(
 				ccaprice_stdlib_rseed,
-				CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
+				CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
 			);
 			
 			ccaprice_stdlib_rseed = _mm_mul_epu32(ccaprice_stdlib_rseed, multi);
 			multi                 = _mm_shuffle_epi32(
 				multi,
-				CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
+				CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
 			);
 			split                 = _mm_mul_epu32(split, multi);
 			ccaprice_stdlib_rseed = _mm_and_si128(ccaprice_stdlib_rseed, mmask);
 			split                 = _mm_and_si128(split, mmask);
 			split                 = _mm_shuffle_epi32(
 				split,
-				CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
+				CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
 			);
 			ccaprice_stdlib_rseed = _mm_or_si128  (ccaprice_stdlib_rseed, split);
 			ccaprice_stdlib_rseed = _mm_add_epi32 (ccaprice_stdlib_rseed, adder);
@@ -92,16 +92,16 @@
 			
 			return (unsigned int)_mm_cvtsi128_si32(store);
 			
-			#undef CCAPRICE_STDLIB_RAND_SSE_SHUFFLE
-			#undef CCAPRICE_STDLIB_RAND_SSE_STAIRS2
-			#undef CCAPRICE_STDLIB_RAND_SSE_STAIRS1
+			#undef CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
+			#undef CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2
+			#undef CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1
 		}
 	#else
-		#define STDLIB_RAND_NONE
+		#define STDLIB_RANDOM_NONE
 	#endif
 #endif
 
-#ifdef STDLIB_RAND_NONE
+#ifdef STDLIB_RANDOM_NONE
 	#warning "[ccaprice] no optimized rand implementation, using naive method (could be slow)"
 	void srand(unsigned int seed) {
 		ccaprice_stdlib_rseed = seed;

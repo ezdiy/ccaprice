@@ -27,8 +27,7 @@
 #include "inc/locale.h"
 #include "inc/math.h"
 
-                   
-#define PADD atoi(getenv("COLUMNS"))-6 //atoi(getenv("COLUMNS"))
+int PADD = 80;
 #define TEST_DEF(NAME, CODE)                  \
 	NAME##_test() {                           \
 	    char  c[]= {                          \
@@ -88,7 +87,12 @@ TEST_DEF(toupper,  { TEST_RET(toupper('a') == 'A'); })
 TEST_DEF(tolower,  { TEST_RET(tolower('A') == 'a'); })
 TEST_DEF(remove ,  { TEST_RET(!remove("Output"));   })
 
+#include <sys/ioctl.h>
 int main(int argc, char **argv, char **argp) {
+	struct winsize ws;
+	ioctl(1, TIOCGWINSZ, &ws);
+	PADD = ws.ws_col-6;
+	
 	int  i = 0;
 	while(*argp++ && *argp)
 		printf("%05d : \033[36m%s\033[0m\n", ++i, *argp);

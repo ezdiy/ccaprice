@@ -35,7 +35,6 @@ CCAPRICE_EXPORT int     close (int);
 CCAPRICE_EXPORT int     kill  (pid_t, int);
 CCAPRICE_EXPORT void    _exit (int);
 CCAPRICE_EXPORT pid_t   getpid();
-
 #ifdef _LARGEFILE64_SOURCE
 #	define __USE_LARGEFILE64 1
 #endif

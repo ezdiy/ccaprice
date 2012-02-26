@@ -269,6 +269,16 @@ sysexit.h:
 	EX_NOPERM
 	EX_CONFIG
 	
+strings.h:
+	bcmp       ()
+	bcopy      ()
+	bzero      ()
+	ffs        ()
+	index      ()
+	rindex     ()
+	strcasecmp ()
+	strncasecmp()
+	
 unistd.h:
 	write ()
 	read  ()
@@ -288,4 +298,4 @@ Extensions supported by ccaprice
 #define CCAPRICE_EXTENSIONS prior to using them
 CCAPRICE_BUILD_DATE -- returns a constant string literal of the build date of the library                     [expanded __DATE__]
 CCAPRICE_BUILD_INFO -- returns a constant string literal of the info of the system used to compile ccaprice   [uname -a]
-CCAPRICE_BUILD_COMP -- returns a constant string literal (all in caps) of the compiler used to build ccaprice ["GCC", "CLANG", "TINYC"]
+CCAPRICE_BUILD_COMP -- returns a constant string literal (all in caps) of the compiler used to build ccaprice ["GCC", "CLANG", "PATHCC"]
