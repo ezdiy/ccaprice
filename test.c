@@ -23,6 +23,7 @@
 #define CCAPRICE_EXTENSIONS /* Enable extensions in ccaprice */
 #include "inc/stdlib.h"
 #include "inc/stdio.h"
+#include "inc/string.h"
 #include "inc/ctype.h"
 #include "inc/locale.h"
 #include "inc/math.h"
@@ -120,7 +121,7 @@ TEST_DEF(string, strcspn, {
 
 TEST_DEF(string, strerror, {
 	errno = EDOM;
-	TEST_RET(strerror(errno))
+	TEST_RET(strerror(errno) != NULL)
 })
 
 TEST_DEF(string, strlen, {
@@ -183,13 +184,13 @@ TEST_DEF(string, strspn, {
 TEST_DEF(string, strstr, {
 	const char *data = "hello world";
 	const char *find = "world";
-	TEST_RET(strstr(data, find))
+	TEST_RET(strstr(data, find) != NULL)
 })
 
 TEST_DEF(string, strtok, {
 	char data[] = "- This, a sample string.";
 	char find[] = ",.-";
-	TEST_RET(strtok(data, find))
+	TEST_RET(strtok(data, find) != NULL)
 })
 
 TEST_DEF(math\040\040, abs, {
