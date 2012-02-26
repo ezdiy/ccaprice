@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/stdio.h"
+#include "src/crt/runtime.h"
 
 size_t fwrite(const void *p, size_t size, size_t count, FILE *fp) {
 	/* TODO use fputc ... */

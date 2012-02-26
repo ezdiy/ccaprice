@@ -23,7 +23,6 @@
 #ifndef CCAPRICE_STDIO_HDR
 #define CCAPRICE_STDIO_HDR
 #include "ccaprice.h"
-#include "src/crt/runtime.h" /* sycalls */
 
 #define CCAPRICE_STDIO_FILE_BUFFER_LEN 2048
 typedef struct ccaprice_file {

@@ -232,7 +232,7 @@ TEST_DEF(math\040\040, isnan, {
 })
 
 TEST_DEF(stdlib, min, { TEST_RET(MIN(100,50) ==  50) })
-TEST_DEF(stdlib, max, { TEST_RET(MAX(100,50) == 100) })
+TEST_DEF(stdlib, max, { TEST_RET(MAX(50,100) == 100) })
 
 
 #include <sys/ioctl.h>

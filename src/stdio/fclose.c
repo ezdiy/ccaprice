@@ -23,6 +23,7 @@
 #include "inc/stdio.h"
 #include "inc/stdlib.h"
 #include "inc/posix/errno.h"
+#include "src/crt/runtime.h"
 
 CCAPRICE_INTERNAL_TYPE(int*, ccaprice_posix_errno);
 int fclose(FILE *fp) {

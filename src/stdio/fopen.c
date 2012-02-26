@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/stdio.h"
+#include "src/crt/runtime.h"
 
 /* manage list of all open files here */
 FILE   ccaprice_stdio_file_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN];

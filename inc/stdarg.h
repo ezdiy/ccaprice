@@ -35,7 +35,7 @@
 	typedef long  va_item;
 	typedef char *va_list;
 #else
-#	error "Cannot find sutible target for stdarh.h"
+#	error "Cannot find sutible target for stdarg.h"
 #endif
 #	define va_start(A,L) (A =((va_list)&(L)+va_size(L)))
 #	define va_arg(A,T)   (A+=va_rsize(T),*((T*)(A-va_rsize(T))))
