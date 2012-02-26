@@ -23,5 +23,5 @@
 #include "inc/stdlib.h" /* CCAPRICE_SIGNEXTEND() */
 int abs(int i) {
 	CCAPRICE_SIGNEXTEND(i);
-	return (i^signext.H)-signext.H;
+	return (i^signext.S.H)-signext.S.H;
 }

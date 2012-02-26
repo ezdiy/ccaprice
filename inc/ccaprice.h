@@ -24,6 +24,38 @@
 #define CCAPRICE_CCAPRICE_HDR
 
 /*
+ * When not compiling and including we need to determine
+ * the architecture at compile-time without asking the
+ * user to pass any macro to the command line build line
+ * this is exactly what this does.
+ */
+#ifndef CCAPRICE_CP
+#if defined(__amd64__)     || \
+	defined(__amd64)       || \
+	defined(__x86_64__)    || \
+	defined(__x86_64)      || \
+	defined(_M_X64)
+	#define CCAPRICE_TARGET_X86_64
+#else
+#if defined(i386)          || \
+	defined(__i386__)      || \
+	defined(__i486__)      || \
+	defined(__i586__)      || \
+	defined(__i686__)      || \
+	defined(__i386)        || \
+	defined(__IA32__)      || \
+	defined(_M_IX86)       || \
+	defined(__X86__)       || \
+	defined(_X86_)         || \
+	defined(__THW_INTEL__) || \
+	defined(__I86__)       || \
+	defined(__INTEL__)
+	#define CCAPRICE_TARGET_X86
+#endif
+#endif
+#endif
+
+/*
  * The makefile should set a -D__INFO__=, if it doesn't we'll handle
  * defining __INFO__ to a string literal explaining that the build
  * did not include information.
@@ -32,7 +64,10 @@
 #define __INFO__ "No information Specified during build"
 #endif
 
-#if   defined(__GNUC__)
+#if defined(__PATHCC__)
+#	define CCAPRICE_BUILD_COMP "EKOPATH"
+#	define CCAPRICE_USED __attribute__((__used__))
+#elif   defined(__GNUC__)
 #	define CCAPRICE_BUILD_COMP "GCC"
 #	define CCAPRICE_USED __attribute__((__used__))
 #elif defined(__clang__)

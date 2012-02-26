@@ -33,16 +33,16 @@
         struct {               \
             int32_t L;         \
             int32_t H;         \
-        };                     \
+        } S;                   \
     } signext = { V }
 
-#define MIN(X,Y) ({               \
-    CCAPRICE_SIGNEXTEND((X)-(Y)); \
-    ((Y)+(((X)-(Y))& signext.H)); \
+#define MIN(X,Y) ({                 \
+    CCAPRICE_SIGNEXTEND((X)-(Y));   \
+    ((Y)+(((X)-(Y))& signext.S.H)); \
 })
-#define MAX(X,Y) ({               \
-    CCAPRICE_SIGNEXTEND((Y)-(X)); \
-    ((X)+(((Y)-(X))&~signext.H)); \
+#define MAX(X,Y) ({                 \
+    CCAPRICE_SIGNEXTEND((Y)-(X));   \
+    ((X)+(((Y)-(X))&~signext.S.H)); \
 })
 
 CCAPRICE_EXPORT void  atexit(void (*)());

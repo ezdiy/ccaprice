@@ -140,7 +140,7 @@ else
 		override DONOT  = 1
 		# dissalow output of build process
 		override VERBOSE= 1
-		override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/tinycc/clang] TARG=$(shell uname -m)\`$(ENDCOL)
+		override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/tinycc/clang/pathcc] TARG=$(shell uname -m)\`$(ENDCOL)
 	endif
 endif
 
@@ -158,7 +158,7 @@ ifeq (, $(CCC))
 	override DONOT  = 1
 	# dissalow output of build process
 	override VERBOSE= 1
-	override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/tinycc/clang] TARG=$(shell uname -m)\`$(ENDCOL)
+	override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/tinycc/clang/pathcc] TARG=$(shell uname -m)\`$(ENDCOL)
 endif
 
 BIN = $(ASM:.S=.o)

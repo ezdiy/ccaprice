@@ -28,12 +28,16 @@
 .global _start
 #ifdef BSD
 .global ccaprice_syscall_bsd
+#ifndef __PATHCC__
 .type   ccaprice_syscall_bsd,%function
 #endif
+#endif
+#ifndef __PATHCC__
 .type   ccaprice_syscall_core,%function
 .type   _start,%function
 .type   __udivdi3,%function
 .type   __umoddi3,%function
+#endif
 
 .align 4
 __udivdi3:

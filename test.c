@@ -27,7 +27,8 @@
 #include "inc/locale.h"
 #include "inc/math.h"
 
-#define PADD 80
+                   
+#define PADD atoi(getenv("COLUMNS"))-6 //atoi(getenv("COLUMNS"))
 #define TEST_DEF(NAME, CODE)                  \
 	NAME##_test() {                           \
 	    char  c[]= {                          \

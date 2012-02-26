@@ -24,8 +24,10 @@
 .global ccaprice_syscall_core
 .global ccaprice_main
 .global _start
+#ifndef __PATHCC__
 .type   ccaprice_syscall_core,%function
 .type   _start,%function
+#endif
 
 _start:
 	xorq %rbp,%rbp
