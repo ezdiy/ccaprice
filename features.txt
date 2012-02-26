@@ -113,8 +113,8 @@ stdio.h:
 stdlib.h:
 	EXIT_SUCCESS
 	EXIT_FAILURE
-	MIN    () [branchless]
-	MAX    () [branchless]
+	MIN    () [extension/branchless]
+	MAX    () [extension/branchless]
 	abort  ()
 	atoi   ()
 	exit   ()
@@ -156,6 +156,7 @@ math.h:
 	M_PI
 	M_PI_2
 	M_PI_4
+	M_TAU  [EXTENSION]
 	abs    () [branchless]
 	atan   ()
 	ceil   ()

@@ -29,21 +29,23 @@
 
 #define CCAPRICE_SIGNEXTEND(V) \
     union {                    \
-        int64_t W;             \
+        int32_t W;             \
         struct {               \
-            int32_t L;         \
-            int32_t H;         \
+            int16_t L;         \
+            int16_t H;         \
         } S;                   \
     } signext = { V }
 
-#define MIN(X,Y) ({                 \
+#ifdef CCAPRICE_EXTENSIONS
+#	define MIN(X,Y) ({              \
     CCAPRICE_SIGNEXTEND((X)-(Y));   \
     ((Y)+(((X)-(Y))& signext.S.H)); \
 })
-#define MAX(X,Y) ({                 \
+#	define MAX(X,Y) ({              \
     CCAPRICE_SIGNEXTEND((Y)-(X));   \
     ((X)+(((Y)-(X))&~signext.S.H)); \
 })
+#endif
 
 CCAPRICE_EXPORT void  atexit(void (*)());
 CCAPRICE_EXPORT void  exit  (int);

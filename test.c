@@ -239,7 +239,7 @@ TEST_DEF(stdlib, max, { TEST_RET(MAX(100,50) == 100) })
 int main(int argc, char **argv, char **argp) {
 	struct winsize ws;
 	ioctl(1, TIOCGWINSZ, &ws);
-	PADD = ws.ws_col-6;
+	PADD = ws.ws_col+3;
 	
 	int  i = 0;
 	while(*argp++ && *argp)
