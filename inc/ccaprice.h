@@ -64,14 +64,14 @@
 #define __INFO__ "No information Specified during build"
 #endif
 
-#if defined(__PATHCC__)
-#	define CCAPRICE_BUILD_COMP "EKOPATH"
+#ifdef __PATHCC__
+#	define __COMP__ "EKOPATH"
 #	define CCAPRICE_USED __attribute__((__used__))
 #elif   defined(__GNUC__)
-#	define CCAPRICE_BUILD_COMP "GCC"
+#	define __COMP__ "GCC"
 #	define CCAPRICE_USED __attribute__((__used__))
 #elif defined(__clang__)
-#	define CCAPRICE_BUILD_COMP "CLANG"
+#	define __COMP__ "CLANG"
 #	define CCAPRICE_USED __attribute__((__used__))
 #else
 #	error "Unsupported compiler"
@@ -136,9 +136,11 @@ CCAPRICE_COMPILE_TIME_ASSERT(uint64_t, sizeof(uint64_t) == 8);
 
 CCAPRICE_EXPORT const char *ccaprice_build_date;
 CCAPRICE_EXPORT const char *ccaprice_build_info;
+CCAPRICE_EXPORT const char *ccaprice_build_comp;
 #ifdef CCAPRICE_EXTENSIONS
 #	define CCAPRICE_BUILD_DATE ccaprice_build_date
 #	define CCAPRICE_BUILD_INFO ccaprice_build_info
+#	define CCAPRICE_BUILD_COMP ccaprice_build_comp
 #endif
 
 #endif /* !CCAPRICE_CCAPRICE_HDR */

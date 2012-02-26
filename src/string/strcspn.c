@@ -21,16 +21,13 @@
  * SOFTWARE.
  */
 #include "inc/string.h"
-CCAPRICE_INTERNAL_TYPE(unsigned char, ccaprice_strspn_cycle);
-CCAPRICE_INTERNAL_TYPE(unsigned char, ccaprice_strspn_table[0xFF]);
-CCAPRICE_INTERNAL_FUNC(void,          ccaprice_strspn_init, (const unsigned char *, int));
-
 size_t strcspn(const char *src, const char *reg) {
-	const unsigned char *s = (const unsigned char*)src;
-	
-	size_t i;
-	ccaprice_strspn_init((const unsigned char*)reg, 1);
-	for (i = 0; ccaprice_strspn_table[s[i]] != ccaprice_strspn_cycle; i++);
-		
-	return i;
+	size_t ret = 0;
+	while (*src) {
+		if (strchr(reg, *src))
+			return ret;
+		else
+			src++,ret++;
+	}
+	return ret;
 }

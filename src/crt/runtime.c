@@ -39,7 +39,7 @@ char **ccaprice_enviroment;
 
 /* MALLOC Requires this */
 void *ccaprice_runtime_curbrk = NULL;
-#if defined(CCAPRICE_TARGET_X86) || defined(__i386__)
+#if defined(CCAPRICE_TARGET_X86)
 int ccaprice_syscall_error() {
 	register int no __asm__("%edx");
 	__asm__ __volatile__ (
@@ -48,7 +48,7 @@ int ccaprice_syscall_error() {
 	);
 	return no;
 }
-#elif defined(CCAPRICE_TARGET_X86_64) || defined(__x86_64__)
+#elif defined(CCAPRICE_TARGET_X86_64)
 int ccaprice_syscall_error() {
 	register int no __asm__("%rcx");
 	__asm__ __volatile__ (
@@ -121,6 +121,7 @@ void* ccaprice_runtime_sbrk(size_t byte) {
 #define ISTR3(C)  C
 const char *ccaprice_build_date CCAPRICE_USED = ISTR3(__DATE__);
 const char *ccaprice_build_info CCAPRICE_USED = ISTR1(__INFO__);
+const char *ccaprice_build_comp CCAPRICE_USED = ISTR3(__COMP__);
 #undef ISTR1
 #undef ISTR2
 #undef ISTR3

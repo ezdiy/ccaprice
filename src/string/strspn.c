@@ -22,40 +22,9 @@
  */
 #include "inc/string.h"
 
-/*
- * We can gain a lot of performance if we use a table
- * there are many methods to doing this.  However this
- * one is a lot better.  The cost of this traversal
- * is about O(n+m).  I'd like to five credit to Richard A.
- * O'Keefe who explained this trick here:
- * 	http://groups.google.com/group/comp.unix.programmer/msg/f92e10e01279f708?hl=en
- * 
- */
- 
-unsigned char ccaprice_strspn_table[0xFF];
-unsigned char ccaprice_strspn_cycle = 0;
-
-void ccaprice_strspn_init(const unsigned char *set, int i) {
-	if (!set) {
-		if (ccaprice_strspn_cycle == sizeof(ccaprice_strspn_table)-1) {
-			memset(ccaprice_strspn_table, 0, sizeof(ccaprice_strspn_table));
-			ccaprice_strspn_cycle = 0;
-		} else {
-			ccaprice_strspn_cycle ++;
-		}
-		while (*set)
-			ccaprice_strspn_table[*set++] = ccaprice_strspn_cycle;
-	}
-	*ccaprice_strspn_table = i?ccaprice_strspn_cycle:0;
-}
-
-
 size_t strspn(const char *src, const char *reg) {
-	const unsigned char *s = (const unsigned char*)src;
-	
-	size_t i;
-	ccaprice_strspn_init((const unsigned char*)reg, 0);
-	for (i = 0; ccaprice_strspn_table[s[i]] != ccaprice_strspn_cycle; i++);
-		
-	return i;
+	size_t ret = 0;
+	while (*src && strchr(reg, *src++))
+		ret++;
+	return ret;
 }
