@@ -283,3 +283,9 @@ The current supported locales for ccaprice
 	en_CA  -- English Canada
 	en_US  -- English United States
 	en_AU  -- English Australia
+
+Extensions supported by ccaprice
+#define CCAPRICE_EXTENSIONS prior to using them
+CCAPRICE_BUILD_DATE -- returns a constant string literal of the build date of the library                     [expanded __DATE__]
+CCAPRICE_BUILD_INFO -- returns a constant string literal of the info of the system used to compile ccaprice   [uname -a]
+CCAPRICE_BUILD_COMP -- returns a constant string literal (all in caps) of the compiler used to build ccaprice ["GCC", "CLANG", "TINYC"]

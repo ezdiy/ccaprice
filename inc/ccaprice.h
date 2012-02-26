@@ -23,6 +23,33 @@
 #ifndef CCAPRICE_CCAPRICE_HDR
 #define CCAPRICE_CCAPRICE_HDR
 
+/*
+ * The makefile should set a -D__INFO__=, if it doesn't we'll handle
+ * defining __INFO__ to a string literal explaining that the build
+ * did not include information.
+ */
+#ifndef __INFO__
+#define __INFO__ "No information Specified during build"
+#endif
+
+#if   defined(__GNUC__)
+#	define CCAPRICE_BUILD_COMP "GCC"
+#	define CCAPRICE_USED __attribute__((__used__))
+#elif defined(__clang__)
+#	define CCAPRICE_BUILD_COMP "CLANG"
+#	define CCAPRICE_USED __attribute__((__used__))
+#elif defined(__TINYC__) 
+#	define CCAPRICE_BUILD_COMP "TINYC"
+	/*
+	 * TinyC doesn't have a __used__ attribute. Instead lets setup
+	 * a section called .used for it.  It's guranteed not to be
+	 * removed then.
+	 */
+#	define CCAPRICE_USED __attribute__((__section__(".used")))
+#else
+#	error "Unsupported compiler"
+#endif
+
 #define STRING_STRLEN_OPTIMAL 0x01
 #define STRING_MEMCHR_OPTIMAL 0x01
 #define STRING_MEMCPY_OPTIMAL 0x01
@@ -79,4 +106,12 @@ CCAPRICE_COMPILE_TIME_ASSERT(uint64_t, sizeof(uint64_t) == 8);
 #else
 #	define CCAPRICE_EXPORT extern
 #endif /* !CCAPRICE_COMPILING    */
+
+CCAPRICE_EXPORT const char *ccaprice_build_date;
+CCAPRICE_EXPORT const char *ccaprice_build_info;
+#ifdef CCAPRICE_EXTENSIONS
+#	define CCAPRICE_BUILD_DATE ccaprice_build_date
+#	define CCAPRICE_BUILD_INFO ccaprice_build_info
+#endif
+
 #endif /* !CCAPRICE_CCAPRICE_HDR */

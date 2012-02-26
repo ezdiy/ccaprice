@@ -1,5 +1,4 @@
-CFLAGS += -Wall -nostdlib -std=c99 -fno-builtin -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
-CCC     = $(CC)
+CFLAGS += -Wall -nostdlib -std=c99 -fno-builtin -Wno-uninitialized -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
 SRC     = src/assert.c         \
           src/locale.c         \
           src/signal.c         \
@@ -54,9 +53,9 @@ OBJ     = $(SRC:.c=.o)
 OUT     = ccaprice.a
 INC     = -I.
 EDGE    = -c $< -o $@
-#copies
 SRCD    = $(SRC)
 OBJD    = $(SRCD:.c=.o)
+CFLAGS += -D__INFO__="$(shell echo `uname -a`)"
 
 ifeq (,$(VERBOSE))
 	AT = @
@@ -128,19 +127,37 @@ else
 		# this will ruin clean: so we must handle for clean after
 		
 		# replace compiler with echo
-		CC     := @echo
+		override CCC    = @echo
 		# clear out include flags
-		INC    :=
+		override INC    =
 		# edge is the output command 
-		EDGE   :=
+		override EDGE   =
 		# only compile one source file (for one echo)
-		SRCD   := src/assert.c
+		override SRCD   = src/assert.c
+		override OBJD   = src/assert.o
 		# do not actually do creation of library
-		DONOT  := 1
+		override DONOT  = 1
 		# dissalow output of build process
-		VERBOSE:= 1
-		CFLAGS := $(GREEN)Error: No target specified; try $(CYAN)\`make TARG=$(shell uname -m)\`$(ENDCOL)
+		override VERBOSE= 1
+		override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/tinycc/clang] TARG=$(shell uname -m)\`$(ENDCOL)
 	endif
+endif
+
+ifeq (, $(CCC))
+	# replace compiler with echo
+	override CCC    = @echo
+	# clear out include flags
+	override INC    =
+	# edge is the output command 
+	override EDGE   =
+	# only compile one source file (for one echo)
+	override SRCD   = src/assert.c
+	override OBJD   = src/assert.o
+	# do not actually do creation of library
+	override DONOT  = 1
+	# dissalow output of build process
+	override VERBOSE= 1
+	override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/tinycc/clang] TARG=$(shell uname -m)\`$(ENDCOL)
 endif
 
 BIN = $(ASM:.S=.o)

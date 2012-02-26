@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#define CCAPRICE_EXTENSIONS /* Enable extensions in ccaprice */
 #include "inc/stdlib.h"
 #include "inc/stdio.h"
 #include "inc/ctype.h"
@@ -87,28 +88,13 @@ TEST_DEF(tolower,  { TEST_RET(tolower('A') == 'a'); })
 TEST_DEF(remove ,  { TEST_RET(!remove("Output"));   })
 
 int main(int argc, char **argv, char **argp) {
-	printf("Testing ...\n");
-	
-	printf("Printing all system enviroment variables\n");
 	int  i = 0;
 	while(*argp++ && *argp)
-		printf("%05d:%s\n", ++i, *argp);
+		printf("%05d : \033[36m%s\033[0m\n", ++i, *argp);
 		
-	printf("Determining system language ...\n");
-	char *l = getenv("LANG");
-	if (l != NULL)
-		printf("Language found: %s\n", l);
-	else {
-		printf("Failed to find language!\n");
-		l = "C";
-	}
-		
-	printf   ("Setting locale based on language %s\n", l);
-	char *t = setlocale(LC_ALL, l);
-	if (!t || strcmp(t,l) != 0)
-		printf("Failed to set language to %s, locale not implemented yet?\n", l);
-	else
-		printf("Language succesfully switched to %s\n", l);
+	printf("\nCCAPRICE_BUILD_DATE: \033[33m%s\033[0m\n",   CCAPRICE_BUILD_DATE);
+	printf(  "CCAPRICE_BUILD_INFO: \033[33m%s\033[0m\n",   CCAPRICE_BUILD_INFO);
+	printf(  "CCAPRICE_BUILD_COMP: \033[33m%s\033[0m\n\n", CCAPRICE_BUILD_COMP);
 	
 	TEST_TRY(abs);
 	TEST_TRY(strstr);
@@ -123,19 +109,5 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(file);
 	TEST_TRY(remove);
 	
-	printf("trying to print decmial value %f\n", 123.456f);
-	printf("accepting input from user ... PLEASE ENTER SOMETHING\n");
-	
-	char  buffer[1024];
-	char *bufptr = &buffer[0];
-	char  inputs;
-	while (inputs!='\n') {
-		read(1, &inputs, 1);
-		*bufptr++=inputs;
-	}
-	*bufptr--;        /* move backwards from '\0' */
-	*bufptr-- = '\0'; /* remove '\n'              */
-	printf("got input from stdin: %s\n", buffer);
-	printf("now returning from main ...\n");
 	return 0;
 }

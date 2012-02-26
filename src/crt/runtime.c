@@ -41,7 +41,7 @@ char **ccaprice_enviroment;
 void *ccaprice_runtime_curbrk = NULL;
 #if defined(CCAPRICE_TARGET_X86) || defined(__i386__)
 int ccaprice_syscall_error() {
-	register int no __asm__("%edx");
+	register int no __asm__("%edx")
 	__asm__ __volatile__ (
 		"mov  %eax, %edx\n\t"
 		"negl %edx      \n\t"
@@ -115,6 +115,15 @@ void* ccaprice_runtime_sbrk(size_t byte) {
 	return (void*)ccaprice_syscall_core(SYS_BRK, (char*)((uintptr_t)_end + byte));
 	#endif
 }
+
+#define ISTR1(C) ISTR2(C)
+#define ISTR2(C) #C
+#define ISTR3(C)  C
+const char *ccaprice_build_date CCAPRICE_USED = ISTR3(__DATE__);
+const char *ccaprice_build_info CCAPRICE_USED = ISTR1(__INFO__);
+#undef ISTR1
+#undef ISTR2
+#undef ISTR3
 
 void ccaprice_main(int argc, char **argv) {	
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_locale_init, ());
