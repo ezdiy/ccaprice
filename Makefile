@@ -25,6 +25,7 @@ SRC     = src/assert.c                   \
           src/string/strpbrk.c           \
           src/string/strspn.c            \
           src/string/strstr.c            \
+          src/string/strtok.c            \
           src/stdlib/abort.c             \
           src/stdlib/atoi.c              \
           src/stdlib/exit.c              \

@@ -30,7 +30,6 @@ CCAPRICE_EXPORT void   *memcpy (void*, const void*, register size_t);
 CCAPRICE_EXPORT void   *memmove(void*, const void*, register size_t);
 CCAPRICE_EXPORT char   *strncpy(char*, const char*, register size_t);
 CCAPRICE_EXPORT char   *strcpy (char*, const char*);
-
 /* Concatenation */
 CCAPRICE_EXPORT char   *strncat(char*, const char*, register size_t);
 CCAPRICE_EXPORT char   *strcat (char*, const char*);
@@ -45,8 +44,10 @@ CCAPRICE_EXPORT void   *memchr (const void*, int, register size_t);
 CCAPRICE_EXPORT char   *strchr (const char*, int);
 CCAPRICE_EXPORT char   *strrchr(const char*, int);
 CCAPRICE_EXPORT char   *strstr (const char*, const char*);
+CCAPRICE_EXPORT char   *strpbrk(const char*, const char*);
 CCAPRICE_EXPORT size_t  strcspn(const char*, const char*);
 CCAPRICE_EXPORT size_t  strspn (const char*, const char*);
+CCAPRICE_EXPORT char   *strtok (char *, const char*);
 
 /* Others */
 CCAPRICE_EXPORT char   *strerror(int);

@@ -135,10 +135,12 @@ CCAPRICE_COMPILE_TIME_ASSERT(uint64_t, sizeof(uint64_t) == 8);
 CCAPRICE_EXPORT const char *ccaprice_build_date;
 CCAPRICE_EXPORT const char *ccaprice_build_info;
 CCAPRICE_EXPORT const char *ccaprice_build_comp;
+CCAPRICE_EXPORT const char *ccaprice_build_time;
 #ifdef CCAPRICE_EXTENSIONS
 #	define CCAPRICE_BUILD_DATE ccaprice_build_date
 #	define CCAPRICE_BUILD_INFO ccaprice_build_info
 #	define CCAPRICE_BUILD_COMP ccaprice_build_comp
+#	define CCAPRICE_BUILD_TIME ccaprice_build_time
 #endif
 
 #endif /* !CCAPRICE_CCAPRICE_HDR */

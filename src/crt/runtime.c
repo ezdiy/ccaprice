@@ -121,6 +121,7 @@ void* ccaprice_runtime_sbrk(size_t byte) {
 #define ISTR3(C)  C
 const char *ccaprice_build_date CCAPRICE_USED = ISTR3(__DATE__);
 const char *ccaprice_build_info CCAPRICE_USED = ISTR1(__INFO__);
+const char *ccaprice_build_time CCAPRICE_USED = ISTR3(__TIME__);
 const char *ccaprice_build_comp CCAPRICE_USED = ISTR3(__COMP__);
 #undef ISTR1
 #undef ISTR2
