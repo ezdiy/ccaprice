@@ -67,7 +67,8 @@ _U_INT_(64);
  * standard stdint.h or inttypes.h was included.
  */
 #if !defined(_STDINT_H)      && !defined(_STDINT_H_)  && \
-    !defined(_SYS_STDINT_H_) && !defined(_INTTYPES_H) && !defined(_INTTYPES_H_)
+    !defined(_SYS_STDINT_H_) && !defined(_INTTYPES_H) && \
+    !defined(_INTTYPES_H_)   && !defined(_SYS__STDINT_H_)
 	typedef ccaprice_uint_8  uint8_t;
 	typedef ccaprice_uint_16 uint16_t;
 	typedef ccaprice_uint_32 uint32_t;
