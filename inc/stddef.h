@@ -22,14 +22,16 @@
  */
 #ifndef CCAPRICE_STDDEF_HDR
 #define CCAPRICE_STDDEF_HDR
+#include "ccaprice.h"
+
 /*
  * Only tage advantage of type attributes if the compiler supports it.
  * Thankfully PathScale/EkoPath/Clang/GCC are all backwards compatible
  * in this regard.
  */
-#if __COMPID__ == CCAPRICE_COMPILER_EKOPATH || \
-	__COMPID__ == CCAPRICE_COMPILER_CLANG   || \
-	__COMPID__ == CCAPROCE_COMPILER_GCC
+#if ((__COMPID__ == CCAPRICE_COMPILER_EKOPATH) || \
+     (__COMPID__ == CCAPRICE_COMPILER_CLANG)   || \
+     (__COMPID__ == CCAPRICE_COMPILER_GCC))
 #	define REG8  __QI__
 #	define REG16 __HI__
 #	define REG32 __SI__

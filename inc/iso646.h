@@ -28,16 +28,16 @@
  * since this could easily cause confustion if you
  * run it through a preprocessor.
  */
-#ifndef __cplusplus
-	#define and     &&
-	#define and_eq  &=
-	#define bitand  &
-	#define bitor   |
-	#define compl   ~
-	#define not     !=
-	#define or      ||
-	#define or_eq   |=
-	#define xor     ^
-	#define xor_eq  ^=
+#if !defined(__cplusplus)
+#	define and     &&
+#	define and_eq  &=
+#	define bitand  &
+#	define bitor   |
+#	define compl   ~
+#	define not     !=
+#	define or      ||
+#	define or_eq   |=
+#	define xor     ^
+#	define xor_eq  ^=
 #endif
 #endif

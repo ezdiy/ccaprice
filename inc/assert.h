@@ -25,9 +25,9 @@
 #include "ccaprice.h"
 
 #if !defined(NDEBUG)
-#define assert(expr) ccaprice_assert(__FILE__,__LINE__,(expr))
+#	define assert(expr) ccaprice_assert(__FILE__,__LINE__,(expr))
 #else
-#define assert(expr) ((void)0) /* As per standard */
+#	define assert(expr) ((void)0) /* As per standard */
 #endif
 
 /*
