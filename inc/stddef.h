@@ -95,7 +95,7 @@ typedef ccaprice_uint_64 uint64_t;
 #		if defined(__cplusplus)
 		/*
 		 * C++ Specification says that NULL should be 0
-		 * opposed to C which defined it as ((void*)0).
+		 * opposed to C which defines it as ((void*)0).
 		 */
 #			define NULL 0
 #		else

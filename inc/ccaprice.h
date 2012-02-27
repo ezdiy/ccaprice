@@ -66,8 +66,8 @@
 
 /* cannot be enumerated required by more preprocessing */
 #define CCAPRICE_COMPILER_EKOPATH 0xFF0000
-#define CCAPRICE_COMPILER_GCC     0x00FF00
-#define CCAPRICE_COMPILER_CLANG   0x0000FF
+#define CCAPRICE_COMPILER_CLANG   0x00FF00
+#define CCAPRICE_COMPILER_GCC     0x0000FF
 
 #if defined(__PATHCC__)
 #	define __COMP__   "EKOPATH"

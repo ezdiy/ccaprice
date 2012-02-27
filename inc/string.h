@@ -23,7 +23,7 @@
 #ifndef  CCAPRICE_STRING_HDR
 #define  CCAPRICE_STRING_HDR
 #include "ccaprice.h"
-#include "stddef.h"    /* size_t */
+#include "inc/stddef.h"    /* size_t */
 
 /* Copying */
 CCAPRICE_EXPORT void   *memcpy (void*, const void*, register size_t);
