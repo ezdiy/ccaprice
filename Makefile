@@ -141,39 +141,24 @@ else
 			AFLAGS  = -m32
 		endif
 	else
-		# no suitable TARG is set we need to stop the build process
-		# this will ruin clean: so we must handle for clean after
-		
-		# replace compiler with echo
 		override CCC    = @echo
-		# clear out include flags
 		override INC    =
-		# edge is the output command 
 		override EDGE   =
-		# only compile one source file (for one echo)
 		override SRCD   = src/assert.c
 		override OBJD   = src/assert.o
-		# do not actually do creation of library
 		override DONOT  = 1
-		# dissalow output of build process
 		override VERBOSE= 1
 		override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\`$(ENDCOL)
 	endif
 endif
 
 ifeq (, $(CCC))
-	# replace compiler with echo
 	override CCC    = @echo
-	# clear out include flags
 	override INC    =
-	# edge is the output command 
 	override EDGE   =
-	# only compile one source file (for one echo)
 	override SRCD   = src/assert.c
 	override OBJD   = src/assert.o
-	# do not actually do creation of library
 	override DONOT  = 1
-	# dissalow output of build process
 	override VERBOSE= 1
 	override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\`$(ENDCOL)
 endif
@@ -208,8 +193,10 @@ ifneq ($(VERBOSE), 1)
 	@echo $(GREEN) Completed Build for $(TARGET) $(ENDCOL)
 endif
 
-test:
-	$(AT) $(CCC) $(CFLAGS) test.c ccaprice.a -o test
+test: test.o
+ifneq ($(DONOT), 1)
+	$(AT) ld -o test test.o ccaprice.a
+endif
 ifneq ($(VERBOSE), 1)
 	@echo $(GREEN) Completed Build for test $(ENDCOL)
 endif
@@ -218,4 +205,4 @@ clean:
 	$(AT) rm -f src/crt/i386.o
 	$(AT) rm -f src/crt/x86_64.o
 	$(AT) rm -f $(OBJ) $(OUT)
-	$(AT) rm -f test
+	$(AT) rm -f test test.o
