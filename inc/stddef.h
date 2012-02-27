@@ -79,15 +79,43 @@ typedef ccaprice_uint_64 uint64_t;
 	typedef signed   long             intptr_t;
 	typedef unsigned long             uintptr_t;
 #endif
+
+/*
+ * We handle null correctly here.
+ * In GNUG mode there is a builtin __null we can
+ * use to our advantage.
+ * 
+ * Otherwise we make NULL the correct constant according
+ * to the language at play.
+ */
 #if !defined(NULL)
-#	if defined(__cplusplus)
+#	if defined(__GNUG__) /* C++ */
+#		define NULL __null
+#	else
+#		if defined(__cplusplus)
 		/*
 		 * C++ Specification says that NULL should be 0
 		 * opposed to C which defined it as ((void*)0).
 		 */
-#		define NULL 0
+#			define NULL 0
+#		else
+#			define NULL ((void*)0)
+#		endif
+#	endif
+#endif
+
+#if !defined(offsetof)
+#	if ((__COMPID__ == CCAPRICE_COMPILER_EKOPATH) || \
+	    (__COMPID__ == CCAPRICE_COMPILER_CLANG)   || \
+	    (__COMPID__ == CCAPRICE_COMPILER_GCC))
+#		define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
 #	else
-#		define NULL ((void*)0)
+		/*
+		 * Unsafe fallback: This is actually undefined behaviour. However
+		 * there are a wide range of compilers that make this code do what
+		 * offsetof() is expected to do.
+		 */
+#		define offsetof(TYPE, MEMBER) ((size_t) &((TYPE*)0)->MEMBER)
 #	endif
 #endif
 
