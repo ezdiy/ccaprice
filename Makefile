@@ -85,6 +85,11 @@ ifneq ($(FLAV), Windows)
 	endif
 endif
 
+# naive  selection
+ifneq (, $(NAIVE))
+	CFLAGS += -DCCAPRICE_NAIVE
+endif
+
 # target selection
 ifneq (, $(TARG))
 	ifeq (x86_64, $(TARG))
@@ -202,8 +207,15 @@ endif
 ifneq ($(VERBOSE), 1)
 	@echo $(GREEN) Completed Build for $(TARGET) $(ENDCOL)
 endif
+
+test:
+	$(AT) $(CCC) $(CFLAGS) test.c ccaprice.a -o test
+ifneq ($(VERBOSE), 1)
+	@echo $(GREEN) Completed Build for test $(ENDCOL)
+endif
 	
 clean:
 	$(AT) rm -f src/crt/i386.o
 	$(AT) rm -f src/crt/x86_64.o
 	$(AT) rm -f $(OBJ) $(OUT)
+	$(AT) rm -f test

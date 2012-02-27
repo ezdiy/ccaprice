@@ -47,8 +47,8 @@ int PADD = 80;
 #define TEST_TRY(NAME) printf("%s\n", NAME##_test()?"\033[32mpassed\033[0m":"\033[31mfailed\033[0m")
 
 TEST_DEF(string, memchr, {
-	const char  *data   = "Example string";
-	void        *find   = memchr(data, 'p', sizeof(data));
+	const char  data[] = "Example string";
+	char       *find   = (char*)memchr(data, 'p', sizeof(data));
 	TEST_RET(find != NULL)
 })
 
@@ -59,7 +59,7 @@ TEST_DEF(string, memcmp, {
 })
 
 TEST_DEF(string, memcpy, {
-	char *data = "Sample";
+	char  data[] = "Sample";
 	char  copy[sizeof(data)];
 	memcpy(copy, data, sizeof(data));
 	

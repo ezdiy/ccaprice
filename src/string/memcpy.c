@@ -23,7 +23,7 @@
 #include "inc/string.h"
 void *memcpy(void *dst, const void *src, register size_t cnt) {	
 	#ifdef STRING_MEMCPY_OPTIMAL
-		#if defined(STRING_MEMCPY_X86_64) || defined(STRING_MEMCHR_X86) 
+		#if defined(STRING_MEMCPY_X86_64)
 		/*
 		 * "rep movs"  is optimized in  microcode on
 		 * modern  Intel  CPU's.  This  method works
@@ -89,20 +89,16 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 	
 	#ifdef STRING_MEMCPY_NONE
 		#warning "[ccaprice] no optimized memcpy implementation, using naive method (could be slow)"
-		/*
-		 * Naive platform neutral implementation
-		 * this copys via byte-per-byte src->dst
-		 */
-		char *d_byte = (char*)dst;
-		char *s_byte = (char*)src;
-		
-		while (cnt-->0) {
-			/*
-			 * The compiler expands this to:
-			 * d_byte[0] = s_byte[0];
-			 * d_byte ++;  s_byte ++;
-			 */
-			*d_byte++ = *s_byte++;
+		unsigned char *dst8 = (unsigned char *)dst;
+		unsigned char *src8 = (unsigned char *)src;
+		if (dst8 < src8)
+			while (cnt--)
+				*dst8++ = *src8++;
+		else {
+			unsigned char *ls = src8+(cnt-1);
+			unsigned char *ld = dst8+(cnt-1);
+			while (cnt--)
+				*(char*)ld-- = *(char*)ls--;
 		}
 		return dst;
 	#endif /* !STRING_MEMCPY_OPTIMAL */

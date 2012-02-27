@@ -31,9 +31,8 @@ static const size_t memchr_bsf_table[256] = {
 	CCAPRICE_BSF_TABLE_EXPAND
 };
 
-void *memchr(const void *src, int cmp, register size_t cnt) {
-	#ifdef STRING_MEMCHR_OPTIMAL
-		#ifdef STRING_MEMCHR_OPTIMAL_SSE2
+void *memchr(const void *src, int cmp, size_t cnt) {
+	#if defined(STRING_MEMCHR_OPTIMAL) && defined(STRING_MEMCHR_OPTIMAL_SSE2) 
 		/*
 		 * SSE optimized version of memchr.  Handles 16-bit alligned
 		 * data first, then 32-bit alligned data. Then collects any
@@ -87,22 +86,16 @@ void *memchr(const void *src, int cmp, register size_t cnt) {
 			src8++;
 			cnt --;
 		}
-		#else
-			#define STRING_MEMCHR_NONE
-		#endif
-	#endif /* !STRING_MEMCHR_OPTIMAL */
-	
-	#ifdef STRING_MEMCHR_NONE
+	#else
 		#warning "[ccaprice] no optimized memchr implementation, using naive method (could be slow)"
-		int   i;
-		char *s = (char*)src;
-		for (i = 0; i < cnt; i++) {
-			if (*s == cmp)
-				return (void*)s;
-			else
-				s++;
+		if (cnt != 0) {
+			const unsigned char *p = src;
+			do {
+				if (*p++ == cmp)
+					return ((void*)(p - 1));
+			} while(--cnt != 0);
 		}
-	#endif /* !STRING_MEMCHR_NONE */
+	#endif
 	
-	return 0; /* Compiler warns no return */
+	return NULL;
 }
