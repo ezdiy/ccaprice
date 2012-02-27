@@ -25,7 +25,12 @@
 
 void ccaprice_assert(const char *file, int line, int expr) {
 	CCAPRICE_INTERNAL_FUNC(int, printf, (const char *, ...));
+	/*
+	 * Standard states the output needs to look as such:
+	 * 	program_name: file.c:line function: Assertion `code` failed.
+	 */
 	if (!expr) {
+		/* TODO to move stderr: according to the spec */
 		printf("assertion failed: %s on line %d\n", file, line);
 		abort();
 	}

@@ -24,10 +24,10 @@
 #define CCAPRICE_ASSERT_HDR
 #include "ccaprice.h"
 
-#ifndef NDEBUG
+#if !defined(NDEBUG)
 #define assert(expr) ccaprice_assert(__FILE__,__LINE__,(expr))
 #else
-#define assert(expr) /* Do nothing */
+#define assert(expr) ((void)0) /* As per standard */
 #endif
 
 /*

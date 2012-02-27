@@ -22,14 +22,58 @@
  */
 #ifndef CCAPRICE_STDDEF_HDR
 #define CCAPRICE_STDDEF_HDR
-typedef u_int8_t                  uint8_t;
-typedef u_int16_t                 uint16_t;
-typedef u_int32_t                 uint32_t;
-typedef u_int64_t                 uint64_t;
-#	if defined (__PTRDIFF_TYPE__)
+/*
+ * Only tage advantage of type attributes if the compiler supports it.
+ * Thankfully PathScale/EkoPath/Clang/GCC are all backwards compatible
+ * in this regard.
+ */
+#if __COMPID__ == CCAPRICE_COMPILER_EKOPATH || \
+	__COMPID__ == CCAPRICE_COMPILER_CLANG   || \
+	__COMPID__ == CCAPROCE_COMPILER_GCC
+#	define REG8  __QI__
+#	define REG16 __HI__
+#	define REG32 __SI__
+#	define REG64 __DI__
+#	define _U_INT_(S) typedef unsigned int ccaprice_uint_##S __attribute__( (__mode__( REG##S )))
+#else
+	/*
+	 * There is not much fall back we can assume from compilers at
+	 * this point.  To our advantage <sys/types.h> defines some odd
+	 * and (not guranteed) types that we could try to use.
+	 */
+#	warning "[ccaprice] Experimental feature selected: might not work"
+#	define _U_INT_(S) typedef u_int##S##_t ccaprice_uint_##S
+#endif
+
+/*
+ * Create the ccaprice_uint_* types for re-typedef to correct types
+ * later.  These are guranteed to always be 8/16/32/64 bits on all
+ * platforms.
+ */
+_U_INT_(8);
+_U_INT_(16);
+_U_INT_(32);
+_U_INT_(64);
+#undef REG8
+#undef REG16
+#undef REG32
+#undef REG64
+#undef _U_INT_
+
+typedef ccaprice_uint_8  uint8_t;
+typedef ccaprice_uint_16 uint16_t;
+typedef ccaprice_uint_32 uint32_t;
+typedef ccaprice_uint_64 uint64_t;
+
+#if defined (__PTRDIFF_TYPE__)
 	typedef signed   __PTRDIFF_TYPE__ intptr_t;
 	typedef unsigned __PTRDIFF_TYPE__ uintptr_t;
 #else
+	/*
+	 * These are correct for X86 and x86_64.  Just a thought
+	 * there should be a more correct way to fallbacking if
+	 * __PTRDIFF_TYPE__ is not defined.  TODO!
+	 */
 	typedef signed   long             intptr_t;
 	typedef unsigned long             uintptr_t;
 #endif
@@ -45,11 +89,14 @@ typedef u_int64_t                 uint64_t;
 #	endif
 #endif
 
-/* Ensure type sizes: When compiling ccaprice only */
+/*
+ * Generate static assertions only when compiling the library.
+ * There might be something broken with someones toolchain if
+ * these ever assert.
+ */
 #if defined(CCAPRICE_CP)
-CCAPRICE_COMPILE_TIME_ASSERT(uint16_t, sizeof(uint16_t) == 2);
-CCAPRICE_COMPILE_TIME_ASSERT(uint32_t, sizeof(uint32_t) == 4);
-CCAPRICE_COMPILE_TIME_ASSERT(uint64_t, sizeof(uint64_t) == 8);
+	CCAPRICE_COMPILE_TIME_ASSERT(uint16_t, sizeof(uint16_t) == 2);
+	CCAPRICE_COMPILE_TIME_ASSERT(uint32_t, sizeof(uint32_t) == 4);
+	CCAPRICE_COMPILE_TIME_ASSERT(uint64_t, sizeof(uint64_t) == 8);
 #endif
-
 #endif /* !CCAPRICE_STDDEF_HDR */
