@@ -62,22 +62,29 @@ _U_INT_(64);
 #undef REG64
 #undef _U_INT_
 
-typedef ccaprice_uint_8  uint8_t;
-typedef ccaprice_uint_16 uint16_t;
-typedef ccaprice_uint_32 uint32_t;
-typedef ccaprice_uint_64 uint64_t;
+/*
+ * Only bother to define these types if we can gurantee that no system or
+ * standard stdint.h or inttypes.h was included.
+ */
+#if !defined(_STDINT_H)      && !defined(_STDINT_H_)  && \
+    !defined(_SYS_STDINT_H_) && !defined(_INTTYPES_H) && !defined(_INTTYPES_H_)
+	typedef ccaprice_uint_8  uint8_t;
+	typedef ccaprice_uint_16 uint16_t;
+	typedef ccaprice_uint_32 uint32_t;
+	typedef ccaprice_uint_64 uint64_t;
 
-#if defined (__PTRDIFF_TYPE__)
-	typedef signed   __PTRDIFF_TYPE__ intptr_t;
-	typedef unsigned __PTRDIFF_TYPE__ uintptr_t;
-#else
-	/*
-	 * These are correct for X86 and x86_64.  Just a thought
-	 * there should be a more correct way to fallbacking if
-	 * __PTRDIFF_TYPE__ is not defined.  TODO!
-	 */
-	typedef signed   long             intptr_t;
-	typedef unsigned long             uintptr_t;
+#	if defined (__PTRDIFF_TYPE__)
+		typedef signed   __PTRDIFF_TYPE__ intptr_t;
+		typedef unsigned __PTRDIFF_TYPE__ uintptr_t;
+#	else
+		/*
+		 * These are correct for X86 and x86_64.  Just a thought
+		 * there should be a more correct way to fallbacking if
+		 * __PTRDIFF_TYPE__ is not defined.  TODO!
+		 */
+		typedef signed   long             intptr_t;
+		typedef unsigned long             uintptr_t;
+#	endif
 #endif
 
 /*
