@@ -64,17 +64,25 @@
 #define __INFO__ "No information Specified during build"
 #endif
 
+/* cannot be enumerated required by more preprocessing */
+#define CCAPRICE_COMPILER_EKOPATH 0
+#define CCAPRICE_COMPILER_GCC     1
+#define CCAPRICE_COMPILER_CLANG   2
+
 #ifdef __PATHCC__
-#	define __COMP__ "EKOPATH"
+#	define __COMP__   "EKOPATH"
+#	define __COMPID__ CCAPRICE_COMPILER_EKOPATH
 #	define CCAPRICE_USED __attribute__((__used__))
 #elif   defined(__GNUC__)
-#	define __COMP__ "GCC"
+#	define __COMP__   "GCC"
+#	define __COMPID__ CCAPRICE_COMPILER_GCC
 #	define CCAPRICE_USED __attribute__((__used__))
 #elif defined(__clang__)
-#	define __COMP__ "CLANG"
+#	define __COMP__   "CLANG"
+#	define __COMPID__ CCAPRICE_COMPILER_CLANG
 #	define CCAPRICE_USED __attribute__((__used__))
 #else
-#	error "Unsupported compiler"
+//#	error "Unsupported compiler"
 #endif
 
 #ifndef CCAPRICE_NAIVE
@@ -101,8 +109,6 @@
 	#define STRING_MEMCHR_X86_64
 	#define STRING_MEMCPY_X86_64
 	#define STRING_MEMSET_X86_64
-	#include <stdint.h>
-	#include <stddef.h>
 	#include <sys/types.h>
 #elif defined(CCAPRICE_TARGET_X86)
 	#define _LARGEFILE64_SOURCE
@@ -111,17 +117,10 @@
 	#define STRING_MEMCHR_X86
 	#define STRING_MEMCPY_X86
 	#define STRING_MEMSET_X86
-	#include <stdint.h>
-	#include <stddef.h>
 	#include <sys/types.h>
 #else
 	#error "[ccaprice] Target not supported"
 #endif /* !CCAPRICE_TARGET_X86_64 */
-
-/* Ensure type sizes */
-CCAPRICE_COMPILE_TIME_ASSERT(uint16_t, sizeof(uint16_t) == 2);
-CCAPRICE_COMPILE_TIME_ASSERT(uint32_t, sizeof(uint32_t) == 4);
-CCAPRICE_COMPILE_TIME_ASSERT(uint64_t, sizeof(uint64_t) == 8);
 
 #define CCAPRICE_INTERNAL_TYPE(TYPE, NAME)       \
 	extern TYPE NAME

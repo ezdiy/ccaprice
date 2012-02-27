@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/ccaprice.h"
-
+#include "inc/stddef.h"
 char *getenv(const char *name) {
 	CCAPRICE_INTERNAL_TYPE(char **, ccaprice_enviroment);
 		
