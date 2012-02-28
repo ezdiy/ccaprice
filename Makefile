@@ -78,7 +78,7 @@ ifeq (,$(VERBOSE))
 	AT = @
 endif
 
-ifneq ($(FLAV), Windows)
+ifneq ($(OS), WIN)
 	ifeq (,$(NOCOLOR))
 		GREEN  = -e "\033[1;32m
 		BLUE   = -e "\033[1;34m
