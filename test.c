@@ -27,8 +27,10 @@
 #include "inc/ctype.h"
 #include "inc/locale.h"
 #include "inc/math.h"
-#include "inc/posix/errno.h"
 #include "inc/errno.h"
+
+#include "inc/posix/errno.h"
+#include "inc/posix/strings.h"
 
 int PADD = 80;
 #define TEST_DEF(SPACE, NAME, ...)            \
@@ -234,6 +236,46 @@ TEST_DEF(math\040\040, isnan, {
 TEST_DEF(stdlib, min, { TEST_RET(MIN(100,50) ==  50) })
 TEST_DEF(stdlib, max, { TEST_RET(MAX(50,100) == 100) })
 
+TEST_DEF(posix\040, bcmp, {
+	const char  data1[] = "This string";
+	const char  data2[] = "This string";
+	TEST_RET(bcmp(data1, data2, sizeof(data1)) == 0)
+})
+
+TEST_DEF(posix\040, bcopy, {
+	char  data[] = "Sample";
+	char  copy[sizeof(data)];
+	bcopy(data, copy, sizeof(data));
+	
+	TEST_RET(copy[0] == 'S' && copy[1] == 'a' &&
+			 copy[2] == 'm' && copy[3] == 'p' &&
+			 copy[4] == 'l' && copy[5] == 'e')
+})
+
+TEST_DEF(posix\040, bzero, {
+	int data[] = { 1, 2, 3 };
+	bzero(data, sizeof(int) * 3);
+	TEST_RET(data[0] == 0 && data[1] == 0 && data[2] == 0)
+})
+
+TEST_DEF(posix\040, ffs, {
+	int data = 0x00FF0000;
+	int find = ffs(data);
+	TEST_RET(find == 14)
+})
+
+TEST_DEF(posix\040, index, {
+	char  data[] = "This is a string";
+	char *find   = index(data, 'a');
+	TEST_RET(find != NULL)
+})
+
+TEST_DEF(posix\040, rindex, {
+	const char *data = "This is a sample string";
+	char       *find = rindex(data, 's');
+	TEST_RET(find-data+1 == 18)
+})
+
 
 #include <sys/ioctl.h>
 int main(int argc, char **argv, char **argp) {
@@ -284,5 +326,12 @@ int main(int argc, char **argv, char **argp) {
 	
 	TEST_TRY(min);
 	TEST_TRY(max);
+	
+	TEST_TRY(bcmp);
+	TEST_TRY(bcopy);
+	TEST_TRY(bzero);
+	TEST_TRY(ffs);
+	TEST_TRY(index);
+	TEST_TRY(rindex);
 	return 0;
 }

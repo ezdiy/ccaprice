@@ -22,6 +22,6 @@
  */
 #include "inc/posix/strings.h"
 #include "inc/string.h"
-char *index(const char *src, int cmp) {
+char *rindex(const char *src, int cmp) {
 	return strrchr(src, cmp);
 }

@@ -1,8 +1,10 @@
 CFLAGS += -Wall -nostdlib -fno-builtin -Wno-uninitialized -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
 ifeq (BSD, $(OS))
 	SHELL = /usr/local/bin/bash
+	LARCH = elf_i386_fbsd
 else
 	SHELL = /bin/bash
+	LARCH = elf_i386
 endif
 SRC     = src/assert.c                   \
           src/locale.c                   \
@@ -73,6 +75,7 @@ EDGE    = -c $< -o $@
 SRCD    = $(SRC)
 OBJD    = $(SRCD:.c=.o)
 CFLAGS += -D__INFO__="$(shell echo `uname -a`)"
+LFLAGS  =
 
 ifeq (,$(VERBOSE))
 	AT = @
@@ -111,18 +114,22 @@ ifneq (, $(TARG))
 	ifeq (i386, $(TARG))
 		TARGET  = i386
 		CFLAGS += -DCCAPRICE_TARGET_X86
+		LFLAGS  = -m $(LARCH)
 	else
 	ifeq (i486, $(TARG))
 		TARGET  = i486
 		CFLAGS += -DCCAPRICE_TARGET_X86
+		LFLAGS  = -m $(LARCH)
 	else
 	ifeq (i586, $(TARG))
 		TARGET  = i586
 		CFLAGS += -DCCAPRICE_TARGET_X86
+		LFLAGS  = -m $(LARCH)
 	else
 	ifeq (i686, $(TARG))
 		TARGET  = i686
 		CFLAGS += -DCCAPRICE_TARGET_X86
+		LFLAGS  = -m $(LARCH)
 	endif
 	endif
 	endif
@@ -216,7 +223,7 @@ endif
 
 test: test.o
 ifneq ($(DONOT), 1)
-	$(AT) ld -o test test.o ccaprice.a
+	$(AT) ld $(LFLAGS) -o test test.o ccaprice.a
 endif
 ifneq ($(VERBOSE), 1)
 	@echo $(GREEN) Completed Build for test $(ENDCOL)

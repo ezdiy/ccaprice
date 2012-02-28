@@ -24,7 +24,7 @@
 #define CCAPRICE_POSIX_ERRNO_HDR
 
 /*
- * SUSv1, SUSv2, SUSv3 say eerno must be a modifyable
+ * SUSv1, SUSv2, SUSv3 say errno must be a modifyable
  * lvalue of type int.  This expands to a lvalue of
  * type int.  It just looks odd. SUS says nothing about
  * errno not being a macro; it does however show the

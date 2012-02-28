@@ -21,16 +21,16 @@
  * SOFTWARE.
  */
 #include "inc/ccaprice.h"
-#ifdef STDLIB_RANDOM_OPTIMAL
-	#ifdef STDLIB_RANDOM_OPTIMAL_SSE2
-		#include <emmintrin.h>
-		#define CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1 0x00
-		#define CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2 0x01
-		#define CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE _MM_SHUFFLE(2,3,0,1)
+#if defined(STDLIB_RANDOM_OPTIMAL)
+#	if defined(STDLIB_RANDOM_OPTIMAL_SSE2)
+#		include <emmintrin.h>
+#		define CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1 0x00
+#		define CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2 0x01
+#		define CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE _MM_SHUFFLE(2,3,0,1)
 		static __m128i ccaprice_stdlib_rseed;
-	#else
-	static unsigned int ccaprice_stdlib_rseed;
-	#endif
+#	else
+		static unsigned int ccaprice_stdlib_rseed;
+#	endif
 #else
 	static unsigned int ccaprice_stdlib_rseed;
 #endif

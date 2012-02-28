@@ -21,12 +21,10 @@
  * SOFTWARE.
  */
 #include "inc/ccaprice.h"
-#ifdef STRING_MEMCHR_OPTIMAL_SSE2
-	#include <emmintrin.h>
-	#include "inc/string.h"
-#else
-	#include "inc/string.h"
+#if defined(STRING_MEMCHR_OPTIMAL_SSE2)
+#	include <emmintrin.h>
 #endif
+#include "inc/string.h"
 static const size_t memchr_bsf_table[256] = {
 	CCAPRICE_BSF_TABLE_EXPAND
 };
