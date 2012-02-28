@@ -1,5 +1,9 @@
 CFLAGS += -Wall -nostdlib -fno-builtin -Wno-uninitialized -ffreestanding -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
-SHELL   = /bin/bash
+ifeq (BSD, $(OS))
+	SHELL = /usr/local/bin/bash
+else
+	SHELL = /bin/bash
+endif
 SRC     = src/assert.c                   \
           src/locale.c                   \
           src/signal.c                   \
@@ -128,6 +132,22 @@ ifneq (, $(TARG))
 	endif
 endif
 
+# process
+ifneq (LINUX, $(OS))
+ifneq (BSD, $(OS))
+ifneq (WIN, $(OS))
+	override CCC    = @echo
+	override INC    =
+	override EDGE   =
+	override SRCD   = src/assert.c
+	override OBJD   = src/assert.o
+	override DONOT  = 1
+	override VERBOSE= 1
+	override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\` OS=[WIN/BSD/LINUX]$(ENDCOL)
+endif
+endif
+endif
+
 ifneq (,$(findstring -DCCAPRICE_TARGET_X86_64,$(CFLAGS)))
 	ASM     = src/crt/x86_64.S
 	AFLAGS  =
@@ -148,7 +168,7 @@ else
 		override OBJD   = src/assert.o
 		override DONOT  = 1
 		override VERBOSE= 1
-		override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\`$(ENDCOL)
+		override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\` OS=[WIN/BSD/LINUX]$(ENDCOL)
 	endif
 endif
 
@@ -160,10 +180,11 @@ ifeq (, $(CCC))
 	override OBJD   = src/assert.o
 	override DONOT  = 1
 	override VERBOSE= 1
-	override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\`$(ENDCOL)
+	override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\` OS=[WIN/BSD/LINUX]$(ENDCOL)
 endif
 
-BIN = $(ASM:.S=.o)
+CFLAGS += -D$(shell echo $(OS) | tr 'a-z' 'A-Z')
+BIN     = $(ASM:.S=.o)
 
 .c.o:
 ifneq ($(VERBOSE), 1)

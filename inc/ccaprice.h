@@ -134,11 +134,13 @@ CCAPRICE_EXPORT const char *ccaprice_build_date;
 CCAPRICE_EXPORT const char *ccaprice_build_info;
 CCAPRICE_EXPORT const char *ccaprice_build_comp;
 CCAPRICE_EXPORT const char *ccaprice_build_time;
+CCAPRICE_EXPORT const char *ccaprice_build_host;
 #if defined(CCAPRICE_EXTENSIONS)
 #	define CCAPRICE_BUILD_DATE ccaprice_build_date
 #	define CCAPRICE_BUILD_INFO ccaprice_build_info
 #	define CCAPRICE_BUILD_COMP ccaprice_build_comp
 #	define CCAPRICE_BUILD_TIME ccaprice_build_time
+#	define CCAPRICE_BUILD_HOST ccaprice_build_host
 #endif
 
 #endif

@@ -248,6 +248,7 @@ int main(int argc, char **argv, char **argp) {
 	printf("\nCCAPRICE_BUILD_DATE: \033[33m%s\033[0m\n",   CCAPRICE_BUILD_DATE);
 	printf(  "CCAPRICE_BUILD_TIME: \033[33m%s\033[0m\n",   CCAPRICE_BUILD_TIME);
 	printf(  "CCAPRICE_BUILD_INFO: \033[33m%s\033[0m\n",   CCAPRICE_BUILD_INFO);
+	printf(  "CCAPRICE_BUILD_HOST: \033[33m%s\033[0m\n",   CCAPRICE_BUILD_HOST);
 	printf(  "CCAPRICE_BUILD_COMP: \033[33m%s\033[0m\n\n", CCAPRICE_BUILD_COMP);
 	
 	TEST_TRY(memchr);

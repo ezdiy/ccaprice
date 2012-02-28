@@ -118,14 +118,20 @@ void* ccaprice_runtime_sbrk(size_t byte) {
 
 #define ISTR1(C) ISTR2(C)
 #define ISTR2(C) #C
-#define ISTR3(C)  C
-const char *ccaprice_build_date CCAPRICE_USED = ISTR3(__DATE__);
-const char *ccaprice_build_info CCAPRICE_USED = ISTR1(__INFO__);
-const char *ccaprice_build_time CCAPRICE_USED = ISTR3(__TIME__);
-const char *ccaprice_build_comp CCAPRICE_USED = ISTR3(__COMP__);
+	const char *ccaprice_build_date CCAPRICE_USED = __DATE__;
+	const char *ccaprice_build_time CCAPRICE_USED = __TIME__;
+	const char *ccaprice_build_comp CCAPRICE_USED = __COMP__;
+	const char *ccaprice_build_info CCAPRICE_USED = ISTR1(__INFO__);
 #undef ISTR1
 #undef ISTR2
-#undef ISTR3
+
+#if defined(BSD)
+	const char *ccaprice_build_host CCAPRICE_USED = "BSD";
+#elif defined(LINUX)
+	const char *ccaprice_build_host CCAPRICE_USED = "LINUX";
+#elif defined(WIN)
+	const char *ccaprice_build_host CCAPRICE_USED = "WIN";
+#endif
 
 void ccaprice_main(int argc, char **argv) {	
 	CCAPRICE_INTERNAL_FUNC(void, ccaprice_locale_init, ());
