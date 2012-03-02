@@ -165,7 +165,7 @@ void ccaprice_locale_init() {
  * for the locale argument.
  */
 char *setlocale(int cat, const char *cap) {
-	
+	if (!cat) return NULL;
 	/*
 	 * Get the current locale from the system via
 	 * getenv("LANG"). of no caption is specified
