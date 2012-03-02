@@ -1,4 +1,4 @@
-CFLAGS += -Wall -Wextra -Werror -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -Wno-uninitialized -Wno-sign-compare -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
+CFLAGS += -Wall -Wextra -nostdlib -fno-builtin -nostartfiles -nodefaultlibs -Wno-uninitialized -Wno-unused-parameter -Wno-sign-compare -fno-strict-aliasing -DCCAPRICE_CP -DCCAPRICE_LOCALE_SET=en_US
 ifeq (BSD, $(OS))
 	SHELL = /usr/local/bin/bash
 	LARCH = elf_i386_fbsd

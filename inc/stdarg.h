@@ -23,6 +23,20 @@
 #ifndef CCAPRICE_STDARG_HDR
 #define CCAPRICE_STDARG_HDR
 
+/* Ensure nothing tramples this. */
+#ifdef va_list
+#undef va_list
+#endif
+#ifdef va_start
+#undef va_start
+#endif
+#ifdef va_arg
+#undef va_arg
+#endif
+#ifdef va_end
+#undef va_end
+#endif 
+
 #ifndef __GNUC__
 /*
  * We're not on a GCC compiler, lets try implementing out own
