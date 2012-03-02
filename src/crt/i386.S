@@ -32,7 +32,7 @@
 .type   ccaprice_syscall_bsd,%function
 #endif
 #endif
-#ifndef __PATHCC__
+#if !defined(__PATHCC__) && !defined(WIN)
 .type   ccaprice_syscall_core,%function
 .type   _start,%function
 .type   __udivdi3,%function
@@ -236,8 +236,9 @@ ccaprice_syscall_core:
 
 #ifdef BSD
 .size ccaprice_syscall_bsd,.-ccaprice_syscall_bsd
-#endif
+#elif !defined(WIN)
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
 .size _start,.-_start
 .size __udivdi3,.-__udivdi3
 .size __umoddi3,.-__umoddi3
+#endif

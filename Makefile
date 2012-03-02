@@ -200,7 +200,8 @@ ifeq (, $(CCC))
 	override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\` OS=[WIN/BSD/LINUX]$(ENDCOL)
 endif
 
-CFLAGS += -D$(shell echo $(OS) | tr 'a-z' 'A-Z')
+CFLAGS += -D$(shell echo $(OS))
+AFLAGS += -D$(shell echo $(OS))
 BIN     = $(ASM:.S=.o)
 
 .c.o:
