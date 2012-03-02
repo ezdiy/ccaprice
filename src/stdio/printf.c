@@ -25,7 +25,7 @@
 #include "inc/stddef.h"
 #include "inc/stdlib.h"
 #include "inc/stdio.h"
-
+#include "inc/stdint.h"
 static int ccaprice_printf_extract(uint64_t *x, uint32_t radix) {
 	uint32_t hi  = *x >> 32;
 	uint32_t lo  = *x;

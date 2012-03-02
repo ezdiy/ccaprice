@@ -22,5 +22,7 @@
  */
 #ifndef CCAPRICE_SIGNAL_HDR
 #define CCAPRICE_SIGNAL_HDR
+#ifndef WIN
 #	include <sys/signal.h>
+#endif
 #endif

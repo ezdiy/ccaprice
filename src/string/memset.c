@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/string.h"
-
+#include "inc/stdint.h"
 void *memset(void *dst, int ctr, register size_t len) {
 	#if defined(STRING_MEMSET_OPTIMAL) && (defined(STRING_MEMSET_X86_64) || defined(STRING_MEMSET_X86))
 		size_t    search = (len % 4);

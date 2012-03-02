@@ -29,9 +29,11 @@
 /* In [arch].S */
 CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
 #ifdef BSD
-	#define SYS_BRK SYS_break
+#	define SYS_BRK SYS_break
+#elif !defined(WIN)
+#	define SYS_BRK SYS_brk
 #else
-	#define SYS_BRK SYS_brk
+#	define SYS_BRK 0
 #endif
 
 /* ENVIROMENT */
@@ -152,8 +154,14 @@ void ccaprice_main(int argc, char **argv) {
  * SYSCALL0 doesn't return
  * SYSCALL1 does    return
  */
-#define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST {        (TYPE)ccaprice_syscall_core CORE; }
-#define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)ccaprice_syscall_core CORE; }
+#if !defined(WIN)
+#	define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST {        (TYPE)ccaprice_syscall_core CORE; }
+#	define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)ccaprice_syscall_core CORE; }
+#else
+#	define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST { }
+#	define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)0; }
+#endif
+
 SYSCALL1(ssize_t,write, (int f,const void *b,size_t c),(SYS_write,f,b,c))
 SYSCALL1(ssize_t,read,  (int f,void *b,size_t c),      (SYS_read, f,b,c))
 SYSCALL1(int,    open,  (const char *f,int b),         (SYS_open, f,b,0777))

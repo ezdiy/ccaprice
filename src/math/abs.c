@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/stdlib.h" /* CCAPRICE_SIGNEXTEND() */
+#include "inc/stdint.h"
 int abs(int i) {
 	CCAPRICE_SIGNEXTEND(i);
 	return (i^signext.S.H)-signext.S.H;

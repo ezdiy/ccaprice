@@ -24,6 +24,11 @@
 #define CCAPRICE_STDIO_HDR
 #include "ccaprice.h"
 
+#if !defined(CCAPRICE_TYPE__SIZE_T_DEFINED)
+	typedef  CCAPRICE_TYPE__SIZE_T size_t;
+#	define   CCAPRICE_TYPE__SIZE_T_DEFINED
+#endif
+
 #define CCAPRICE_STDIO_FILE_BUFFER_LEN 2048
 typedef struct ccaprice_file {
 	int    fd;

@@ -29,7 +29,11 @@
 .type   _start,%function
 #endif
 
+#ifndef MAC
 _start:
+#else
+start:
+#endif
 	xorq %rbp,%rbp
 	popq %rsi
 	movq %rsi,%rdi

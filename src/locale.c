@@ -25,7 +25,7 @@
 #include "inc/stdlib.h"
 ccaprice_locale_t *ccaprice_localec;                      /* Current Selected Locale */
 void              *ccaprice_localep;                      /* Void version of above   */
-ssize_t            ccaprice_locales = 0;                  /* Location in locales     */
+size_t             ccaprice_locales = 0;                  /* Location in locales     */
 ccaprice_locale_t  ccaprice_localed[CCAPRICE_LOCALE_MAX]; /* Array of Locales        */
 
 #define LOCALE_INIT(N0) \

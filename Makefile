@@ -9,7 +9,7 @@ endif
 SRC     = src/assert.c                   \
           src/locale.c                   \
           src/signal.c                   \
-		  src/crt/runtime.c              \
+          src/crt/runtime.c              \
           src/string/memchr.c            \
           src/string/memcmp.c            \
           src/string/memcpy.c            \
@@ -68,14 +68,24 @@ SRC     = src/assert.c                   \
           src/posix/strings/strcasecmp.c \
           src/posix/strings/strncasecmp.c
           
+ifeq ($(OS), WIN)
+	OUT = ccaprice.lib
+else
+	OUT = ccaprice.a
+endif
+
 OBJ     = $(SRC:.c=.o)
-OUT     = ccaprice.a
 INC     = -I.
 EDGE    = -c $< -o $@
 SRCD    = $(SRC)
 OBJD    = $(SRCD:.c=.o)
 CFLAGS += -D__INFO__="$(shell echo `uname -a`)"
-LFLAGS  =
+# user32.dll and kernel32.dll needed
+ifeq ($(OS), WIN)
+	LFLAGS = -luser32 -lkernel32
+else
+	LFLAGS =
+endif
 
 ifeq (,$(VERBOSE))
 	AT = @

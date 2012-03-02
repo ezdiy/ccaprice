@@ -24,5 +24,9 @@
 #include "inc/signal.h"
 
 void abort() {
-	raise(SIGABRT);
+	#if !defined(WIN)
+		raise(SIGABRT);
+	#else
+		raise(0);
+	#endif
 }

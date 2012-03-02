@@ -23,6 +23,8 @@
 #include "inc/string.h"
 #include "inc/errno.h"
 #include "inc/posix/errno.h"
+#include "inc/stdint.h"
+
 /* Internal Imports */
 CCAPRICE_INTERNAL_FUNC(void*,ccaprice_runtime_sbrk,(size_t));
 /* cheap slow and nasty malloc implementation */

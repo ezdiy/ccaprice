@@ -22,7 +22,6 @@
  */
 #ifndef CCAPRICE_CCAPRICE_HDR
 #define CCAPRICE_CCAPRICE_HDR
-
 /*
  * When not compiling and including we need to determine
  * the architecture at compile-time without asking the
@@ -54,7 +53,6 @@
 #endif
 #endif
 #endif
-
 /*
  * The makefile should set a -D__INFO__=, if it doesn't we'll handle
  * defining __INFO__ to a string literal explaining that the build
@@ -63,7 +61,6 @@
 #if !defined(__INFO__)
 #	define __INFO__ "No information Specified during build"
 #endif
-
 /* cannot be enumerated required by more preprocessing */
 #define CCAPRICE_COMPILER_EKOPATH 0xFF0000
 #define CCAPRICE_COMPILER_CLANG   0x00FF00
@@ -103,12 +100,44 @@
 #define CCAPRICE_COMPILE_TIME_ASSERT(name, x) \
 	typedef int CompileTimeAssertFailed_##name[(x)?1:-1]
 
+/*
+ * Almost every GCC-like compiler has __SIZE_TYPE__ defined to be used
+ * safely by library implementators.  Otherwise we fall back to a lame
+ * long unsigned int which is most likely correct for all systems.
+ */
+#if defined(__SIZE_TYPE__)
+#	define CCAPRICE_TYPE__SIZE_T __SIZE_TYPE__
+#else
+#	warning "[ccaprice] no __SIZE_TYPE__ found, using long unsigned int (could fail)"
+#	define CCAPRICR_TYPE__SIZE_T long unsigned int
+#endif
+/*
+ * We handle null correctly here.
+ * In GNUG mode there is a builtin __null we can
+ * use to our advantage.
+ * 
+ * Otherwise we make NULL the correct constant according
+ * to the language at play.
+ */
+#if defined(__GNUG__) /* C++ */
+#	define CCAPRICE_NULL __null
+#else
+#	if defined(__cplusplus)
+		/*
+		 * C++ Specification says that NULL should be 0
+		 * opposed to C which defines it as ((void*)0).
+		 */
+#		define CCAPRICE_NULL 0
+#	else
+#		define CCAPRICE_NULL ((void*)0)
+#	endif
+#endif
+
 #if defined(CCAPRICE_TARGET_X86_64)
 #	define STRING_STRLEN_X86_64
 #	define STRING_MEMCHR_X86_64
 #	define STRING_MEMCPY_X86_64
 #	define STRING_MEMSET_X86_64
-#	include <sys/types.h>
 #elif defined(CCAPRICE_TARGET_X86)
 #	define _LARGEFILE64_SOURCE
 	
@@ -116,7 +145,6 @@
 #	define STRING_MEMCHR_X86
 #	define STRING_MEMCPY_X86
 #	define STRING_MEMSET_X86
-#	include <sys/types.h>
 #else
 #	error "[ccaprice] Target not supported"
 #endif /* !CCAPRICE_TARGET_X86_64 */
@@ -142,5 +170,4 @@ CCAPRICE_EXPORT const char *ccaprice_build_host;
 #	define CCAPRICE_BUILD_TIME ccaprice_build_time
 #	define CCAPRICE_BUILD_HOST ccaprice_build_host
 #endif
-
 #endif

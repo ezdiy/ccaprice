@@ -23,8 +23,15 @@
 #ifndef CCAPRICE_CRT_HDR
 #define CCAPRICE_CRT_HDR
 #include "inc/ccaprice.h"
-#include <sys/syscall.h>
-
+#include "inc/stdint.h"
+#if defined(WIN)
+#	define WIN32_LEAN_AND_MEAN
+#	include <windows.h>
+	typedef size_t ssize_t;
+#else
+#	include <sys/syscall.h>
+#	include <sys/types.h>
+#endif
 typedef int32_t pid_t;
 
 CCAPRICE_EXPORT ssize_t write (int, const void*, size_t);

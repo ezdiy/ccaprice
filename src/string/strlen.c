@@ -23,10 +23,9 @@
 #include "inc/ccaprice.h"
 #ifdef STRING_STRLEN_OPTIMAL_SSE2
 	#include <emmintrin.h>
-	#include "inc/string.h"
-#else
-	#include "inc/string.h"
 #endif
+#include "inc/string.h"
+#include "inc/stdint.h"
 
 static const unsigned char strlen_bsf_table[256] = {
 	CCAPRICE_BSF_TABLE_EXPAND

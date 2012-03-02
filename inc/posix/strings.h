@@ -24,6 +24,11 @@
 #define CCAPRICE_POSIX_STRINGS_HDR
 #include "inc/ccaprice.h"
 
+#if !defined(CCAPRICE_TYPE__SIZE_T_DEFINED)
+	typedef  CCAPRICE_TYPE__SIZE_T size_t;
+#	define   CCAPRICE_TYPE__SIZE_T_DEFINED
+#endif
+
 CCAPRICE_EXPORT int   bcmp       (const void *, const void *, size_t); // alias to memcmp
 CCAPRICE_EXPORT void  bcopy      (const void *, void *,       size_t); // alias to bcopy
 CCAPRICE_EXPORT void  bzero      (void *,                     size_t); // memset(0)
