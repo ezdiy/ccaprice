@@ -239,7 +239,7 @@ endif
 
 test: test.o
 ifneq ($(DONOT), 1)
-	$(AT) ld $(LFLAGS) -o test test.o ccaprice.a
+	$(AT) ld $(LFLAGS) -o test test.o $(OUT)
 endif
 ifneq ($(VERBOSE), 1)
 	@echo $(GREEN) Completed Build for test $(ENDCOL)
