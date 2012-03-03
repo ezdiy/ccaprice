@@ -20,12 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#if defined(MAC)
+#	define ENTRY start
+#elif defined(WIN)
+#	define ENTRY __main
+#else
+#	define ENTRY _start
+#endif 
+
 .text
 .global ccaprice_syscall_core
 .global ccaprice_main
 .global __udivdi3
 .global __umoddi3
-.global _start
+.global ENTRY
 #ifdef BSD
 .global ccaprice_syscall_bsd
 #ifndef __PATHCC__
@@ -34,7 +42,7 @@
 #endif
 #if !defined(__PATHCC__) && !defined(WIN)
 .type   ccaprice_syscall_core,%function
-.type   _start,%function
+.type   ENTRY,%function
 .type   __udivdi3,%function
 .type   __umoddi3,%function
 #endif
@@ -183,13 +191,8 @@ __umoddi3:
 	popl   %ebx
 	xorl   %edx,       %edx
 	retl
-#ifdef MAC
-_start:
-#elif defined(WIN)
-__main:
-#else
-start:
-#endif
+	
+ENTRY:
 	xorl  %ebp,        %ebp
 	popl  %esi
 	movl  %esp,        %ecx
@@ -243,7 +246,7 @@ ccaprice_syscall_core:
 .size ccaprice_syscall_bsd,.-ccaprice_syscall_bsd
 #elif !defined(WIN)
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
-.size _start,.-_start
+.size ENTRY,.-ENTRY
 .size __udivdi3,.-__udivdi3
 .size __umoddi3,.-__umoddi3
 #endif

@@ -20,22 +20,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#if defined(MAC)
+#	define ENTRY start
+#elif defined(WIN)
+#	define ENTRY __main
+#else
+#	define ENTRY _start
+#endif 
+
 .text
 .global ccaprice_syscall_core
 .global ccaprice_main
-.global _start
+.global ENTRY
 #ifndef __PATHCC__
 .type   ccaprice_syscall_core,%function
-.type   _start,%function
+.type   ENTRY,%function
 #endif
 
-#ifndef MAC
-_start:
-#elif defined(WIN)
-__main:
-#else
-start:
-#endif
+ENTRY:
 	xorq %rbp,%rbp
 	popq %rsi
 	movq %rsi,%rdi
@@ -61,4 +63,4 @@ ccaprice_syscall_core:
 	ret
 
 .size ccaprice_syscall_core,.-ccaprice_syscall_core
-.size _start,.-_start
+.size ENTRY,.-ENTRY
