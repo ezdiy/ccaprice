@@ -241,7 +241,5 @@ ifneq ($(VERBOSE), 1)
 endif
 	
 clean:
-	$(AT) rm -f src/crt/i386.o
-	$(AT) rm -f src/crt/x86_64.o
-	$(AT) rm -f $(OBJ) $(OUT)
-	$(AT) rm -f test test.o
+	$(AT) rm -f src/crt/i386.o src/crt/x86_64.o
+	$(AT) rm -f ccaprice.lib ccaprice.a $(OUT) $(OBJ) test test.o
