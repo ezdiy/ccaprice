@@ -1,9 +1,6 @@
 body {
 	background:     #ffffff;
 	color:          #000000;
-	border-width:   20px;
-	border-color:   #E56717;
-	border-style:   solid;
 	margin:         0 0 0 0;
 	padding:        0 0 0 0;
 	font-family:    Calibri, arial, sans;
@@ -27,7 +24,7 @@ body {
 #menu {
 	background:      #eeeeee;
 	width:           100%;
-	float:           left;
+	float:           right;
 	border-bottom:   1px solid #afbfbf;
 	padding-top:     3px;
 	padding-bottom:  3px;
@@ -42,7 +39,7 @@ body {
 	padding-left:    8px;
 }
 #menu a:hover {
-	text-decoration: underline;
+	//text-decoration: underline;
 }
 #current {
 	font-weight:     bold;
@@ -72,8 +69,9 @@ body {
 	font-family:     Terminus, Monospace, Courier New;
 }
 #container {
-	max-width:       768px;
-	margin:          0 auto;
+	max-width:       800px;
+	overflow:        auto;
+	margin:          0 auto auto auto;
 }
 // table and table header's rows
 table.dl {
