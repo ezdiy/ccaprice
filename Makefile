@@ -3,8 +3,13 @@ ifeq (BSD, $(OS))
 	SHELL = /usr/local/bin/bash
 	LARCH = elf_i386_fbsd
 else
+ifeq (WIN, $(OS))
+	SHELL = /bin/bash
+	LARCH = i386pe
+else
 	SHELL = /bin/bash
 	LARCH = elf_i386
+endif
 endif
 SRC     = src/assert.c                   \
           src/locale.c                   \
