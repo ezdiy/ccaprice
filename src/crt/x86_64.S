@@ -31,6 +31,8 @@
 
 #ifndef MAC
 _start:
+#elif defined(WIN)
+__main:
 #else
 start:
 #endif

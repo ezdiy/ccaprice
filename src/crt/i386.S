@@ -183,8 +183,13 @@ __umoddi3:
 	popl   %ebx
 	xorl   %edx,       %edx
 	retl
-
+#ifdef MAC
 _start:
+#elif defined(WIN)
+__main:
+#else
+start:
+#endif
 	xorl  %ebp,        %ebp
 	popl  %esi
 	movl  %esp,        %ecx
