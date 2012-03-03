@@ -1,0 +1,26 @@
+Sun Jan 29 22:04:32 EST 2012
+	ccaprice first public release -- version 0.1.0
+	
+Fri Mar  2 23:35:59 EST 2012
+	ccaprice second public release -- version 0.1.1
+	Fixed multiple header inclusion issues. C standard doesn't allow
+	standard library headers to include other standard library headers.
+	Rewrote brk() for FreeBSD (still desn't work for 32bit). Ported code
+	to work on clang and EkoPath/PathScale C compilers.  Rewrote makefile
+	to request arguments before compilation, and also select proper shell
+	enviroment based on OS; e.g bash on BSD is /usr/local/bin/bash. 
+	Implemented compile time constants for build date, build OS, build 
+	host info (uname -a), as well as build host compiler (the compiler used
+	to build ccaprice).  Rewrote test suite, fixed all broken functions 
+	that failed to pass previous tests. Implemented more posix functionality; 
+	specifically <strings.h>: of the following functions: bcmp, bcopy, 
+	bzero, ffs, index, rindex, strcasecmp, strncasecmp.  
+	Removed all standard library includes, ccaprice now implements it's 
+	own, which is guarded by system headers that could ignore the rules.
+	Implemented various other functionality such as offsetof(), using 
+	compiler builtins (if detected) otherwise emulated using macros 
+	(unsafe), remove, strrchr and strtok. Locked off all ccaprice extensions
+	from inclusion into the global scope via a preprocessor macro 
+	CCAPRICE_EXTENSIONS.  Various bug fixes and refactoring of existing
+	code as well. Perliminary support for Windows and OSx as well, Windows
+	code compiles, but doesn't run.
