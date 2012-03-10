@@ -62,12 +62,13 @@
 })
 #endif
 
-CCAPRICE_EXPORT void  atexit(void (*)());
-CCAPRICE_EXPORT void  exit  (int);
-CCAPRICE_EXPORT void  abort ();
-CCAPRICE_EXPORT int   raise (int);
-CCAPRICE_EXPORT char* getenv(const char *);
-CCAPRICE_EXPORT void  qsort (void *, size_t, size_t, int (*)(const void *, const void *));
+CCAPRICE_EXPORT void  atexit (void (*)());
+CCAPRICE_EXPORT void  exit   (int);
+CCAPRICE_EXPORT void  abort  ();
+CCAPRICE_EXPORT int   raise  (int);
+CCAPRICE_EXPORT char* getenv (const char *);
+CCAPRICE_EXPORT void  qsort  (void *, size_t, size_t, int (*)(const void *, const void *));
+CCAPRICE_EXPORT void *bsearch(const void *, const void *, size_t, size_t, int(*)(const void *, const void *));
 
 /* malloc / free */
 CCAPRICE_EXPORT void *malloc(size_t);

@@ -23,35 +23,35 @@
 #include "inc/stdlib.h"
 /*
  * Optimizations:
- * 	This is non-rescruive, instead a stack of pointers store the next
+ * 	This is non-recurisive, instead a stack of pointers store the next
  * 	array (partition) to sort, this is immensly sped up by allocating
  * 	CHAR_BIT * sizeof(size_t) worth space on the stack for the array.
  * 
- * 	We use a median-of-tree decision tree to determine pivot element,
+ * 	We use a median-of-three decision tree to determine pivot elements,
  * 	this reduces the likelyhood of selecting a pivot value which may
  * 	be bad, or already selected (prevent extra comparisions).
  * 
  * 	We only actually quick sort on E/T worth paritions, leaving the
- * 	insertion sort to sort the T worh items within each of the
+ * 	insertion sort to sort the T worth items within each of the
  * 	partitions, this works well since insertion sort works fast on
  * 	semi-sorted, small, array segments; which at this point it's already
  * 	guranteed to be.
  * 
  * 	The larger of the sub paritions is pushed onto the stack before
  * 	others, this allows the sorter to work on smaller partitions.  This
- * 	gurantees no more than O(1) stack size is required.
+ * 	gurantees no more than O(1) space complexity.
  * 
  * 	The internal swapping taking care of the sorting mechanisims uses
  * 	a fall-through swap for data less than 8, and a duffs-device for
  * 	array segements > 8, this gurantees comparision-less, branchless
  * 	swapping for short-width segements < 8, and may-speed up for larger
- * 	segements depending on the system, if not no actual overhead is added
+ * 	segements depending on the system, if not, no actual overhead is added
  * 	compared to a traditional naive swap.
  * 
  * 	When doing the pivot swap there is a goto used to skip the next pivot
  *  if the check passes for the given partition. This allows us to ignore
- * 	potential brances.  But might not actually be the optimal case depending
- * 	on certian variables.  This can be overrde however where branches will
+ * 	potential branches. This might not actually be the optimal case depending
+ * 	on certian variables. This can be overrode however where branches will
  * 	be used instead.
  * 
  *	When performing swapping, pushing to the stack, or popping from the
@@ -61,11 +61,11 @@
  * 
  * 	No memory is allocated dynamically, it should be noted memory is still
  * 	allocated on the stack, but thats cheap.  This qsort doesn't perform a
- * 	single allocation.
+ * 	single dynamic allocation.
  * 
  * 	When searching for the first element during insertion sort we use an
  * 	unrolled loop, which is mostly faster since we only have to search for
- * 	inside 8-2 elements max.
+ * 	inside half of the range max worth elements.
  */
 #ifdef CCAPRICE_STDLIB_QSORT_OPTIMAL
 #	define CCAPRICE_QSORT_GOTO /* Use goto jump for jump check */
@@ -83,7 +83,7 @@ typedef struct {
  * is used, anything >= to this is just insert sort.  Which
  * is fast for small sets of data.  This value can be changed
  * I suggest is stays sizeof(int64_t), for all x86 and x86_64
- * CPUs.  But never > 8 since thats when insertion sort start
+ * CPUs.  But never > 8 since thats when insertion sort starts
  * to get slow.  If this is however changed I suggest that the
  * CCAPRICE_QSORT_SMALLMAX be changed to half this and that the
  * necessary macros are constructed for the loop unrolling in
@@ -165,7 +165,8 @@ typedef struct {
  * do weird things for us that are more optimal in certian cases.
  */
 #ifdef CCAPRICE_QSORT_LOOP
-    #define CCAPRICE_QSORT_SMALLMAX 4 /* CCAPRICE_QSORT_RANGEMAX % 2 */
+	/* MUST ALWAYS BE HALF OF CCAPRICE_QSORT_RANGEMAX (MUST BE CONSTANT) */
+    #define CCAPRICE_QSORT_SMALLMAX 4
     #define CCAPRICE_QSORT_SMALLE1                        \
     do {                                                  \
         if ((*cmp)((void*)run, (void*)tmp) < 0) {         \
@@ -193,7 +194,7 @@ typedef struct {
  * implements a duffs-device, and inlines in spot by the c preprocessor.
  * 
  * This function works well for large or small widths of data.  It unrolls
- * the while(W--) { } loop which wold be used in a naive implementation.
+ * the while(W--) { } loop which would be used in a naive implementation.
  * A naive implementation works well where performance is not a concern, 
  * need it be reminded this is a QSORT implementation and performance is
  * very important.  Note: This can actually be slower depending on the
@@ -203,9 +204,6 @@ typedef struct {
  * inline swap below, system info:
  *         gcc version 4.6.2 20120120 (prerelease) (GCC)
  *         Linux graphitemaster 3.2.6-2-ARCH #1 SMP PREEMPT Thu Feb 16 10:10:02 CET 2012 x86_64
- * 
- *	There needs to be a way to speed up swapping even more using SSE or
- * 	something alike?
  */
 #ifdef  CCAPRICE_QSORT_SWAP
 #undef  CCAPRICE_QSORT_SWAP

@@ -117,6 +117,7 @@ stdlib.h:
 	MAX    () [extension/branchless]
 	abort  ()
 	atoi   ()
+	bsearch()
 	exit   ()
 	getenv ()
 	malloc ()

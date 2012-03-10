@@ -39,6 +39,7 @@ SRC     = src/assert.c                   \
           src/string/strtok.c            \
           src/stdlib/abort.c             \
           src/stdlib/atoi.c              \
+          src/stdlib/bsearch.c           \
           src/stdlib/exit.c              \
           src/stdlib/getenv.c            \
           src/stdlib/malloc.c            \

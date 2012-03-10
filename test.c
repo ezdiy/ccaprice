@@ -248,6 +248,16 @@ TEST_DEF(stdlib, qsort, {
 			 d[8]  == 65 && d[9]  == 69 && d[10] == 76 && d[11] == 87 &&
 			 d[12] == 87 && d[13] == 99 && d[14] == 100);
 });
+
+TEST_DEF(stdlib, bsearch, {
+	int cmp(const void *a, const void *b) {
+		return (*(int*)a - *(int*)b);
+	}
+	int  d[] = { 10, 20, 25, 40, 90, 100 };
+	int  k   = 40;
+	int *i   = bsearch(&k, d, sizeof(d)/sizeof(*d), sizeof(int), cmp);
+	TEST_RET(*i == k);
+});
 	
 TEST_DEF(posix\040, bcmp, {
 	const char  data1[] = "This string";
@@ -340,6 +350,7 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(min);
 	TEST_TRY(max);
 	TEST_TRY(qsort);
+	TEST_TRY(bsearch);
 	
 	TEST_TRY(bcmp);
 	TEST_TRY(bcopy);
