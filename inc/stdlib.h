@@ -40,6 +40,7 @@
 
 #define EXIT_SUCCESS (0x00)
 #define EXIT_FAILURE (0xFF)
+#define CHAR_BIT      8
 
 #define CCAPRICE_SIGNEXTEND(V) \
     union {                    \
@@ -66,6 +67,7 @@ CCAPRICE_EXPORT void  exit  (int);
 CCAPRICE_EXPORT void  abort ();
 CCAPRICE_EXPORT int   raise (int);
 CCAPRICE_EXPORT char* getenv(const char *);
+CCAPRICE_EXPORT void  qsort (void *, size_t, size_t, int (*)(const void *, const void *));
 
 /* malloc / free */
 CCAPRICE_EXPORT void *malloc(size_t);

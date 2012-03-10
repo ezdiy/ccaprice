@@ -123,6 +123,7 @@ stdlib.h:
 	calloc ()
 	puts   ()
 	rand   () [SSE2/naive]
+	qsort  () [OPT/native]
 	srand  () [SSE2/naive]
 	
 string.h:

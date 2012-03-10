@@ -237,6 +237,18 @@ TEST_DEF(math\040\040, isnan, {
 TEST_DEF(stdlib, min, { TEST_RET(MIN(100,50) ==  50) })
 TEST_DEF(stdlib, max, { TEST_RET(MAX(50,100) == 100) })
 
+TEST_DEF(stdlib, qsort, {
+	int cmp(const void *a, const void *b) {
+		return (*(int*)a - *(int*)b);
+	}
+	int d[] = { 0,  64, 22, 65, 21, 87, 32, 76, 43, 99, 100, 54, 32, 87, 69 };
+	qsort(d, sizeof(d)/sizeof(int), sizeof(int), cmp);
+	TEST_RET(d[0]  == 0  && d[1]  == 21 && d[2]  == 22 && d[3]  == 32 &&
+			 d[4]  == 32 && d[5]  == 43 && d[6]  == 54 && d[7]  == 64 &&
+			 d[8]  == 65 && d[9]  == 69 && d[10] == 76 && d[11] == 87 &&
+			 d[12] == 87 && d[13] == 99 && d[14] == 100);
+});
+	
 TEST_DEF(posix\040, bcmp, {
 	const char  data1[] = "This string";
 	const char  data2[] = "This string";
@@ -327,6 +339,7 @@ int main(int argc, char **argv, char **argp) {
 	
 	TEST_TRY(min);
 	TEST_TRY(max);
+	TEST_TRY(qsort);
 	
 	TEST_TRY(bcmp);
 	TEST_TRY(bcopy);

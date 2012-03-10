@@ -43,6 +43,7 @@ SRC     = src/assert.c                   \
           src/stdlib/getenv.c            \
           src/stdlib/malloc.c            \
           src/stdlib/puts.c              \
+          src/stdlib/qsort.c             \
           src/stdlib/rand.c              \
           src/stdio/fclose.c             \
           src/stdio/feof.c               \
