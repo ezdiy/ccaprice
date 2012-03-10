@@ -1,0 +1,596 @@
+<html><head>
+<title>Comparison of C/POSIX standard library implementations for Linux</title>
+
+<style><!--
+h1 { text-align: center; }
+//body { font-family: Arial, sans-serif; }
+//table { font-size: 85%; }
+col { width: 8.5em; }
+col.first { width: auto; }
+th { text-align: center; font-weight: bold; }
+tr > th:first-child { text-align: left; }
+td { text-align: center; }
+tr > td:first-child { text-align: left; }
+table { border-width: 0; }
+tr.section th { font-weight: bold; }
+tr.section { background-color: #b0a0ff; }
+td.good { background-color: #a0ffa0; }
+td.half { background-color: #ffff80; }
+td.bad { background-color: #ff9090; }
+--></style>
+
+</head>
+<body>
+
+
+<h1>Comparison of C/POSIX standard library implementations for Linux</h1>
+<p><div align=center><table>
+
+<col class=first><col><col><col><col>
+
+<tr class=section><th>Bloat comparison
+<th>musl<th>uClibc<th>dietlibc<th>eglibc<th>ccaprice
+
+
+<tr><th>Complete .a set
+<td class=good>251k
+<td class=good>360k
+<td class=good>120k
+<td class=bad>&gt;1.5M
+<td class=good>428k
+
+<tr><th>Complete .so set
+<td class=good>393k
+<td class=good>520k
+<td class=good>185k
+<td class=bad>&gt;2M
+<td class=bad>no
+
+<tr><th>Smallest static C program
+<td class=good>0.4k
+<td class=half>7k
+<td class=good>0.2k
+<td class=bad>507k
+<td class=good>0.3k
+
+<tr><th>Static hello (using printf)
+<td class=good>12k
+<td class=half>51k
+<td class=good>6k
+<td class=bad>508k
+<td class=good>5k
+
+<tr><th>Dynamic overhead (min. dirty)
+<td class=good>16k
+<td class=bad>40k
+<td class=bad>40k
+<td class=bad>52k
+<td class=bad>no
+
+<tr><th>Static overhead (min. dirty)
+<td class=good>8k
+<td class=good>12k
+<td class=good>8k
+<td class=half>28k
+<td class=bad>31k
+
+<tr><th>Static stdio overhead (min. dirty)
+<td class=good>8k
+<td class=half>20k
+<td class=good>16k
+<td class=half>32k
+<td class=good>2k
+
+<tr><th>Configurable featureset
+<td class=bad>no
+<td class=good>yes
+<td class=half>minimal
+<td class=good>yes
+<td class=good>yes
+
+
+<tr class=section><th>Performance comparison
+<th>musl<th>uClibc<th>dietlibc<th>eglibc<th>ccaprice
+
+<tr><th>Tiny allocation &amp; free
+<td class=good>0.004
+<td class=good>0.005
+<td class=bad>0.013
+<td class=good>0.003
+<td class=good>0.005
+
+<tr><th>Big allocation &amp; free
+<td class=half>0.024
+<td class=good>0.018
+<td class=half>0.023
+<td class=good>0.017
+<td class=good>0.011
+
+<tr><th>Allocation contention, local
+<td class=good>0.045
+<td class=half>0.143
+<td class=bad>0.393
+<td class=good>0.064
+<td class=good>0.052
+
+<tr><th>Allocation contention, shared
+<td class=good>0.044
+<td class=half>0.144
+<td class=bad>0.394
+<td class=good>0.083
+<td class=good>0.091
+
+<tr><th>Zero-fill (memset)
+<td class=good>0.037
+<td class=good>0.026
+<td class=half>0.055
+<td class=half>0.054
+<td class=good>0.041
+
+<tr><th>String length (strlen)
+<td class=good>0.104
+<td class=good>0.103
+<td class=half>0.161
+<td class=good>0.101
+<td class=good>0.108
+
+<tr><th>Byte search (strchr)
+<td class=good>0.145
+<td class=half>0.254
+<td class=half>0.198
+<td class=good>0.108
+<td class=good>0.133
+
+<tr><th>Substring (strstr)
+
+<td class=good>0.055
+<td class=bad>0.784
+<td class=bad>1.030
+<td class=half>0.357
+<td class=good>0.071
+
+<tr><th>Thread creation/joining
+<td class=good>0.150
+<td class=good>0.192
+<td class=bad>45.761
+<td class=good>0.216
+<td class=bad>no
+
+<tr><th>Mutex lock/unlock
+<td class=good>0.044
+<td class=good>0.063
+<td class=bad>0.785
+<td class=good>0.078
+<td class=bad>no
+
+<tr><th>UTF-8 decode buffered
+<td class=good>0.086
+<td class=half>0.153
+<td class=bad>0.257
+<td class=half>0.147
+<td class=bad>no
+
+<tr><th>UTF-8 decode byte-by-byte
+<td class=good>0.158
+<td class=bad>0.422
+<td class=half>0.236
+<td class=bad>0.564
+<td class=bad>no
+
+<tr><th>Stdio putc/getc
+<td class=good>0.236
+<td class=half>0.670
+<td class=bad>7.791
+<td class=half>0.556
+<td class=good>0.122
+
+<tr><th>Stdio putc/getc unlocked
+<td class=good>0.194
+<td class=good>0.184
+<td class=half>0.269
+<td class=good>0.191
+<td class=bad>no
+
+<tr><th>Regex compile
+<td class=half>0.065
+<td class=good>0.003
+<td class=good>0.014
+<td class=good>0.036
+<td class=bad>no
+
+<!--
+<tr><th>Regex search
+<td class=half>0.180
+<td class=good>0.005
+<td class=good>0.
+<td class=good>0.014
+-->
+
+<tr><th>Regex search (a{25}b)
+<td class=good>0.447
+<td class=bad>1.320
+<td class=bad>0.967
+<td class=good>0.362
+<td class=bad>no
+
+<tr><th>Self-exec (static linked)
+<td class=good>260µs
+<td class=half>370µs
+<td class=good>272µs
+<td class=bad>427µs
+<td class=bad>722µs
+
+<tr><th>Self-exec (dynamic linked)
+<td class=good>455µs
+<td class=bad>1835µs
+<td class=half>675µs
+<td class=bad>1900µs
+<td class=bad>no
+
+<tr class=section><th>ABI and versioning comparison
+<th>musl<th>uClibc<th>dietlibc<th>eglibc<th>ccaprice
+
+<tr><th>Stable ABI
+<td class=good>yes
+<td class=bad>no
+<td class=half>unofficially
+<td class=good>yes
+<td class=half>partial
+
+<tr><th>LSB-compatible ABI
+<td class=half>incomplete
+<td class=bad>no
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>Backwards compatibility
+<td class=good>yes
+<td class=bad>no
+<td class=half>unofficially
+<td class=good>yes
+<td class=half>partial
+
+<tr><th>Forwards compatibility
+<td class=good>yes
+<td class=bad>no
+<td class=half>unofficially
+<td class=bad>no
+<td class=half>partial
+
+<tr><th>Atomic upgrades
+<td class=good>yes
+<td class=bad>no
+<td class=bad>no
+<td class=bad>no
+<td class=bad>no
+
+<tr><th>Symbol versioning
+<td class=bad>no
+<td class=bad>no
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+
+
+
+<tr class=section><th>Algorithms comparison
+<th>musl<th>uClibc<th>dietlibc<th>eglibc<th>ccaprice
+
+<tr><th>Substring search (strstr)
+<td class=good>twoway
+<td class=bad>naive
+<td class=bad>naive
+<td class=good>twoway
+<td class=good>twoway
+
+<tr><th>Regular expressions
+
+<td class=good>dfa
+<td class=good>dfa
+<td class=bad>backtracking
+<td class=good>dfa
+<td class=bad>no
+
+<tr><th>Sorting (qsort)
+<td class=good>smoothsort
+<td class=half>shellsort
+<td class=bad>naive quicksort
+<td class=good>introsort
+<td class=good>introsort &amp; pivot
+
+<tr><th>Allocator (malloc)
+<td class=good>musl-native
+<td class=good>dlmalloc
+<td class=bad>diet-native
+<td class=good>ptmalloc
+<td class=half>ccaprice-native</td>
+
+<tr class=section><th>Features comparison
+<th>musl<th>uClibc<th>dietlibc<th>eglibc<th>ccaprice
+
+
+<tr><th>Conformant printf
+<td class=good>yes
+<td class=good>yes
+<td class=bad>no
+<td class=half>wontfix
+<td class=bad>no
+
+<tr><th>Exact floating point printing
+<td class=good>yes
+<td class=bad>no
+<td class=bad>no
+<td class=good>yes
+<td class=half>partial
+
+<tr><th>C99 math library
+<td class=bad>no
+<td class=half>partial
+<td class=bad>no
+<td class=good>yes
+<td class=half>partial
+
+<tr><th>GCC libstdc++ compatibility
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+<td class=good>yes
+
+<tr><th>POSIX priority scheduling
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>POSIX threads
+<td class=good>yes
+<td class=good>yes, on most archs
+<td class=bad>broken
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>C1x thread-local storage
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>POSIX localedef
+<td class=bad>no
+<td class=bad>no
+<td class=bad>no
+<td class=good>yes
+<td class=good>yes
+
+<tr><th>Wide character interfaces
+<td class=half>most
+<td class=good>yes
+<td class=half>minimal
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>Legacy 8-bit codepages
+<td class=bad>no
+<td class=good>yes
+<td class=half>minimal
+<td class=half>slow, via gconv
+<td class=bad>no
+
+<tr><th>Legacy CJK encodings
+
+<td class=bad>no
+<td class=bad>no
+<td class=bad>no
+<td class=half>slow, via gconv
+<td class=bad>no
+
+<tr><th>UTF-8 multibyte
+<td class=good>native; 100% conformant
+<td class=half>native; nonconformant
+<td class=bad>dangerously nonconformant
+<td class=half>slow, via gconv; nonconformant
+<td class=bad>no
+
+<tr><th>Iconv character conversions
+<td class=half>most major encodings
+<td class=bad>no
+<td class=bad>no
+<td class=good>the kitchen sink
+<td class=bad>no
+
+<tr><th>Iconv transliteration extension
+<td class=bad>no
+<td class=bad>no
+
+<td class=bad>no
+<td class=good>yes
+<td class=half>partial
+
+<tr><th>Openwall-style TCB shadow
+<td class=good>yes
+<td class=bad>no
+<td class=bad>no
+<td class=bad>no
+<td class=bad>no
+
+<tr><th>Sun RPC, NIS
+<td class=bad>no
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>Zoneinfo (advanced timezones)
+<td class=bad>no
+<td class=bad>no
+<td class=good>yes
+<td class=good>yes
+<td class=bad>no
+
+
+<tr><th>Gmon profiling
+<td class=bad>no
+<td class=bad>no
+<td class=good>yes
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>Debugging features
+<td class=bad>no
+<td class=bad>no
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>Various Linux extensions
+<td class=half>partial
+<td class=good>yes
+<td class=half>partial
+<td class=good>yes
+<td class=half>partial
+
+<tr class=section><th>Target architectures comparison
+<th>musl<th>uClibc<th>dietlibc<th>eglibc<th>ccaprice
+
+
+<tr><th>i386
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+
+<tr><th>x86_64
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+
+<tr><th>ARM
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>MIPS
+<td class=half>planned
+
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+<td class=half>planned
+
+<tr><th>PPC
+<td class=half>planned
+<td class=good>yes
+<td class=good>yes
+<td class=good>yes
+<td class=half>some
+
+<tr><th>MMU-less microcontrollers
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+<td class=bad>no
+<td class=bad>no
+
+<tr class=section><th>Build environment comparison
+<th>musl<th>uClibc<th>dietlibc<th>eglibc<th>ccaprice
+
+
+<tr><th>Legacy-code-friendly headers
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+<td class=good>yes
+
+<tr><th>Lightweight headers
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+
+<tr><th>Usable without native toolchain
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+
+<tr><th>Respect for C namespace
+<td class=good>yes
+
+<td class=half>LFS64 problems
+<td class=bad>no
+<td class=half>LFS64 problems
+<td class=bad>no
+
+<tr><th>Respect for POSIX namespace
+<td class=good>yes
+<td class=half>LFS64 problems
+<td class=bad>no
+<td class=half>LFS64 problems
+<td class=good>yes
+
+
+<tr class=section><th>Security/hardening comparison
+<th>musl<th>uClibc<th>dietlibc<th>eglibc<th>ccaprice
+
+<tr><th>Attention to corner cases
+<td class=good>yes
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+<td class=half>basic
+
+<tr><th>Safe UTF-8 decoder
+<td class=good>yes
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>Avoids superlinear big-O's
+<td class=good>yes
+<td class=half>sometimes
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>Stack smashing protection
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+
+<tr><th>Heap corruption detection
+
+<td class=half>double-free only
+<td class=bad>no
+<td class=bad>no
+<td class=good>yes
+<td class=bad>no
+
+<tr class=section><th>Misc. comparisons
+<th>musl<th>uClibc<th>dietlibc<th>eglibc<th>ccaprice
+
+<tr><th>License
+<td class=good>LGPL 2.1+
+<td class=half>LGPL 2.1
+<td class=bad>GPL 2
+<td class=good>LGPL 2.1+ w/exceptions
+<td class=good>MIT</td>
+
+</table></div>
+
+</body>
+</html>
