@@ -39,8 +39,6 @@ CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
 /* ENVIROMENT */
 char **ccaprice_enviroment;
 
-/* MALLOC Requires this */
-void *ccaprice_runtime_curbrk = NULL;
 #if defined(CCAPRICE_TARGET_X86)
 int ccaprice_syscall_error() {
 	register int no __asm__("%edx");
@@ -61,61 +59,40 @@ int ccaprice_syscall_error() {
 }
 #endif
 
-/* linux only code */
-#if defined(CCAPRICE_TARGET_X86) && !defined(BSD)
-int ccaprice_runtime_brk(void *address) {
-	void *vfbrk = NULL;
-	__asm__ __volatile__ (
-		"pushl    %%ebx            \n\t"
-		"movl %2, %%ebx            \n\t"
-		"int  $0x80                \n\t"
-		"popl %%ebx                \n\t"
-		:
-			"=a"(vfbrk) :
-				"0"(SYS_BRK),
-				"g"(address)
-	);
-	ccaprice_runtime_curbrk = vfbrk;
-	return (vfbrk < address)?-1:0;
-}
-#elif defined(CCAPRICE_TARGET_X86_64)
-int ccaprice_runtime_brk(void *address) {
-	void *vfbrk;
-	register unsigned long res;
-	register unsigned long adr __asm__("rdi") = (unsigned long)address;
-	__asm__ __volatile__ (
-		"movq %1, %%rax\n\t"
-		"syscall       \n\t" :
-			"=a"(res) :
-				"i"(SYS_BRK), "r"(adr) :
-					"memory","cc", "r11", "cx"
-	);
-	if ((unsigned long)res>=(unsigned long)-4095)
-		res = (unsigned long)-1;
-		
-	ccaprice_runtime_curbrk = vfbrk = (void*)res;
-	return (vfbrk < address)?-1:0;
-}
-#endif
-void* ccaprice_runtime_sbrk(size_t byte) {
-	#ifndef BSD
-	void *old;
+void *ccaprice_malloc_small(size_t n) {
+	static uintptr_t mcur;
+	static uintptr_t mbrk;
+	uintptr_t base;
+	uintptr_t make;
+	size_t    align = 1;
 	
-	if (ccaprice_runtime_curbrk == NULL)
-		if (ccaprice_runtime_brk(0) < 0)
-			return (void*)-1;
-	if (byte == 0)
-		return ccaprice_runtime_curbrk;
-		
-	old = ccaprice_runtime_curbrk;
-	if (ccaprice_runtime_brk((void*)((uintptr_t)old + byte)) < 0)
+	/* align allocations */
+	while (align < n && align < 16)
+		align += align;
+	n = ((n + align) - 1) & -align;
+	
+	if (!mcur) {
+		 mcur = ccaprice_syscall_core(SYS_brk, 0) + 16;
+		 mbrk = mcur;
+	}
+	base = ((mcur + align) - 1) & -align;
+	
+	/* 
+	 * validate allocation is correct
+	 * if n > (SIZE_MAX - PAGE_SIZE - base_address) then
+	 * we're out of memory.
+	 */
+	if (n > SIZE_MAX - PAGE_SIZE - base)
 		return (void*)-1;
 		
-	return old;
-	#else
-	extern void *_end;
-	return (void*)ccaprice_syscall_core(SYS_BRK, (char*)((uintptr_t)_end + byte));
-	#endif
+	if (base + n > mbrk) {
+		make = (((base + n) + PAGE_SIZE) - 1) & -PAGE_SIZE;
+		if (ccaprice_syscall_core(SYS_brk, make) != make)
+			return (void*)-1;
+		mbrk = make;
+	}
+	mcur = base + n;
+	return (void*)base;
 }
 
 #define ISTR1(C) ISTR2(C)

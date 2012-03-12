@@ -258,6 +258,17 @@ TEST_DEF(stdlib, bsearch, {
 	int *i   = bsearch(&k, d, sizeof(d)/sizeof(*d), sizeof(int), cmp);
 	TEST_RET(*i == k);
 });
+
+TEST_DEF(stdlib, malloc, {
+	char *data = malloc(5);
+	data[0] = 'h';
+	data[1] = 'e';
+	data[2] = 'l';
+	data[3] = 'l';
+	data[4] = 'o';
+	
+	TEST_RET(strncmp(data, data, 5) == 0);
+});
 	
 TEST_DEF(posix\040, bcmp, {
 	const char  data1[] = "This string";
@@ -351,6 +362,7 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(max);
 	TEST_TRY(qsort);
 	TEST_TRY(bsearch);
+	TEST_TRY(malloc);
 	
 	TEST_TRY(bcmp);
 	TEST_TRY(bcopy);

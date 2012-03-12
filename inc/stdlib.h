@@ -73,7 +73,6 @@ CCAPRICE_EXPORT void *bsearch(const void *, const void *, size_t, size_t, int(*)
 /* malloc / free */
 CCAPRICE_EXPORT void *malloc(size_t);
 CCAPRICE_EXPORT void *calloc(size_t, size_t);
-CCAPRICE_EXPORT void  free  (void *);
 
 /* rand / srand */
 CCAPRICE_EXPORT void  srand(unsigned int);

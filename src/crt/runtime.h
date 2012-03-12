@@ -33,6 +33,14 @@
 #	include <sys/types.h>
 #endif
 typedef int32_t pid_t;
+#if defined(i386)   || defined(__x86__)
+#	define PAGE_SIZE 4096
+#	define SIZE_MAX 0xffffffff
+#endif
+#if defined(x86_64) || defined(__x86_64__)
+#	define PAGE_SIZE 4096
+#	define SIZE_MAX 0xffffffffffffffff
+#endif
 
 CCAPRICE_EXPORT ssize_t write (int, const void*, size_t);
 CCAPRICE_EXPORT ssize_t read  (int, void      *, size_t);

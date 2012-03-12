@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 #include "inc/string.h"
-
 char *strstr(const char *ehay, const char *ened) {
 	char  *hay = (char*)ehay;
 	char  *ned = (char*)ened;

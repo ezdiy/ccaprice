@@ -35,7 +35,6 @@
     defined(__x86_64)      || \
     defined(_M_X64)
 	#define CCAPRICE_TARGET_X86_64
-#else
 #if defined(i386)          || \
     defined(__i386__)      || \
     defined(__i486__)      || \
@@ -49,7 +48,7 @@
     defined(__THW_INTEL__) || \
     defined(__I86__)       || \
     defined(__INTEL__)
-	#define CCAPRICE_TARGET_X86
+	#define CCAPRICE_TARGET_X86F
 #endif
 #endif
 #endif
