@@ -33,7 +33,7 @@ void *malloc(size_t size) {
 		errno = ENOMEM;
 		return NULL;
 	}
-	return ret
+	return ret;
 }
 
 void *calloc(size_t m, size_t n) {

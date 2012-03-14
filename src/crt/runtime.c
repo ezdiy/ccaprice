@@ -72,7 +72,7 @@ void *ccaprice_malloc_small(size_t n) {
 	n = ((n + align) - 1) & -align;
 	
 	if (!mcur) {
-		 mcur = ccaprice_syscall_core(SYS_brk, 0) + 16;
+		 mcur = ccaprice_syscall_core(SYS_BRK, 0) + 16;
 		 mbrk = mcur;
 	}
 	base = ((mcur + align) - 1) & -align;
