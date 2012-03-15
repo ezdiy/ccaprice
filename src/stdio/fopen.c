@@ -53,7 +53,7 @@ FILE *fopen(const char *file, const char *mode) {
 	 * ensure file opens are 64-bit safe; otherwise errors
 	 * could occur.
 	 */
-	#ifdef CCAPRICE_TARGET_X86
+	#ifdef CCAPRICE_TARGET_X86_32
 		/*
 		 * (LFS) Allow files whose sizes cannot be represented in an off_t 
 		 * (but can be represented in an off64_t) to be opened.

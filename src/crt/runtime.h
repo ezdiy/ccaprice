@@ -50,16 +50,10 @@ CCAPRICE_EXPORT int     close (int);
 CCAPRICE_EXPORT int     kill  (pid_t, int);
 CCAPRICE_EXPORT void    _exit (int);
 CCAPRICE_EXPORT pid_t   getpid();
-#ifdef _LARGEFILE64_SOURCE
-#	define __USE_LARGEFILE64 1
-#endif
 
 /* <hack> */
 /* linux/BSD X86 / X86_64 only */
-#if defined(__x86__)             || \
-	defined(CCAPRICE_TARGET_X86) || \
-	defined(__x86_64__)          || \
-	defined(CCAPRICE_TARGET_X86_64)
+#if defined(CCAPRICE_TARGET_X86_32) || defined(CCAPRICE_TARGET_X86_64)
 	#define O_ACCMODE   0003
 	#define O_RDONLY    00
 	#define O_WRONLY    01
@@ -74,8 +68,6 @@ CCAPRICE_EXPORT pid_t   getpid();
 	#define O_SYNC      010000
 	#define O_FSYNC     010000
 	#define O_ASYNC     020000
-	#ifdef __USE_LARGEFILE64
-		#define O_LARGEFILE 0200000
-	#endif
+	#define O_LARGEFILE 0200000
 #endif /* !O_MODES          */
 #endif /* !CCAPRICE_CRT_HDR */

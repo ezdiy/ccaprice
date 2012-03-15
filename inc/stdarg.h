@@ -42,10 +42,10 @@
  * We're not on a GCC compiler, lets try implementing out own
  * stdarg system.  This is undefined behaviour.  But it works.
  */
-#if defined(CCAPRICE_TARGET_X86) || defined(__x86__)
+#if defined(CCAPRICE_TARGET_X86_32)
 	typedef int   va_item;
 	typedef char *va_list;
-#elif defined(CCAPRICE_TARGET_X86_64) || defined(__x86_64__)
+#elif defined(CCAPRICE_TARGET_X86_64)
 	typedef long  va_item;
 	typedef char *va_list;
 #else

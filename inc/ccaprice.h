@@ -48,7 +48,7 @@
     defined(__THW_INTEL__) || \
     defined(__I86__)       || \
     defined(__INTEL__)
-	#define CCAPRICE_TARGET_X86F
+	#define CCAPRICE_TARGET_X86_32
 #endif
 #endif
 #endif
@@ -81,12 +81,16 @@
 #	error "Unsupported compiler"
 #endif
 
+/* 
+ * We can override code if -DNAIVE is passed by the build
+ * script.
+ */
 #if !defined(CCAPRICE_NAIVE)
-#	define STRING_STRLEN_OPTIMAL 0x01
-#	define STRING_MEMCHR_OPTIMAL 0x01
-#	define STRING_MEMCPY_OPTIMAL 0x01
-#	define STRING_MEMSET_OPTIMAL 0x01
-#	define STDLIB_RANDOM_OPTIMAL 0x01
+#	define STRING_STRLEN_OPTIMAL
+#	define STRING_MEMCHR_OPTIMAL
+#	define STRING_MEMCPY_OPTIMAL
+#	define STRING_MEMSET_OPTIMAL
+#	define STDLIB_RANDOM_OPTIMAL
 #	if defined(__SSE2__)
 #		define STRING_STRLEN_OPTIMAL_SSE2
 #		define STRING_MEMCHR_OPTIMAL_SSE2
@@ -132,21 +136,13 @@
 #	endif
 #endif
 
-#if defined(CCAPRICE_TARGET_X86_64)
-#	define STRING_STRLEN_X86_64
-#	define STRING_MEMCHR_X86_64
-#	define STRING_MEMCPY_X86_64
-#	define STRING_MEMSET_X86_64
-#elif defined(CCAPRICE_TARGET_X86)
-#	define _LARGEFILE64_SOURCE
-	
-#	define STRING_STRLEN_X86
-#	define STRING_MEMCHR_X86
-#	define STRING_MEMCPY_X86
-#	define STRING_MEMSET_X86
-#else
+/*
+ * Ensure that a valid target has been selected for compilation. Otherwise
+ * force a compiler error.
+ */
+#if !defined(CCAPRICE_TARGET_X86_64) && !defined(CCAPRICE_TARGET_X86_32)
 #	error "[ccaprice] Target not supported"
-#endif /* !CCAPRICE_TARGET_X86_64 */
+#endif
 
 #define CCAPRICE_INTERNAL_TYPE(TYPE, NAME)       extern TYPE NAME
 #define CCAPRICE_INTERNAL_FUNC(TYPE, NAME, LIST) CCAPRICE_INTERNAL_TYPE(TYPE,NAME) LIST

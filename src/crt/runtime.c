@@ -39,7 +39,7 @@ CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
 /* ENVIROMENT */
 char **ccaprice_enviroment;
 
-#if defined(CCAPRICE_TARGET_X86)
+#if defined(CCAPRICE_TARGET_X86_32)
 int ccaprice_syscall_error() {
 	register int no __asm__("%edx");
 	__asm__ __volatile__ (

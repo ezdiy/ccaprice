@@ -23,7 +23,7 @@
 #ifndef CCAPRICE_MATH_HDR
 #define CCAPRICE_MATH_HDR
 #include "ccaprice.h"
-#if defined(CCAPRICE_TARGET_X86) || defined(CCAPRICE_TARGET_X86_64)
+#if defined(CCAPRICE_TARGET_X86_32) || defined(CCAPRICE_TARGET_X86_64)
 	#define CCAPRICE_MATH_HI_L(X) *(1+((int*)(&X)))
 	#define CCAPRICE_MATH_LO_L(X) *(0+((int*)(&X)))
 	#define CCAPRICE_MATH_HI_P(X) *(1+((int*) (X)))
@@ -33,9 +33,9 @@
 	#define CCAPRICE_MATH_LO_L(X) *(1+((int*)(&X)))
 	#define CCAPRICE_MATH_HI_P(X) *(0+((int*) (X)))
 	#define CCAPRICE_MATH_LO_P(X) *(1+((int*) (X)))
-#endif /* !CCAPRICE_TARGET_X86 */
+#endif
 
-#if defined(CCAPRICE_TARGET_X86) || defined(CCAPRICE_TARGET_X86_64)
+#if defined(CCAPRICE_TARGET_X86_32) || defined(CCAPRICE_TARGET_X86_64)
 	#define FP_ILOGB0      (-2147483647 - 1)
 	#define FP_ILOGBNAN    (-2147483647 - 1)
 #endif
@@ -46,9 +46,11 @@
 #define M_E     (2.7182818284590450)
 #define M_EULER (0.5772156649015329)
 #define M_PI    (3.1415926535897932)
-#define M_TAU   (6.2831853071795864)
 #define M_PI_2  (1.5707963267948966)
 #define M_PI_4  (0.7853981633974483)
+#ifdef CCAPRICE_EXTENSIONS
+#	define M_TAU   (6.2831853071795864)
+#endif
 
 CCAPRICE_EXPORT int    abs   (int);
 CCAPRICE_EXPORT double atan  (double);

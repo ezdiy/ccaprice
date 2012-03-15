@@ -43,6 +43,35 @@ ctype.h:
 errno.h:
 	errno
 	
+fenv.h:
+	FE_INVALID
+	FE_DIVBYZERO
+	FE_OVERFLOW
+	FE_UNDERFLOW
+	FE_INEXACT
+	FE_ALL_EXCEPT
+	FE_TONEAREST
+	FE_DOWNWARD 
+	FE_UPWARD
+	FE_TOWARDZERO
+	FE_DFL_ENV
+	
+	feclearexcept  ()
+	feraiseexcept  ()
+	fegetexceptflag()
+	fesetexceptflag()
+	fetestexcept   ()
+	fesetround     ()
+	fegetround     ()
+	fegetenv       ()
+	feholdexcept   ()
+	fesetenv       ()
+	feupdateenv    ()
+	
+	typedef struct fenv_t
+	typedef ?      fexcept_t
+
+	
 float.h:
 	FLT_RADIX
 	FLT_MIN

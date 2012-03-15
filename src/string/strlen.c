@@ -33,7 +33,7 @@ static const unsigned char strlen_bsf_table[256] = {
 
 size_t strlen(const char *src) {
 	#ifdef STRING_STRLEN_OPTIMAL
-		#if defined(STRING_STRLEN_OPTIMAL_SSE2)
+		#if defined(STRING_STRLEN_OPTIMAL_SSE2) && defined(CCAPRICE_TARGET_X86_64)
 			/*
 			 * Fast strlen using SSE, counts data till allignment
 			 * the counts in chunks of sizeof(__m128i).
@@ -75,7 +75,7 @@ size_t strlen(const char *src) {
 				src += sizeof(__m128i), len += sizeof(__m128i);
 			}
 			return len;
-		#elif defined(STRING_STRLEN_X86)
+		#elif defined(CCAPRICE_TARGET_X86_32)
 			/*
 			 * Vector optimized strlen using GPR:
 			 *	This could be seen as a little more complicated than
@@ -104,12 +104,12 @@ size_t strlen(const char *src) {
 		#endif
 	#else
 		#define STRING_STRLEN_NONE
-	#endif /* !STRING_STRLEN_OPTIMAL */
+	#endif
 	
 	#ifdef STRING_STRLEN_NONE
 		#warning "[ccaprice] no optimized strlen implementation, using naive method (could be slow)"
 		const char *s = src;
 		while (*src) src++;
 		return src - s;
-	#endif /* !STRING_STRLEN_NONE */
+	#endif
 }
