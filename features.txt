@@ -210,6 +210,7 @@ math.h:
 	M_PI_4
 	M_TAU  [EXTENSION]
 	abs    () [branchless]
+	acos   ()
 	atan   ()
 	ceil   ()
 	fabs   ()
@@ -218,6 +219,7 @@ math.h:
 	frexp  ()
 	ilogb  ()
 	isnan  ()
+	sqrt   ()
 	
 
 POSIX features are below.  Note these do not clash with the C

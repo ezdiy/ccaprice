@@ -94,6 +94,7 @@ SRC     = src/assert.c                   \
           src/stdio/printf.c             \
           src/stdio/remove.c             \
           src/math/abs.c                 \
+          src/math/acos.c                \
           src/math/atan.c                \
           src/math/ceil.c                \
           src/math/floor.c               \
@@ -102,6 +103,7 @@ SRC     = src/assert.c                   \
           src/math/isnan.c               \
           src/math/frexp.c               \
           src/math/ilogb.c               \
+          src/math/sqrt.c                \
           src/fenv/fegetexceptflag.c     \
           src/fenv/feholdexcept.c        \
           src/fenv/fesetexceptflag.c     \

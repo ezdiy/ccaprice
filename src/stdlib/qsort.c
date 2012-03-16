@@ -190,8 +190,7 @@ typedef struct {
         } while (0)
 #endif
 /*
- * This is a highly optimized swap function for qsort functionality. This
- * implements a duffs-device, and inlines in spot by the c preprocessor.
+ * This is a highly optimized swap function for qsort functionality.
  * 
  * This function works well for large or small widths of data.  It unrolls
  * the while(W--) { } loop which would be used in a naive implementation.
@@ -213,29 +212,29 @@ typedef struct {
         register char  T;                                 \
         register char *A = (EA);                          \
         register char *B = (EB);                          \
-        if (EW < 8) {                                     \
+        if (EW < 16) {                                    \
             switch(EW) {                                  \
-                case 7: T = *A,*A++ = *B,*B++ = T;        \
-                case 6: T = *A,*A++ = *B,*B++ = T;        \
-                case 5: T = *A,*A++ = *B,*B++ = T;        \
-                case 4: T = *A,*A++ = *B,*B++ = T;        \
-                case 3: T = *A,*A++ = *B,*B++ = T;        \
-                case 2: T = *A,*A++ = *B,*B++ = T;        \
-                case 1: T = *A,*A++ = *B,*B++ = T;        \
+                case 15: T = *A,*A++ = *B,*B++ = T;       \
+                case 14: T = *A,*A++ = *B,*B++ = T;       \
+                case 13: T = *A,*A++ = *B,*B++ = T;       \
+                case 12: T = *A,*A++ = *B,*B++ = T;       \
+                case 11: T = *A,*A++ = *B,*B++ = T;       \
+                case 10: T = *A,*A++ = *B,*B++ = T;       \
+                case 9:  T = *A,*A++ = *B,*B++ = T;       \
+                case 8:  T = *A,*A++ = *B,*B++ = T;       \
+                case 7:  T = *A,*A++ = *B,*B++ = T;       \
+                case 6:  T = *A,*A++ = *B,*B++ = T;       \
+                case 5:  T = *A,*A++ = *B,*B++ = T;       \
+                case 4:  T = *A,*A++ = *B,*B++ = T;       \
+                case 3:  T = *A,*A++ = *B,*B++ = T;       \
+                case 2:  T = *A,*A++ = *B,*B++ = T;       \
+                case 1:  T = *A,*A++ = *B,*B++ = T;       \
             }                                             \
         } else {                                          \
-            C = (EW+7)/8;                                 \
-            switch  (C % 8) {                             \
-                case 0: do { T = *A,*A++ = *B,*B++ = T;   \
-                case 7:      T = *A,*A++ = *B,*B++ = T;   \
-                case 6:      T = *A,*A++ = *B,*B++ = T;   \
-                case 5:      T = *A,*A++ = *B,*B++ = T;   \
-                case 4:      T = *A,*A++ = *B,*B++ = T;   \
-                case 3:      T = *A,*A++ = *B,*B++ = T;   \
-                case 2:      T = *A,*A++ = *B,*B++ = T;   \
-                case 1:      T = *A,*A++ = *B,*B++ = T;   \
-                } while (--C > 0);                        \
-            }                                             \
+		    size_t S = (EW);                              \
+		    do {                                          \
+			    T = *A, *A++ = *B, *B++ = T;              \
+			} while (--S > 0);                            \
         }                                                 \
     } while (0)
 #else

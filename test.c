@@ -200,9 +200,12 @@ TEST_DEF(string, strtok, {
 TEST_DEF(math\040\040, abs, {
 	TEST_RET(abs(23) == 23 && abs(-11) == 11)
 })
+TEST_DEF(math\040\040, acos, {
+	TEST_RET((int)(acos(0.5f)*180.0/M_PI) == 60);
+})
 
 TEST_DEF(math\040\040, atan, {
-	TEST_RET((int)(atan(1.0f)*180/M_PI) == 45)
+	TEST_RET((int)(atan(1.0f)*180.0/M_PI) == 45)
 })
 
 TEST_DEF(math\040\040, ceil, {
@@ -233,6 +236,10 @@ TEST_DEF(math\040\040, ilogb, {
 
 TEST_DEF(math\040\040, isnan, {
 	TEST_RET(!isnan(M_PI))
+})
+
+TEST_DEF(math\040\040, sqrt, {
+	TEST_RET((int)(sqrt(1024)) == 32);
 })
 
 TEST_DEF(stdlib, min, { TEST_RET(MIN(100,50) ==  50) })
@@ -350,6 +357,7 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(strtok);
 	
 	TEST_TRY(abs);
+	TEST_TRY(acos);
 	TEST_TRY(atan);
 	TEST_TRY(ceil);
 	TEST_TRY(fabs);

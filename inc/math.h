@@ -53,6 +53,7 @@
 #endif
 
 CCAPRICE_EXPORT int    abs   (int);
+CCAPRICE_EXPORT double acos  (double);
 CCAPRICE_EXPORT double atan  (double);
 CCAPRICE_EXPORT double ceil  (double);
 CCAPRICE_EXPORT double fabs  (double);
@@ -61,4 +62,5 @@ CCAPRICE_EXPORT double floor (double);
 CCAPRICE_EXPORT double frexp (double, int*);
 CCAPRICE_EXPORT int    ilogb (double);
 CCAPRICE_EXPORT int    isnan (double);
+CCAPRICE_EXPORT double sqrt  (double);
 #endif /* !CCAPRICE_MATH_HDR */
