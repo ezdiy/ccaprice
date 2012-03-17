@@ -14,11 +14,11 @@
 			col.first { width: auto; }
 			th { text-align: center; font-weight: bold; }
 			tr > th:first-child { text-align: left; }
-			td { text-align: center; }
+			td { text-align: center; background-color: #eeccdd; }
 			tr > td:first-child { text-align: left; }
 			table { border-width: 0; }
-			tr.section th { font-weight: bold; }
-			tr.section { background-color: #b0a0ff; }
+			tr.section th { font-weight: bold; background-color: #0000; }
+			tr.section { width: 100%; background-color: #0000; }
 			td.good { background-color: #a0ffa0; }
 			td.half {  background-color: #ffff80; }
 			td.bad { background-color: #ff9090; }
@@ -184,11 +184,101 @@
 						<tr><td class="fun">va_end</td><td class="good">implemented</td></tr>										
 					</td>
 					<td class="section">&nbsp;&lt;stddef.h&gt;
-						<tr><td class="fun">ptrdiff_t</td><td class="bad">uimplemented</td></tr>	
+						<tr><td class="fun">ptrdiff_t</td><td class="bad">unimplemented</td></tr>	
 						<tr><td class="fun">size_t</td><td class="half">implemented</td></tr>
 						<tr><td class="fun">offsetof(X,Y)</td><td class="good">implemented</td></tr>
 						<tr><td class="fun">NULL</td><td class="good">implemented</td></tr>									
-					</td>						
+					</td>
+					<td class="section">&nbsp;&lt;stdlib.h&gt;
+						<tr><td class="fun">double atof(const char*)</td><td class="bad">unimplemented</td></tr>	
+						<tr><td class="fun">int atoi(const char*)</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">long atol(const char*)</td><td class="bad">unimplemented</td></tr>		
+						<tr><td class="fun">double strtod(const char*, const char**)</td><td class="bad">unimplemented</td></tr>	
+						<tr><td class="fun">long strtol(const char*, const char**, int)</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">unsigned long strtoul(const char*, const char**, int)</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">int rand(void)</td><td class="good">implemented</td></tr>	
+						<tr><td class="fun">void srand(unsigned int)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">void *calloc(size_t, size_t)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">void free(void*)</td><td class="bad">unimplemented</td></tr>	
+						<tr><td class="fun">void *malloc(size_t)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">void *realloc(void*, size_t)</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">void abort(void)</td><td class="good">implemented</td></tr>	
+						<tr><td class="fun">int atexit(void (*)(void))</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">void exit(int)</td><td class="half">implemented, non-conformant</td></tr>
+						<tr><td class="fun">char *getenv(const char*)</td><td class="good">implemented</td></tr>	
+						<tr><td class="fun">int system(const char*)</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">void *bsearch(const void*, const void*, size_t, size_t, cmp_fnptr)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">void *qsort(void*, size_t, size_t, cmp_fnptr)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int abs(int)</td><td class="good">implemented</td></tr>	
+						<tr><td class="fun">div_t div(int, int)</td><td class="bad">uimplemented</td></tr>
+						<tr><td class="fun">long labs(long)</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">ldiv_t ldiv(long, long)</td><td class="bad">uimplemented</td></tr>
+						<tr><td class="fun">int mblen(const char*, size_t)</td><td class="bad">uimplemented</td></tr>
+						<tr><td class="fun">int wbtowcdiv(wchar_t*, const char*, size_t)</td><td class="bad">uimplemented</td></tr>
+						<tr><td class="fun">int wctomb(char*, wchar_t)</td><td class="bad">uimplemented</td></tr>
+						<tr><td class="fun">size_t mbstowcs(wchar_t*, const char*, size_t)</td><td class="bad">uimplemented</td></tr>
+						<tr><td class="fun">size_t wctombs(char*, const wchar_t*, size_t)</td><td class="bad">uimplemented</td></tr>
+						<tr><td class="fun">EXIT_FAILURE</td><td class="good">implemented</td></tr>	
+						<tr><td class="fun">EXIT_SUCCESS</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">MB_CUR_MAX</td><td class="bad">unimplemented</td></tr>	
+						<tr><td class="fun">NULL</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">RAND_MAX</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">div_t</td><td class="bad">unimplemented</td></tr>	
+						<tr><td class="fun">ldiv_t</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">size_t</td><td class="bad">implemented</td></tr>
+					</td>
+					<td class="section">&nbsp;&lt;string.h&gt;
+						<tr><td class="fun">void *memcpy(void*, const void*, size_t)</td><td class="good">implemented</td></tr>	
+						<tr><td class="fun">void *memmove(void*, const void*, size_t)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">char *strcpy(char*, const char*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">char *strncpy(char*, const char*, size_t)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">char *strcat(char*, const char*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">char *strncat(char*, const char*, size_t)</td><td class="good">implemented</td></tr>	
+						<tr><td class="fun">int memcmp(const void*, const void*, size_t)</td><td class="good">implemented</td></tr>	
+						<tr><td class="fun">int strcmp(const char*, const char*)</td><td class="good">implemented</td></tr>	
+						<tr><td class="fun">int strcoll(const char*, const char*)</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">int strncmp(const char*, const char*, size_t)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">size_t strxfrm(char*, const char*, size_t)</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">void *memchr(const void*, int, size_t)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">char *strchr(const char*, int)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">size_t strcspn(const char*, const char*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">char *strpbrk(const char*, const char*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">char *strrchr(const char*, int)</td><td class="bad">unimplemented</td></tr>
+						<tr><td class="fun">size_t strspn(const char*, const char*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">char *strstr(const char*, const char*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">char *strtok(char*, const char*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">void *memset(void*, int, size_t)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">char *strerror(int)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">size_t strlen(const char*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">NULL</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">size_t</td><td class="good">implemented</td></tr>									
+					</td>
+					<td class="section">&nbsp;&lt;fenv.h&gt;
+						<tr><td class="fun">int feclearexcept(int)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int fegetexceptflag(fexcept_t*, int)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int feraiseexcept(int)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int fesetexceptflag(const fexcept_t*, int)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int fetestexcept(int)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int fegetround(void)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int fesetround(int)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int fegetenv(fenv_t*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int feholdexcept(fenv_t*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int fesetenv(const fenv_t*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">int feupdateenv(const fenv_t*)</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_DIVBYZERO</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_INEXACT</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_INVALID</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_OVERFLOW</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_UNDERFLOW</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_ALL_EXCEPT</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_DOWNWARD</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_TONEAREST</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_TOWARDZERO</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_UPWARD</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">FE_DFL_ENV</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">fenv_t</td><td class="good">implemented</td></tr>
+						<tr><td class="fun">fexcept_t</td><td class="good">implemented</td></tr>
+					</td>
 				</table> 
 				<center>
 					<p>
