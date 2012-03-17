@@ -31,6 +31,7 @@ CFLAGS += -Wall                          \
           -fno-strict-aliasing           \
           -DCCAPRICE_CP                  \
           -DCCAPRICE_LOCALE_SET=en_US
+
           
 SRC     = src/assert.c                   \
           src/locale.c                   \

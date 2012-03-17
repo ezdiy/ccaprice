@@ -87,7 +87,7 @@ void *ccaprice_malloc_small(size_t n) {
 		
 	if (base + n > mbrk) {
 		make = (((base + n) + PAGE_SIZE) - 1) & -PAGE_SIZE;
-		if (ccaprice_syscall_core(SYS_brk, make) != make)
+		if (ccaprice_syscall_core(SYS_BRK, make) != make)
 			return (void*)-1;
 		mbrk = make;
 	}
