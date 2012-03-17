@@ -30,6 +30,7 @@
  * SOFTWARE.
  */
 #include "inc/math.h"
+
 int isnan(double x) {
 	int data[] = {
 		CCAPRICE_MATH_HI_L(x) & 0x7FFFFFF,

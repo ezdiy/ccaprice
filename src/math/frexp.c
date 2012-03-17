@@ -30,6 +30,7 @@
  * SOFTWARE.
  */
 #include "inc/math.h"
+
 double frexp(double x, int *p) {
 	int x_hi = CCAPRICE_MATH_HI_L(x);
 	int x_lo = CCAPRICE_MATH_LO_L(x);

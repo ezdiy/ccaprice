@@ -52,7 +52,7 @@
 #	define M_TAU   (6.2831853071795864)
 #endif
 
-CCAPRICE_EXPORT int    abs   (int);
+CCAPRICE_EXPORT int    abs   (int); /* STDLIB-ify */
 CCAPRICE_EXPORT double acos  (double);
 CCAPRICE_EXPORT double atan  (double);
 CCAPRICE_EXPORT double ceil  (double);

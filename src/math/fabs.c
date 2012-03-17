@@ -30,6 +30,7 @@
  * SOFTWARE.
  */
 #include "inc/math.h"
+
 double fabs(double x) {
 	CCAPRICE_MATH_HI_L(x) &= 0x7FFFFFFFF;
 	return x;

@@ -30,6 +30,7 @@
  * SOFTWARE.
  */
 #include "inc/math.h"
+
 double ceil(double x) {
 	unsigned i,j;
 	

@@ -30,6 +30,7 @@
  * SOFTWARE.
  */
 #include "inc/math.h"
+
 double floor(double x) {
 	unsigned i,j;
 	

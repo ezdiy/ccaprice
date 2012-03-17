@@ -20,4 +20,5 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-double sqrt(double x) { return __builtin_sqrt(x); } /* TODO SOFTFPU */
+#include "inc/math.h"
+double sqrt(double x) { return __builtin_sqrt(x); }

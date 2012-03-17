@@ -20,34 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-
-# compilation flags
-CFLAGS += -Wall                 \
-          -Wextra               \
-          -nostdlib             \
-          -fno-builtin          \
-          -nostartfiles         \
-          -nodefaultlibs        \
-          -Wno-uninitialized    \
-          -Wno-unused-parameter \
-          -Wno-sign-compare     \
-          -fno-strict-aliasing  \
-          -DCCAPRICE_CP         \
+CFLAGS += -Wall                          \
+          -nostdlib                      \
+          -fno-builtin                   \
+          -nostartfiles                  \
+          -nodefaultlibs                 \
+          -Wno-uninitialized             \
+          -Wno-unused-parameter          \
+          -Wno-sign-compare              \
+          -fno-strict-aliasing           \
+          -DCCAPRICE_CP                  \
           -DCCAPRICE_LOCALE_SET=en_US
           
-# figure out target OS
-ifeq (BSD, $(OS))
-	SHELL = /usr/local/bin/bash
-	LARCH = elf_i386_fbsd
-else
-ifeq (WIN, $(OS))
-	SHELL = /bin/bash
-	LARCH = i386pe
-else
-	SHELL = /bin/bash
-	LARCH = elf_i386
-endif
-endif
 SRC     = src/assert.c                   \
           src/locale.c                   \
           src/signal.c                   \
@@ -117,26 +101,155 @@ SRC     = src/assert.c                   \
           src/posix/strings/rindex.c     \
           src/posix/strings/strcasecmp.c \
           src/posix/strings/strncasecmp.c
-
-#library outfile   
-ifeq ($(OS), WIN)
-	OUT = ccaprice.lib
+          
+ASM64  =  src/crt/x86_64.S               \
+          src/fenv/fenv_x86_64.S
+ASM32  =  src/crt/x86_32.S               \
+          src/fenv/fenv_x86_32.S
+          
+# figure out host OS
+# figure out linker architecture and bash shell
+# we must use bash here (not any other shell)
+ifneq (,$(findstring BSD,$(shell uname -s)))
+	SHELL         = /usr/local/bin/bash
+	LARCH_X86_32  = elf_i386_fbsd
+	LARCH_X86_64  = elf_x86_64_fbsd
+	OS            = BSD
+	LFLAGS        =
+	OUT           = ccaprice.a
 else
-	OUT = ccaprice.a
+ifneq (,$(findstring Windows,$(shell uname -s)))
+	# use what ever Make starts with for shell
+	# it most likely doesn't support colors.
+	LARCH_X86_32  = i386pe
+	LARCH_X86_64  = x86_64pe
+	OS            = WIN
+	LFLAGS        = -luser32 -lkernel32
+	OUT           = ccaprice.lib
+else
+ifneq (,$(findstring Linux,$(shell uname -s)))
+	SHELL         = /bin/bash
+	LARCH_X86_32  = elf_i386
+	LARCH_X86_64  = elf_x86_64
+	OS            = LINUX
+	LFLAGS        =
+	OUT           = ccaprice.a
+endif
+endif
 endif
 
-OBJ     = $(SRC:.c=.o)
-INC     = -I.
-EDGE    = -c $< -o $@
-SRCD    = $(SRC)
-OBJD    = $(SRCD:.c=.o)
-CFLAGS += -D__INFO__="$(shell echo `uname -a`)"
-
-# user32.dll and kernel32.dll needed for windows
-ifeq ($(OS), WIN)
-	LFLAGS = -luser32 -lkernel32
+ifeq (, $(TARGET))
+	ifneq (,$(findstring x86_64, $(shell uname -m)))
+		TARGET  = x86_64
+		CFLAGS += -DCCAPRICE_TARGET_X86_64 -m64
+		LFLAGS += -m$(LARCH_X86_64)
+		AFLAGS  = -m64
+		ASM     = $(ASM64)
+	else
+	ifneq (,$(findstring amd64, $(shell uname -m)))
+		TARGET  = x86_64
+		CFLAGS += -DCCAPRICE_TARGET_X86_64 -m64
+		LFLAGS += -m$(LARCH_X86_64)
+		AFLAGS  = -m64
+		ASM     = $(ASM64)
+	else
+	ifneq (,$(findstring x86_32, $(shell uname -m)))
+		TARGET  = x86_32
+		CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+		LFLAGS += -m$(LARCH_X86_32)
+		AFLAGS  = -m32
+		ASM     = $(ASM32)
+	else
+	ifneq (,$(findstring i386, $(shell uname -m)))
+		TARGET  = i386
+		CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+		LFLAGS += -m$(LARCH_X86_32)
+		AFLAGS  = -m32
+		ASM     = $(ASM32)
+	else
+	ifneq (,$(findstring i486, $(shell uname -m)))
+		TARGET  = i486
+		CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+		LFLAGS += -m$(LARCH_X86_32)
+		AFLAGS  = -m32
+		ASM     = $(ASM32)
+	else
+	ifneq (,$(findstring i586, $(shell uname -m)))
+		TARGET  = i586
+		CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+		LFLAGS += -m$(LARCH_X86_32)
+		AFLAGS  = -m32
+		ASM     = $(ASM32)
+	else
+	ifneq (,$(findstring i686, $(shell uname -m)))
+		TARGET  = i686
+		CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+		LFLAGS += -m$(LARCH_X86_32)
+		AFLAGS  = -m32
+		ASM     = $(ASM32)
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
+	endif
 else
-	LFLAGS =
+ifeq (x86_64, $(TARGET))
+	TARGET  = x86_64
+	CFLAGS += -DCCAPRICE_TARGET_X86_64 -m64
+	LFLAGS += -m$(LARCH_X86_64)
+	AFLAGS  = -m64
+	ASM     = $(ASM64)
+else
+ifeq (amd64, $(TARGET))
+	TARGET  = x86_64
+	CFLAGS += -DCCAPRICE_TARGET_X86_64 -m64
+	LFLAGS += -m$(LARCH_X86_64)
+	AFLAGS  = -m64
+	ASM     = $(ASM64)
+else
+ifeq (x86_32, $(TARGET))
+	TARGET  = i386
+	CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+	LFLAGS += -m$(LARCH_X86_32)
+	AFLAGS  = -m32
+	ASM     = $(ASM32)
+else
+ifeq (i386, $(TARGET))
+	TARGET  = i386
+	CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+	LFLAGS += -m$(LARCH_X86_32)
+	AFLAGS  = -m32
+	ASM     = $(ASM32)
+else
+ifeq (i486, $(TARGET))
+	TARGET  = i386
+	CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+	LFLAGS += -m$(LARCH_X86_32)
+	AFLAGS  = -m32
+	ASM     = $(ASM32)
+else
+ifeq (i586, $(TARGET))
+	TARGET  = i386
+	CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+	LFLAGS += -m$(LARCH_X86_32)
+	AFLAGS  = -m32
+	ASM     = $(ASM32)
+else
+ifeq (i686, $(TARGET))
+	TARGET  = i386
+	CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+	LFLAGS += -m$(LARCH_X86_32)
+	AFLAGS  = -m32
+	ASM     = $(ASM32)
+endif
+endif
+endif
+endif
+endif
+endif
+endif
 endif
 
 #colors
@@ -148,121 +261,44 @@ ifneq ($(OS), WIN)
 		GREEN  = -e "\033[1;32m
 		BLUE   = -e "\033[1;34m
 		PURPLE = -e "\033[1;35m
+		RED    = -e "\033[1;31m
 		CYAN   = \033[1;36m
 		RRED   = \033[1;31m
+		ENDSUP = \033[m\c"
 		ENDCOL = \033[m"
 	endif
 endif
 
-# naive code selection (selects slowest code)
-ifneq (, $(NAIVE))
-	CFLAGS += -DCCAPRICE_NAIVE
-endif
-
-# target architecture selection
-ifneq (, $(TARG))
-	ifeq (x86_64, $(TARG))
-		TARGET  = x86_64
-		CFLAGS += -DCCAPRICE_TARGET_X86_64
-	else
-	ifeq (amd64, $(TARG))
-		TARGET  = amd64
-		CFLAGS += -DCCAPRICE_TARGET_X86_64
-	else
-	ifeq (x86_32, $(TARG))
-		TARGET  = x86_32
-		CFLAGS += -DCCAPRICE_TARGET_X86_32
-	else
-	ifeq (i386, $(TARG))
-		TARGET  = i386
-		CFLAGS += -DCCAPRICE_TARGET_X86_32
-		LFLAGS  = -m $(LARCH)
-	else
-	ifeq (i486, $(TARG))
-		TARGET  = i486
-		CFLAGS += -DCCAPRICE_TARGET_X86_32
-		LFLAGS  = -m $(LARCH)
-	else
-	ifeq (i586, $(TARG))
-		TARGET  = i586
-		CFLAGS += -DCCAPRICE_TARGET_X86_32
-		LFLAGS  = -m $(LARCH)
-	else
-	ifeq (i686, $(TARG))
-		TARGET  = i686
-		CFLAGS += -DCCAPRICE_TARGET_X86_32
-		LFLAGS  = -m $(LARCH)
-	endif
-	endif
-	endif
-	endif
-	endif
-	endif
-	endif
-endif
-
-# ensure target Os is valid
-ifneq (LINUX, $(OS))
-ifneq (BSD, $(OS))
-ifneq (WIN, $(OS))
-	override CCC    = @echo
-	override INC    =
-	override EDGE   =
-	override SRCD   = src/assert.c
-	override OBJD   = src/assert.o
-	override DONOT  = 1
-	override VERBOSE= 1
-	override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\` OS=[WIN/BSD/LINUX]$(ENDCOL)
-endif
-endif
-endif
-
-# setup for architecture
-ifneq (,$(findstring -DCCAPRICE_TARGET_X86_64,$(CFLAGS)))
-	ASM     = src/crt/x86_64.S
-	FENV    = src/fenv/fenv_x86_64.S
-	AFLAGS  =
-else
-	ifneq (,$(findstring -DCCAPRICE_TARGET_X86_32,$(CFLAGS)))
-		ASM     = src/crt/x86_32.S
-		FENV    = src/fenv/fenv_x86_32.S
-		CFLAGS += -m32
-		ifeq ($(shell uname), FreeBSD)
-			AFLAGS  = -m32 -DBSD
-		else
-			AFLAGS  = -m32
-		endif
-	else
-		override CCC    = @echo
-		override INC    =
-		override EDGE   =
-		override SRCD   = src/assert.c
-		override OBJD   = src/assert.o
-		override DONOT  = 1
-		override VERBOSE= 1
-		override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\` OS=[WIN/BSD/LINUX]$(ENDCOL)
-	endif
-endif
-
-# HOSTCC selection is invalid?
+# Prepreation
 ifeq (, $(CCC))
-	override CCC    = @echo
-	override INC    =
-	override EDGE   =
-	override SRCD   = src/assert.c
-	override OBJD   = src/assert.o
-	override DONOT  = 1
-	override VERBOSE= 1
-	override CFLAGS = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] TARG=$(shell uname -m)\` OS=[WIN/BSD/LINUX]$(ENDCOL)
+	override CCC      = @echo
+	override VERBOSE  = 1
+	override AFLAGS   =
+	override CFLAGS   = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] $(ENDSUP)
+	override INC      =
+	override EDGE     =
+	override OBJC     = src/assert.o
+	override OBJA     = src/crt/x86_64.o
+	override DONOT    = 1
+else
+	override CFLAGS  += -D__INFO__="$(shell echo `uname -a`)"
+	override INC      = -I.
+	override EDGE     = -c $< -o $@
+	override OBJC     = $(SRC:.c=.o)
+	override OBJA     = $(ASM:.S=.o)
+	override CFLAGS  += -D$(OS)
+	override AFLAGS  += -D$(OS)
 endif
 
-# assembler and compiler flags
-CFLAGS += -D$(shell echo $(OS))
-AFLAGS += -D$(shell echo $(OS))
-BIN     = $(ASM:.S=.o)
-FIN     = $(FENV:.S=.o)
+# ignore output
+ifneq ($(VERBOSE), 1)
+ECHO = @echo
+else
+ECHO = @true
+endif
 
-# for all .c.o:
+
+# c rule
 .c.o:
 ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *crt/*    ]]; then echo $(PURPLE) [crt]    $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
@@ -274,41 +310,39 @@ ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *fenv/*   ]]; then echo $(PURPLE) [fenv]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 endif
 	$(AT) $(CCC) $(INC) $(CFLAGS) $(EDGE)
+#S rule
+.S.o:
+ifneq ($(VERBOSE), 1)
+	@ if [[ $@ == *crt/*    ]]; then echo $(PURPLE) [crt]    $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *fenv/*   ]]; then echo $(PURPLE) [fenv]   $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
+endif
+	$(AT) $(CCC) $(INC) $(AFLAGS) $(EDGE)
 
-# main compilation routine
-$(OUT): $(OBJD)
-ifneq ($(VERBOSE), 1)
-	@echo $(PURPLE) [crt]    $(RRED) Building a ASM object file $(CYAN) $(ASM) $(ENDCOL)
-endif
+# libc target
+$(OUT): $(OBJC)  $(OBJA)
+	$(ECHO) $(BLUE) Creating static library ... $(ENDCOL)
 ifneq ($(DONOT), 1)
-	$(AT) $(CCC) $(AFLAGS) $(ASM) -c -o $(BIN)
+	$(AT) ar rcs $(OUT) $(OBJC) $(OBJA)
 endif
-ifneq ($(VERBOSE), 1)
-	@echo $(PURPLE) [fenv]   $(RRED) Building a ASM object file $(CYAN) $(FENV) $(ENDCOL)
-endif
-ifneq ($(DONOT), 1)
-	$(AT) $(CCC) $(AFLAGS) $(FENV) -c -o $(FIN)
-endif
-ifneq ($(VERBOSE), 1)
-	@echo $(BLUE) Creating static library ... $(ENDCOL)
-endif
-ifneq ($(DONOT), 1)
-	$(AT) ar rcs $(OUT) $(BIN) $(FIN) $(OBJ)
-endif
-ifneq ($(VERBOSE), 1)
-	@echo $(GREEN) Completed Build for $(TARGET) $(ENDCOL)
-endif
+	$(ECHO) $(GREEN) Completed Build for $(TARGET) $(ENDCOL)
 
 # test target
 test: test.o
 ifneq ($(DONOT), 1)
 	$(AT) ld $(LFLAGS) -o test test.o $(OUT)
 endif
-ifneq ($(VERBOSE), 1)
-	@echo $(GREEN) Completed Build for test $(ENDCOL)
-endif
+	$(ECHO) $(GREEN) Completed Build for test $(ENDCOL)
 	
+# clean target
+# this removes all .o files.  I would use my OBJs here instead but they're
+# unknown unless a TARGET is specified, we want to ensure removal of all
+# without having to pass any additional make arguments.
+# This is _safe_ it only removes .o's in directories that are part of the
+# project. So if git decided to hide a .o inside one of it's hidden areas
+# or even SVN (if someone wants to make an SVN of the code.)  This will not
+# accidently ruin the SCM system.  If there are hoever .o's that need to
+# be stored somewhere (for some insane reason) just create a hidden folder
+# and this will ignore it.
 clean:
-	$(AT) rm -f src/crt/x86_32.o src/crt/x86_64.o
-	$(AT) rm -f src/fenv/fenv_x86_32.o src/fenv/fenv_x86_64.o
-	$(AT) rm -f ccaprice.lib ccaprice.a $(OUT) $(OBJ) test test.o
+	$(AT) find . -type f -name "*.o" -not -path "*/.*/*" -not -name ".*" -exec rm -f {} \;
+	$(AT) rm -f ccaprice.lib   ccaprice.a
