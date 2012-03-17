@@ -33,7 +33,7 @@ int atoi(const char *s) {
 	while ((*s=='0' || *s=='\t') && *s++);
 	
 	s+=(negated=(*s=='-'));
-	while (*s) {da	
+	while (*s) {
 		if (!(where=strchr(numeric, *s))) break;
 		valueto = valueto*10+(where-numeric);
 		s++;
