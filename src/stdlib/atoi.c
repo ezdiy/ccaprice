@@ -32,8 +32,8 @@ int atoi(const char *s) {
 	/* Skip any whitespace */
 	while ((*s=='0' || *s=='\t') && *s++);
 	
-	negated = (*s=='-')?1:0;
-	while (*s) {
+	s+=(negated=(*s=='-'));
+	while (*s) {da	
 		if (!(where=strchr(numeric, *s))) break;
 		valueto = valueto*10+(where-numeric);
 		s++;
