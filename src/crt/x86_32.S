@@ -95,7 +95,7 @@ __udivdi3:
 	movl   12(%esp),   %ebx
 	movl   16(%esp),   %ecx
 	subl   %eax,       %ebx
-	sbbl   %edx,       %ecx
+	subl   %edx,       %ecx
 	movl   24(%esp),   %eax
 	imull  %edi,       %eax
 	subl   %eax,       %ecx
