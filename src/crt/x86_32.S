@@ -58,6 +58,7 @@ __udivdi3:
 	shrl   %eax
 	notl   %ecx
 	shll   %cl,        %ebx
+	orl    %eax,       %ebx
 	movl   12(%esp),   %edx
 	movl   8(%esp),    %edx
 	cmpl   %ebx,       %edx
@@ -95,7 +96,7 @@ __udivdi3:
 	movl   12(%esp),   %ebx
 	movl   16(%esp),   %ecx
 	subl   %eax,       %ebx
-	subl   %edx,       %ecx
+	sbbl   %edx,       %ecx
 	movl   24(%esp),   %eax
 	imull  %edi,       %eax
 	subl   %eax,       %ecx
