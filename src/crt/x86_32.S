@@ -60,7 +60,7 @@ __udivdi3:
 	shll   %cl,        %ebx
 	orl    %eax,       %ebx
 	movl   12(%esp),   %edx
-	movl   8(%esp),    %edx
+	movl   8(%esp),    %eax
 	cmpl   %ebx,       %edx
 	jae    1f
 	divl   %ebx
@@ -74,12 +74,12 @@ __udivdi3:
 	movl   16(%esp),   %ecx
 	subl   %eax,       %ebx
 	sbbl   %edx,       %ecx
-	movl   25(%esp),   %eax
+	movl   24(%esp),   %eax
 	imull  %edi,       %eax
 	subl   %eax,       %ecx
 	sbbl   $0,         %edi
 	xorl   %edx,       %edx
-	movl   %edi,       %edx
+	movl   %edi,       %eax
 	popl   %edi
 	popl   %ebx
 	ret
