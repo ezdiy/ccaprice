@@ -342,8 +342,6 @@ ifneq ($(DONOT), 1)
 endif
 	$(ECHO) $(GREEN) Completed Build for test $(ENDCOL)
 	
-# Middle-endian, Honeywell 316 style [BIG_WORD   ]
-# Middle-endian, PDP-11 style        [LITTLE_WORD]
 printendian:
 ifneq ($(DONOT), 1)
 	$(AT)@echo -ne "                                       \n\
@@ -352,14 +350,10 @@ ifneq ($(DONOT), 1)
 	#ifndef INFO_CASE                                      \n\
 	#    define EB \"Big\"                                 \n\
 	#    define EL \"Little\"                              \n\
-	#    define EH \"Mixed (Honeywell 316 style)\"         \n\
-	#    define EP \"Mixed (PDP-11 style)\"                \n\
 	#    define EU \"Unknown\"                             \n\
 	#else                                                  \n\
 	#    define EB \"Supported\"                           \n\
 	#    define EL \"Supported\"                           \n\
-	#    define EH \"Unsupported (programs will fail)\"    \n\
-	#    define EP \"Unsupported (programs will fail)\"    \n\
 	#    define EU \"Unknown (programs might fail)\"       \n\
 	#endif                                                 \n\
 	enum {                                                 \n\
@@ -374,8 +368,6 @@ ifneq ($(DONOT), 1)
 	   switch (*((uint32_t *)buffer)) {                    \n\
 	        case 0x00010203: printf(EB); return 0;         \n\
 	        case 0x03020100: printf(EL); return 0;         \n\
-	        case 0x02030001: printf(EH); return 0;         \n\
-	        case 0x01000302: printf(EP); return 0;         \n\
 	        default:         printf(EU); return 0;         \n\
 	   }                                                   \n\
 	   return 0;                                           \n\
