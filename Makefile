@@ -359,9 +359,7 @@ ifneq ($(DONOT), 1)
 	enum {                                                 \n\
 	    ENDIAN_UNKNOWN,                                    \n\
 	    ENDIAN_BIG,                                        \n\
-	    ENDIAN_LITTLE,                                     \n\
-	    ENDIAN_BIG_WORD,                                   \n\
-	    ENDIAN_LITTLE_WORD                                 \n\
+	    ENDIAN_LITTLE                                      \n\
 	};                                                     \n\
 	int main() {                                           \n\
 	   uint8_t buffer[4] = {0,1,2,3};                      \n\
