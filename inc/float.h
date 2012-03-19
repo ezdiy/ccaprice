@@ -54,4 +54,37 @@
 #define DBL_MIN_10_EXP   (-307)
 #define DBL_MAX_10_EXP   308
 
+/*
+ * Platform specific stuff: x86 and x86_64 are the same we have seperate
+ * entries here for better readability.
+ */
+#ifdef CCAPRICE_TARGET_X86_32
+#	define FLT_ROUNDS      1
+
+#	define LDBL_MIN        3.3621031431120935063e-4932L
+#	define LDBL_MAX        1.1897314953572317650e+4932L
+#	define LDBL_EPSILON    1.0842021724855044340e-19L
+
+#	define LDBL_DIG        18
+#	define LDBL_MIN_10_EXP (-4931)
+#	define LDBL_MAX_10_EXP 4932
+
+#	define LDBL_MANT_DIG   64
+#	define LDBL_MIN_EXP    (-16381)
+#	define LDBL_MAX_EXP    16384
+#elif defined (CCAPRICE_TARGET_X86_64)
+#	defome FLT_ROUNDS      1
+
+#	define LDBL_MIN        3.3621031431120935063e-4932L
+#	define LDBL_MAX        1.1897314953572317650e+4932L
+#	define LDBL_EPSILON    1.0842021724855044340e-19L
+
+#	define LDBL_DIG        18
+#	define LDBL_MIN_10_EXP (-4931)
+#	define LDBL_MAX_10_EXP 4932
+
+#	define LDBL_MANT_DIG   64
+#	define LDBL_MIN_EXP    (-16381)
+#	define LDBL_MAX_EXP    16384
+#endif
 #endif
