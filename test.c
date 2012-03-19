@@ -30,6 +30,7 @@
 #include "inc/errno.h"
 #include "inc/stdint.h"
 #include "inc/fenv.h"
+#include "inc/limits.h"
 
 #include "inc/posix/errno.h"
 #include "inc/posix/strings.h"
