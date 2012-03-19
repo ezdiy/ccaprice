@@ -108,6 +108,7 @@ ASM64  =  src/crt/x86_64.S               \
 ASM32  =  src/crt/x86_32.S               \
           src/fenv/fenv_x86_32.S
           
+
 # figure out host OS
 # figure out linker architecture and bash shell
 # we must use bash here (not any other shell)
@@ -302,7 +303,8 @@ ECHO = @true
 endif
 
 # c rule
-.c.o:
+%.o : %.c | printendian
+	$(AT) $(CCC) $(INC) $(CFLAGS) $(EDGE)
 ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *crt/*    ]]; then echo $(PURPLE) [crt]    $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *stdio/*  ]]; then echo $(PURPLE) [stdio]  $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
@@ -312,22 +314,26 @@ ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *posix/*  ]]; then echo $(PURPLE) [posix]  $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *fenv/*   ]]; then echo $(PURPLE) [fenv]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 endif
-	$(AT) $(CCC) $(INC) $(CFLAGS) $(EDGE)
+
 #S rule
-.S.o:
+
+%.o : %.S | printendian
+	$(AT) $(CCC) $(INC) $(AFLAGS) $(EDGE)
 ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *crt/*    ]]; then echo $(PURPLE) [crt]    $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *fenv/*   ]]; then echo $(PURPLE) [fenv]   $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
 endif
-	$(AT) $(CCC) $(INC) $(AFLAGS) $(EDGE)
 
 # libc target
-$(OUT): .NOTPARALLEL $(OBJC) $(OBJA)
+$(OUT): $(OBJC) $(OBJA)
 	$(ECHO) $(BLUE) Creating static library ... $(ENDCOL)
+
 ifneq ($(DONOT), 1)
 	$(AT) ar rcs $(OUT) $(OBJC) $(OBJA)
 endif
 	$(ECHO) $(GREEN) Completed Build for $(TARGET) $(ENDCOL)
+	
+
 
 # test target
 test: test.o
@@ -338,7 +344,7 @@ endif
 	
 # Middle-endian, Honeywell 316 style [BIG_WORD   ]
 # Middle-endian, PDP-11 style        [LITTLE_WORD]
-.NOTPARALLEL:
+printendian:
 ifneq ($(DONOT), 1)
 	$(AT)@echo -ne "                                       \n\
 	#include <stdint.h>                                    \n\
@@ -381,7 +387,10 @@ ifneq ($(DONOT), 1)
 	$(AT) 
 	$(AT) rm -f endian_type endian_info endian.c
 endif
-	
+
+.PHONY: printendian
+
+
 # clean target
 # this removes all .o files.  I would use my OBJs here instead but they're
 # unknown unless a TARGET is specified, we want to ensure removal of all
