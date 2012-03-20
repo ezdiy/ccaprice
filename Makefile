@@ -344,38 +344,45 @@ endif
 	
 printendian:
 ifneq ($(DONOT), 1)
-	$(AT)@echo -ne "                                       \n\
-	#include <stdint.h>                                    \n\
-	#include <stdio.h>                                     \n\
-	#ifndef INFO_CASE                                      \n\
-	#    define EB \"Big\"                                 \n\
-	#    define EL \"Little\"                              \n\
-	#    define EU \"Unknown\"                             \n\
-	#else                                                  \n\
-	#    define EB \"Supported\"                           \n\
-	#    define EL \"Supported\"                           \n\
-	#    define EU \"Unknown (programs might fail)\"       \n\
-	#endif                                                 \n\
-	enum {                                                 \n\
-	    ENDIAN_UNKNOWN,                                    \n\
-	    ENDIAN_BIG,                                        \n\
-	    ENDIAN_LITTLE                                      \n\
-	};                                                     \n\
-	int main() {                                           \n\
-	   uint8_t buffer[4] = {0,1,2,3};                      \n\
-	   switch (*((uint32_t *)buffer)) {                    \n\
-	        case 0x00010203: printf(EB); return 0;         \n\
-	        case 0x03020100: printf(EL); return 0;         \n\
-	        default:         printf(EU); return 0;         \n\
-	   }                                                   \n\
-	   return 0;                                           \n\
+	$(AT)@echo -ne "                                            \n\
+	#include <stdint.h>                                         \n\
+	#include <stdio.h>                                          \n\
+	#ifdef TYPE_CASE                                            \n\
+	#    define EB \"Big\"                                      \n\
+	#    define EL \"Little\"                                   \n\
+	#    define EU \"Unknown\"                                  \n\
+	#elif defined(INFO_CASE)                                    \n\
+	#    define EB \"Supported\"                                \n\
+	#    define EL \"Supported\"                                \n\
+	#    define EU \"Unknown (programs might fail)\"            \n\
+	#endif                                                      \n\
+	int main() {                                                \n\
+	   uint8_t b[4] = {0,1,2,3};                                \n\
+	#ifdef DATA_CASE                                            \n\
+	   FILE *f = fopen(\"endian.h\", \"w+\") ;                  \n\
+	   if (!f)  return 1;                                       \n\
+	   fputs(\"#ifndef __ENDIAN__\\\\n\",f);                    \n\
+	   fputs(\"#define __ENDIAN__\\\\n\",f);                    \n\
+	   fprintf(f,\"#\tdefine ENDIAN %d\\\\n\",*((uint32_t*)b)); \n\
+	   printf(\"0x%08X\", *((uint32_t*)b));                     \n\
+	   fputs(\"#endif\",f);                                     \n\
+	   fclose(f);                                               \n\
+	#else                                                       \n\
+	   switch (*((uint32_t *)b)) {                              \n\
+	        case 0x00010203: printf(EB); return 0;              \n\
+	        case 0x03020100: printf(EL); return 0;              \n\
+	        default:         printf(EU); return 0;              \n\
+	   }                                                        \n\
+	#endif                                                      \n\
+	   return 0;                                                \n\
 	}" > endian.c 
-	$(AT) $(CCC)              endian.c -o endian_type
-	$(AT) $(CCC) -DINFO_CASE  endian.c -o endian_info
-	$(AT) echo $(PURPLE) Endiannes Type: $(CYAN)`./endian_type`  $(ENDCOL)
-	$(AT) echo $(PURPLE) Endiannes Info: $(CYAN)`./endian_info`\n$(ENDCOL)
-	$(AT) 
-	$(AT) rm -f endian_type endian_info endian.c
+	$(AT) $(CCC) -DTYPE_CASE endian.c -o endian_type
+	$(AT) $(CCC) -DINFO_CASE endian.c -o endian_info
+	$(AT) $(CCC) -DDATA_CASE endian.c -o endian_data
+	$(AT) echo $(PURPLE) Endiannes Type: $(CYAN)`./endian_type`$(ENDCOL)
+	$(AT) echo $(PURPLE) Endiannes Info: $(CYAN)`./endian_info`$(ENDCOL)
+	$(AT) echo $(PURPLE) Endiannes Data: $(CYAN)`./endian_data`$(ENDCOL)
+	$(AT) rm -f endian_type endian_info endian_data endian.c
 endif
 
 .PHONY: printendian
@@ -394,4 +401,4 @@ endif
 clean:
 	$(AT) find . -type f -name "*.o" -not -path "*/.*/*" -not -name ".*" -exec rm -f {} \;
 	$(AT) rm -f ccaprice.lib ccaprice.a
-	$(AT) rm -f endian endian.c endian_type endian_info
+	$(AT) rm -f endian endian.c endian_type endian_info endian_data endian.h

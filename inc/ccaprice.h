@@ -81,6 +81,14 @@
 #	error "Unsupported compiler"
 #endif
 
+/*
+ * This fixes the _MM_MALLOC stuff on my system (I cannot gurantee others)
+ * this was never required till I updated glib... Anyways this will all be
+ * fixed later as ccaprice will provide those headers for sse and mmx since
+ * of this mess.
+ */
+#define _MM_MALLOC_H_INCLUDED
+
 /* 
  * We can override code if -DNAIVE is passed by the build
  * script.
