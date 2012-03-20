@@ -379,9 +379,9 @@ ifneq ($(DONOT), 1)
 	$(AT) $(CCC) -DTYPE_CASE endian.c -o endian_type
 	$(AT) $(CCC) -DINFO_CASE endian.c -o endian_info
 	$(AT) $(CCC) -DDATA_CASE endian.c -o endian_data
-	$(AT) echo $(PURPLE) Endiannes Type: $(CYAN)`./endian_type`$(ENDCOL)
-	$(AT) echo $(PURPLE) Endiannes Info: $(CYAN)`./endian_info`$(ENDCOL)
-	$(AT) echo $(PURPLE) Endiannes Data: $(CYAN)`./endian_data`$(ENDCOL)
+	$(AT) echo $(PURPLE) Endianness Type: $(CYAN)`./endian_type`$(ENDCOL)
+	$(AT) echo $(PURPLE) Endianness Info: $(CYAN)`./endian_info`$(ENDCOL)
+	$(AT) echo $(PURPLE) Endianness Data: $(CYAN)`./endian_data`$(ENDCOL)
 	$(AT) rm -f endian_type endian_info endian_data endian.c
 endif
 
