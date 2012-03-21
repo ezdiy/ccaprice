@@ -29,19 +29,19 @@
 #endif 
 
 .text
-.global ccaprice_syscall_core
-.global ccaprice_main
+.global __ccaprice_syscall_core
+.global __ccaprice_main
 .global __udivdi3
 .global __umoddi3
 .global ENTRY
 #ifdef BSD
-.global ccaprice_syscall_bsd
+.global __ccaprice_syscall_bsd
 #ifndef __PATHCC__
-.type   ccaprice_syscall_bsd,%function
+.type   __ccaprice_syscall_bsd,%function
 #endif
 #endif
 #if !defined(__PATHCC__) && !defined(WIN)
-.type   ccaprice_syscall_core,%function
+.type   __ccaprice_syscall_core,%function
 .type   ENTRY,%function
 .type   __udivdi3,%function
 .type   __umoddi3,%function
@@ -200,16 +200,16 @@ ENTRY:
 	andl  $0xfffffff0, %esp
 	pushl %ecx
 	pushl %esi
-	call  ccaprice_main
+	call  __ccaprice_main
 	hlt
 	
 #ifdef BSD
-ccaprice_syscall_bsd:
+__ccaprice_syscall_bsd:
 	int $0x80
 	ret
 #endif
 	
-ccaprice_syscall_core:
+__caprice_syscall_core:
 	pushl %ebp
 	pushl %edi
 	pushl %esi
@@ -229,7 +229,7 @@ ccaprice_syscall_core:
 		pushl %edx
 		pushl %ecx
 		pushl %ebx
-		call ccaprice_syscall_bsd
+		call __ccaprice_syscall_bsd
 		addl $24, %esp
 	#else
 		int $0x80
@@ -240,13 +240,13 @@ ccaprice_syscall_core:
 	popl %edi
 	popl %ebp
 	cmpl $-4095,%eax
-	jae  ccaprice_syscall_error
+	jae  __ccaprice_syscall_error
 	ret
 
 #ifdef BSD
-.size ccaprice_syscall_bsd,.-ccaprice_syscall_bsd
+.size __ccaprice_syscall_bsd,.-__ccaprice_syscall_bsd
 #elif !defined(WIN)
-.size ccaprice_syscall_core,.-ccaprice_syscall_core
+.size __ccaprice_syscall_core,.-__ccaprice_syscall_core
 .size ENTRY,.-ENTRY
 .size __udivdi3,.-__udivdi3
 .size __umoddi3,.-__umoddi3

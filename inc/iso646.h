@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_ISO646_HDR
-#define CCAPRICE_ISO646_HDR
+#ifndef __CCAPRICE_ISO646_HDR__
+#define __CCAPRICE_ISO646_HDR__
 /*
  * C++ defines these as actual _language_ keywords
  * it's most likely safer to use those then these

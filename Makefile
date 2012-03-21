@@ -29,7 +29,7 @@ CFLAGS += -Wall                          \
           -Wno-unused-parameter          \
           -Wno-sign-compare              \
           -fno-strict-aliasing           \
-          -DCCAPRICE_CP                  \
+          -D__CCAPRICE_CP                \
           -DCCAPRICE_LOCALE_SET=en_US
 
           
@@ -143,49 +143,49 @@ endif
 ifeq (, $(TARGET))
 	ifneq (,$(findstring x86_64, $(shell uname -m)))
 		TARGET  = x86_64
-		CFLAGS += -DCCAPRICE_TARGET_X86_64 -m64
+		CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64
 		LFLAGS += -m$(LARCH_X86_64)
 		AFLAGS  = -m64
 		ASM     = $(ASM64)
 	else
 	ifneq (,$(findstring amd64, $(shell uname -m)))
 		TARGET  = x86_64
-		CFLAGS += -DCCAPRICE_TARGET_X86_64 -m64
+		CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64
 		LFLAGS += -m$(LARCH_X86_64)
 		AFLAGS  = -m64
 		ASM     = $(ASM64)
 	else
 	ifneq (,$(findstring x86_32, $(shell uname -m)))
 		TARGET  = x86_32
-		CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i386, $(shell uname -m)))
 		TARGET  = i386
-		CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i486, $(shell uname -m)))
 		TARGET  = i486
-		CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i586, $(shell uname -m)))
 		TARGET  = i586
-		CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i686, $(shell uname -m)))
 		TARGET  = i686
-		CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
@@ -199,49 +199,49 @@ ifeq (, $(TARGET))
 else
 ifeq (x86_64, $(TARGET))
 	TARGET  = x86_64
-	CFLAGS += -DCCAPRICE_TARGET_X86_64 -m64
+	CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64
 	LFLAGS += -m$(LARCH_X86_64)
 	AFLAGS  = -m64
 	ASM     = $(ASM64)
 else
 ifeq (amd64, $(TARGET))
 	TARGET  = x86_64
-	CFLAGS += -DCCAPRICE_TARGET_X86_64 -m64
+	CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64
 	LFLAGS += -m$(LARCH_X86_64)
 	AFLAGS  = -m64
 	ASM     = $(ASM64)
 else
 ifeq (x86_32, $(TARGET))
 	TARGET  = i386
-	CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)
 else
 ifeq (i386, $(TARGET))
 	TARGET  = i386
-	CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)
 else
 ifeq (i486, $(TARGET))
 	TARGET  = i386
-	CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)
 else
 ifeq (i586, $(TARGET))
 	TARGET  = i386
-	CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)
 else
 ifeq (i686, $(TARGET))
 	TARGET  = i386
-	CFLAGS += -DCCAPRICE_TARGET_X86_32 -m32
+	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)

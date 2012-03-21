@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_STDARG_HDR
-#define CCAPRICE_STDARG_HDR
+#ifndef __CCAPRICE_STDARG_HDR__
+#define __CCAPRICE_STDARG_HDR__
 
 /* Ensure nothing tramples this. */
 #ifdef va_list
@@ -42,20 +42,20 @@
  * We're not on a GCC compiler, lets try implementing out own
  * stdarg system.  This is undefined behaviour.  But it works.
  */
-#if defined(CCAPRICE_TARGET_X86_32)
-	typedef int   va_item;
+#if defined(__CCAPRICE_TARGET_X86_32)
+	typedef int   __va_item;
 	typedef char *va_list;
-#elif defined(CCAPRICE_TARGET_X86_64)
-	typedef long  va_item;
+#elif defined(__CCAPRICE_TARGET_X86_64)
+	typedef long  __va_item;
 	typedef char *va_list;
 #else
 #	error "Cannot find sutible target for stdarg.h"
 #endif
-#	define va_start(A,L) (A =((va_list)&(L)+va_size(L)))
-#	define va_arg(A,T)   (A+=va_rsize(T),*((T*)(A-va_rsize(T))))
-#	define va_rsize(T)   (((sizeof(T)+sizeof(int)-1)/sizeof(int))*sizeof(int))
-#	define va_size(T)    ((sizeof(T)+sizeof(va_item)-1)&~(sizeof(va_item)-1))
-#	define va_end(A)     (A=(void *)(0))
+#	define va_start(A,L)  (A =((va_list)&(L)+__va_size(L)))
+#	define va_arg(A,T)    (A+=__va_rsize(T),*((T*)(A-__va_rsize(T))))
+#	define va_end(A)      (A=(void *)(0))
+#	define __va_rsize(T)  (((sizeof(T)+sizeof(int)-1)/sizeof(int))*sizeof(int))
+#	define __va_size(T)   ((sizeof(T)+sizeof(__va_item)-1)&~(sizeof(__va_item)-1))
 #else
 /*
  * GCC has builtins, these are much safer and faster.

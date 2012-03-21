@@ -22,7 +22,7 @@
  */
 #include "inc/string.h"
 void *memcpy(void *dst, const void *src, register size_t cnt) {	
-	#if defined(STRING_MEMCPY_OPTIMAL) && (defined(CCAPRICE_TARGET_X86_64) || defined(CCAPRICE_TARGET_X86_32)) && !defined(STRING_MEMCPY_OPTIMAL_SSE2)
+	#if defined(__STRING_MEMCPY_OPTIMAL) && (defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32)) && !defined(__STRING_MEMCPY_OPTIMAL_SSE2)
 		/*
 		 * "rep movs"  is optimized in  microcode on
 		 * modern  Intel  CPU's.  This  method works
@@ -41,7 +41,7 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 			"D"(dst)
 		);
 		return dst;
-	#elif defined(STRING_MEMCPY_OPTIMAL_SSE2)
+	#elif defined(__STRING_MEMCPY_OPTIMAL_SSE2)
 		/*
 		 * Some systems rep movs is not optimized to microcode.
 		 * Expecially some mobile CPU's.  So we need a better method.
@@ -186,7 +186,7 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 		return ret;
 	#endif
 	
-	#ifdef STRING_MEMCPY_NONE
+	#ifdef __STRING_MEMCPY_NONE
 		#warning "[ccaprice] no optimized memcpy implementation, using naive method (could be slow)"
 		unsigned char *dst8 = (unsigned char *)dst;
 		unsigned char *src8 = (unsigned char *)src;

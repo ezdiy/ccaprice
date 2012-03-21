@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_FLOAT_HDR
-#define CCAPRICE_FLOAT_HDR
+#ifndef __CCAPRICE_FLOAT_HDR__
+#define __CCAPRICE_FLOAT_HDR__
 
 /*
  * These are fairly universal values.  I don't suspect these to be any
@@ -58,7 +58,7 @@
  * Platform specific stuff: x86 and x86_64 are the same we have seperate
  * entries here for better readability.
  */
-#ifdef CCAPRICE_TARGET_X86_32
+#ifdef __CCAPRICE_TARGET_X86_32
 #	define FLT_ROUNDS      1
 
 #	define LDBL_MIN        3.3621031431120935063e-4932L
@@ -72,7 +72,7 @@
 #	define LDBL_MANT_DIG   64
 #	define LDBL_MIN_EXP    (-16381)
 #	define LDBL_MAX_EXP    16384
-#elif defined (CCAPRICE_TARGET_X86_64)
+#elif defined (__CCAPRICE_TARGET_X86_64)
 #	defome FLT_ROUNDS      1
 
 #	define LDBL_MIN        3.3621031431120935063e-4932L

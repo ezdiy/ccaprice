@@ -23,8 +23,8 @@
 #include "inc/string.h"
 #include "inc/stdint.h"
 void *memset(void *dst, int ctr, register size_t len) {
-	#if  defined(STRING_MEMSET_OPTIMAL)  && \
-		(defined(CCAPRICE_TARGET_X86_64) || defined(CCAPRICE_TARGET_X86_32))
+	#if  defined(__STRING_MEMSET_OPTIMAL)  && \
+		(defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32))
 		size_t    search = (len % 4);
 		uint32_t  check4 = (ctr | (ctr << 8) | (ctr << 16) | (ctr << 24));
 		uint8_t   check1 = (uint8_t)ctr;

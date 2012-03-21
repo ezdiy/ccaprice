@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_LIMITS_HDR
-#define CCAPRICE_LIMITS_HDR
+#ifndef __CCAPRICE_LIMITS_HDR__
+#define __CCAPRICE_LIMITS_HDR__
 /*
  * Macro to make min constants universal.  This determins min sizes from
  * max sizes (which are platform specific).
@@ -38,7 +38,7 @@
 #	define  LLONG_MIN	__CCAPRICE_MIN(LLONG)
 #	define  INT_MIN		__CCAPRICE_MIN(INT)
 
-#ifdef CCAPRICE_TARGET_X86_64
+#ifdef __CCAPRICE_TARGET_X86_64
 #	define LONG_MAX   0x7FFFFFFFFFFFFFFFL
 #	define LLONG_MAX  0x7FFFFFFFFFFFFFFFLL
 #	define LONG_BIT   64

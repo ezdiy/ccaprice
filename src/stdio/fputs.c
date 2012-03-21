@@ -24,9 +24,9 @@
 #include "inc/string.h"
 #include "inc/posix/errno.h"
 
-CCAPRICE_INTERNAL_TYPE(int *, ccaprice_posix_errno);
-
 int fputs(const char *str, FILE *fp) {
+	__CCAPRICE_INTERNAL_TYPE(int *, __ccaprice_posix_errno);
+	
 	if (!str) return EOF;
 	/*
 	 * Invalid file pointer passed to fputs

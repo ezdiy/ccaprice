@@ -20,16 +20,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_FENV_HDR
-#define CCAPRICE_FENV_HDR
+#ifndef __CCAPRICE_FENV_HDR__
+#define __CCAPRICE_FENV_HDR__
 #include "ccaprice.h"
 /*
  * X86_32 and X86_64 have the same fenv implementation.  Thanks intel for
  * not breaking compatability.  But it makes sense x86_64 should execute 
  * x86 code no problem.  Changing fenv would break that compat.
  */
-#if defined(CCAPRICE_TARGET_X86_32) || \
-	defined(CCAPRICE_TARGET_X86_64)
+#if defined(__CCAPRICE_TARGET_X86_32) || \
+	defined(__CCAPRICE_TARGET_X86_64)
 #	define FE_INVALID    1
 #	define FE_DIVBYZERO  4
 #	define FE_OVERFLOW   8
@@ -64,18 +64,18 @@
 		unsigned int  __mxcsr;
 	} fenv_t;
 #endif
-CCAPRICE_EXPORT int feclearexcept  (int);
-CCAPRICE_EXPORT int feraiseexcept  (int);
+__CCAPRICE_EXPORT int feclearexcept  (int);
+__CCAPRICE_EXPORT int feraiseexcept  (int);
 
-CCAPRICE_EXPORT int fegetexceptflag(fexcept_t*, int);
-CCAPRICE_EXPORT int fesetexceptflag(const fexcept_t*, int);
-CCAPRICE_EXPORT int fetestexcept   (int);
-CCAPRICE_EXPORT int fesetround     (int);
-CCAPRICE_EXPORT int fegetround     ();
+__CCAPRICE_EXPORT int fegetexceptflag(fexcept_t*, int);
+__CCAPRICE_EXPORT int fesetexceptflag(const fexcept_t*, int);
+__CCAPRICE_EXPORT int fetestexcept   (int);
+__CCAPRICE_EXPORT int fesetround     (int);
+__CCAPRICE_EXPORT int fegetround     ();
 
-CCAPRICE_EXPORT int fegetenv       (fenv_t*);
-CCAPRICE_EXPORT int feholdexcept   (fenv_t*);
+__CCAPRICE_EXPORT int fegetenv       (fenv_t*);
+__CCAPRICE_EXPORT int feholdexcept   (fenv_t*);
 
-CCAPRICE_EXPORT int fesetenv       (const fenv_t*);
-CCAPRICE_EXPORT int feupdateenv    (const fenv_t*);
+__CCAPRICE_EXPORT int fesetenv       (const fenv_t*);
+__CCAPRICE_EXPORT int feupdateenv    (const fenv_t*);
 #endif

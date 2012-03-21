@@ -32,5 +32,5 @@
 #include "inc/math.h"
 
 int finite(double x) {
-	return (unsigned)((CCAPRICE_MATH_HI_L(x) & 0x7FFFFFFF) - 0x7FFFFFFF) >> 31;
+	return (unsigned)((__CCAPRICE_MATH_HI_L(x) & 0x7FFFFFFF) - 0x7FFFFFFF) >> 31;
 }

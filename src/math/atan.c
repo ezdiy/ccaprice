@@ -49,12 +49,12 @@ static const double ccaprice_atan_at[] = {
 };
 
 double atan(double x) {
-	int x_hi = CCAPRICE_MATH_HI_L(x);
+	int x_hi = __CCAPRICE_MATH_HI_L(x);
 	int x_id = 0x00000000;
 	int iter = x_hi & 0x7FFFFFFFF;
 	
 	if (iter >= 0x44100000) {
-		if (iter > 0x7FF00000 || (iter == 0x7FF00000 && (CCAPRICE_MATH_LO_L(x) != 0)))
+		if (iter > 0x7FF00000 || (iter == 0x7FF00000 && (__CCAPRICE_MATH_LO_L(x) != 0)))
 			return x+x; /* NaN */
 		return (x_hi > 0)?ccaprice_atan_hi[3]+ccaprice_atan_lo[3]:
 		                 -ccaprice_atan_hi[3]-ccaprice_atan_lo[3];

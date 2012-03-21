@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_LOCALE_HDR
-#define CCAPRICE_LOCALE_HDR
+#ifndef __CCAPRICE_LOCALE_HDR__
+#define __CCAPRICE_LOCALE_HDR__
 #include "ccaprice.h"
 /*
  * Standard says these need to be locale conformant
@@ -62,7 +62,7 @@ typedef struct {
  * code comments.  Anyways go learn English if you can't
  * read this.
  */
-#define CCAPRICE_LOCALE_MAX 512
+#define __CCAPRICE_LOCALE_MAX 512
 
 #define LC_ALL      (1<<1)
 #define LC_COLLATE  (1<<2)
@@ -133,6 +133,6 @@ typedef struct {
 	const char        *ident; /* Name of the locale    */
 } ccaprice_locale_t;
 
-CCAPRICE_EXPORT struct lconv *localeconv();
-CCAPRICE_EXPORT char         *setlocale (int, const char*);
+__CCAPRICE_EXPORT struct lconv *localeconv();
+__CCAPRICE_EXPORT char         *setlocale (int, const char*);
 #endif

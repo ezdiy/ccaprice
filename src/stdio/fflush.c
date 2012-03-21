@@ -23,9 +23,9 @@
 #include "inc/stdio.h"
 #include "inc/posix/errno.h"
 
-CCAPRICE_INTERNAL_TYPE(int * , ccaprice_posix_errno);
-CCAPRICE_INTERNAL_TYPE(size_t, ccaprice_stdio_file_pos);
-CCAPRICE_INTERNAL_TYPE(FILE  , ccaprice_stdio_file_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN]);
+__CCAPRICE_INTERNAL_TYPE(int * , __ccaprice_posix_errno);
+__CCAPRICE_INTERNAL_TYPE(size_t, __ccaprice_stdio_file_pos);
+__CCAPRICE_INTERNAL_TYPE(FILE  , __ccaprice_stdio_file_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN]);
 /*
  * fflush() is used to write out buffered data stuck in
  * the fp->buffer_dat.

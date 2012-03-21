@@ -34,8 +34,8 @@
 double floor(double x) {
 	unsigned i,j;
 	
-	int x_hi =  CCAPRICE_MATH_HI_L(x);
-	int x_lo =  CCAPRICE_MATH_LO_L(x);
+	int x_hi =  __CCAPRICE_MATH_HI_L(x);
+	int x_lo =  __CCAPRICE_MATH_LO_L(x);
 	int iter = ((x_hi>>20)&0x7ff)-0x3ff;
 	
 	if (iter < 20) {
@@ -69,7 +69,7 @@ double floor(double x) {
 			x_lo &= (~i);
 		}
 	}
-	CCAPRICE_MATH_HI_L(x) = x_hi;
-	CCAPRICE_MATH_LO_L(x) = x_lo;
+	__CCAPRICE_MATH_HI_L(x) = x_hi;
+	__CCAPRICE_MATH_LO_L(x) = x_lo;
 	return x;
 }

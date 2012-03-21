@@ -198,6 +198,24 @@ string.h:
 	ststr   ()
 	strtok  ()
 	
+limits.h
+	CHAR_BIT
+	SCHAR_MIN
+	SCHAR_MAX
+	UCHAR_MAX
+	CHAR_MIN
+	CHAR_MAX
+	MB_LEN_MAX
+	SHRT_MIN
+	SHRT_MAX
+	USHRT_MAX
+	INT_MIN
+	INT_MAX
+	UINT_MAX
+	LONG_MIN
+	LONG_MAX
+	ULONG_MAX\
+	
 math.h:
 	FP_ILOGB0
 	FP_ILOGBNAN
@@ -351,9 +369,9 @@ The current supported locales for ccaprice
 	en_AU  -- English Australia
 
 Extensions supported by ccaprice
-#define CCAPRICE_EXTENSIONS prior to using them
-CCAPRICE_BUILD_DATE -- returns a constant string literal of the build date of the library                     [expanded __DATE__]
-CCAPRICE_BUILD_TIME -- returns a constant string literal of the build time of the library                     [expanded __TIME__]
-CCAPRICE_BUILD_INFO -- returns a constant string literal of the info of the system used to compile ccaprice   [uname -a]
-CCAPRICE_BUILD_COMP -- returns a constant string literal (all in caps) of the compiler used to build ccaprice ["GCC", "CLANG", "PATHCC"]
-CCAPRICE_BUILD_HOST -- returns a constant string literal (all in caps) of the os used to build ccaprice       ["WIN", "LINUX", "BSD"]
+#define __CCAPRICE_EXTENSIONS prior to using them
+__CCAPRICE_BUILD_DATE -- returns a constant string literal of the build date of the library                     [expanded __DATE__]
+__CCAPRICE_BUILD_TIME -- returns a constant string literal of the build time of the library                     [expanded __TIME__]
+__CCAPRICE_BUILD_INFO -- returns a constant string literal of the info of the system used to compile ccaprice   [uname -a]
+__CCAPRICE_BUILD_COMP -- returns a constant string literal (all in caps) of the compiler used to build ccaprice ["GCC", "CLANG", "PATHCC"]
+__CCAPRICE_BUILD_HOST -- returns a constant string literal (all in caps) of the os used to build ccaprice       ["WIN", "LINUX", "BSD"]

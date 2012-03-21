@@ -20,56 +20,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef  CCAPRICE_STRING_HDR
-#define  CCAPRICE_STRING_HDR
+#ifndef  __CCAPRICE_STRING_HDR__
+#define  __CCAPRICE_STRING_HDR__
 #include "ccaprice.h"
 /* 
  * Handle size_t and NULL according to standard.  By themselfs as new
  * types / macros alltogether.  You're not allowed to include other
  * standard headers with other standard headers.
  */
-#if !defined(CCAPRICE_TYPE__SIZE_T_DEFINED)
-	typedef  CCAPRICE_TYPE__SIZE_T size_t;
-#	define   CCAPRICE_TYPE__SIZE_T_DEFINED
+#if !defined(__CCAPRICE_TYPE__SIZE_T_DEFINED)
+	typedef  __CCAPRICE_TYPE__SIZE_T size_t;
+#	define   __CCAPRICE_TYPE__SIZE_T_DEFINED
 #endif
 #ifdef  NULL
 #undef  NULL
 #endif
-#define NULL CCAPRICE_NULL
+#define NULL __CCAPRICE_NULL
 
 /* Copying */
-CCAPRICE_EXPORT void   *memcpy (void*, const void*, register size_t);
-CCAPRICE_EXPORT void   *memmove(void*, const void*, register size_t);
-CCAPRICE_EXPORT char   *strncpy(char*, const char*, register size_t);
-CCAPRICE_EXPORT char   *strcpy (char*, const char*);
+__CCAPRICE_EXPORT void   *memcpy (void*, const void*, register size_t);
+__CCAPRICE_EXPORT void   *memmove(void*, const void*, register size_t);
+__CCAPRICE_EXPORT char   *strncpy(char*, const char*, register size_t);
+__CCAPRICE_EXPORT char   *strcpy (char*, const char*);
 /* Concatenation */
-CCAPRICE_EXPORT char   *strncat(char*, const char*, register size_t);
-CCAPRICE_EXPORT char   *strcat (char*, const char*);
+__CCAPRICE_EXPORT char   *strncat(char*, const char*, register size_t);
+__CCAPRICE_EXPORT char   *strcat (char*, const char*);
 
 /* Comparision */
-CCAPRICE_EXPORT int     memcmp (const void*, const void*, register size_t);
-CCAPRICE_EXPORT int     strncmp(const char*, const char*, register size_t);
-CCAPRICE_EXPORT int     strcmp (const char*, const char*);
+__CCAPRICE_EXPORT int     memcmp (const void*, const void*, register size_t);
+__CCAPRICE_EXPORT int     strncmp(const char*, const char*, register size_t);
+__CCAPRICE_EXPORT int     strcmp (const char*, const char*);
 
 /* Searching */
-CCAPRICE_EXPORT void   *memchr (const void*, int, register size_t);
-CCAPRICE_EXPORT char   *strchr (const char*, int);
-CCAPRICE_EXPORT char   *strrchr(const char*, int);
-CCAPRICE_EXPORT char   *strstr (const char*, const char*);
-CCAPRICE_EXPORT char   *strpbrk(const char*, const char*);
-CCAPRICE_EXPORT size_t  strcspn(const char*, const char*);
-CCAPRICE_EXPORT size_t  strspn (const char*, const char*);
-CCAPRICE_EXPORT char   *strtok (char *, const char*);
+__CCAPRICE_EXPORT void   *memchr (const void*, int, register size_t);
+__CCAPRICE_EXPORT char   *strchr (const char*, int);
+__CCAPRICE_EXPORT char   *strrchr(const char*, int);
+__CCAPRICE_EXPORT char   *strstr (const char*, const char*);
+__CCAPRICE_EXPORT char   *strpbrk(const char*, const char*);
+__CCAPRICE_EXPORT size_t  strcspn(const char*, const char*);
+__CCAPRICE_EXPORT size_t  strspn (const char*, const char*);
+__CCAPRICE_EXPORT char   *strtok (char *, const char*);
 
 /* Others */
-CCAPRICE_EXPORT char   *strerror(int);
-CCAPRICE_EXPORT void   *memset  (void *, int, register size_t);
-CCAPRICE_EXPORT size_t  strlen  (const char*);
+__CCAPRICE_EXPORT char   *strerror(int);
+__CCAPRICE_EXPORT void   *memset  (void *, int, register size_t);
+__CCAPRICE_EXPORT size_t  strlen  (const char*);
 
 /*
  * Fast bit-scan-forward table
  */
-#define CCAPRICE_BSF_TABLE_EXPAND \
+#define __CCAPRICE_BSF_TABLE_EXPAND \
 	7,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
 	5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
 	6,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \

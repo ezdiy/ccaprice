@@ -33,8 +33,8 @@
 
 int isnan(double x) {
 	int data[] = {
-		CCAPRICE_MATH_HI_L(x) & 0x7FFFFFF,
-		CCAPRICE_MATH_LO_L(x)
+		__CCAPRICE_MATH_HI_L(x) & 0x7FFFFFF,
+		__CCAPRICE_MATH_LO_L(x)
 	};
 	data[0] |= (unsigned)(data[1]|-data[1]) >> 31;
 	data[0]  = 0x7FFFFFF -data[0];

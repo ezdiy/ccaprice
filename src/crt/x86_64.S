@@ -29,11 +29,11 @@
 #endif 
 
 .text
-.global ccaprice_syscall_core
-.global ccaprice_main
+.global __ccaprice_syscall_core
+.global __ccaprice_main
 .global ENTRY
 #ifndef __PATHCC__
-.type   ccaprice_syscall_core,%function
+.type   __ccaprice_syscall_core,%function
 .type   ENTRY,%function
 #endif
 
@@ -45,10 +45,10 @@ ENTRY:
 	andq $~15,%rsp
 	pushq %rax
 	pushq %rsp
-	call ccaprice_main
+	call __ccaprice_main
 	hlt
 	
-ccaprice_syscall_core:
+__ccaprice_syscall_core:
 	movq %rdi   , %rax
 	movq %rsi   , %rdi
 	movq %rdx   , %rsi
@@ -59,8 +59,8 @@ ccaprice_syscall_core:
 	
 	syscall
 	cmpq $-4095, %rax 
-	jae ccaprice_syscall_error
+	jae __ccaprice_syscall_error
 	ret
 
-.size ccaprice_syscall_core,.-ccaprice_syscall_core
+.size __ccaprice_syscall_core,.-__ccaprice_syscall_core
 .size ENTRY,.-ENTRY

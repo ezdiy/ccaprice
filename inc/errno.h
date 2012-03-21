@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_ERRNO_HDR
-#define CCAPRICE_ERRNO_HDR
+#ifndef __CCAPRICE_ERRNO_HDR__
+#define __CCAPRICE_ERRNO_HDR__
 #include "ccaprice.h"
 
 /*
@@ -29,5 +29,5 @@
  * the macro is defined in <inc/posix/errno.h>.  The pointer
  * if defined in errno.c in <src/posic/errno.c>.
  */
-CCAPRICE_EXPORT int* ccaprice_posix_errno;
+__CCAPRICE_EXPORT int* __ccaprice_posix_errno;
 #endif

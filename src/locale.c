@@ -23,10 +23,10 @@
 #include "inc/locale.h"
 #include "inc/string.h"
 #include "inc/stdlib.h"
-ccaprice_locale_t *ccaprice_localec;                      /* Current Selected Locale */
-void              *ccaprice_localep;                      /* Void version of above   */
-size_t             ccaprice_locales = 0;                  /* Location in locales     */
-ccaprice_locale_t  ccaprice_localed[CCAPRICE_LOCALE_MAX]; /* Array of Locales        */
+void              *__ccaprice_localep;                      /* Void version of above   */
+ccaprice_locale_t *ccaprice_localec;                        /* Current Selected Locale */
+size_t             ccaprice_locales = 0;                    /* Location in locales     */
+ccaprice_locale_t  ccaprice_localed[__CCAPRICE_LOCALE_MAX]; /* Array of Locales        */
 
 #define LOCALE_INIT(N0) \
 	ccaprice_locale_define (&N0##_locale)
@@ -123,7 +123,7 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
 #undef LOCALE_CODEPAGE_UTF8     /* UTF8  */
 #undef LOCALE_CODEPAGE_ISO88591 /* ASCII */
 
-void ccaprice_locale_init() {
+void __ccaprice_locale_init() {
 	LOCALE_INIT(C);
 	
 	/*
@@ -143,8 +143,8 @@ void ccaprice_locale_init() {
 	 * locale used by ccaprice.  This is the _DEFAULT_
 	 * locale, DO NOT TOUCH.
 	 */
-	ccaprice_localec = &ccaprice_localed[0];
-	ccaprice_localep = ccaprice_localec;
+	  ccaprice_localec = &ccaprice_localed[0];
+	__ccaprice_localep = ccaprice_localec;
 }
 
 /*

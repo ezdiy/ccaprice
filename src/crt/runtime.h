@@ -42,18 +42,18 @@ typedef int32_t pid_t;
 #	define SIZE_MAX 0xffffffffffffffff
 #endif
 
-CCAPRICE_EXPORT ssize_t write (int, const void*, size_t);
-CCAPRICE_EXPORT ssize_t read  (int, void      *, size_t);
-CCAPRICE_EXPORT int     open  (const char     *, int);
-CCAPRICE_EXPORT int     unlink(const char     *);
-CCAPRICE_EXPORT int     close (int);
-CCAPRICE_EXPORT int     kill  (pid_t, int);
-CCAPRICE_EXPORT void    _exit (int);
-CCAPRICE_EXPORT pid_t   getpid();
+__CCAPRICE_EXPORT ssize_t write (int, const void*, size_t);
+__CCAPRICE_EXPORT ssize_t read  (int, void      *, size_t);
+__CCAPRICE_EXPORT int     open  (const char     *, int);
+__CCAPRICE_EXPORT int     unlink(const char     *);
+__CCAPRICE_EXPORT int     close (int);
+__CCAPRICE_EXPORT int     kill  (pid_t, int);
+__CCAPRICE_EXPORT void    _exit (int);
+__CCAPRICE_EXPORT pid_t   getpid();
 
 /* <hack> */
 /* linux/BSD X86 / X86_64 only */
-#if defined(CCAPRICE_TARGET_X86_32) || defined(CCAPRICE_TARGET_X86_64)
+#if defined(__CCAPRICE_TARGET_X86_32) || defined(__CCAPRICE_TARGET_X86_64)
 	#define O_ACCMODE   0003
 	#define O_RDONLY    00
 	#define O_WRONLY    01

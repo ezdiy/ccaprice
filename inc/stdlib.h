@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_STDLIB_HDR
-#define CCAPRICE_STDLIB_HDR
+#ifndef __CCAPRICE_STDLIB_HDR__
+#define __CCAPRICE_STDLIB_HDR__
 #include "ccaprice.h"
 
 /* 
@@ -29,53 +29,53 @@
  * types / macros alltogether.  You're not allowed to include other
  * standard headers with other standard headers.
  */
-#if !defined(CCAPRICE_TYPE__SIZE_T_DEFINED)
-	typedef  CCAPRICE_TYPE__SIZE_T size_t;
-#	define   CCAPRICE_TYPE__SIZE_T_DEFINED
+#if !defined(__CCAPRICE_TYPE__SIZE_T_DEFINED)
+	typedef  __CCAPRICE_TYPE__SIZE_T size_t;
+#	define   __CCAPRICE_TYPE__SIZE_T_DEFINED
 #endif
 #ifdef  NULL
 #undef  NULL
 #endif
-#define NULL CCAPRICE_NULL
+#define NULL __CCAPRICE_NULL
 
 #define EXIT_SUCCESS (0x00)
 #define EXIT_FAILURE (0xFF)
 #define CHAR_BIT      8
 
-#define CCAPRICE_SIGNEXTEND(V) \
-    union {                    \
-        int32_t W;             \
-        struct {               \
-            int16_t L;         \
-            int16_t H;         \
-        } S;                   \
+#define __CCAPRICE_SIGNEXTEND(V) \
+    union {                      \
+        int32_t W;               \
+        struct {                 \
+            int16_t L;           \
+            int16_t H;           \
+        } S;                     \
     } signext = { V }
 
-#ifdef CCAPRICE_EXTENSIONS
+#ifdef __CCAPRICE_EXTENSIONS
 #	define MIN(X,Y) ({              \
-    CCAPRICE_SIGNEXTEND((X)-(Y));   \
+    __CCAPRICE_SIGNEXTEND((X)-(Y)); \
     ((Y)+(((X)-(Y))& signext.S.H)); \
 })
 #	define MAX(X,Y) ({              \
-    CCAPRICE_SIGNEXTEND((Y)-(X));   \
+    __CCAPRICE_SIGNEXTEND((Y)-(X)); \
     ((X)+(((Y)-(X))&~signext.S.H)); \
 })
 #endif
 
-CCAPRICE_EXPORT void  atexit (void (*)());
-CCAPRICE_EXPORT void  exit   (int);
-CCAPRICE_EXPORT void  abort  ();
-CCAPRICE_EXPORT int   raise  (int);
-CCAPRICE_EXPORT char* getenv (const char *);
-CCAPRICE_EXPORT void  qsort  (void *, size_t, size_t, int (*)(const void *, const void *));
-CCAPRICE_EXPORT void *bsearch(const void *, const void *, size_t, size_t, int(*)(const void *, const void *));
+__CCAPRICE_EXPORT void  atexit (void (*)());
+__CCAPRICE_EXPORT void  exit   (int);
+__CCAPRICE_EXPORT void  abort  ();
+__CCAPRICE_EXPORT int   raise  (int);
+__CCAPRICE_EXPORT char* getenv (const char *);
+__CCAPRICE_EXPORT void  qsort  (void *, size_t, size_t, int (*)(const void *, const void *));
+__CCAPRICE_EXPORT void *bsearch(const void *, const void *, size_t, size_t, int(*)(const void *, const void *));
 
 /* malloc / free */
-CCAPRICE_EXPORT void *malloc(size_t);
-CCAPRICE_EXPORT void *calloc(size_t, size_t);
+__CCAPRICE_EXPORT void *malloc(size_t);
+__CCAPRICE_EXPORT void *calloc(size_t, size_t);
 
 /* rand / srand */
-CCAPRICE_EXPORT void  srand(unsigned int);
-CCAPRICE_EXPORT int   rand();
+__CCAPRICE_EXPORT void  srand(unsigned int);
+__CCAPRICE_EXPORT int   rand();
 
 #endif

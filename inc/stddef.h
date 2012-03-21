@@ -20,27 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_STDDEF_HDR
-#define CCAPRICE_STDDEF_HDR
+#ifndef __CCAPRICE_STDDEF_HDR__
+#define __CCAPRICE_STDDEF_HDR__
 #include "ccaprice.h"
 /* 
  * Handle size_t and NULL according to standard.  By themselfs as new
  * types / macros alltogether.  You're not allowed to include other
  * standard headers with other standard headers.
  */
-#if !defined(CCAPRICE_TYPE__SIZE_T_DEFINED)
-	typedef  CCAPRICE_TYPE__SIZE_T size_t;
-#	define   CCAPRICE_TYPE__SIZE_T_DEFINED
+#if !defined(__CCAPRICE_TYPE__SIZE_T_DEFINED)
+	typedef  __CCAPRICE_TYPE__SIZE_T size_t;
+#	define   __CCAPRICE_TYPE__SIZE_T_DEFINED
 #endif
 #ifdef  NULL
 #undef  NULL
 #endif
-#define NULL CCAPRICE_NULL
+#define NULL __CCAPRICE_NULL
 
 #if !defined(offsetof)
-#	if ((__COMPID__ == CCAPRICE_COMPILER_EKOPATH) || \
-	    (__COMPID__ == CCAPRICE_COMPILER_CLANG)   || \
-	    (__COMPID__ == CCAPRICE_COMPILER_GCC))
+#	if ((__COMPID__ == __CCAPRICE_COMPILER_EKOPATH) || \
+	    (__COMPID__ == __CCAPRICE_COMPILER_CLANG)   || \
+	    (__COMPID__ == __CCAPRICE_COMPILER_GCC))
 #		define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
 #	else
 		/*

@@ -31,7 +31,7 @@
  * explicit use of integer in many cases.  But this is
  * still legal and is mandated by SUS.
  */
-#define errno (*ccaprice_posix_errno)
+#define errno (*__ccaprice_posix_errno)
 
 #define E2BIG             0
 #define EACCES            1

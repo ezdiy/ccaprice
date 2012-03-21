@@ -23,8 +23,8 @@
 #include "inc/assert.h"
 #include "inc/stdlib.h"
 
-void ccaprice_assert(const char *file, int line, int expr) {
-	CCAPRICE_INTERNAL_FUNC(int, printf, (const char *, ...));
+void __ccaprice_assert(const char *file, int line, int expr) {
+	__CCAPRICE_INTERNAL_FUNC(int, printf, (const char *, ...));
 	/*
 	 * Standard states the output needs to look as such:
 	 * 	program_name: file.c:line function: Assertion `code` failed.

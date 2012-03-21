@@ -21,16 +21,16 @@
  * SOFTWARE.
  */
 #include "inc/ccaprice.h"
-#if defined(STRING_MEMCHR_OPTIMAL_SSE2)
+#if defined(__STRING_MEMCHR_OPTIMAL_SSE2)
 #	include <emmintrin.h>
 #endif
 #include "inc/string.h"
 static const size_t memchr_bsf_table[256] = {
-	CCAPRICE_BSF_TABLE_EXPAND
+	__CCAPRICE_BSF_TABLE_EXPAND
 };
 
 void *memchr(const void *src, int cmp, size_t cnt) {
-	#if defined(STRING_MEMCHR_OPTIMAL) && defined(STRING_MEMCHR_OPTIMAL_SSE2) 
+	#if defined(__STRING_MEMCHR_OPTIMAL) && defined(__STRING_MEMCHR_OPTIMAL_SSE2) 
 		/*
 		 * SSE optimized version of memchr.  Handles 16-bit alligned
 		 * data first, then 32-bit alligned data. Then collects any

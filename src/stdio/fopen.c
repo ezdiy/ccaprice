@@ -24,8 +24,8 @@
 #include "src/crt/runtime.h"
 
 /* manage list of all open files here */
-FILE   ccaprice_stdio_file_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN];
-size_t ccaprice_stdio_file_pos = 0;
+FILE   __ccaprice_stdio_file_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN];
+size_t __ccaprice_stdio_file_pos = 0;
 
 FILE *fopen(const char *file, const char *mode) {
 	
@@ -53,7 +53,7 @@ FILE *fopen(const char *file, const char *mode) {
 	 * ensure file opens are 64-bit safe; otherwise errors
 	 * could occur.
 	 */
-	#ifdef CCAPRICE_TARGET_X86_32
+	#ifdef __CCAPRICE_TARGET_X86_32
 		/*
 		 * (LFS) Allow files whose sizes cannot be represented in an off_t 
 		 * (but can be represented in an off64_t) to be opened.
@@ -61,12 +61,12 @@ FILE *fopen(const char *file, const char *mode) {
 		flags |= O_LARGEFILE;
 	#endif
 	
-	FILE *fp       = &ccaprice_stdio_file_dat[ccaprice_stdio_file_pos];
+	FILE *fp       = &__ccaprice_stdio_file_dat[__ccaprice_stdio_file_pos];
 	fp->fd         = open(file, flags);
 	fp->buffer_pos = 0;
 	fp->eof        = 0;
 	fp->err        = 0;
 	
-	ccaprice_stdio_file_pos ++;
+	__ccaprice_stdio_file_pos ++;
 	return fp;
 }

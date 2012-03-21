@@ -40,8 +40,8 @@ int ilogb(double x) {
 	}
 	
 	int ix = 0;
-	int hx = CCAPRICE_MATH_HI_L(x)&0x7FFFFFFF;
-	int lx = CCAPRICE_MATH_LO_L(x);
+	int hx = __CCAPRICE_MATH_HI_L(x)&0x7FFFFFFF;
+	int lx = __CCAPRICE_MATH_LO_L(x);
 	
 	if(hx<0x00100000) {
 		if((hx|lx)==0) 

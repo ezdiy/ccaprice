@@ -21,19 +21,19 @@
  * SOFTWARE.
  */
 #include "inc/ccaprice.h"
-#ifdef STRING_STRLEN_OPTIMAL_SSE2
+#ifdef __STRING_STRLEN_OPTIMAL_SSE2
 	#include <emmintrin.h>
 #endif
 #include "inc/string.h"
 #include "inc/stdint.h"
 
 static const unsigned char strlen_bsf_table[256] = {
-	CCAPRICE_BSF_TABLE_EXPAND
+	__CCAPRICE_BSF_TABLE_EXPAND
 };
 
 size_t strlen(const char *src) {
-	#ifdef STRING_STRLEN_OPTIMAL
-		#if defined(STRING_STRLEN_OPTIMAL_SSE2) && defined(CCAPRICE_TARGET_X86_64)
+	#ifdef __STRING_STRLEN_OPTIMAL
+		#if defined(__STRING_STRLEN_OPTIMAL_SSE2) && defined(__CCAPRICE_TARGET_X86_64)
 			/*
 			 * Fast strlen using SSE, counts data till allignment
 			 * the counts in chunks of sizeof(__m128i).
@@ -75,7 +75,7 @@ size_t strlen(const char *src) {
 				src += sizeof(__m128i), len += sizeof(__m128i);
 			}
 			return len;
-		#elif defined(CCAPRICE_TARGET_X86_32)
+		#elif defined(__CCAPRICE_TARGET_X86_32)
 			/*
 			 * Vector optimized strlen using GPR:
 			 *	This could be seen as a little more complicated than
@@ -100,13 +100,13 @@ size_t strlen(const char *src) {
 			 */
 			 return len;
 		#else
-			#define STRING_STRLEN_NONE
+			#define __TRING_STRLEN_NONE
 		#endif
 	#else
-		#define STRING_STRLEN_NONE
+		#define __STRING_STRLEN_NONE
 	#endif
 	
-	#ifdef STRING_STRLEN_NONE
+	#ifdef __STRING_STRLEN_NONE
 		#warning "[ccaprice] no optimized strlen implementation, using naive method (could be slow)"
 		const char *s = src;
 		while (*src) src++;

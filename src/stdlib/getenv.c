@@ -23,7 +23,7 @@
 #include "inc/ccaprice.h"
 #include "inc/stddef.h"
 char *getenv(const char *name) {
-	CCAPRICE_INTERNAL_TYPE(char **, ccaprice_enviroment);
+	__CCAPRICE_INTERNAL_TYPE(char **, __ccaprice_enviroment);
 		
 	size_t finds;
 	size_t grabs;
@@ -31,13 +31,13 @@ char *getenv(const char *name) {
 	char        *fills;
 	char       **lists;
 	
-	if(!name || !ccaprice_enviroment)
+	if(!name || !__ccaprice_enviroment)
 		return NULL;
 	
 	for   (equal = name; *equal && *equal != '='; ++equal) ;
 	finds =equal - name;
 	
-	for (lists = ccaprice_enviroment; (fills = *lists) != NULL; ++lists) {
+	for (lists = __ccaprice_enviroment; (fills = *lists) != NULL; ++lists) {
 		for (equal = name, grabs = finds; grabs && *fills; grabs--)
 			if (*fills++ != *equal++)
 				break;

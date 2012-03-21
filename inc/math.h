@@ -20,22 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_MATH_HDR
-#define CCAPRICE_MATH_HDR
+#ifndef __CCAPRICE_MATH_HDR__
+#define __CCAPRICE_MATH_HDR__
 #include "ccaprice.h"
-#if defined(CCAPRICE_TARGET_X86_32) || defined(CCAPRICE_TARGET_X86_64)
-	#define CCAPRICE_MATH_HI_L(X) *(1+((int*)(&X)))
-	#define CCAPRICE_MATH_LO_L(X) *(0+((int*)(&X)))
-	#define CCAPRICE_MATH_HI_P(X) *(1+((int*) (X)))
-	#define CCAPRICE_MATH_LO_P(X) *(0+((int*) (X)))
+#if defined(__CCAPRICE_TARGET_X86_32) || defined(__CCAPRICE_TARGET_X86_64)
+	#define __CCAPRICE_MATH_HI_L(X) *(1+((int*)(&X)))
+	#define __CCAPRICE_MATH_LO_L(X) *(0+((int*)(&X)))
+	#define __CCAPRICE_MATH_HI_P(X) *(1+((int*) (X)))
+	#define __CCAPRICE_MATH_LO_P(X) *(0+((int*) (X)))
 #else
-	#define CCAPRICE_MATH_HI_L(X) *(0+((int*)(&X)))
-	#define CCAPRICE_MATH_LO_L(X) *(1+((int*)(&X)))
-	#define CCAPRICE_MATH_HI_P(X) *(0+((int*) (X)))
-	#define CCAPRICE_MATH_LO_P(X) *(1+((int*) (X)))
+	#define __CCAPRICE_MATH_HI_L(X) *(0+((int*)(&X)))
+	#define __CCAPRICE_MATH_LO_L(X) *(1+((int*)(&X)))
+	#define __CCAPRICE_MATH_HI_P(X) *(0+((int*) (X)))
+	#define __CCAPRICE_MATH_LO_P(X) *(1+((int*) (X)))
 #endif
 
-#if defined(CCAPRICE_TARGET_X86_32) || defined(CCAPRICE_TARGET_X86_64)
+#if defined(__CCAPRICE_TARGET_X86_32) || defined(__CCAPRICE_TARGET_X86_64)
 	#define FP_ILOGB0      (-2147483647 - 1)
 	#define FP_ILOGBNAN    (-2147483647 - 1)
 #endif
@@ -48,19 +48,19 @@
 #define M_PI    (3.1415926535897932)
 #define M_PI_2  (1.5707963267948966)
 #define M_PI_4  (0.7853981633974483)
-#ifdef CCAPRICE_EXTENSIONS
+#ifdef __CCAPRICE_EXTENSIONS
 #	define M_TAU   (6.2831853071795864)
 #endif
 
-CCAPRICE_EXPORT int    abs   (int); /* STDLIB-ify */
-CCAPRICE_EXPORT double acos  (double);
-CCAPRICE_EXPORT double atan  (double);
-CCAPRICE_EXPORT double ceil  (double);
-CCAPRICE_EXPORT double fabs  (double);
-CCAPRICE_EXPORT int    finite(double);
-CCAPRICE_EXPORT double floor (double);
-CCAPRICE_EXPORT double frexp (double, int*);
-CCAPRICE_EXPORT int    ilogb (double);
-CCAPRICE_EXPORT int    isnan (double);
-CCAPRICE_EXPORT double sqrt  (double);
+__CCAPRICE_EXPORT int    abs   (int); /* STDLIB-ify */
+__CCAPRICE_EXPORT double acos  (double);
+__CCAPRICE_EXPORT double atan  (double);
+__CCAPRICE_EXPORT double ceil  (double);
+__CCAPRICE_EXPORT double fabs  (double);
+__CCAPRICE_EXPORT int    finite(double);
+__CCAPRICE_EXPORT double floor (double);
+__CCAPRICE_EXPORT double frexp (double, int*);
+__CCAPRICE_EXPORT int    ilogb (double);
+__CCAPRICE_EXPORT int    isnan (double);
+__CCAPRICE_EXPORT double sqrt  (double);
 #endif /* !CCAPRICE_MATH_HDR */

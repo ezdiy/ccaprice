@@ -25,10 +25,10 @@
 #include "inc/posix/errno.h"
 #include "inc/stdint.h"
 
-CCAPRICE_INTERNAL_FUNC(void*, ccaprice_malloc_small, (size_t));
+__CCAPRICE_INTERNAL_FUNC(void*, __ccaprice_malloc_small, (size_t));
 
 void *malloc(size_t size) {
-	void *ret = ccaprice_malloc_small(size);
+	void *ret = __ccaprice_malloc_small(size);
 	if (ret == (void*)-1) {
 		errno = ENOMEM;
 		return NULL;

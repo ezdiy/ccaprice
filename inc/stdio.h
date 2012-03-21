@@ -20,41 +20,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_STDIO_HDR
-#define CCAPRICE_STDIO_HDR
+#ifndef __CCAPRICE_STDIO_HDR__
+#define __CCAPRICE_STDIO_HDR__
 #include "ccaprice.h"
 
-#if !defined(CCAPRICE_TYPE__SIZE_T_DEFINED)
-	typedef  CCAPRICE_TYPE__SIZE_T size_t;
-#	define   CCAPRICE_TYPE__SIZE_T_DEFINED
+#if !defined(__CCAPRICE_TYPE__SIZE_T_DEFINED)
+	typedef  __CCAPRICE_TYPE__SIZE_T size_t;
+#	define   __CCAPRICE_TYPE__SIZE_T_DEFINED
 #endif
 
-#define CCAPRICE_STDIO_FILE_BUFFER_LEN 2048
+#define __CCAPRICE_STDIO_FILE_BUFFER_LEN 2048
 typedef struct ccaprice_file {
 	int    fd;
 	int    eof;
 	int    self; /* SELF'ed itself? */
 	int    err;
-	char   buffer_dat[CCAPRICE_STDIO_FILE_BUFFER_LEN];
+	char   buffer_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN];
 	size_t buffer_pos;
 }  FILE;
 
 #define EOF -1
-#define stdout        ccaprice_stdout()  /* because symbol of alignment issues */
-#define stdin         ccaprice_stdin ()  /* because symbol of alignment issues */
-CCAPRICE_EXPORT FILE *ccaprice_stdout(); /* because symbol of alignment issues */
-CCAPRICE_EXPORT FILE *ccaprice_stdin (); /* because symbol of alignment issues */
+#define stdout          __ccaprice_stdout()  /* because symbol of alignment issues */
+#define stdin           __ccaprice_stdin ()  /* because symbol of alignment issues */
+__CCAPRICE_EXPORT FILE *__ccaprice_stdout(); /* because symbol of alignment issues */
+__CCAPRICE_EXPORT FILE *__ccaprice_stdin (); /* because symbol of alignment issues */
 
-CCAPRICE_EXPORT int    fclose(FILE *);
-CCAPRICE_EXPORT int    feof  (FILE *);
-CCAPRICE_EXPORT int    fflush(FILE *);
-CCAPRICE_EXPORT FILE * fopen (const char *, const char *);
-CCAPRICE_EXPORT int    fputc (int, FILE*);
-CCAPRICE_EXPORT int    fputs (const char *, FILE*);
-CCAPRICE_EXPORT size_t fwrite(const void *, size_t, size_t, FILE*);
-CCAPRICE_EXPORT int    fputs (const char *, FILE*);
-CCAPRICE_EXPORT int    puts  (const char*);
-CCAPRICE_EXPORT int    remove(const char*);
-CCAPRICE_EXPORT int    printf(const char *, ...);
+__CCAPRICE_EXPORT int    fclose(FILE *);
+__CCAPRICE_EXPORT int    feof  (FILE *);
+__CCAPRICE_EXPORT int    fflush(FILE *);
+__CCAPRICE_EXPORT FILE * fopen (const char *, const char *);
+__CCAPRICE_EXPORT int    fputc (int, FILE*);
+__CCAPRICE_EXPORT int    fputs (const char *, FILE*);
+__CCAPRICE_EXPORT size_t fwrite(const void *, size_t, size_t, FILE*);
+__CCAPRICE_EXPORT int    fputs (const char *, FILE*);
+__CCAPRICE_EXPORT int    puts  (const char*);
+__CCAPRICE_EXPORT int    remove(const char*);
+__CCAPRICE_EXPORT int    printf(const char *, ...);
 
 #endif /* !CCAPRICE_STDIO_HDR      */

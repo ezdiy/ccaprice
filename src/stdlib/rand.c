@@ -21,28 +21,28 @@
  * SOFTWARE.
  */
 #include "inc/ccaprice.h"
-#if defined(STDLIB_RANDOM_OPTIMAL)
-#	if defined(STDLIB_RANDOM_OPTIMAL_SSE2)
+#if defined(__STDLIB_RANDOM_OPTIMAL)
+#	if defined(__STDLIB_RANDOM_OPTIMAL_SSE2)
 #		include <emmintrin.h>
-#		define CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1 0x00
-#		define CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2 0x01
-#		define CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE _MM_SHUFFLE(2,3,0,1)
-		static __m128i ccaprice_stdlib_rseed;
+#		define __CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1 0x00
+#		define __CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2 0x01
+#		define __CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE _MM_SHUFFLE(2,3,0,1)
+		static __m128i __ccaprice_stdlib_rseed;
 #	else
-		static unsigned int ccaprice_stdlib_rseed;
+		static unsigned int __ccaprice_stdlib_rseed;
 #	endif
 #else
-	static unsigned int ccaprice_stdlib_rseed;
+	static unsigned int __ccaprice_stdlib_rseed;
 #endif
 
-#ifdef STDLIB_RANDOM_OPTIMAL
-	#ifdef STDLIB_RANDOM_OPTIMAL_SSE2
+#ifdef __STDLIB_RANDOM_OPTIMAL
+	#ifdef __STDLIB_RANDOM_OPTIMAL_SSE2
 		void srand(unsigned int seed) {
-			ccaprice_stdlib_rseed = _mm_set_epi32(
-				seed+CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1,
-				seed+CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1,
-				seed+CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2,
-				seed+CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2
+			__ccaprice_stdlib_rseed = _mm_set_epi32(
+				seed+__CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1,
+				seed+__CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1,
+				seed+__CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2,
+				seed+__CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2
 			);
 		}
 		
@@ -69,46 +69,46 @@
 			smask = _mm_load_si128   ((__m128i*)data_smask);
 			
 			split = _mm_shuffle_epi32(
-				ccaprice_stdlib_rseed,
-				CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
+				__ccaprice_stdlib_rseed,
+				__CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
 			);
 			
-			ccaprice_stdlib_rseed = _mm_mul_epu32(ccaprice_stdlib_rseed, multi);
-			multi                 = _mm_shuffle_epi32(
+			__ccaprice_stdlib_rseed = _mm_mul_epu32(__ccaprice_stdlib_rseed, multi);
+			multi                   = _mm_shuffle_epi32(
 				multi,
-				CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
+				__CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
 			);
-			split                 = _mm_mul_epu32(split, multi);
-			ccaprice_stdlib_rseed = _mm_and_si128(ccaprice_stdlib_rseed, mmask);
-			split                 = _mm_and_si128(split, mmask);
-			split                 = _mm_shuffle_epi32(
+			split                   = _mm_mul_epu32(split, multi);
+			__ccaprice_stdlib_rseed = _mm_and_si128(__ccaprice_stdlib_rseed, mmask);
+			split                   = _mm_and_si128(split, mmask);
+			split                   = _mm_shuffle_epi32(
 				split,
-				CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
+				__CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
 			);
-			ccaprice_stdlib_rseed = _mm_or_si128  (ccaprice_stdlib_rseed, split);
-			ccaprice_stdlib_rseed = _mm_add_epi32 (ccaprice_stdlib_rseed, adder);
-			store                 = _mm_srai_epi32(ccaprice_stdlib_rseed, 0x10);
-			store                 = _mm_and_si128 (store, smask);
+			__ccaprice_stdlib_rseed = _mm_or_si128  (__ccaprice_stdlib_rseed, split);
+			__ccaprice_stdlib_rseed = _mm_add_epi32 (__ccaprice_stdlib_rseed, adder);
+			store                   = _mm_srai_epi32(__ccaprice_stdlib_rseed, 0x10);
+			store                   = _mm_and_si128 (store, smask);
 			
 			return (unsigned int)_mm_cvtsi128_si32(store);
 			
-			#undef CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
-			#undef CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2
-			#undef CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1
+			#undef __CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
+			#undef __CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2
+			#undef __CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1
 		}
 	#else
-		#define STDLIB_RANDOM_NONE
+		#define __STDLIB_RANDOM_NONE
 	#endif
 #endif
 
-#ifdef STDLIB_RANDOM_NONE
+#ifdef __STDLIB_RANDOM_NONE
 	#warning "[ccaprice] no optimized rand implementation, using naive method (could be slow)"
 	void srand(unsigned int seed) {
-		ccaprice_stdlib_rseed = seed;
+		__ccaprice_stdlib_rseed = seed;
 	}
 	int rand() {
-		ccaprice_stdlib_rseed = \
-			(0x343FD*ccaprice_stdlib_rseed + 0x269EC3);
-		return (ccaprice_stdlib_rseed>>16)&0x7FFF;
+		__ccaprice_stdlib_rseed = \
+			(0x343FD*__ccaprice_stdlib_rseed + 0x269EC3);
+		return (__ccaprice_stdlib_rseed>>16)&0x7FFF;
 	}
 #endif

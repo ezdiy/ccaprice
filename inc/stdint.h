@@ -20,39 +20,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_STDINT_HDR
-#define CCAPRICE_STDINT_HDR
+#ifndef __CCAPRICE_STDINT_HDR__
+#define __CCAPRICE_STDINT_HDR__
 #include "ccaprice.h"
 /*
  * Only tage advantage of type attributes if the compiler supports it.
  * Thankfully PathScale/EkoPath/Clang/GCC are all backwards compatible
  * in this regard.
  */
-#if ((__COMPID__ == CCAPRICE_COMPILER_EKOPATH) || \
-     (__COMPID__ == CCAPRICE_COMPILER_CLANG)   || \
-     (__COMPID__ == CCAPRICE_COMPILER_GCC))
-#	define REG8  __QI__
-#	define REG16 __HI__
-#	define REG32 __SI__
-#	define REG64 __DI__
-#	define _S_INT_(S) typedef int          ccaprice_sint_##S __attribute__( (__mode__( REG##S )))
-#	define _U_INT_(S) typedef unsigned int ccaprice_uint_##S __attribute__( (__mode__( REG##S )))
+#if ((__COMPID__ == __CCAPRICE_COMPILER_EKOPATH) || \
+     (__COMPID__ == __CCAPRICE_COMPILER_CLANG)   || \
+     (__COMPID__ == __CCAPRICE_COMPILER_GCC))
+#	define __REG8  __QI__
+#	define __REG16 __HI__
+#	define __REG32 __SI__
+#	define __REG64 __DI__
+#	define __SINT(S) typedef int          __ccaprice_sint_##S __attribute__( (__mode__( __REG##S )))
+#	define __UINT(S) typedef unsigned int __ccaprice_uint_##S __attribute__( (__mode__( __REG##S )))
 #endif
 /*
  * Create the ccaprice_uint_* types for re-typedef to correct types
  * later.  These are guranteed to always be 8/16/32/64 bits on all
  * platforms.
  */
-_U_INT_(8);  _S_INT_(8);
-_U_INT_(16); _S_INT_(16);
-_U_INT_(32); _S_INT_(32);
-_U_INT_(64); _S_INT_(64);
-#undef REG8
-#undef REG16
-#undef REG32
-#undef REG64
-#undef _U_INT_
-#undef _S_INT_
+__UINT(8);  __SINT(8);
+__UINT(16); __SINT(16);
+__UINT(32); __SINT(32);
+__UINT(64); __SINT(64);
+#undef __REG8
+#undef __REG16
+#undef __REG32
+#undef __REG64
+#undef __UINT
+#undef __SINT
 /*
  * Only bother to define these types if we can gurantee that no system or
  * standard stdint.h or inttypes.h was included.
@@ -60,14 +60,14 @@ _U_INT_(64); _S_INT_(64);
 #if !defined(_STDINT_H)      && !defined(_STDINT_H_)  && \
     !defined(_SYS_STDINT_H_) && !defined(_INTTYPES_H) && \
     !defined(_INTTYPES_H_)   && !defined(_SYS__STDINT_H_)
-	typedef ccaprice_uint_8  uint8_t;
-	typedef ccaprice_uint_16 uint16_t;
-	typedef ccaprice_uint_32 uint32_t;
-	typedef ccaprice_uint_64 uint64_t;
-	typedef ccaprice_sint_8  int8_t;
-	typedef ccaprice_sint_16 int16_t;
-	typedef ccaprice_sint_32 int32_t;
-	typedef ccaprice_sint_64 int64_t;
+	typedef __ccaprice_uint_8  uint8_t;
+	typedef __ccaprice_uint_16 uint16_t;
+	typedef __ccaprice_uint_32 uint32_t;
+	typedef __ccaprice_uint_64 uint64_t;
+	typedef __ccaprice_sint_8  int8_t;
+	typedef __ccaprice_sint_16 int16_t;
+	typedef __ccaprice_sint_32 int32_t;
+	typedef __ccaprice_sint_64 int64_t;
 #	if defined (__PTRDIFF_TYPE__)
 		typedef signed   __PTRDIFF_TYPE__ intptr_t;
 		typedef unsigned __PTRDIFF_TYPE__ uintptr_t;
@@ -86,14 +86,14 @@ _U_INT_(64); _S_INT_(64);
  * There might be something broken with someones toolchain if
  * these ever assert.
  */
-#if defined(CCAPRICE_CP)
-	CCAPRICE_COMPILE_TIME_ASSERT(uint8_t , sizeof(uint8_t)  == 1);
-	CCAPRICE_COMPILE_TIME_ASSERT(uint16_t, sizeof(uint16_t) == 2);
-	CCAPRICE_COMPILE_TIME_ASSERT(uint32_t, sizeof(uint32_t) == 4);
-	CCAPRICE_COMPILE_TIME_ASSERT(uint64_t, sizeof(uint64_t) == 8);
-	CCAPRICE_COMPILE_TIME_ASSERT(int8_t ,  sizeof(int8_t)   == 1);
-	CCAPRICE_COMPILE_TIME_ASSERT(int16_t,  sizeof(int16_t)  == 2);
-	CCAPRICE_COMPILE_TIME_ASSERT(int32_t,  sizeof(int32_t)  == 4);
-	CCAPRICE_COMPILE_TIME_ASSERT(int64_t,  sizeof(int64_t)  == 8);
+#if defined(__CCAPRICE_CP)
+	__CCAPRICE_COMPILE_TIME_ASSERT(uint8_t , sizeof(uint8_t)  == 1);
+	__CCAPRICE_COMPILE_TIME_ASSERT(uint16_t, sizeof(uint16_t) == 2);
+	__CCAPRICE_COMPILE_TIME_ASSERT(uint32_t, sizeof(uint32_t) == 4);
+	__CCAPRICE_COMPILE_TIME_ASSERT(uint64_t, sizeof(uint64_t) == 8);
+	__CCAPRICE_COMPILE_TIME_ASSERT(int8_t ,  sizeof(int8_t)   == 1);
+	__CCAPRICE_COMPILE_TIME_ASSERT(int16_t,  sizeof(int16_t)  == 2);
+	__CCAPRICE_COMPILE_TIME_ASSERT(int32_t,  sizeof(int32_t)  == 4);
+	__CCAPRICE_COMPILE_TIME_ASSERT(int64_t,  sizeof(int64_t)  == 8);
 #endif
 #endif

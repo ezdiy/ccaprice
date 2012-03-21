@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_CTYPE_HDR
-#define CCAPRICE_CTYPE_HDR
+#ifndef __CCAPRICE_CTYPE_HDR__
+#define __CCAPRICE_CTYPE_HDR__
 #include "ccaprice.h"
 /*
  * I'm sure these can be made into functions but macros
@@ -30,19 +30,19 @@
  * macro.  None the less this is applicable enough for
  * now.
  */
-CCAPRICE_INTERNAL_TYPE(void *, ccaprice_localep); /* to ccaprice_localec */
-#define isalnum(X)  ((*((int(**)(int))ccaprice_localep+0 ))(X)) // 4  -- 8
-#define isalpha(X)  ((*((int(**)(int))ccaprice_localep+1 ))(X)) // 8  -- 16
-#define iscntrl(X)  ((*((int(**)(int))ccaprice_localep+2 ))(X)) // 16 -- 24
-#define isdigit(X)  ((*((int(**)(int))ccaprice_localep+3 ))(X)) // 20 -- 32
-#define isgraph(X)  ((*((int(**)(int))ccaprice_localep+4 ))(X)) // 24 -- 40
-#define islower(X)  ((*((int(**)(int))ccaprice_localep+5 ))(X)) // 28 -- 48
-#define isprint(X)  ((*((int(**)(int))ccaprice_localep+6 ))(X)) // 32 -- 56
-#define ispunct(X)  ((*((int(**)(int))ccaprice_localep+7 ))(X)) // 36 -- 
-#define isspace(X)  ((*((int(**)(int))ccaprice_localep+8 ))(X)) // 40
-#define isupper(X)  ((*((int(**)(int))ccaprice_localep+9 ))(X)) // 44
-#define isxdigit(X) ((*((int(**)(int))ccaprice_localep+10))(X)) // 48
-#define tolower(X)  ((*((int(**)(int))ccaprice_localep+11))(X)) // 52
-#define toupper(X)  ((*((int(**)(int))ccaprice_localep+12))(X)) // 54
+__CCAPRICE_INTERNAL_TYPE(void *, __ccaprice_localep); /* to ccaprice_localec */
+#define isalnum(X)  ((*((int(**)(int))__ccaprice_localep+0 ))(X)) // 4  -- 8
+#define isalpha(X)  ((*((int(**)(int))__ccaprice_localep+1 ))(X)) // 8  -- 16
+#define iscntrl(X)  ((*((int(**)(int))__ccaprice_localep+2 ))(X)) // 16 -- 24
+#define isdigit(X)  ((*((int(**)(int))__ccaprice_localep+3 ))(X)) // 20 -- 32
+#define isgraph(X)  ((*((int(**)(int))__ccaprice_localep+4 ))(X)) // 24 -- 40
+#define islower(X)  ((*((int(**)(int))__ccaprice_localep+5 ))(X)) // 28 -- 48
+#define isprint(X)  ((*((int(**)(int))__ccaprice_localep+6 ))(X)) // 32 -- 56
+#define ispunct(X)  ((*((int(**)(int))__ccaprice_localep+7 ))(X)) // 36 -- 
+#define isspace(X)  ((*((int(**)(int))__ccaprice_localep+8 ))(X)) // 40
+#define isupper(X)  ((*((int(**)(int))__ccaprice_localep+9 ))(X)) // 44
+#define isxdigit(X) ((*((int(**)(int))__ccaprice_localep+10))(X)) // 48
+#define tolower(X)  ((*((int(**)(int))__ccaprice_localep+11))(X)) // 52
+#define toupper(X)  ((*((int(**)(int))__ccaprice_localep+12))(X)) // 54
 
 #endif

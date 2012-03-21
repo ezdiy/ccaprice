@@ -25,7 +25,7 @@
 #include "inc/posix/errno.h"
 #include "src/crt/runtime.h"
 
-CCAPRICE_INTERNAL_TYPE(int*, ccaprice_posix_errno);
+__CCAPRICE_INTERNAL_TYPE(int*, __ccaprice_posix_errno);
 int fclose(FILE *fp) {
 	if (!fp) {
 		errno = EBADF;

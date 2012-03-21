@@ -20,12 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef CCAPRICE_ASSERT_HDR
-#define CCAPRICE_ASSERT_HDR
+#ifndef __CCAPRICE_ASSERT_HDR__
+#define __CCAPRICE_ASSERT_HDR__
 #include "ccaprice.h"
 
 #if !defined(NDEBUG)
-#	define assert(expr) ccaprice_assert(__FILE__,__LINE__,(expr))
+#	define assert(expr) __ccaprice_assert(__FILE__,__LINE__,(expr))
 #else
 #	define assert(expr) ((void)0) /* As per standard */
 #endif
@@ -33,6 +33,6 @@
 /*
  * Internal function not to be used outside scope of library
  */
-CCAPRICE_EXPORT void ccaprice_assert(const char*,int,int);
+__CCAPRICE_EXPORT void __ccaprice_assert(const char*,int,int);
 
 #endif

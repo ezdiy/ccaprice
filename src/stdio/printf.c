@@ -26,7 +26,7 @@
 #include "inc/stdlib.h"
 #include "inc/stdio.h"
 #include "inc/stdint.h"
-static int ccaprice_printf_extract(uint64_t *x, uint32_t radix) {
+static int __ccaprice_printf_extract(uint64_t *x, uint32_t radix) {
 	uint32_t hi  = *x >> 32;
 	uint32_t lo  = *x;
 	uint32_t mod = hi % radix; hi /= radix;
@@ -93,7 +93,7 @@ int printf(const char *format, ...) {
 				char *hld = &vld[sizeof(vld)]; *--hld = 0;
 				int   len = 0;
 				do {
-					int dig  = ccaprice_printf_extract(&x, radix); 
+					int dig  = __ccaprice_printf_extract(&x, radix); 
 					if (dig >= 10) dig += 'a' - 10;
 					else           dig += '0';
 						

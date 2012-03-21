@@ -27,7 +27,7 @@
 #include "inc/locale.h"
 
 /* In [arch].S */
-CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
+__CCAPRICE_INTERNAL_FUNC(int, __ccaprice_syscall_core, (int, ...));
 #ifdef BSD
 #	define SYS_BRK SYS_break
 #elif !defined(WIN)
@@ -37,10 +37,10 @@ CCAPRICE_INTERNAL_FUNC(int, ccaprice_syscall_core, (int, ...));
 #endif
 
 /* ENVIROMENT */
-char **ccaprice_enviroment;
+char **__ccaprice_enviroment;
 
-#if defined(CCAPRICE_TARGET_X86_32)
-int ccaprice_syscall_error() {
+#if defined(__CCAPRICE_TARGET_X86_32)
+int __ccaprice_syscall_error() {
 	register int no __asm__("%edx");
 	__asm__ __volatile__ (
 		"mov  %eax, %edx\n\t"
@@ -48,8 +48,8 @@ int ccaprice_syscall_error() {
 	);
 	return no;
 }
-#elif defined(CCAPRICE_TARGET_X86_64)
-int ccaprice_syscall_error() {
+#elif defined(__CCAPRICE_TARGET_X86_64)
+int __ccaprice_syscall_error() {
 	register int no __asm__("%rcx");
 	__asm__ __volatile__ (
 		"mov %rax, %rcx\n\t"
@@ -59,7 +59,7 @@ int ccaprice_syscall_error() {
 }
 #endif
 
-void *ccaprice_malloc_small(size_t n) {
+void *__ccaprice_malloc_small(size_t n) {
 	static uintptr_t mcur;
 	static uintptr_t mbrk;
 	uintptr_t base;
@@ -72,7 +72,7 @@ void *ccaprice_malloc_small(size_t n) {
 	n = ((n + align) - 1) & -align;
 	
 	if (!mcur) {
-		 mcur = ccaprice_syscall_core(SYS_BRK, 0) + 16;
+		 mcur = __ccaprice_syscall_core(SYS_BRK, 0) + 16;
 		 mbrk = mcur;
 	}
 	base = ((mcur + align) - 1) & -align;
@@ -87,7 +87,7 @@ void *ccaprice_malloc_small(size_t n) {
 		
 	if (base + n > mbrk) {
 		make = (((base + n) + PAGE_SIZE) - 1) & -PAGE_SIZE;
-		if (ccaprice_syscall_core(SYS_BRK, make) != make)
+		if (__ccaprice_syscall_core(SYS_BRK, make) != make)
 			return (void*)-1;
 		mbrk = make;
 	}
@@ -97,34 +97,34 @@ void *ccaprice_malloc_small(size_t n) {
 
 #define ISTR1(C) ISTR2(C)
 #define ISTR2(C) #C
-	const char *ccaprice_build_date CCAPRICE_USED = __DATE__;
-	const char *ccaprice_build_time CCAPRICE_USED = __TIME__;
-	const char *ccaprice_build_comp CCAPRICE_USED = __COMP__;
-	const char *ccaprice_build_info CCAPRICE_USED = ISTR1(__INFO__);
+	const char *__ccaprice_build_date __CCAPRICE_USED = __DATE__;
+	const char *__ccaprice_build_time __CCAPRICE_USED = __TIME__;
+	const char *__ccaprice_build_comp __CCAPRICE_USED = __COMP__;
+	const char *__ccaprice_build_info __CCAPRICE_USED = ISTR1(__INFO__);
 #undef ISTR1
 #undef ISTR2
 
 #if defined(BSD)
-	const char *ccaprice_build_host CCAPRICE_USED = "BSD";
+	const char *__ccaprice_build_host __CCAPRICE_USED = "BSD";
 #elif defined(LINUX)
-	const char *ccaprice_build_host CCAPRICE_USED = "LINUX";
+	const char *__ccaprice_build_host __CCAPRICE_USED = "LINUX";
 #elif defined(WIN)
-	const char *ccaprice_build_host CCAPRICE_USED = "WIN";
+	const char *__ccaprice_build_host __CCAPRICE_USED = "WIN";
 #endif
 
-void ccaprice_main(int argc, char **argv) {	
-	CCAPRICE_INTERNAL_FUNC(void, ccaprice_locale_init, ());
-	CCAPRICE_INTERNAL_FUNC(void, ccaprice_init, ());
-	CCAPRICE_INTERNAL_FUNC(void, ccaprice_exit, (int));
-	CCAPRICE_INTERNAL_FUNC(void, ccaprice_posix_errno_set, (int*));
-	CCAPRICE_INTERNAL_FUNC(int, main, (int, char **, char **));
+void __ccaprice_main(int argc, char **argv) {	
+	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_locale_init, ());
+	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_init, ());
+	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_exit, (int));
+	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_posix_errno_set, (int*));
+	__CCAPRICE_INTERNAL_FUNC(int, main, (int, char **, char **));
 	
 	int function_only_errno;
-	ccaprice_posix_errno_set(&function_only_errno);
-	ccaprice_enviroment = &argv[argc+1];
-	ccaprice_locale_init();
-	ccaprice_init();
-	ccaprice_exit(main(argc, argv, ccaprice_enviroment));
+	__ccaprice_posix_errno_set(&function_only_errno);
+	__ccaprice_enviroment = &argv[argc+1];
+	__ccaprice_locale_init();
+	__ccaprice_init();
+	__ccaprice_exit(main(argc, argv, __ccaprice_enviroment));
 }
 
 /*
@@ -132,8 +132,8 @@ void ccaprice_main(int argc, char **argv) {
  * SYSCALL1 does    return
  */
 #if !defined(WIN)
-#	define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST {        (TYPE)ccaprice_syscall_core CORE; }
-#	define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)ccaprice_syscall_core CORE; }
+#	define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST {        (TYPE)__ccaprice_syscall_core CORE; }
+#	define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)__ccaprice_syscall_core CORE; }
 #else
 #	define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST { }
 #	define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)0; }
@@ -148,3 +148,6 @@ SYSCALL1(int,    ioctl, (int f, int b, void *c),       (SYS_ioctl,f,b,c))
 SYSCALL1(int,    close, (int f),                       (SYS_close,f))
 SYSCALL0(void,  _exit,  (int f),                       (SYS_exit, f))
 SYSCALL1(pid_t,  getpid,(),                            (SYS_getpid))
+
+#undef SYSCALL0
+#undef SYSCALL1

@@ -22,8 +22,8 @@
  */
 #include "inc/posix/errno.h"
 
-int *ccaprice_posix_errno;
+int *__ccaprice_posix_errno;
 /* Sets errno pointer. */
-void ccaprice_posix_errno_set(int *ptr) {
-	ccaprice_posix_errno = (ptr)?ptr:0;
+void __ccaprice_posix_errno_set(int *ptr) {
+	__ccaprice_posix_errno = (ptr)?ptr:0;
 }

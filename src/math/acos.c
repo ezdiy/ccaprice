@@ -45,11 +45,11 @@ static const double ccaprice_acos_pio2[] = {
 };
 
 double acos(double x) {
-	int x_hi = CCAPRICE_MATH_HI_L(x);
+	int x_hi = __CCAPRICE_MATH_HI_L(x);
 	int iter = x_hi & 0x7FFFFFFF;
 	
 	if (iter >= 0x3FF00000) {
-		if (((iter-0x3FF00000) | CCAPRICE_MATH_LO_L(x)) == 0)
+		if (((iter-0x3FF00000) | __CCAPRICE_MATH_LO_L(x)) == 0)
 			return (x_hi > 0) ? 0.0f : 3.14159265358979311600e+00 + 2.0f * (*ccaprice_acos_pio2);
 		return (x-x) / (x-x);
 	}
@@ -90,7 +90,7 @@ double acos(double x) {
 		double z  = (1.00000000000000000000e+00-x) * 0.5f;
 		double s  = sqrt(z);
 		double df = s;
-		CCAPRICE_MATH_LO_L(df) = 0;
+		__CCAPRICE_MATH_LO_L(df) = 0;
 		double c  = (z-df*df)/(s+df);
 		double p  = \
 			z * (ccaprice_acos_pS[0] + z * (ccaprice_acos_pS[1] + \
