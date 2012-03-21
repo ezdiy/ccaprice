@@ -254,9 +254,6 @@ endif
 endif
 endif
 
-#figure out endianess
-
-
 #colors
 ifeq (,$(VERBOSE))
 	AT = @
@@ -332,8 +329,6 @@ ifneq ($(DONOT), 1)
 	$(AT) ar rcs $(OUT) $(OBJC) $(OBJA)
 endif
 	$(ECHO) $(GREEN) Completed Build for $(TARGET) $(ENDCOL)
-	
-
 
 # test target
 test: test.o

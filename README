@@ -1,0 +1,38 @@
+The directory structure is quite simple.  If you're looking to modify
+add, or just look at something, the layout is as follows.
+
+[INCLUDES]
+inc/                This is the include folder, pretty much every header is guranteed
+                    to be here.  This is where headers should also be put too.
+
+inc/posix/          This is where all posix headers go, they should then be symlinked
+                    down a directory into just inc/
+
+[SOURCES]
+src/crt/            This is a _special_ directory that implemenets the
+                    core runtime support for ccaprice.
+                    
+src/                This is the source folder for all functionality of the C library
+                    each header has it's own subdirectory in here if there are multiple
+                    functions in it.  Otherwise single files are created here for those
+                    headers.
+    
+src/string/         All <string.h> functionality is here
+src/fenv/           All <fenv.h>   functionality is here
+src/stdlib/         All <stdlib.h> functionality is here
+src/math/           All <math.h>   functionality is here
+src/stdio/          All <stdio.h>  functionality is here
+
+
+src/posix/          This is the source folder for all functionality of the posix
+                    library.  Each header not part of C (but part of posix) has
+                    has it's own subdirectory in here if there are multiple
+                    functions in it.  Otherwise single files are create here for those
+                    headers.
+              
+src/posix/strings/  All <strings.h> functionality is here
+                   
+                    
+I request this directory structure is followed so things are trivial to
+find, and so things don't get easily mixed up.  This list should be updated
+when new directories are added.
