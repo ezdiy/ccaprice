@@ -1,38 +1,49 @@
-The directory structure is quite simple.  If you're looking to modify
-add, or just look at something, the layout is as follows.
+ccaprice is a work in progress but fairly complete (currently) C stdlib
+replacement.  ccaprice implements the functionality required for ANSI C,
+this means anything wrote in pure ANSI C can be fully compiled with this
+library (such as Lua).  I wish that were true, however ccaprice isn't
+complete enough as it's still in heavy development; however that is the
+future goal of this project (we're almost full ANSI complete).
 
-[INCLUDES]
-inc/                This is the include folder, pretty much every header is guranteed
-                    to be here.  This is where headers should also be put too.
+ccaprice is not the C++ stdlib replacement you might be looking for, that
+one is named ecaprice (note the `e` opposed to c). ecaprice is backwards
+compatible with ccaprice (but doesn't require ccaprice to operate).
 
-inc/posix/          This is where all posix headers go, they should then be symlinked
-                    down a directory into just inc/
+ccaprice doesn't have any sort of posix functionality; the stuff seen 
+inside the library is for supporting some basic runtime functionality 
+for now.  In the future this will all be removed and a seperate library 
+`pcaprice` will be wrote for implementing posix functionality instead.
 
-[SOURCES]
-src/crt/            This is a _special_ directory that implemenets the
-                    core runtime support for ccaprice.
-                    
-src/                This is the source folder for all functionality of the C library
-                    each header has it's own subdirectory in here if there are multiple
-                    functions in it.  Otherwise single files are created here for those
-                    headers.
-    
-src/string/         All <string.h> functionality is here
-src/fenv/           All <fenv.h>   functionality is here
-src/stdlib/         All <stdlib.h> functionality is here
-src/math/           All <math.h>   functionality is here
-src/stdio/          All <stdio.h>  functionality is here
+The goal for this library is simply to have a MIT licensed libc for user
+mode applications (and possibly kernel level too).  This library is more
+targeted for os developers, or for embedded devices, however it can also
+be used on desktops too. ccaprice is supposed to be tiny, and easy to use,
+the library should not utilize external libraries (it's self hosting).
 
-
-src/posix/          This is the source folder for all functionality of the posix
-                    library.  Each header not part of C (but part of posix) has
-                    has it's own subdirectory in here if there are multiple
-                    functions in it.  Otherwise single files are create here for those
-                    headers.
-              
-src/posix/strings/  All <strings.h> functionality is here
-                   
-                    
-I request this directory structure is followed so things are trivial to
-find, and so things don't get easily mixed up.  This list should be updated
-when new directories are added.
+Some future requests:
+	ccaprice only has a single active developer currently so it's hard
+	to port it to alternitive platforms (such as arm).  As ccaprice is
+	supposed to be targeting embedded, and mobile devices an arm port is
+	something that would be interesting and neat to have.  Some other
+	architecture support could be nice too.
+	
+	ccaprice has very minimal optimization (mainly SSE2 only) it would be
+	nice to have some of the existing functionality optimized for other
+	SIMD instruction sets (such as AVX).  It could also be nice to optimize
+	existing functionality that isn't already optimized.
+	
+	ccaprice needs a lot of work to work as a dynamic library.  It would
+	require writing some sort of a dynamic linker to acomplish it; I figure
+	as such that support could be helpful aswell.  I'm not too certian if
+	I would want that as a part of ccaprice. I'm more attracted to the idea
+	that pcaprice would implemented the dynamic loader and ccaprice would
+	use pcaprice to obtain that dynamic loader functionality. Which I find
+	would make more sense.  Dynamic support should only be an optional 
+	feature however that has to be forced on during compilation stage, simply
+	because a static library feels nicer (expecially as ccaprice is small).
+	
+Probably the biggest tibit that you should know ccaprice is entierly unrestrictive
+license wise.  It should stay that way as well, under no circumstances will I
+ever accept external code (even if it's licensed under the same license as ccaprice)
+So you can feel safe and happy when using ccaprice for any project, for any use
+just remember you can do what ever you like with it (even sell it just like it is).
