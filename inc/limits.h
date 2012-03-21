@@ -33,10 +33,10 @@
  * cases where compile compilers support -unsigned-char and define a macro
  * which overrides the constants.
  */
-#	define  SHRT_MIN	__CCAPRICE_MIN(SHRT)
-#	define  SCHAR_MIN	__CCAPRICE_MIN(SCHAR)
-#	define  LLONG_MIN	__CCAPRICE_MIN(LLONG)
-#	define  INT_MIN		__CCAPRICE_MIN(INT)
+#	define  SHRT_MIN  __CCAPRICE_MIN(SHRT)
+#	define  SCHAR_MIN __CCAPRICE_MIN(SCHAR)
+#	define  LLONG_MIN __CCAPRICE_MIN(LLONG)
+#	define  INT_MIN   __CCAPRICE_MIN(INT)
 
 #ifdef __CCAPRICE_TARGET_X86_64
 #	define LONG_MAX   0x7FFFFFFFFFFFFFFFL
