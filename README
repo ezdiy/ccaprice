@@ -36,13 +36,13 @@ Some future requests:
 	require writing some sort of a dynamic linker to acomplish it; I figure
 	as such that support could be helpful aswell.  I'm not too certian if
 	I would want that as a part of ccaprice. I'm more attracted to the idea
-	that pcaprice would implemented the dynamic loader and ccaprice would
+	that pcaprice would implement the dynamic loader and ccaprice would
 	use pcaprice to obtain that dynamic loader functionality. Which I find
 	would make more sense.  Dynamic support should only be an optional 
 	feature however that has to be forced on during compilation stage, simply
 	because a static library feels nicer (expecially as ccaprice is small).
 	
-Probably the biggest tibit that you should know ccaprice is entierly unrestrictive
+Probably the biggest tibit that you should know: ccaprice is entierly unrestrictive
 license wise.  It should stay that way as well, under no circumstances will I
 ever accept external code (even if it's licensed under the same license as ccaprice)
 So you can feel safe and happy when using ccaprice for any project, for any use
