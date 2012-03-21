@@ -33,16 +33,16 @@
  * cases where compile compilers support -unsigned-char and define a macro
  * which overrides the constants.
  */
-#	define  SHRT_MIN  __CCAPRICE_MIN(SHRT)
-#	define  SCHAR_MIN __CCAPRICE_MIN(SCHAR)
-#	define  LLONG_MIN __CCAPRICE_MIN(LLONG)
-#	define  INT_MIN   __CCAPRICE_MIN(INT)
+#	define  SHRT_MIN     __CCAPRICE_MIN(SHRT)
+#	define  SCHAR_MIN    __CCAPRICE_MIN(SCHAR)
+#	define  LLONG_MIN    __CCAPRICE_MIN(LLONG)
+#	define  INT_MIN      __CCAPRICE_MIN(INT)
 
 #ifdef __CCAPRICE_TARGET_X86_64
-#	define LONG_MAX   0x7FFFFFFFFFFFFFFFL
-#	define LLONG_MAX  0x7FFFFFFFFFFFFFFFLL
-#	define LONG_BIT   64
-#	define CHAR_BIT   8
+#	define LONG_MAX      0x7FFFFFFFFFFFFFFFL
+#	define LLONG_MAX     0x7FFFFFFFFFFFFFFFLL
+#	define LONG_BIT      64
+#	define CHAR_BIT      8
 	/*
 	 * GCC and GCC like compilers when used with -unsigned-char flag define
 	 * a special constant __CHAR_UNSIGNED__ that needs to modify the behaviour
@@ -95,7 +95,7 @@
  * only define SSIZE_MAX if we're not defined as _ANSI_SOURCE
  */
 #if !defined(_ANSI_SOURCE)
-#	define SSIZE_MAX    INT_MAX
+#	define SSIZE_MAX     INT_MAX
 #endif
 
 /*
