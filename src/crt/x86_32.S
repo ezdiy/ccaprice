@@ -209,7 +209,7 @@ __ccaprice_syscall_bsd:
 	ret
 #endif
 	
-__caprice_syscall_core:
+__ccaprice_syscall_core:
 	pushl %ebp
 	pushl %edi
 	pushl %esi
