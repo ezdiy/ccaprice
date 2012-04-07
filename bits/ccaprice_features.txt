@@ -1,0 +1,377 @@
+The current supported features so far
+note the functions or headers in here may not be complete
+in terms of functionality (their bare minimum requirement)
+
+legend:
+	[LOCALE SUPPORT] == The code for the function supports custom locale,
+	                    or system locale; or BOTH.
+	                    
+	[GPR]            == The code for the function is optimized by using 
+	                    general purpose registers to do vector math.
+	                    
+	[naive]          == The code for the function is a naive implementation
+	                    which means it could be slow and should be improved
+	                    
+	[SSE2]           == The code for the function is optimized for SSE2
+	                    ready systems.
+	                    
+	[branchless]     == The code for the function is optimized for all 
+	                    systems; the optimization benefit arises from
+	                    the fact that the function uses no branches.
+	                    
+	[OPT]            == The code for the function is optimized using a 
+	                    different method not in this legend.
+
+assert.h:
+	assert()
+	
+ctype.h:
+	isalnum () [LOCALE SUPPORT]
+	isalpha () [LOCALE SUPPORT]
+	iscntrl () [LOCALE SUPPORT]
+	isdigit () [LOCALE SUPPORT]
+	isgraph () [LOCALE SUPPORT]
+	islower () [LOCALE SUPPORT]
+	isprint () [LOCALE SUPPORT]
+	ispunct () [LOCALE SUPPORT]
+	isspace () [LOCALE SUPPORT]
+	isupper () [LOCALE SUPPORT]
+	isxdigit() [LOCALE SUPPORT]
+	tolower () [LOCALE SUPPORT]
+	toupper () [LOCALE SUPPORT]
+	
+errno.h:
+	errno
+	
+fenv.h:
+	FE_INVALID
+	FE_DIVBYZERO
+	FE_OVERFLOW
+	FE_UNDERFLOW
+	FE_INEXACT
+	FE_ALL_EXCEPT
+	FE_TONEAREST
+	FE_DOWNWARD 
+	FE_UPWARD
+	FE_TOWARDZERO
+	FE_DFL_ENV
+	
+	feclearexcept  ()
+	feraiseexcept  ()
+	fegetexceptflag()
+	fesetexceptflag()
+	fetestexcept   ()
+	fesetround     ()
+	fegetround     ()
+	fegetenv       ()
+	feholdexcept   ()
+	fesetenv       ()
+	feupdateenv    ()
+	
+	typedef struct fenv_t
+	typedef ?      fexcept_t
+
+	
+float.h:
+	FLT_RADIX
+	FLT_MIN
+	FLT_MAX
+	FLT_EPSILON
+	FLT_MANT_DIG
+	FLT_MIN_EXP
+	FLT_MAX_EXP
+	FLT_DIG
+	FLT_MIN_10_EXP
+	FLT_MAX_10_EXP
+	DBL_MIN
+	DBL_MAX
+	DBL_EPSILON
+	DBL_MANT_DIG
+	DBL_MIN_EXP
+	DBL_MAX_EXP
+	DBL_DIG
+	DBL_MIN_10_EXP
+	DBL_MAX_10_EXP
+
+iso646.h:
+	and
+	and_eq
+	bitand
+	bitor
+	compl
+	not
+	or
+	or_eq
+	xor
+	xor_eq
+	
+locale.h:
+	struct lconv  [LOCALE SUPPORT]
+		decimal_point;
+		thousands_sep;
+		grouping;
+		int_curr_symbol;
+		currency_symbol;
+		mon_decimal_point;
+		mon_thousands_sep;
+		mon_grouping;
+		positive_sign;
+		negative_sign;
+		int_fract_digits;
+		fract_digits;
+		p_cs_precedes;
+		n_cs_precedes;
+		p_sep_by_space;
+		n_sep_by_space;
+		p_sign_posn;
+		n_sign_posn;
+		
+	setlocale () [LOCALE SUPPORT]
+	localeconv() [LOCALE SUPPORT]
+	
+signal.h:
+	raise()
+	
+stdarg.h:
+	va_list
+	va_start()
+	va_end  ()
+	va_arg  ()
+	
+stddef.h:
+	ptrdiff_t
+	size_t
+	offsetof()
+	NULL
+	
+stdio.h:
+	FILE
+	EOF
+	stdout
+	stdin
+	fclose()
+	feof  ()
+	ferror()
+	fflush()
+	fopen ()
+	fputc ()
+	fputs ()
+	fwrite()
+	printf() [incompleted! only supports a few things]
+	remove()
+	
+stdlib.h:
+	EXIT_SUCCESS
+	EXIT_FAILURE
+	MIN    () [extension/branchless]
+	MAX    () [extension/branchless]
+	abort  ()
+	atoi   ()
+	bsearch()
+	exit   ()
+	getenv ()
+	malloc ()
+	calloc ()
+	puts   ()
+	rand   () [SSE2/naive]
+	qsort  () [OPT/native]
+	srand  () [SSE2/naive]
+	
+string.h:
+	memchr  () [SSE2/naive]
+	memcmp  ()
+	memcpy  () [OPT/naive]
+	memmove ()
+	memset  ()
+	strcat  ()
+	strchr  ()
+	strcmp  ()
+	strcspn ()
+	strdup  ()
+	strerror()
+	strlen  () [SSE2/GPR/naive]
+	strncat ()
+	strncmp ()
+	strncpy ()
+	strpbrk ()
+	strspn  ()
+	ststr   ()
+	strtok  ()
+	
+limits.h
+	CHAR_BIT
+	SCHAR_MIN
+	SCHAR_MAX
+	UCHAR_MAX
+	CHAR_MIN
+	CHAR_MAX
+	MB_LEN_MAX
+	SHRT_MIN
+	SHRT_MAX
+	USHRT_MAX
+	INT_MIN
+	INT_MAX
+	UINT_MAX
+	LONG_MIN
+	LONG_MAX
+	ULONG_MAX\
+	
+math.h:
+	FP_ILOGB0
+	FP_ILOGBNAN
+	M_1_PI
+	M_2_PI
+	M_E
+	M_EULER
+	M_PI
+	M_PI_2
+	M_PI_4
+	M_TAU  [EXTENSION]
+	abs    () [branchless]
+	acos   ()
+	atan   ()
+	ceil   ()
+	fabs   ()
+	finite ()
+	floor  ()
+	frexp  ()
+	ilogb  ()
+	isnan  ()
+	sqrt   ()
+	
+
+POSIX features are below.  Note these do not clash with the C
+library functions above, they actually meld well.
+
+errno.h:
+	errno
+	E2BIG
+	EACCES
+	EADDRINUSE
+	EADDRNOTAVAIL
+	EAFNOSUPPORT
+	EAGAIN
+	EALREADY
+	EBADF
+	EBADMSG
+	EBUSY
+	ECANCELED
+	ECHILD
+	ECONNABORTED
+	ECONNREFUSED
+	ECONNRESET
+	EDEADLK
+	EDESTADDRREQ
+	EDOM
+	EDQUOT
+	EEXIST
+	EFAULT
+	EFBIG
+	EHOSTUNREACH
+	EIDRM
+	EILSEQ
+	EINPROGRESS
+	EINTR
+	EINVAL
+	EIO
+	EISCONN
+	EISDIR
+	ELOOP
+	EMFILE
+	EMLINK
+	EMSGSIZE
+	EMULTIHOP
+	ENAMETOOLONG
+	ENETDOWN
+	ENETRESET
+	ENETUNREACH
+	ENFILE
+	ENOBUFS
+	ENODATA
+	ENODEV
+	ENOENT
+	ENOEXEC
+	ENOLCK
+	ENOLINK
+	ENOMEM
+	ENOMSG
+	ENOPROTOOPT
+	ENOSPC
+	ENOSR
+	ENOSTR
+	ENOSYS
+	ENOTCONN
+	ENOTDIR
+	ENOTEMPTY
+	ENOTSOCK
+	ENOTSUP
+	ENOTTY
+	ENXIO
+	EOPNOTSUPP
+	EOVERFLOW
+	EPERM
+	EPIPE
+	EPROTO
+	EPROTONOSUPPORT
+	EPROTOTYPE
+	ERANGE
+	EROFS
+	ESPIPE
+	ESRCH
+	ESTALE
+	ETIME
+	ETIMEDOUT
+	ETXTBSY
+	EWOULDBLOCK
+	EXDEV
+	
+sysexit.h:
+	EX_OK
+	EX_USAGE
+	EX_DATAERR
+	EX_NOINPUT
+	EX_NOUSER
+	EX_NOHOST
+	EX_UNAVAILABLE
+	EX_SOFTWARE
+	EX_OSERR
+	EX_OSFILE
+	EX_CANTCREAT
+	EX_IOERR
+	EX_TEMPFAIL
+	EX_PROTOCOL
+	EX_NOPERM
+	EX_CONFIG
+	
+strings.h:
+	bcmp       ()
+	bcopy      ()
+	bzero      ()
+	ffs        ()
+	index      ()
+	rindex     ()
+	strcasecmp ()
+	strncasecmp()
+	
+unistd.h:
+	write ()
+	read  ()
+	open  ()
+	kill  ()
+	close ()
+	_exit ()
+	getpid()
+	
+The current supported locales for ccaprice
+	C      -- default C locale
+	en_CA  -- English Canada
+	en_US  -- English United States
+	en_AU  -- English Australia
+
+Extensions supported by ccaprice
+#define __CCAPRICE_EXTENSIONS prior to using them
+__CCAPRICE_BUILD_DATE -- returns a constant string literal of the build date of the library                     [expanded __DATE__]
+__CCAPRICE_BUILD_TIME -- returns a constant string literal of the build time of the library                     [expanded __TIME__]
+__CCAPRICE_BUILD_INFO -- returns a constant string literal of the info of the system used to compile ccaprice   [uname -a]
+__CCAPRICE_BUILD_COMP -- returns a constant string literal (all in caps) of the compiler used to build ccaprice ["GCC", "CLANG", "PATHCC"]
+__CCAPRICE_BUILD_HOST -- returns a constant string literal (all in caps) of the os used to build ccaprice       ["WIN", "LINUX", "BSD"]

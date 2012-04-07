@@ -1,0 +1,513 @@
+The current supported features so far
+note the functions or headers in here may not be complete
+in terms of functionality (their bare minimum requirement)
+
+algorithm:
+	advance        ()
+	for_each       ()
+	find           ()
+	find_if        ()
+	find_end       ()
+	find_first_of  ()
+	adjacent_find  ()
+	count          ()
+	count_if       ()
+	mismatch       ()
+	equal          ()
+	search         ()
+	search_n       ()
+	copy           ()
+	copy_backward  ()
+	swap           ()
+	swap_ranges    ()
+	transform      ()
+	replace        ()
+	replace_if     ()
+	replace_copy   ()
+	replace_copy_if()
+	fill           ()
+	fill_n         ()
+	generate       ()
+	generate_n     ()
+	remove         ()
+	remove_if      ()
+	remove_copy    ()
+	remove_copy_if ()
+	unique         ()
+	unique_copy    ()
+	reverse        ()
+	reverse_copy   ()
+	rotate         ()
+	rotate_copy    ()
+	random_shuffle ()
+	partition      ()
+	min            ()
+	max            ()
+	lower_bound    ()
+	upper_bound    ()
+	equal_range    ()
+	binary_search  ()
+	merge          ()
+	
+array:
+	class array
+	
+	array::value_type
+	array::pointer
+	array::const_pointer
+	array::iterator
+	array::const_iterator
+	array::reference
+	array::const_reference
+	array::size_type
+	array::difference_type
+	array::reverse_iterator
+	array:const_reverse_iterator
+	array::static_size
+
+	array::begin   ()
+	array::cbegin  ()
+	array::end     ()
+	array::cend    ()
+	array::rbegin  ()
+	array::rend    ()
+	array::crend   ()
+	array::at      ()
+	array::front   ()
+	array::back    ()
+	array::size    ()
+	array::empty   ()
+	array::max_size()
+	array::swap    ()
+	array::data    ()
+	array::assign  ()
+	array::fill    ()
+	
+	array::operator[]
+	array::opetator=
+	
+exception:
+	class exception
+	class bad_exception    : public exception
+	class bad_cast         : public exception
+	class bad_typeid       : public exception
+	class logic_error      : public exception
+	class runtime_error    : public exception
+	class domain_error     : public logic_error
+	class invalid_argument : public logic_error
+	class length_error     : public logic_error
+	class out_of_range     : public logic_error
+	class overflow_error   : public runtime_error
+	class underflow_error  : public runtime_error
+	
+functional:
+	class unary_function
+	class binary_function
+	class unary_negate  : public unary_function <T::argument_type, bool>
+	class binary_negate : public binary_function<T::first_argument_type , T::second_argument_type, bool>
+	class binder1st     : public unary_function <T::second_argument_type, T::result_type>
+	class binder2nd     : public unary_function <T::first_argument_type , T::result_type> 
+	
+	class pointer_to_unary_function  : public unary_function <T1, T2>
+	class pointer_to_binary_function : public binary_function<T1, T2, T3>
+	
+	class mem_fun_t            : public unary_functio n<T1*, T2>
+	class mem_fun1_t           : public binary_function<T1*, T2, T3>
+	class const_mem_fun_t      : public unary_function <T1*, T2>
+	class const_mem_fun1_t     : public binary_function<T1*, T2, T3>
+	class mem_fun_ref_t        : public unary_function <T1,  T2>
+	class mem_fun1_ref_t       : public binary_function<T1,  T2, T3>
+	class const_mem_fun_ref_t  : public unary_function <T1,  T2>
+	class const_mem_fun1_ref_t : public binary_function<T1,  T2, T3>
+	
+	struct plus          : binary_function<T,T,T>
+	struct minus         : binary_function<T,T,T>
+	struct multiplies    : binary_function<T,T,T>
+	struct divides       : binary_function<T,T,T>
+	struct modulus       : binary_function<T,T,T>
+	struct negate        : unary_function <T,T>
+	struct equal_to      : binary_function<T,T,bool>
+	struct not_equal_to  : binary_function<T,T,bool>
+	struct greater       : binary_function<T,T,bool>
+	struct less          : binary_function<T,T,bool>
+	struct greater_equal : binary_function<T,T,bool>
+	struct less_equal    : binary_function<T,T,bool>
+	struct logical_and   : binary_function<T,T,bool>
+	struct logical_or    : binary_function<T,T,bool>
+	struct logical_not   : unary_function <T, bool>
+	
+	unary_function::argument_type
+	unary_function::result_type
+	binary_function::first_argument_type
+	binary_function::second_argument_type
+	binary_function::result_type
+	
+	not1       ()
+	not2       ()
+	bind1st    ()
+	bind2nd    ()
+	ptr_fun    ()
+	mem_fun    ()
+	mem_fun_ref()
+	
+	unary_negate::operator                ()
+	binary_negate::operator               ()
+	binder1st::operator                   ()
+	binder2nd::operator                   ()
+	pointer_to_unary_function::operator   ()
+	pointer_to_binary_function::opertator ()
+	mem_fun_t::operator                   ()
+	mem_fun1_t::operator                  ()
+	const_mem_fun_t::operator             ()
+	const_mem_fun1_t::operator            ()
+	mem_fun_ref_t::operator               ()
+	mem_fun1_ref_t::operator              ()
+	const_mem_fun_ref_t::operator         ()
+	const_mem_fun1_ref_t::operator        ()
+	plus::operator                        ()
+	minus::operator                       ()
+	multiplies::operator                  ()
+	divides::operator                     ()
+	modulus::operator                     ()
+	negate::operator                      ()
+	equal_to::operator                    ()
+	not_equal_to::operator                ()
+	greater::operator                     ()
+	less::operator                        ()
+	greater_equal::operator               ()
+	less_equal::operator                  ()
+	logical_and::operator                 ()
+	logical_or::operator                  ()
+	logical_not::operator                 ()
+	
+initializer_list:
+	class initializer_list
+	initializer_list::value_type
+	initializer_list::reference
+	initializer_list::const_reference
+	initializer_list::size_type
+	initializer_list::iterator
+	initializer_list::const_iterator
+	
+	initializer_list::size ()
+	initializer_list::begin()
+	initializer_list::end  ()
+	
+	begin()
+	end  ()
+	
+iostream:
+	class ios
+	class ostream : public ios
+	class istream : public ios
+	ostream::operator<<()
+	istream::operator>>()
+	cout
+	cin
+	endl
+	
+iterator:
+	struct iterator
+	struct input_iterator_tag
+	struct output_iterator_tag
+	struct forward_iterator_tag
+	struct bidirectional_iterator_tag
+	struct random_access_iterator_tag
+	struct iterator_traits
+	class  reverse_iterator
+	class  insert_iterator
+	
+	iterator::value_type
+	iterator::difference_type
+	iterator::pointer
+	iterator::reference
+	iterator::iterator_category
+	iterator_traits::value_type
+	iterator_traits::difference_type
+	iterator_traits::pointer
+	iterator_traits::refrence
+	iterator_traits::iterator_category
+	reverse_iterator::value_type
+	reverse_iterator::difference_type
+	reverse_iterator::pointer
+	reverse_iterator::reference
+	insert_iterator::value_type
+	insert_iterator::difference_type
+	insert_iterator::pointer
+	insert_iterator::reference
+	
+	reverse_iterator::base       ()
+	reverse_iterator::operator-  ()
+	reverse_iterator::operator== ()
+	reverse_iterator::operator<  ()
+	reverse_iterator::operator+= ()
+	reverse_iterator::operator-= ()
+	reverse_iterator::operator++ ()
+	reverse_iterator::operator-- ()
+	reverse_iterator::operator+  ()
+	reverse_iterator::operator-  ()
+	reverse_iterator::operator[] ()
+	reverse_iterator::operator-> ()
+	reverse_iterator::operator*  ()
+	insert_iterator::operator*   ()
+	insert_iterator::operator++  ()
+	insert_iterator::operator=   ()
+	
+	inserter                     ()
+	
+limits:
+	enum float_round_style
+	enum float_denorm_style
+	struct numeric_limits
+	
+	float_round_style::round_indeterminate
+	float_round_style::round_toward_zero
+	float_round_style::round_to_nearest
+	float_round_style::round_toward_infinity
+	float_round_style::round_toward_neg_infinity
+	float_denorm_style::denorm_indeterminate
+	float_denorm_style::denorm_absent
+	float_denorm_style::denorm_present
+	numeric_limits::value_type
+	numeric_limits::is_specialized
+	numeric_limits::digits
+	numeric_limits::digits10
+	numeric_limits::is_signed
+	numeric_limits::is_integer
+	numeric_limits::is_exact
+	numeric_limits::radix
+	numeric_limits::min_exponent
+	numeric_limits::min_exponent10
+	numeric_limits::max_exponent
+	numeric_limits::max_exponent10
+	numeric_limits::has_infinity
+	numeric_limits::has_quiet_NaN
+	numeric_limits::has_signaling_NaN
+	numeric_limits::has_denorm
+	numeric_limits::has_denorm_loss
+	numeric_limits::is_iec559
+	numeric_limits::is_bounded
+	numeric_limits::is_modulo
+	numeric_limits::traps
+	numeric_limits::tinyness_before
+	numeric_limits::round_style
+	
+	numeric_limits::min          ()
+	numeric_limits::max          ()
+	numeric_limits::epsilon      ()
+	numeric_limits::round_error  ()
+	numeric_limits::infinity     ()
+	numeric_limits::quiet_NaN    ()
+	numeric_limits::signaling_NaN()
+	numeric_limits::denorm_min   ()
+	
+memory:
+	class auto_ptr
+	class raw_storage_iterator
+	class shared_ptr
+	class weak_ptr
+	
+	auto_ptr::value_type
+	auto_ptr::pointer
+	auto_ptr::reference
+	auto_ptr::const_pointer
+	shared_ptr::value_type
+	shared_ptr::pointer
+	shared_ptr::const_pointer
+	shared_ptr::reference
+	shared_ptr::const_reference
+	shared_ptr::size_type
+	weak_ptr::value_type
+	weak_ptr::pointer
+	weak_ptr::const_pointer
+	weak_ptr::reference
+	weak_ptr::const_reference
+	weak_ptr::size_type
+	
+	auto_ptr::get                   ()
+	auto_ptr::release               ()
+	auto_ptr::reset                 ()
+	auto_ptr::operator=             ()
+	auto_ptr::operator*             ()
+	auto_ptr::operator->            ()
+	auto_ptr::operator==            ()
+	auto_ptr::operator<             ()
+	raw_storage_iterator::operator= ()
+	raw_storage_iterator::operator++()
+	raw_storage_iterator::operator* ()
+	shared_ptr::get                 ()
+	shared_ptr::operator->          ()
+	shared_ptr::operator*           ()
+	shared_ptr::operator==          ()
+	shared_ptr::operator!=          ()
+	shared_ptr::operator<           ()
+	shared_ptr::refcount            ()
+	weak_ptr::get                   ()
+	weak_ptr::operator->            ()
+	weak_ptr::operator*             ()
+	weak_ptr::operator==            ()
+	weak_ptr::operator!=            ()
+	weak_ptr::operator<             ()
+	weak_ptr::refcount              ()
+	uninitialized_copy              ()
+	uninitialized_fill              ()
+	uninitialized_fill_n            ()
+	
+new:
+	void(*new_handler)()
+	class bad_alloc : public exception
+	class allocator
+	struct allocator::rebind
+	struct nothrow_t
+
+	allocator::value_type
+	allocator::pointer
+	allocator::reference
+	allocator::const_pointer
+	allocator::const_reference
+	allocator::size_type
+	allocator::difference_type
+	allocator::rebind::other
+	
+	nothrow
+	nohandle
+	
+	allocator::address   ()
+	allocator::destroy   ()
+	allocator::allocate  ()
+	allocator::deallocate()
+	allocator::max_size  ()
+	set_new_handler      ()
+	operator new         ()
+	operator new[]       ()
+	operator delete      ()
+	operator delete[]    ()
+	operator ==          ()
+	operator !=          ()
+	
+numeric:
+	accumulate         ()
+	adjacent_difference()
+	inner_product      ()
+	partial_sum        ()
+	
+string:
+	class basic_string
+	basic_string::value_type
+	basic_string::size_type
+	basic_string::iterator
+	basic_string::const_iterator
+	basic_string::alloc_type
+	basic_string::reverse_iterator
+	basic_string::const_reverse_iterator
+	basic_string::npos
+	
+	basic_string::c_str     ()
+	basic_string::data      ()
+	basic_string::length    ()
+	basic_string::capacity  ()
+	basic_string::size      ()
+	basic_string::empty     ()
+	basic_string::max_size  ()
+	basic_string::at        ()
+	basic_string::operator[]()
+	basic_string::reverse   ()
+	basic_string::assign    ()
+	basic_string::append    ()
+	basic_string::swap      ()
+	basic_string::clear     ()
+	basic_string::resize    ()
+	basic_string::push_back ()
+	basic_string::operator= ()
+	basic_string::operator+=()
+	basic_string::begin     ()
+	basic_string::end       ()
+	basic_string::rbegin    ()
+	basic_string::rend      ()
+	
+	operator==()
+	operator< ()
+	operator!=()
+	operator<=()
+	operator>=() 
+	
+type_traits:
+	struct integral_constant
+	struct conditional
+	struct enable_if
+	
+	integral_constant::value_type
+	integral_constant::type
+	integral_constant::value
+	integral_constant::operator integral_constant::value_type()
+	conditional::type
+	enable_if::type
+	
+	integral_constant<bool, true>  true_type
+	integral_constant<bool, false> false_type
+	
+	struct is_integral          : false_type // template specialization override to true_type
+	struct is_floating_point    : false_type // template specialization override to true_type
+	struct is_pointer           : false_type // template specialization override to true_type
+	struct is_lvalue_reference  : false_type // template specialization override to true_type
+	struct is_rvalue_reference  : false_type // template specialization override to true_type
+	struct is_void              : false_type // template specialization override to true_type
+	struct is_array             : false_type // template specialization override to true_type
+	struct is_function          : false_type // template specialization override to true_type
+	struct is_reference         : INTERNAL MAGIC TEMPLATE OR      <is_lvalue_reference<T>, is_rvalue_reference>>::type
+	struct add_rvalue_reference : INTERNAL MAGIC TEMPLATE ADD RVAL<T>
+	struct is_convertible       : integral_constant<bool, INTERNAL MAGIC TEMPLATE CONVERT ALLOWED <T1, T2>::value>
+	struct is_pod               : integral_constant<bool, (is_integral<T>::value || is_floating_point<T>::value || is_pointer<T>::value)>
+	
+	declval()
+	
+utility:
+	namespace rel_ops
+	struct pair
+	
+	pair::first_type
+	pair::second_type
+	pair::first
+	pair::second
+	
+	rel_ops::operator !=()
+	rel_ops::operator <=()
+	rel_ops::operator >=()
+	rel_ops::operator > ()
+	pair::operator=     ()
+	pair::swap          ()
+	operator ==         ()
+	operator <          ()
+	make_pair           ()
+	
+vector:
+	vector::value_type
+	vector::pointer
+	vector::const_pointer
+	vector::reference
+	vector::const_reference
+	vector::iterator
+	vector::const_iterator
+	vector::size_type
+	vector::reverse_iterator
+	vector::const_reverse_iterator
+	
+	vector::operator= ()
+	vector::begin     ()
+	vector::end       ()
+	vector::rbegin    ()
+	vector::rend      ()
+	vector::size      ()
+	vector::max_size  ()
+	vector::capacity  ()
+	vector::empty     ()
+	vector::reserve   ()
+	vector::resize    ()
+	vector::operator[]()
+	vector::at        ()
+	vector::front     ()
+	vector::back      ()
+	vector::push_back ()
+	vector::clear     ()
+	vector::assign    ()
+	vector::pop_back  ()
