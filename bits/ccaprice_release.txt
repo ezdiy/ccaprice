@@ -24,3 +24,18 @@ Fri Mar  2 23:35:59 EST 2012
 	CCAPRICE_EXTENSIONS.  Various bug fixes and refactoring of existing
 	code as well. Perliminary support for Windows and OSx as well, Windows
 	code compiles, but doesn't run.
+	
+
+Sat Apr  7 16:20:15 EDT 2012
+	ccaprice third public release -- version 0.1.2
+	Fixed namespace issues with all ccaprice code.  Improved makefile, much
+	nicer (detects endianess), doesn't require passing multiple arguments;
+	it can now deduce this information by using standard programs.
+	The entry point has been reworked for windows (windows builds still dont
+	run).  Implemented a fast qsort(), and bsearch().  Improved existing
+	memcpy for systems where rep movsb is not optimized by microcode.
+	Rewrote malloc and calloc to use SYS_brk.  Implemented <float.h>, and
+	<fenv.h> all ISO conformant.  More math stuff, acos(), and sqrt().
+	Fixed bug in atoi().  Fixed udivdi3 for x86_32 (was terribly broken).
+	Implemented <limits.h>  Added informative readmes, some indendation
+	refactoring, and that's it.

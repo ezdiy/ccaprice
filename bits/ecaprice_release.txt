@@ -15,3 +15,11 @@ Fri Mar  2 23:35:59 EST 2012
 	new features actually implemented.  Most work was focused on getting
 	ccaprice stable and useable as a library.  Next months release will
 	be more focused on ecaprice.
+
+Sat Apr  7 16:20:15 EDT 2012
+	Implemented various C redirect headers, such as: <cerrno>, <cfloat>
+	<ciso646>, <clocale>, <cmath>, <csetjmp>, <csignal>, <cstdarg>, and
+	<cstddef>.  Also implemented std::merge for <algorithm>.  Not a lot
+	of things were added, but it's justifyable for a release.  Despite
+	how last release I intended on working more on ecaprice, but I didn't
+	sorry guys.
