@@ -31,6 +31,7 @@
 #include "inc/stdint.h"
 #include "inc/fenv.h"
 #include "inc/limits.h"
+#include "inc/stdnoreturn.h"
 
 #include "inc/posix/errno.h"
 #include "inc/posix/strings.h"
@@ -319,7 +320,6 @@ TEST_DEF(posix\040, rindex, {
 	TEST_RET(find-data+1 == 18)
 })
 
-
 #include <sys/ioctl.h>
 int main(int argc, char **argv, char **argp) {
 	struct winsize ws;
@@ -380,5 +380,6 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(ffs);
 	TEST_TRY(index);
 	TEST_TRY(rindex);
+	
 	return 0;
 }
