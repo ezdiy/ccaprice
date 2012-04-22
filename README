@@ -31,6 +31,11 @@ Some future requests:
 	nice to have some of the existing functionality optimized for other
 	SIMD instruction sets (such as AVX).  It could also be nice to optimize
 	existing functionality that isn't already optimized.
+
+	ccaprice suffers from some unsafe code (nothing is threadsafe) and C11
+	the new C standard requires a lot of it to be reworked for thread-safe
+	reasons.  Also there needs to be support for threading (perhaps a template
+	for people to bind their own thread code to).
 	
 	ccaprice needs a lot of work to work as a dynamic library.  It would
 	require writing some sort of a dynamic linker to acomplish it; I figure
