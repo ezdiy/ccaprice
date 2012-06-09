@@ -24,40 +24,53 @@
 #include "inc/errno.h"
 #include "src/crt/runtime.h"
 #include "inc/posix/errno.h"
-int raise(int sig) {
-	/*
-	 * Validate sig is a valid signal if it's not
-	 * we have to set an error code in errno. This
-	 * is so odd; SUSv3 says it has to be though.
-	 * There must be a faster way at doing this?
-	 */
-	 
-	/*
-	 * Work around systems with  no  SIGPOLL
-	 * use SIGUSR1  again, double  check is
-	 * of no harm.  It's just not all sytems
-	 * have SIGPOLL.
-	 */
-	#ifndef SIGPOLL
-		#define SIGPOLL SIGUSR1
-	#endif
-	
-	#if !defined(WIN)
-		if (sig != SIGABRT && sig != SIGALRM   && sig != SIGBUS  && 
-			sig != SIGCHLD && sig != SIGCONT   && sig != SIGFPE  &&
-			sig != SIGHUP  && sig != SIGILL    && sig != SIGINT  &&
-			sig != SIGKILL && sig != SIGPIPE   && sig != SIGQUIT &&
-			sig != SIGSEGV && sig != SIGSTOP   && sig != SIGTERM &&
-			sig != SIGTSTP && sig != SIGTTIN   && sig != SIGTTOU &&
-			sig != SIGUSR1 && sig != SIGUSR2   && sig != SIGPOLL &&
-			sig != SIGPROF && sig != SIGSYS    && sig != SIGTRAP &&
-			sig != SIGURG  && sig != SIGVTALRM && sig != SIGXCPU && sig != SIGXFSZ) {
-				errno = EINVAL;
-				return 1;
-		}
-	#endif
-	
-	return kill(getpid(), sig);
+
+/*
+ * Proper signum's
+ * #define SIGABRT __ccaprice_signal_selector[0]
+ * #define SIGILL  __ccaprice_signal_selector[1]
+ * #define SIGSEGV __ccaprice_signal_selector[2]
+ * #define SIGFPE  __ccaprice_signal_selector[3]
+ * #define SIGINT  __ccaprice_signal_selector[4]
+ * #define SIGTERM __ccaprice_signal_selector[5]
+ */
+#if defined(LINUX) || defined(BSD)
+/*
+ * All signal numbers are the same across all x86_32 / x86_64
+ * linux systems and BSD's
+ * 
+ * ARM and alpha support will require more fine-tuned regard 
+ * to signal numbers (when those architectures are supported)
+ */
+	int __ccaprice_signal_selector[6] = {
+		/* SIGABRT */ 6,
+		/* SIGILL  */ 4,
+		/* SIGSEGV */ 11,
+		/* SIGFPE  */ 8,
+		/* SIGINT  */ 2,
+		/* SIGTERM */ 15
+	};
+#else
+#	error "No implemented __ccaprice_signal_selector for OS"
+#endif
+
+/* internal handlers */
+int __ccaprice_signal_dfl(int sig) {
+	return kill (
+		getpid(),
+		__ccaprice_signal_selector[sig]
+	);
+}
+int __ccaprice_signal_ign(int sig) {
+	return __ccaprice_signal_selector[sig];
 }
 
+int raise(int sig) {
+	/*
+	 * Execute the default signal action which is kill()
+	 * this whole system is odd
+	 */
+	return __ccaprice_signal_dfl(sig);
+}
 
+/* TODO: implement signal and sig_atomic_t */

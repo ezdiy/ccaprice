@@ -22,7 +22,38 @@
  */
 #ifndef __CCAPRICE_SIGNAL_HDR__
 #define __CCAPRICE_SIGNAL_HDR__
-#ifndef WIN
-#	include <sys/signal.h>
-#endif
+#include "inc/ccaprice.h"
+/*
+ * The C standard only states that the following be implemented:
+ * SIGABRT
+ * SIGILL
+ * SIGSEGV
+ * SIGFPE
+ * SIGINT
+ * SIGTERM
+ * 
+ * handlers:
+ * SIG_DFL
+ * SIG_IGN
+ * 
+ * To properly select the right signum we compose an array which when
+ * indexed by one of these will select the right signum for it.
+ */
+
+#define SIGABRT 0 /*__ccaprice_signal_selector[0]*/
+#define SIGILL  1 /*__ccaprice_signal_selector[1]*/
+#define SIGSEGV 2 /*__ccaprice_signal_selector[2]*/
+#define SIGFPE  3 /*__ccaprice_signal_selector[3]*/
+#define SIGINT  4 /*__ccaprice_signal_selector[4]*/
+#define SIGTERM 5 /*__ccaprice_signal_selector[5]*/
+
+#define SIG_DFL (&__ccaprice_signal_dfl)
+#define SIG_IGN (&__ccaprice_signal_ign)
+
+/* internal functions */
+__CCAPRICE_EXPORT int __ccaprice_signal_dfl(int);
+__CCAPRICE_EXPORT int __ccaprice_signal_ign(int);
+
+/* exposed functions */
+__CCAPRICE_EXPORT int raise(int);
 #endif
