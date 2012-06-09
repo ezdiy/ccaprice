@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -26,43 +26,43 @@
  * 	This is non-recurisive, instead a stack of pointers store the next
  * 	array (partition) to sort, this is immensly sped up by allocating
  * 	CHAR_BIT * sizeof(size_t) worth space on the stack for the array.
- * 
+ *
  * 	We use a median-of-three decision tree to determine pivot elements,
  * 	this reduces the likelyhood of selecting a pivot value which may
  * 	be bad, or already selected (prevent extra comparisions).
- * 
+ *
  * 	We only actually quick sort on E/T worth paritions, leaving the
  * 	insertion sort to sort the T worth items within each of the
  * 	partitions, this works well since insertion sort works fast on
  * 	semi-sorted, small, array segments; which at this point it's already
  * 	guranteed to be.
- * 
+ *
  * 	The larger of the sub paritions is pushed onto the stack before
  * 	others, this allows the sorter to work on smaller partitions.  This
  * 	gurantees no more than O(1) space complexity.
- * 
+ *
  * 	The internal swapping taking care of the sorting mechanisims uses
  * 	a fall-through swap for data less than 8, and a duffs-device for
  * 	array segements > 8, this gurantees comparision-less, branchless
  * 	swapping for short-width segements < 8, and may-speed up for larger
  * 	segements depending on the system, if not, no actual overhead is added
  * 	compared to a traditional naive swap.
- * 
+ *
  * 	When doing the pivot swap there is a goto used to skip the next pivot
  *  if the check passes for the given partition. This allows us to ignore
  * 	potential branches. This might not actually be the optimal case depending
  * 	on certian variables. This can be overrode however where branches will
  * 	be used instead.
- * 
+ *
  *	When performing swapping, pushing to the stack, or popping from the
  * 	stack no function call overhead is added.  Instead macros are used for
  * 	absolute inlinability, this in some cases can offer greater performance
  * 	over a function call (that the compiler might not inline).
- * 
+ *
  * 	No memory is allocated dynamically, it should be noted memory is still
  * 	allocated on the stack, but thats cheap.  This qsort doesn't perform a
  * 	single dynamic allocation.
- * 
+ *
  * 	When searching for the first element during insertion sort we use an
  * 	unrolled loop, which is mostly faster since we only have to search for
  * 	inside half of the range max worth elements.
@@ -102,7 +102,7 @@ typedef struct {
 	    ++(N)                            \
     )                                    \
 )
-/* 
+/*
  * Pushes back lo (L) & hi (H) into node (N-1)
  * om single statement, and decrements node.
  */
@@ -117,7 +117,7 @@ typedef struct {
 /*
  * We can use goto to rid of some branching.  Who knows if this is
  * actually faster or slower on some systems.  This is really here
- * just to make debugging simpler.  Branches area much easier to 
+ * just to make debugging simpler.  Branches area much easier to
  * follow compared to jumps.
  */
 #ifdef CCAPRICE_QSORT_GOTO
@@ -156,7 +156,7 @@ typedef struct {
     #define CCAPRICE_QSORT_JUMPAFTER()                        \
         do {                                                  \
         } while(0)
-#endif 
+#endif
 
 /*
  * We can unroll the loop when searching for smallest element, since that
@@ -191,14 +191,14 @@ typedef struct {
 #endif
 /*
  * This is a highly optimized swap function for qsort functionality.
- * 
+ *
  * This function works well for large or small widths of data.  It unrolls
  * the while(W--) { } loop which would be used in a naive implementation.
- * A naive implementation works well where performance is not a concern, 
+ * A naive implementation works well where performance is not a concern,
  * need it be reminded this is a QSORT implementation and performance is
  * very important.  Note: This can actually be slower depending on the
  * compiler and system at play.
- * 
+ *
  * This is faster for me at least on my system, compared to the alternitive
  * inline swap below, system info:
  *         gcc version 4.6.2 20120120 (prerelease) (GCC)
@@ -262,19 +262,19 @@ void qsort(void * ebase, size_t items, size_t size, int (*cmp)(const void *, con
 	size_t               thold = CCAPRICE_QSORT_RANGEMAX * size;
 	char *run, *end;
 	char *tmp, *thr;
-	
+
 	if (items == 0)
 		return;
 
 	if (items > CCAPRICE_QSORT_RANGEMAX) {
 		char *lo = pbase;
 		char *hi = &pbase[size * (items-1)];
-		
+
 		CCAPRICE_QSORT_PUSHDATA(stack, NULL, NULL);
 		while (sdata < stack) {
 			char *lp, *rp;
 			char *md = lo + size * ((hi - lo) / size >> 1);
-			
+
 			/* Jump check */
 			CCAPRICE_QSORT_JUMPCHECK0(tt);
 			CCAPRICE_QSORT_JUMPCHECK1(md, lo, md, lo, tt);
@@ -328,7 +328,7 @@ void qsort(void * ebase, size_t items, size_t size, int (*cmp)(const void *, con
 		CCAPRICE_QSORT_SMALLE(CCAPRICE_QSORT_SMALLMAX);
 	if (tmp != pbase)
 		CCAPRICE_QSORT_SWAP(tmp, pbase, size);
-		
+
 	/* Insertion sort */
 	run = pbase + size;
 	while((run += size) <= end) {
@@ -348,7 +348,7 @@ void qsort(void * ebase, size_t items, size_t size, int (*cmp)(const void *, con
 		}
 	}
 }
-/* 
+/*
  * We don't want these to get into any global scope.  We have no use from
  * here on in for these.  Note: Add any additional SMALLE loop unroll macros
  * here so they too don't get stuck in the global namespace.

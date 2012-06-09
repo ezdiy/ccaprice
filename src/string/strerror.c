@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -106,6 +106,6 @@ static const char *ccaprice_strerror[] = {
 char *strerror(int errnum) {
 	if (errnum < E2BIG || errnum > EXDEV)
 		errno = EINVAL;
-		
+
 	return (char*)ccaprice_strerror[errnum];
 }

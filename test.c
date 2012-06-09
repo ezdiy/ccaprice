@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -68,11 +68,11 @@ TEST_DEF(string, memcpy, {
 	char  data[] = "Sample";
 	char  copy[sizeof(data)];
 	memcpy(copy, data, sizeof(data));
-	
+
 	TEST_RET(copy[0] == 'S' && copy[1] == 'a' &&
 			 copy[2] == 'm' && copy[3] == 'p' &&
 			 copy[4] == 'l' && copy[5] == 'e')
-			 
+
 })
 
 TEST_DEF(string, memmove, {
@@ -166,7 +166,7 @@ TEST_DEF(string, strpbrk, {
 	int         iter    = 0;
 	char        find[]  = "aeiou";
 	char        core[6];
-	
+
 	look = strpbrk(data, find);
 	while (look != NULL)
 		core[iter] = *look, iter++, look = strpbrk(look+1, find);
@@ -247,10 +247,11 @@ TEST_DEF(math\040\040, sqrt, {
 TEST_DEF(stdlib, min, { TEST_RET(MIN(100,50) ==  50) })
 TEST_DEF(stdlib, max, { TEST_RET(MAX(50,100) == 100) })
 
+int cmp(const void *a, const void *b) {
+	return (*(int*)a - *(int*)b);
+}
+
 TEST_DEF(stdlib, qsort, {
-	int cmp(const void *a, const void *b) {
-		return (*(int*)a - *(int*)b);
-	}
 	int d[] = { 0,  64, 22, 65, 21, 87, 32, 76, 43, 99, 100, 54, 32, 87, 69 };
 	qsort(d, sizeof(d)/sizeof(int), sizeof(int), cmp);
 	TEST_RET(d[0]  == 0  && d[1]  == 21 && d[2]  == 22 && d[3]  == 32 &&
@@ -258,11 +259,7 @@ TEST_DEF(stdlib, qsort, {
 			 d[8]  == 65 && d[9]  == 69 && d[10] == 76 && d[11] == 87 &&
 			 d[12] == 87 && d[13] == 99 && d[14] == 100);
 });
-
 TEST_DEF(stdlib, bsearch, {
-	int cmp(const void *a, const void *b) {
-		return (*(int*)a - *(int*)b);
-	}
 	int  d[] = { 10, 20, 25, 40, 90, 100 };
 	int  k   = 40;
 	int *i   = bsearch(&k, d, sizeof(d)/sizeof(*d), sizeof(int), cmp);
@@ -276,10 +273,10 @@ TEST_DEF(stdlib, malloc, {
 	data[2] = 'l';
 	data[3] = 'l';
 	data[4] = 'o';
-	
+
 	TEST_RET(strncmp(data, data, 5) == 0);
 });
-	
+
 TEST_DEF(posix\040, bcmp, {
 	const char  data1[] = "This string";
 	const char  data2[] = "This string";
@@ -290,7 +287,7 @@ TEST_DEF(posix\040, bcopy, {
 	char  data[] = "Sample";
 	char  copy[sizeof(data)];
 	bcopy(data, copy, sizeof(data));
-	
+
 	TEST_RET(copy[0] == 'S' && copy[1] == 'a' &&
 			 copy[2] == 'm' && copy[3] == 'p' &&
 			 copy[4] == 'l' && copy[5] == 'e')
@@ -325,17 +322,17 @@ int main(int argc, char **argv, char **argp) {
 	struct winsize ws;
 	ioctl(1, TIOCGWINSZ, &ws);
 	PADD = ws.ws_col+3;
-	
+
 	int  i = 0;
 	while(*argp++ && *argp)
 		printf("%05d : \033[36m%s\033[0m\n", ++i, *argp);
-		
+
 	printf("\nCCAPRICE_BUILD_DATE: \033[33m%s\033[0m\n",   __CCAPRICE_BUILD_DATE);
 	printf(  "CCAPRICE_BUILD_TIME: \033[33m%s\033[0m\n",   __CCAPRICE_BUILD_TIME);
 	printf(  "CCAPRICE_BUILD_INFO: \033[33m%s\033[0m\n",   __CCAPRICE_BUILD_INFO);
 	printf(  "CCAPRICE_BUILD_HOST: \033[33m%s\033[0m\n",   __CCAPRICE_BUILD_HOST);
 	printf(  "CCAPRICE_BUILD_COMP: \033[33m%s\033[0m\n\n", __CCAPRICE_BUILD_COMP);
-	
+
 	TEST_TRY(memchr);
 	TEST_TRY(memcmp);
 	TEST_TRY(memcpy);
@@ -356,7 +353,7 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(strspn);
 	TEST_TRY(strstr);
 	TEST_TRY(strtok);
-	
+
 	TEST_TRY(abs);
 	TEST_TRY(acos);
 	TEST_TRY(atan);
@@ -367,19 +364,19 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(frexp);
 	TEST_TRY(ilogb);
 	TEST_TRY(isnan);
-	
+
 	TEST_TRY(min);
 	TEST_TRY(max);
 	TEST_TRY(qsort);
 	TEST_TRY(bsearch);
 	TEST_TRY(malloc);
-	
+
 	TEST_TRY(bcmp);
 	TEST_TRY(bcopy);
 	TEST_TRY(bzero);
 	TEST_TRY(ffs);
 	TEST_TRY(index);
 	TEST_TRY(rindex);
-	
+
 	return 0;
 }

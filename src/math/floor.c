@@ -4,11 +4,11 @@
  *
  * Developed at SunSoft, a Sun Microsystems, Inc. business.
  * Permission to use, copy, modify, and distribute this
- * software is freely granted, provided that this notice 
+ * software is freely granted, provided that this notice
  * is preserved.
  * ====================================================
  *
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -33,11 +33,11 @@
 
 double floor(double x) {
 	unsigned i,j;
-	
+
 	int x_hi =  __CCAPRICE_MATH_HI_L(x);
 	int x_lo =  __CCAPRICE_MATH_LO_L(x);
 	int iter = ((x_hi>>20)&0x7ff)-0x3ff;
-	
+
 	if (iter < 20) {
 		if (iter < 0) {
 			if (1.0e300+x > 0.0) {
@@ -62,7 +62,7 @@ double floor(double x) {
 		if (1.0e300+x > 0.0) {
 			if (x_hi < 0) {
 				if (iter == 20)
-					x_hi ++; 
+					x_hi ++;
 				else
 					j = x_lo + (1<<(52-iter)), x_hi = (j < x_lo) ? x+1: x, x_lo = j;
 			}

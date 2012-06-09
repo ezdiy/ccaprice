@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -31,11 +31,11 @@
  * SIGFPE
  * SIGINT
  * SIGTERM
- * 
+ *
  * handlers:
  * SIG_DFL
  * SIG_IGN
- * 
+ *
  * To properly select the right signum we compose an array which when
  * indexed by one of these will select the right signum for it.
  */

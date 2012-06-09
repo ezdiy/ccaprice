@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -26,10 +26,10 @@ char *strstr(const char *ehay, const char *ened) {
 	char  *ned = (char*)ened;
 	char   c,s;
 	size_t len;
-	
+
 	if ((c = *ned++)) {
 		len = strlen(ned);
-		do { 
+		do {
 			do {
 				if (!(s = *hay++))
 					return NULL;
@@ -38,4 +38,4 @@ char *strstr(const char *ehay, const char *ened) {
 		hay--;
 	}
 	return hay;
-} 
+}

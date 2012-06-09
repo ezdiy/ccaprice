@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -27,7 +27,7 @@
  * Standard says these need to be locale conformant
  * We'll use a structure to define the ctype locale
  * data.
- * 
+ *
  * Note: The only implemented locale is the default
  * C locale, future locales will come when required.
  */
@@ -79,15 +79,15 @@ typedef struct {
  * The category specifes which parts of the
  * internal library change depending on the
  * selected locale.
- * 
+ *
  * The category can be any of the following
- * 	-LC_ALL       
+ * 	-LC_ALL
  * 	-LC_COLLATE
  * 	-LC_CTYPE
  * 	-LC_MONETARY
  * 	-LC_NUMERIC
  * 	-LC_TIME
- * 
+ *
  * LC_ALL:      changes the behaviour of the entire locale
  * LC_COLLATE:  only affects the behaviour of strcoll, and strxfrm
  * LC_CTYPE:    changes the behaviour in <ctype.h>
@@ -95,7 +95,7 @@ typedef struct {
  * LC_NUMERIC:  affects _ONLY_ the decimal point on I/O operations and
  *              non-monetary information returned by localeconv()
  * LC_TIME:     only changes the behaviour of strftime.
- * 
+ *
  * there is by default a "C" locale which is the minimal basic locale
  * specified by ccaprice. A null string ("") or NULL should select the
  * default enviroment locale.
@@ -111,7 +111,7 @@ typedef struct lconv {
 	 char *mon_grouping;
 	 char *positive_sign;
 	 char *negative_sign;
-	
+
 	 char  int_fract_digits;
 	 char  fract_digits;
 	 char  p_cs_precedes;

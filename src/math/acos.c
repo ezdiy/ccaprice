@@ -4,11 +4,11 @@
  *
  * Developed at SunSoft, a Sun Microsystems, Inc. business.
  * Permission to use, copy, modify, and distribute this
- * software is freely granted, provided that this notice 
+ * software is freely granted, provided that this notice
  * is preserved.
  * ====================================================
  *
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -32,7 +32,7 @@
 #include "inc/math.h"
 
 static const double ccaprice_acos_pS[]   = {
-	1.66666666666666657415e-01, -3.25565818622400915405e-01, 
+	1.66666666666666657415e-01, -3.25565818622400915405e-01,
 	2.01212532134862925881e-01, -4.00555345006794114027e-02,
 	7.91534994289814532176e-04,  3.47933107596021167570e-05
 };
@@ -47,7 +47,7 @@ static const double ccaprice_acos_pio2[] = {
 double acos(double x) {
 	int x_hi = __CCAPRICE_MATH_HI_L(x);
 	int iter = x_hi & 0x7FFFFFFF;
-	
+
 	if (iter >= 0x3FF00000) {
 		if (((iter-0x3FF00000) | __CCAPRICE_MATH_LO_L(x)) == 0)
 			return (x_hi > 0) ? 0.0f : 3.14159265358979311600e+00 + 2.0f * (*ccaprice_acos_pio2);

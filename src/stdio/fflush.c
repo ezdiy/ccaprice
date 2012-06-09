@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -42,7 +42,7 @@ int fflush(FILE *fp) {
 	//	errno = EBADF;
 	//	return EOF;
 	//}
-			
+
 	fwrite(fp->buffer_dat, fp->buffer_pos, 1, fp);
 	fp->buffer_dat[0] = 0;
 	fp->buffer_pos    = 0;

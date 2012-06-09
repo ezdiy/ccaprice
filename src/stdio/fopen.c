@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -28,10 +28,10 @@ FILE   __ccaprice_stdio_file_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN];
 size_t __ccaprice_stdio_file_pos = 0;
 
 FILE *fopen(const char *file, const char *mode) {
-	
+
 	size_t flags = O_RDONLY;
 	size_t other = 0;
-	
+
 	/*
 	 * Determine file mode.
 	 */
@@ -44,7 +44,7 @@ FILE *fopen(const char *file, const char *mode) {
 		}
 		mode++;
 	}
-	
+
 	if (other) {
 		flags = (flags &~(O_RDONLY|O_WRONLY))|O_RDWR;
 	}
@@ -55,18 +55,18 @@ FILE *fopen(const char *file, const char *mode) {
 	 */
 	#ifdef __CCAPRICE_TARGET_X86_32
 		/*
-		 * (LFS) Allow files whose sizes cannot be represented in an off_t 
+		 * (LFS) Allow files whose sizes cannot be represented in an off_t
 		 * (but can be represented in an off64_t) to be opened.
 		 **/
 		flags |= O_LARGEFILE;
 	#endif
-	
+
 	FILE *fp       = &__ccaprice_stdio_file_dat[__ccaprice_stdio_file_pos];
 	fp->fd         = open(file, flags);
 	fp->buffer_pos = 0;
 	fp->eof        = 0;
 	fp->err        = 0;
-	
+
 	__ccaprice_stdio_file_pos ++;
 	return fp;
 }

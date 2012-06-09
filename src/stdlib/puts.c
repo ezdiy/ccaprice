@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -26,7 +26,7 @@ int puts(const char *m) {
 	int go;
 	go = fputs(m   , stdout);
 	go = fputc('\n', stdout);
-	
+
 	fflush(stdout);
 	return go;
 }

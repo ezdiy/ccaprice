@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -23,7 +23,7 @@
 #include "inc/ccaprice.h"
 #if defined(__STDLIB_RANDOM_OPTIMAL)
 #	if defined(__STDLIB_RANDOM_OPTIMAL_SSE2)
-#		include <emmintrin.h>
+#		include "int/emmintrin.h"
 #		define __CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1 0x00
 #		define __CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2 0x01
 #		define __CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE _MM_SHUFFLE(2,3,0,1)
@@ -45,10 +45,10 @@
 				seed+__CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2
 			);
 		}
-		
+
 		#define DATA(X) \
 		static const unsigned int data_##X[4]
-			
+
 		inline int rand() {
 			__m128i split;
 			__m128i multi;
@@ -56,23 +56,23 @@
 			__m128i mmask;
 			__m128i smask;
 			__m128i store;
-			
+
 			DATA(multi)={0x000343FD,0x000043FD,0x000343FD,0x00010DCD};
 			DATA(adder)={0x00269EC3,0x009E9EC3,0x00D19EC3,0x00000001};
 			DATA(mmask)={0xFFFFFFFF,0x00000000,0xFFFFFFFF,0x00000000};
 			DATA(smask)={0x00007FFF,0x00007FFF,0x00007FFF,0x00007FFF};
 			#undef DATA
-			
+
 			adder = _mm_load_si128   ((__m128i*)data_adder);
 			multi = _mm_load_si128   ((__m128i*)data_multi);
 			mmask = _mm_load_si128   ((__m128i*)data_mmask);
 			smask = _mm_load_si128   ((__m128i*)data_smask);
-			
+
 			split = _mm_shuffle_epi32(
 				__ccaprice_stdlib_rseed,
 				__CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
 			);
-			
+
 			__ccaprice_stdlib_rseed = _mm_mul_epu32(__ccaprice_stdlib_rseed, multi);
 			multi                   = _mm_shuffle_epi32(
 				multi,
@@ -89,9 +89,9 @@
 			__ccaprice_stdlib_rseed = _mm_add_epi32 (__ccaprice_stdlib_rseed, adder);
 			store                   = _mm_srai_epi32(__ccaprice_stdlib_rseed, 0x10);
 			store                   = _mm_and_si128 (store, smask);
-			
+
 			return (unsigned int)_mm_cvtsi128_si32(store);
-			
+
 			#undef __CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE
 			#undef __CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2
 			#undef __CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1

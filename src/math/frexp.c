@@ -4,11 +4,11 @@
  *
  * Developed at SunSoft, a Sun Microsystems, Inc. business.
  * Permission to use, copy, modify, and distribute this
- * software is freely granted, provided that this notice 
+ * software is freely granted, provided that this notice
  * is preserved.
  * ====================================================
  *
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -35,11 +35,11 @@ double frexp(double x, int *p) {
 	int x_hi = __CCAPRICE_MATH_HI_L(x);
 	int x_lo = __CCAPRICE_MATH_LO_L(x);
 	int iter = 0x7FFFFFFF & x_hi;
-	
+
 	*p = 0;
 	if (iter >=0x7FFFFFFF || ((iter | x_lo) == 0))
 		return x;
-		
+
 	if (iter < 0x00100000) {
 		x   *= 1.80143985094819840000e+16;
 		x_hi = __CCAPRICE_MATH_HI_L(x);
@@ -49,7 +49,7 @@ double frexp(double x, int *p) {
 	}
 	*p  += (iter >> 20) - 1022;
 	x_hi = (x_hi & 0x800FFFFF) | 0x3FE00000;
-	
+
 	__CCAPRICE_MATH_HI_L(x) = x_hi;
 	return x;
 }

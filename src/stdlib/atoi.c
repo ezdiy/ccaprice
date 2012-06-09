@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -28,10 +28,10 @@ int atoi(const char *s) {
 	int                negated = 0;
 	static const char *numeric = "0123456789";
 	static const char *where   = 0;
-	
+
 	/* Skip any whitespace */
 	while ((*s=='0' || *s=='\t') && *s++);
-	
+
 	s+=(negated=(*s=='-'));
 	while (*s) {
 		if (!(where=strchr(numeric, *s))) break;

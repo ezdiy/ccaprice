@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,4 +21,10 @@
  * SOFTWARE.
  */
 #include "inc/math.h"
-double sqrt(double x) { return __builtin_sqrt(x); }
+double sqrt(double x) {
+	#ifndef __clang__
+	return __builtin_sqrt(x);
+	#else
+	return 0.0f;
+	#endif
+}

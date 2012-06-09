@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -24,7 +24,7 @@
 #define __CCAPRICE_STDLIB_HDR__
 #include "ccaprice.h"
 
-/* 
+/*
  * Handle size_t and NULL according to standard.  By themselfs as new
  * types / macros alltogether.  You're not allowed to include other
  * standard headers with other standard headers.

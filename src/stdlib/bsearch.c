@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -26,7 +26,7 @@ void *bsearch(const void *key, const void *pbase, size_t nmemb, size_t size, int
 	char *base = (char*)pbase;
 	int   line;
 	int   test;
-	
+
 	for (line = nmemb; line != 0; line >>= 1) {
 		void *ptr = base + (line >> 1) * size;
 		if((test = (*cmp)(key, ptr)) <= 0)
@@ -38,4 +38,4 @@ void *bsearch(const void *key, const void *pbase, size_t nmemb, size_t size, int
 	}
 	return NULL;
 }
-		
+

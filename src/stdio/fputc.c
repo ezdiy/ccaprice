@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -28,12 +28,12 @@ int fputc(int c, FILE *fp) {
 		errno = EBADF;
 		return EOF;
 	}
-	
+
 	if (fp->buffer_pos + 1 > sizeof(fp->buffer_pos))
 		fflush(fp);
-	
+
 	/* buffer the data */
-	fp->buffer_dat[fp->buffer_pos] = c;	
+	fp->buffer_dat[fp->buffer_pos] = c;
 	fp->buffer_pos ++;
 	return 0;
 }

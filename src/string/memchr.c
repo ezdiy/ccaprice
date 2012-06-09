@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -22,7 +22,7 @@
  */
 #include "inc/ccaprice.h"
 #if defined(__STRING_MEMCHR_OPTIMAL_SSE2)
-#	include <emmintrin.h>
+#	include "int/emmintrin.h"
 #endif
 #include "inc/string.h"
 static const size_t memchr_bsf_table[256] = {
@@ -30,7 +30,7 @@ static const size_t memchr_bsf_table[256] = {
 };
 
 void *memchr(const void *src, int cmp, size_t cnt) {
-	#if defined(__STRING_MEMCHR_OPTIMAL) && defined(__STRING_MEMCHR_OPTIMAL_SSE2) 
+	#if defined(__STRING_MEMCHR_OPTIMAL) && defined(__STRING_MEMCHR_OPTIMAL_SSE2)
 		/*
 		 * SSE optimized version of memchr.  Handles 16-bit alligned
 		 * data first, then 32-bit alligned data. Then collects any
@@ -41,20 +41,20 @@ void *memchr(const void *src, int cmp, size_t cnt) {
 			__m128i set = _mm_set1_epi8((char)cmp);
 			size_t  ipc = (size_t)src8;
 			size_t  num = ipc & 15;
-			
+
 			if (num > 0) {
 				__m128i       x;
 				__m128i       a;
 				unsigned long m;
-				
+
 				ipc &= ~15;
 				x    = *(const __m128i*)ipc;
 				a    = _mm_cmpeq_epi8(x,set);
 				m    = _mm_movemask_epi8(a);
 				m   &= 0xFFFFFFFFUL << num;
-				
+
 				if (m) {
-					return (void*)(src8+((unsigned char)m) ? 
+					return (void*)(src8+((unsigned char)m) ?
 						memchr_bsf_table[(unsigned char)m] : \
 						memchr_bsf_table[m>>8]+8);
 				}
@@ -70,7 +70,7 @@ void *memchr(const void *src, int cmp, size_t cnt) {
 				unsigned long m = (_mm_movemask_epi8(b)<<6) | \
 								  (_mm_movemask_epi8(a)<<0);
 				if (m) {
-					return (void*)(src8+((unsigned char)m) ? 
+					return (void*)(src8+((unsigned char)m) ?
 						memchr_bsf_table[(unsigned char)m] : \
 						memchr_bsf_table[m>>8]+8);
 				}
@@ -94,6 +94,6 @@ void *memchr(const void *src, int cmp, size_t cnt) {
 			} while(--cnt != 0);
 		}
 	#endif
-	
+
 	return NULL;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -82,14 +82,6 @@
 #endif
 
 /*
- * This fixes the _MM_MALLOC stuff on my system (I cannot gurantee others)
- * this was never required till I updated glib... Anyways this will all be
- * fixed later as ccaprice will provide those headers for sse and mmx since
- * of this mess.
- */
-#define _MM_MALLOC_H_INCLUDED
-
-/* 
  * We can override code if -DNAIVE is passed by the build
  * script.
  */
@@ -126,7 +118,7 @@
  * We handle null correctly here.
  * In GNUG mode there is a builtin __null we can
  * use to our advantage.
- * 
+ *
  * Otherwise we make NULL the correct constant according
  * to the language at play.
  */

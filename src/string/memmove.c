@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -26,7 +26,7 @@ void *memmove(void *dst, const void *src, register size_t count)
 {
 	char *dst8 = (char*) dst;
 	char *src8 = (char*) src;
-	
+
 	if (dst > src) {
 		/*
 		 * Move backwards, this routine is highly

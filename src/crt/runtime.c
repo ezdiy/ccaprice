@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -65,26 +65,26 @@ void *__ccaprice_malloc_small(size_t n) {
 	uintptr_t base;
 	uintptr_t make;
 	size_t    align = 1;
-	
+
 	/* align allocations */
 	while (align < n && align < 16)
 		align += align;
 	n = ((n + align) - 1) & -align;
-	
+
 	if (!mcur) {
 		 mcur = __ccaprice_syscall_core(SYS_BRK, 0) + 16;
 		 mbrk = mcur;
 	}
 	base = ((mcur + align) - 1) & -align;
-	
-	/* 
+
+	/*
 	 * validate allocation is correct
 	 * if n > (SIZE_MAX - PAGE_SIZE - base_address) then
 	 * we're out of memory.
 	 */
 	if (n > SIZE_MAX - PAGE_SIZE - base)
 		return (void*)-1;
-		
+
 	if (base + n > mbrk) {
 		make = (((base + n) + PAGE_SIZE) - 1) & -PAGE_SIZE;
 		if (__ccaprice_syscall_core(SYS_BRK, make) != make)
@@ -112,13 +112,13 @@ void *__ccaprice_malloc_small(size_t n) {
 	const char *__ccaprice_build_host __CCAPRICE_USED = "WIN";
 #endif
 
-void __ccaprice_main(int argc, char **argv) {	
+void __ccaprice_main(int argc, char **argv) {
 	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_locale_init, ());
 	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_init, ());
 	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_exit, (int));
 	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_posix_errno_set, (int*));
 	__CCAPRICE_INTERNAL_FUNC(int, main, (int, char **, char **));
-	
+
 	int function_only_errno;
 	__ccaprice_posix_errno_set(&function_only_errno);
 	__ccaprice_enviroment = &argv[argc+1];

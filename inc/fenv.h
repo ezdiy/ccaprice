@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -25,7 +25,7 @@
 #include "ccaprice.h"
 /*
  * X86_32 and X86_64 have the same fenv implementation.  Thanks intel for
- * not breaking compatability.  But it makes sense x86_64 should execute 
+ * not breaking compatability.  But it makes sense x86_64 should execute
  * x86 code no problem.  Changing fenv would break that compat.
  */
 #if defined(__CCAPRICE_TARGET_X86_32) || \
@@ -34,8 +34,8 @@
 #	define FE_DIVBYZERO  4
 #	define FE_OVERFLOW   8
 #	define FE_UNDERFLOW  16
-#	define FE_INEXACT    32 
-	
+#	define FE_INEXACT    32
+
 #	define FE_ALL_EXCEPT 63
 
 #	define FE_TONEAREST  0
@@ -53,7 +53,7 @@
 		fexcept_t __dummy1111;
 		fexcept_t __tagsndata;
 		fexcept_t __dummy2222;
-		
+
 		unsigned int  __eip;
 		fexcept_t     __cs_sel;
 		unsigned int  __opcode:11;

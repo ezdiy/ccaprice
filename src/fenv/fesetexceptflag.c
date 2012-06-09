@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/fenv.h"
- 
+
 int fesetexceptflag(const fexcept_t *f, int m) {
 	 feclearexcept(~*f&m);
 	 feraiseexcept( *f&m);

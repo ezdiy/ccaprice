@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 #include "inc/string.h"
-void *memcpy(void *dst, const void *src, register size_t cnt) {	
+void *memcpy(void *dst, const void *src, register size_t cnt) {
 	#if defined(__STRING_MEMCPY_OPTIMAL) && (defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32)) && !defined(__STRING_MEMCPY_OPTIMAL_SSE2)
 		/*
 		 * "rep movs"  is optimized in  microcode on
@@ -31,11 +31,11 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 		 * are both equal (mod 64).  But  will still
 		 * work if they're not.  This method is also
 		 * faster than any SSE routine.
-		 * 
+		 *
 		 * See: https://lkml.org/lkml/2011/9/1/229
 		 * for more information regarding the matter.
 		 */
-		__asm__("cld; rep movsb" :: 
+		__asm__("cld; rep movsb" ::
 			"c"(cnt),
 			"S"(src),
 			"D"(dst)
@@ -51,8 +51,8 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 		 */
 		void * ret = dst;
 		size_t itr;
-		
-		/* 
+
+		/*
 		 * Prefetch for MOVSB:
 		 * 	this actually gains  some  speed in
 		 * 	most situations for some odd reason.
@@ -68,7 +68,7 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 			"prefetchnta 256(%0)\n\t"
 			"prefetchnta 288(%0)\n\t" :: "r"(src)
 		);
-		
+
 		/* 64-byte blocks only */
 		if (cnt >= 0x40) {
 			register unsigned long int dla = ((unsigned long int)dst)&(16-1);
@@ -83,22 +83,22 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 						  "0"(dst),   "1"(src),   "2"(dla) : "memory"
 				);
 			}
-			
+
 			itr  = cnt>>6;
 			cnt &= 63;
-			
+
 			/* source is misaligned */
 			if (((unsigned long)src)&15) {
 				for (; itr>0; itr--) {
 					__asm__ __volatile__ (
 						"prefetchnta 320(%0)   \n\t"
 						"prefetchnta 352(%0)   \n\t"
-						
+
 						"movups    (%0), %%xmm0\n\t"
 						"movups  16(%0), %%xmm1\n\t"
 						"movups  32(%0), %%xmm2\n\t"
 						"movups  48(%0), %%xmm3\n\t"
-						
+
 						"movntps %%xmm0,   (%1)\n\t"
 						"movntps %%xmm1, 16(%1)\n\t"
 						"movntps %%xmm2, 32(%1)\n\t"
@@ -106,13 +106,13 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 							"r"(src),
 							"r"(dst) : "memory"
 					);
-					
+
 					src = (const unsigned char *)src + 64;
 					dst =       (unsigned char *)dst + 64;
 				}
 			}
-			
-			/* 
+
+			/*
 			 * source is aligned  on  16-byte  boundry.  This  will
 			 * allow the use of movaps, which is faster then movups.
 			 */
@@ -122,12 +122,12 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 					__asm__ __volatile__ (
 						"prefetchnta 320(%0)   \n\t"
 						"prefetchnta 352(%0)   \n\t"
-						
+
 						"movaps    (%0), %%xmm0\n\t"
 						"movaps  16(%0), %%xmm1\n\t"
 						"movaps  32(%0), %%xmm2\n\t"
 						"movaps  48(%0), %%xmm3\n\t"
-						
+
 						"movntps %%xmm0,   (%1)\n\t"
 						"movntps %%xmm1, 16(%1)\n\t"
 						"movntps %%xmm2, 32(%1)\n\t"
@@ -138,7 +138,7 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 					src = (const unsigned char *)src + 64;
 					dst =       (unsigned char *)dst + 64;
 				}
-				
+
 				/* reorder data, as movntq is weakly-ordered. */
 				__asm__ __volatile__ ("sfence" ::: "memory");
 				__asm__ __volatile__ ("emms"   ::: "memory");
@@ -159,7 +159,7 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 			/* faster memcpy for >256 bytes */
 			else {
 				int dump[3];
-				/* 
+				/*
 				 * The following fast memcpy for tail of block is optimized
 				 * for larger chunks of data.
 				 */
@@ -185,7 +185,7 @@ void *memcpy(void *dst, const void *src, register size_t cnt) {
 		}
 		return ret;
 	#endif
-	
+
 	#ifdef __STRING_MEMCPY_NONE
 		#warning "[ccaprice] no optimized memcpy implementation, using naive method (could be slow)"
 		unsigned char *dst8 = (unsigned char *)dst;

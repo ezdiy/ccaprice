@@ -4,11 +4,11 @@
  *
  * Developed at SunSoft, a Sun Microsystems, Inc. business.
  * Permission to use, copy, modify, and distribute this
- * software is freely granted, provided that this notice 
+ * software is freely granted, provided that this notice
  * is preserved.
  * ====================================================
  *
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -38,6 +38,6 @@ int isnan(double x) {
 	};
 	data[0] |= (unsigned)(data[1]|-data[1]) >> 31;
 	data[0]  = 0x7FFFFFF -data[0];
-	
+
 	return ((unsigned)data[0]) >> 31;
 }

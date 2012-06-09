@@ -4,11 +4,11 @@
  *
  * Developed at SunSoft, a Sun Microsystems, Inc. business.
  * Permission to use, copy, modify, and distribute this
- * software is freely granted, provided that this notice 
+ * software is freely granted, provided that this notice
  * is preserved.
  * ====================================================
  *
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -52,7 +52,7 @@ double atan(double x) {
 	int x_hi = __CCAPRICE_MATH_HI_L(x);
 	int x_id = 0x00000000;
 	int iter = x_hi & 0x7FFFFFFFF;
-	
+
 	if (iter >= 0x44100000) {
 		if (iter > 0x7FF00000 || (iter == 0x7FF00000 && (__CCAPRICE_MATH_LO_L(x) != 0)))
 			return x+x; /* NaN */

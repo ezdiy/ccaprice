@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -38,7 +38,7 @@ __CCAPRICE_INTERNAL_TYPE(void *, __ccaprice_localep); /* to ccaprice_localec */
 #define isgraph(X)  ((*((int(**)(int))__ccaprice_localep+4 ))(X)) // 24 -- 40
 #define islower(X)  ((*((int(**)(int))__ccaprice_localep+5 ))(X)) // 28 -- 48
 #define isprint(X)  ((*((int(**)(int))__ccaprice_localep+6 ))(X)) // 32 -- 56
-#define ispunct(X)  ((*((int(**)(int))__ccaprice_localep+7 ))(X)) // 36 -- 
+#define ispunct(X)  ((*((int(**)(int))__ccaprice_localep+7 ))(X)) // 36 --
 #define isspace(X)  ((*((int(**)(int))__ccaprice_localep+8 ))(X)) // 40
 #define isupper(X)  ((*((int(**)(int))__ccaprice_localep+9 ))(X)) // 44
 #define isxdigit(X) ((*((int(**)(int))__ccaprice_localep+10))(X)) // 48

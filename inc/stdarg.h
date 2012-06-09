@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -35,7 +35,7 @@
 #endif
 #ifdef va_end
 #undef va_end
-#endif 
+#endif
 
 #ifndef __GNUC__
 /*

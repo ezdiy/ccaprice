@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -32,7 +32,7 @@
 __CCAPRICE_EXPORT int   bcmp       (const void *, const void *, size_t); // alias to memcmp
 __CCAPRICE_EXPORT void  bcopy      (const void *, void *,       size_t); // alias to bcopy
 __CCAPRICE_EXPORT void  bzero      (void *,                     size_t); // memset(0)
-__CCAPRICE_EXPORT int   ffs        (int);  
+__CCAPRICE_EXPORT int   ffs        (int);
 __CCAPRICE_EXPORT char *index      (const char *, int);                  // strchr
 __CCAPRICE_EXPORT char *rindex     (const char *, int);                  // strstr
 __CCAPRICE_EXPORT int   strcasecmp (const char *, const char *);

@@ -4,11 +4,11 @@
  *
  * Developed at SunSoft, a Sun Microsystems, Inc. business.
  * Permission to use, copy, modify, and distribute this
- * software is freely granted, provided that this notice 
+ * software is freely granted, provided that this notice
  * is preserved.
  * ====================================================
  *
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -33,25 +33,25 @@
 
 double ceil(double x) {
 	unsigned i,j;
-	
+
 	int x_hi = __CCAPRICE_MATH_HI_L(x);
 	int x_lo = __CCAPRICE_MATH_LO_L(x);
 	int iter = ((x_hi >> 20) & 0x7FF) - 0x3FF;
-	
+
 	if (iter < 20) {
 		if (iter < 0) {
 			if (1.0e300+x > 0.0) {
 				if (x_hi < 0)
-					x_hi = 0x80000000, x_lo = 0; 
+					x_hi = 0x80000000, x_lo = 0;
 				else if ((x_hi|x_lo) != 0)
 					x_hi = 0x3FF00000, x_lo = 0;
 			}
 		} else {
 			i = (0x000FFFFF) >> iter;
-			
+
 			if (((x_hi&i)|x_lo)==0)
 				return x;
-				
+
 			if(1.0e300+x > 0.0) {	/* raise inexact flag */
 				if(x_hi > 0)
 					x_hi += (0x00100000) >> iter;
@@ -64,13 +64,13 @@ double ceil(double x) {
 		return (iter == 0x400) ? x+x : x;
 	else {
 		i = ((unsigned)(0xFFFFFFFF)) >> (iter - 20);
-		
+
 		if ((x_lo&i) == 0)
 			return x;
-			
+
 		if (1.0e300+x > 0.0) {
 			if (x_hi > 0) {
-				if (iter == 20) x_hi++; 
+				if (iter == 20) x_hi++;
 				else {
 					j = x_lo + (1 << (52 - iter));
 					if (j < x_lo)

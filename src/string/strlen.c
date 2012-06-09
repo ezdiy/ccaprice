@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -22,7 +22,7 @@
  */
 #include "inc/ccaprice.h"
 #ifdef __STRING_STRLEN_OPTIMAL_SSE2
-	#include <emmintrin.h>
+	#include "int/emmintrin.h"
 #endif
 #include "inc/string.h"
 #include "inc/stdint.h"
@@ -41,7 +41,7 @@ size_t strlen(const char *src) {
 			__m128i         xmm1;
 			register int    mask = 0;
 			register size_t len  = 0;
-			
+
 			/* allign data to 16 bytes */
 			while ((((intptr_t)src) & 15)) {
 				if (*src++ == 0)
@@ -53,7 +53,7 @@ size_t strlen(const char *src) {
 				xmm1 = _mm_load_si128((__m128i*)src);
 				xmm1 = _mm_cmpeq_epi8(xmm1, xmm0);
 				if ((mask = _mm_movemask_epi8(xmm1)) != 0) {
-					
+
 					/* Newer versions have a built-in bit-scan-forward */
 					#if ((__GNUC__ >=4) || ((__GNUC__ ==3) && (__GNUC_MINOR__ >= 4)))
 						len += __builtin_ctz(mask);
@@ -66,7 +66,7 @@ size_t strlen(const char *src) {
 					len += p;
 					#else
 					/* Use highly-optimized BSF table */
-					len +=((unsigned char)mask) ? 
+					len +=((unsigned char)mask) ?
 						strlen_bsf_table[(unsigned char)mask] : \
 						strlen_bsf_table[mask>>8]+8;
 					#endif
@@ -80,7 +80,7 @@ size_t strlen(const char *src) {
 			 * Vector optimized strlen using GPR:
 			 *	This could be seen as a little more complicated than
 			 * 	the SSE2 implementation above.
-			 * 
+			 *
 			 * 	The general idea of how this works is described below
 			 */
 			size_t len = 0;
@@ -105,7 +105,7 @@ size_t strlen(const char *src) {
 	#else
 		#define __STRING_STRLEN_NONE
 	#endif
-	
+
 	#ifdef __STRING_STRLEN_NONE
 		#warning "[ccaprice] no optimized strlen implementation, using naive method (could be slow)"
 		const char *s = src;

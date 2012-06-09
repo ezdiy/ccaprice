@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -23,12 +23,12 @@
 #include "inc/posix/strings.h"
 int ffs(int v) {
 	int i;
-	
+
 	if (!v) return 0;
-	
+
 	for (i = 1; i <= sizeof(int) * 8; i++, v >>= 1)
 		if (v & i)
 			return i;
-			
+
 	return 0;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -26,7 +26,7 @@
 #include "inc/posix/errno.h"
 char *strdup(const char *s) {
 	if (!s) return NULL;
-	
+
 	size_t len = strlen(s);
 	char *r = (char*)malloc(len);
 	if  (!r) {

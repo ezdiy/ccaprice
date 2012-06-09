@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -24,19 +24,19 @@
 #include "inc/stddef.h"
 char *getenv(const char *name) {
 	__CCAPRICE_INTERNAL_TYPE(char **, __ccaprice_enviroment);
-		
+
 	size_t finds;
 	size_t grabs;
 	const char  *equal;
 	char        *fills;
 	char       **lists;
-	
+
 	if(!name || !__ccaprice_enviroment)
 		return NULL;
-	
+
 	for   (equal = name; *equal && *equal != '='; ++equal) ;
 	finds =equal - name;
-	
+
 	for (lists = __ccaprice_enviroment; (fills = *lists) != NULL; ++lists) {
 		for (equal = name, grabs = finds; grabs && *fills; grabs--)
 			if (*fills++ != *equal++)

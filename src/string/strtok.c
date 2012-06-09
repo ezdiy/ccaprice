@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -26,13 +26,13 @@ char *strtok(char *s, const char *d) {
 	static char  *p = 0;
 	if        (s) p = s;
 	else if  (!p) return 0;
-	
+
 	s = p + strspn (p,d);
 	p = s + strcspn(s,d);
-	
+
 	if (p == s)
 		return p = 0;
 	p= *p ? *p = 0, p + 1 : 0;
-	
+
 	return s;
 }

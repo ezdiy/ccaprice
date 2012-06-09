@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -47,7 +47,7 @@ static const char en_CA_data [257] = {
  * #include "inc/locale/[yourlocale.h]" inside "src/locale.c". Then add
  * a LOCALE_INIT([yourlocale]); inside ccaprice_locale_init() as well
  * inside "src/locale.c" and you're finished.
- * 
+ *
  * The integral value for the charcater passed into the functions
  * is of name `c`, type lvalue int.
  *
@@ -70,7 +70,7 @@ LOCALE_DEFINE(en_CA,
 	{/*isxdigit*/ return en_CA_data[(unsigned char)(c+1)]&0x80; },
 	{/*tolower */ return en_CA_islower(c)?(c-'a'+'A'):c; },
 	{/*toupper */ return en_CA_isupper(c)?(c-'A'+'a'):c; },
-	
+
 	/*decimal_point    */ ".",
 	/*thousands_sep    */ ",",
 	/*grouping         */ "3",
@@ -89,6 +89,6 @@ LOCALE_DEFINE(en_CA,
 	/*n_sep_by_space   */ 2,
 	/*p_sign_posn      */ 3,
 	/*n_sign_posn      */ 3,
-	
+
 	LOCALE_CODEPAGE_ISO88591
 );

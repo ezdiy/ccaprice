@@ -4,11 +4,11 @@
  *
  * Developed at SunSoft, a Sun Microsystems, Inc. business.
  * Permission to use, copy, modify, and distribute this
- * software is freely granted, provided that this notice 
+ * software is freely granted, provided that this notice
  * is preserved.
  * ====================================================
  *
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -38,13 +38,13 @@ int ilogb(double x) {
 		errno = EDOM;
 		return FP_ILOGB0;
 	}
-	
+
 	int ix = 0;
 	int hx = __CCAPRICE_MATH_HI_L(x)&0x7FFFFFFF;
 	int lx = __CCAPRICE_MATH_LO_L(x);
-	
+
 	if(hx<0x00100000) {
-		if((hx|lx)==0) 
+		if((hx|lx)==0)
 			return 0x80000001;
 		else {
 			if(hx==0) for (ix=-1043;        lx>0;lx<<=1) ix--;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -38,8 +38,8 @@
 /*
  * All signal numbers are the same across all x86_32 / x86_64
  * linux systems and BSD's
- * 
- * ARM and alpha support will require more fine-tuned regard 
+ *
+ * ARM and alpha support will require more fine-tuned regard
  * to signal numbers (when those architectures are supported)
  */
 	int __ccaprice_signal_selector[6] = {

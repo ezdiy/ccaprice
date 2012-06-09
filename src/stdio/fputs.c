@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -26,7 +26,7 @@
 
 int fputs(const char *str, FILE *fp) {
 	__CCAPRICE_INTERNAL_TYPE(int *, __ccaprice_posix_errno);
-	
+
 	if (!str) return EOF;
 	/*
 	 * Invalid file pointer passed to fputs
@@ -36,27 +36,27 @@ int fputs(const char *str, FILE *fp) {
 		errno = EBADF;
 		return EOF;
 	}
-	
-	/* 
-	 * The function begins copying from the address specified (str) 
-	 * until it reaches the terminating null character ('\0'). 
+
+	/*
+	 * The function begins copying from the address specified (str)
+	 * until it reaches the terminating null character ('\0').
 	 * This final null-character is not copied to the stream.
 	 */
 	while (*str != '\0') {
-		/* 
+		/*
 		 * We're out of bufferable space
 		 * we better flush the stream.
 		 */
 		if (fp->buffer_pos + 1 > sizeof(fp->buffer_dat))
 			fflush(fp);
-		
-		/* 
+
+		/*
 		 * Buffer the data, while incrementing
 		 * str and the current buffer position.
 		 */
 		fp->buffer_dat[fp->buffer_pos] = *str;
 		fp->buffer_pos ++, str++;
 	}
-	
+
 	return 0;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -30,19 +30,19 @@ void *memset(void *dst, int ctr, register size_t len) {
 		uint8_t   check1 = (uint8_t)ctr;
 		uint32_t *destp4;
 		uint8_t  *destp1;
-		
+
 		destp4 = (uint32_t*)dst;
 		len /= 4;
 		while (len--)
 			*destp4++ = check4;
-		
+
 		destp1 = (uint8_t*)destp4;
 		switch (search) {
 			case 3: *destp1++ = check1;
 			case 2: *destp1++ = check1;
 			case 1: *destp1++ = check1;
 		}
-		
+
 		return dst;
 	#else
 		#warning "[ccaprice] no optimized memset implementation, using naive method (could be slow)"
@@ -52,4 +52,4 @@ void *memset(void *dst, int ctr, register size_t len) {
 		return dst;
 	#endif
 	return NULL;
-}	
+}

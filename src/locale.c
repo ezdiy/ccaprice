@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -91,7 +91,7 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
  * If all locale support is selected we'll include ALL
  * locales.  This takes up a insane amount of code space
  * because these are STATICALLY stored in the library.
- * 
+ *
  * Most of the time the library should only be compiled for
  * the target locale.
  */
@@ -112,7 +112,7 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
 	 * enviroment variable.
 	 */
 	#undef   LOCALE_INT
-	#define  LOCALE_INT(X)                   LOCALE_INIT ( X )  
+	#define  LOCALE_INT(X)                   LOCALE_INIT ( X )
 	#define  LOCALE_STR(X)                   #X
 	#define  LOCALE_INC(X)                   LOCALE_STR(inc/locale/X.h)
 	#include LOCALE_INC(CCAPRICE_LOCALE_SET)
@@ -125,7 +125,7 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
 
 void __ccaprice_locale_init() {
 	LOCALE_INIT(C);
-	
+
 	/*
 	 * Add LOCALE initializations here so ccaprice
 	 * can add the locale into it self for usage.
@@ -137,7 +137,7 @@ void __ccaprice_locale_init() {
 	#else
 		LOCALE_INT(CCAPRICE_LOCALE_SET);
 	#endif
-	
+
 	/*
 	 * This is not to be changed, this sets the DEFAULT
 	 * locale used by ccaprice.  This is the _DEFAULT_
@@ -192,10 +192,10 @@ char *setlocale(int cat, const char *cap) {
 		 * not be found for the specificed request.  Try looking
 		 * for something else simaler.  Perhaps non-UTF8?
 		 */
-		
+
 		/* Truncate the string before the . */
 		locale[strchr(locale,'.')-locale] = '\0';
-		
+
 		/*
 		 * Lets try searching again this time we might find something
 		 * suitable as an alternitive.
@@ -213,7 +213,7 @@ char *setlocale(int cat, const char *cap) {
 		 */
 		return NULL;
 	}
-	/* 
+	/*
 	 * Search for locale in list of all locales.
 	 * This could be made a lot faster with a hash
 	 * table or something of that nature. TODO!

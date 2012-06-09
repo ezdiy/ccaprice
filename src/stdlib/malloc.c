@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -46,7 +46,7 @@ void *calloc(size_t m, size_t n) {
 	n *= m;
 	p  = malloc(n);
 	if (!p) return NULL;
-	
+
 	if (((size_t*)p)[-1] & 7) {
 		m = (n + sizeof(*z)-1)/sizeof(*z);
 		for (z=p; m; m--, z++)
