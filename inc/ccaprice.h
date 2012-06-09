@@ -78,7 +78,7 @@
 #	define __COMPID__ __CCAPRICE_COMPILER_GCC
 #	define __CCAPRICE_USED __attribute__((__used__))
 #else
-#	error "Unsupported compiler"
+#	warning "Unsupported compiler"
 #endif
 
 /*

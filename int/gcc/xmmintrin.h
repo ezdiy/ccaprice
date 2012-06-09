@@ -68,9 +68,7 @@ enum _mm_hint {
 
 __XMMINTRIN_PROTO(__m128)
 _mm_setzero_ps (void) {
-    return __extension__ (__m128) {
-        0.0f, 0.0f, 0.0f, 0.0f
-    };
+    return __extension__ (__m128) { 0.0f, 0.0f, 0.0f, 0.0f };
 }
 __XMMINTRIN_PROTO(__m128)
 _mm_add_ss (__m128 __A, __m128 __B) {

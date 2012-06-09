@@ -22,6 +22,7 @@
 #
 CFLAGS += -Wall                          \
           -nostdlib                      \
+          -nostdinc                      \
           -fno-builtin                   \
           -nostartfiles                  \
           -nodefaultlibs                 \

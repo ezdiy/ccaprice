@@ -428,19 +428,13 @@ __XMMINTRIN_PROTO(__m128)_mm_set_ps1(float w) {
     return _mm_set1_ps(w);
 }
 __XMMINTRIN_PROTO(__m128)_mm_set_ps(float z, float y, float x, float w) {
-    return (__m128) {
-        w, x, y, z
-    };
+    return (__m128) { w, x, y, z };
 }
 __XMMINTRIN_PROTO(__m128)_mm_setr_ps(float z, float y, float x, float w) {
-    return (__m128) {
-        z, y, x, w
-    };
+    return (__m128) { z, y, x, w };
 }
 static __inline__ __m128 __attribute__((__always_inline__))_mm_setzero_ps(void) {
-    return (__m128) {
-        0, 0, 0, 0
-    };
+    return (__m128) { 0, 0, 0, 0 };
 }
 static __inline__ void __attribute__((__always_inline__))_mm_storeh_pi(__m64 *p, __m128 a) {
     __builtin_ia32_storehps((__v2si *)p, a);

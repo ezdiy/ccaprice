@@ -270,9 +270,7 @@ __MMINTRIN_PROTO(__m64)_mm_cmpgt_pi32(__m64 __m1, __m64 __m2) {
     return (__m64)__builtin_ia32_pcmpgtd((__v2si)__m1, (__v2si)__m2);
 }
 __MMINTRIN_PROTO(__m64)_mm_setzero_si64(void) {
-    return (__m64) {
-        0LL
-    };
+    return (__m64) { 0LL };
 }
 __MMINTRIN_PROTO(__m64)_mm_set_pi32(int __i1, int __i0) {
     return (__m64)__builtin_ia32_vec_init_v2si(__i0, __i1);

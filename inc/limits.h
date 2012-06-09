@@ -22,6 +22,17 @@
  */
 #ifndef __CCAPRICE_LIMITS_HDR__
 #define __CCAPRICE_LIMITS_HDR__
+
+/*
+ * Force code analysis to interpret this limits.h file as a C header and
+ * not a C++ one.
+ */
+#if 0
+	typedef struct {
+		char __force_language_c : 1;
+	} __code_analysis_language_forced;
+#endif
+
 /*
  * Macro to make min constants universal.  This determins min sizes from
  * max sizes (which are platform specific).
