@@ -1,6 +1,11 @@
 The directory structure is quite simple.  If you're looking to modify
 add, or just look at something, the layout is as follows.
 
+[INTERNALS]
+int/                This is the internals folder for compiler-specific things
+                    like SSE/MMX intrinsics (we cannot rely on the ones bundled by
+                    the compiler because they include a hosted enviroment)
+
 [INCLUDES]
 inc/                This is the include folder, pretty much every header is guranteed
                     to be here.  This is where headers should also be put too.
