@@ -283,6 +283,17 @@ ifeq (, $(CCC))
 	override OBJA     = src/crt/x86_64.o
 	override DONOT    = 1
 else
+	# prevent pathcc from adding it's own stdlib stuff
+    ifeq (pathcc, $(CCC))
+		override CFLAGS += -OPT:fast_stdlib=OFF
+	else
+	
+	#supress clang's argument warning verbosity and console spam
+	ifeq (clang, $(CCC))
+		override CFLAGS += -Qunused-arguments
+	endif
+	endif
+	
 	override CFLAGS  += -D__INFO__="$(shell echo `uname -a`)"
 	override INC      = -I.
 	override EDGE     = -c $< -o $@
@@ -370,7 +381,7 @@ ifneq ($(DONOT), 1)
 	   }                                                        \n\
 	#endif                                                      \n\
 	   return 0;                                                \n\
-	}" > endian.c 
+	}\n" > endian.c 
 	$(AT) $(CCC) -DTYPE_CASE endian.c -o endian_type
 	$(AT) $(CCC) -DINFO_CASE endian.c -o endian_info
 	$(AT) $(CCC) -DDATA_CASE endian.c -o endian_data
