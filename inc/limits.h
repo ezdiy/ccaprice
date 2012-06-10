@@ -22,16 +22,7 @@
  */
 #ifndef __CCAPRICE_LIMITS_HDR__
 #define __CCAPRICE_LIMITS_HDR__
-
-/*
- * Force code analysis to interpret this limits.h file as a C header and
- * not a C++ one.
- */
-#if 0
-	typedef struct {
-		char __force_language_c : 1;
-	} __code_analysis_language_forced;
-#endif
+#include "ccaprice.h"
 
 /*
  * Macro to make min constants universal.  This determins min sizes from
@@ -44,10 +35,10 @@
  * cases where compile compilers support -unsigned-char and define a macro
  * which overrides the constants.
  */
-#	define  SHRT_MIN     __CCAPRICE_MIN(SHRT)
-#	define  SCHAR_MIN    __CCAPRICE_MIN(SCHAR)
-#	define  LLONG_MIN    __CCAPRICE_MIN(LLONG)
-#	define  INT_MIN      __CCAPRICE_MIN(INT)
+#define  SHRT_MIN     __CCAPRICE_MIN(SHRT)
+#define  SCHAR_MIN    __CCAPRICE_MIN(SCHAR)
+#define  LLONG_MIN    __CCAPRICE_MIN(LLONG)
+#define  INT_MIN      __CCAPRICE_MIN(INT)
 
 #ifdef __CCAPRICE_TARGET_X86_64
 #	define LONG_MAX      0x7FFFFFFFFFFFFFFFL
@@ -106,13 +97,6 @@
  * only define SSIZE_MAX if we're not defined as _ANSI_SOURCE
  */
 #if !defined(_ANSI_SOURCE)
-#	define SSIZE_MAX     INT_MAX
+#	define SSIZE_MAX INT_MAX
 #endif
-
-/*
- * Don't allow into the global namespace. We don't need this anymore
- * though technically it's not in the global namespace as it's prefixed
- * with two underscores.
- */
-#undef __CCAPRICE_MIN
 #endif
