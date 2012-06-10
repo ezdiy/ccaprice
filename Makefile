@@ -355,7 +355,11 @@ test: test.o
 ifneq ($(DONOT), 1)
 	$(AT) ld $(LFLAGS) -o test test.o $(OUT)
 endif
-	$(ECHO) $(GREEN) Completed Build for test $(ENDCOL)
+	$(ECHO) $(PURPLE) Stripping library ... $(ENDCOL)
+	@ echo $(BLUE)   Before `du -s test` $(ENDCOL)
+	@ strip test
+	@ echo $(BLUE)   After  `du -s test` $(ENDCOL)
+	$(ECHO) $(GREEN) Completed Build for test $(RPURPLE)(`file test | sed -r -e 's@.*: *@@'`) $(ENDCOL)
 
 printendian:
 ifneq ($(DONOT), 1)
