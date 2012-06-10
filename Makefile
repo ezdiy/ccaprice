@@ -355,7 +355,7 @@ test: test.o
 ifneq ($(DONOT), 1)
 	$(AT) ld $(LFLAGS) -o test test.o $(OUT)
 endif
-	$(ECHO) $(PURPLE) Stripping library ... $(ENDCOL)
+	$(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
 	@ echo $(BLUE)   Before `du -s test` $(ENDCOL)
 	@ strip test
 	@ echo $(BLUE)   After  `du -s test` $(ENDCOL)
