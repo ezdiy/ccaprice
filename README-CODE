@@ -5,6 +5,9 @@ add, or just look at something, the layout is as follows.
 int/                This is the internals folder for compiler-specific things
                     like SSE/MMX intrinsics (we cannot rely on the ones bundled by
                     the compiler because they include a hosted enviroment)
+                    
+int/gcc             This is where gcc-specific stuff exists
+int/clang           This is where clang-specifics stuff exists
 
 [INCLUDES]
 inc/                This is the include folder, pretty much every header is guranteed
