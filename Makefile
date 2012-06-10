@@ -347,11 +347,6 @@ $(OUT): $(OBJC) $(OBJA)
 
 ifneq ($(DONOT), 1)
 	$(AT) ar rcs $(OUT) $(OBJC) $(OBJA)
-	
-	$(ECHO) $(PURPLE) Stripping library ... $(ENDCOL)
-	@ echo $(BLUE)   Before `du -s $(OUT)` $(ENDCOL)
-	@ strip $(OUT)
-	@ echo $(BLUE)   After  `du -s $(OUT)` $(ENDCOL)
 	@ echo $(GREEN) Completed Build for $(TARGET) $(RPURPLE)(`file src/assert.o | sed -r -e 's@.*: *@@' | sed 's/, not stripped//'`) $(ENDCOL)
 endif
 
@@ -361,7 +356,7 @@ ifneq ($(DONOT), 1)
 	$(AT) ld $(LFLAGS) -o test test.o $(OUT)
 endif
 	$(ECHO) $(GREEN) Completed Build for test $(ENDCOL)
-	
+
 printendian:
 ifneq ($(DONOT), 1)
 	$(AT)@echo -ne "                                            \n\
