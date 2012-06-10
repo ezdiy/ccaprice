@@ -104,9 +104,11 @@ SRC     = src/assert.c                   \
           src/posix/strings/strncasecmp.c
           
 ASM64  =  src/crt/x86_64.S               \
-          src/fenv/fenv_x86_64.S
+          src/fenv/fenv_x86_64.S         \
+          src/setjmp/jmp_x86_64.S
 ASM32  =  src/crt/x86_32.S               \
-          src/fenv/fenv_x86_32.S
+          src/fenv/fenv_x86_32.S         \
+          src/setjmp/jmp_x86_32.S
           
 
 # figure out host OS
@@ -339,6 +341,7 @@ endif
 ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *crt/*    ]]; then echo $(PURPLE) [crt]    $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *fenv/*   ]]; then echo $(PURPLE) [fenv]   $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *setjmp/* ]]; then echo $(PURPLE) [setjmp] $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
 endif
 
 # libc target

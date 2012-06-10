@@ -30,6 +30,7 @@ src/fenv/           All <fenv.h>   functionality is here
 src/stdlib/         All <stdlib.h> functionality is here
 src/math/           All <math.h>   functionality is here
 src/stdio/          All <stdio.h>  functionality is here
+src/setjmp/         All <setjmp.h> functionality is here
 
 
 src/posix/          This is the source folder for all functionality of the posix

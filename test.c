@@ -32,6 +32,7 @@
 #include "inc/fenv.h"
 #include "inc/limits.h"
 #include "inc/stdnoreturn.h"
+#include "inc/setjmp.h"
 
 #include "inc/posix/errno.h"
 #include "inc/posix/strings.h"
@@ -277,6 +278,16 @@ TEST_DEF(stdlib, malloc, {
 	TEST_RET(strncmp(data, data, 5) == 0);
 });
 
+TEST_DEF(setjmp, jmpbuf, {
+	jmp_buf env;
+	int     val = setjmp(env);
+	
+	if (!val)
+		longjmp(env, 1);
+		
+	TEST_RET(val);
+});
+
 TEST_DEF(posix\040, bcmp, {
 	const char  data1[] = "This string";
 	const char  data2[] = "This string";
@@ -370,6 +381,8 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(qsort);
 	TEST_TRY(bsearch);
 	TEST_TRY(malloc);
+	
+	TEST_TRY(jmpbuf);
 
 	TEST_TRY(bcmp);
 	TEST_TRY(bcopy);

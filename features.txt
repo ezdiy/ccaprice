@@ -239,6 +239,11 @@ math.h:
 	isnan  ()
 	sqrt   ()
 	
+setjmp.h:
+	longjmp()
+	setjmp ()
+	jmp_buf
+	
 
 POSIX features are below.  Note these do not clash with the C
 library functions above, they actually meld well.
