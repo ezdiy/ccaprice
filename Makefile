@@ -285,7 +285,7 @@ ifeq (, $(CCC))
 	override CCC      = @echo
 	override VERBOSE  = 1
 	override AFLAGS   =
-	override CFLAGS   = $(GREEN)Error: No target specified; try $(CYAN)\`make CCC=[gcc/clang/pathcc] $(ENDSUP)
+	override CFLAGS   = $(GREEN)Error: No target specified; try $(CYAN)\`make CC=[gcc/clang/pathcc] $(ENDSUP)
 	override INC      =
 	override EDGE     =
 	override OBJC     = src/assert.o
