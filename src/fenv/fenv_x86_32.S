@@ -45,14 +45,6 @@
  * for another assembler or linker who can't resolve symbols.
  */
 #define FENV(X) fe##X:
-2:	not %ecx
-	sub $0x20,%esp
-	fnstenv (%esp)
-	and %ecx,4(%esp)
-	or %edx,4(%esp)
-	fldenv (%esp)
-	add $0x20,%esp
-	ret
 /*
  * The following <fenv.h> functions here:
  *
@@ -67,62 +59,83 @@
  *	fesetenv
  */
 FENV(clearexcept)
-	xor   %eax ,%eax
-	mov 4(%esp),%ecx
-	xor   %edx ,%edx
-	test  %ecx ,%ecx
-	jnz 2b
+	mov		4(%esp),	%ecx
+	not		%ecx
+	test	$0x3F,		%ecx
+	jnz		2f
+	
+1:	fnclex
+	xor		%eax,		%eax
 	ret
+2:	fnstsw	%ax        			// not eax
+	and		%ecx,		%eax	// magic
+	jz		1b
+	sub		$0x20,		%esp
+	fnstenv (%esp)
+	mov		%al,		4(%esp)
+	fldenv	(%esp)
+	add		$0x20,		%esp
+	xor		%eax,		%eax    // zero
+	ret
+	
 FENV(raiseexcept)	
-	xor   %eax ,%eax
-	mov 4(%esp),%edx
-	xor   %ecx ,%ecx
-	test  %edx ,%edx
-	jnz 2b
+	mov		4(%esp),	%eax
+	sub		$0x20,		%esp
+	fnstenv	(%esp)
+	or		%al,		4(%esp)
+	fldenv	(%esp)
+	add		$0x20,		%esp
+	xor		%eax,		%eax	// zero
 	ret
+	
 FENV(testexcept)
-	mov 4(%esp),%ecx
-	fnstsw %ax
-	and %ecx,%eax
+	mov		4(%esp),	%ecx
+	fnstsw	%ax
+	and		%ecx,		%eax
 	ret
+	
 FENV(setround)
-	mov 4(%esp),%ecx
-	xor %eax,%eax
-	sub $0x20,%esp
-	fnstenv (%esp)
-	andb $0xf3,1(%esp)
-	or %ecx,(%esp)
-	fldenv (%esp)
-	add $0x20,%esp
+	mov		4(%esp),	%ecx
+	push	%eax
+	xor		%eax,		%eax	// zero
+	fnstcw	(%esp)
+	andb	$0xF3,		1(%esp)	// only one byte (the %ch seems hacky)
+	or		%ch,		1(%esp)	// sorry :3
+	fldcw	(%esp)
+	pop		%ecx				// safe
 	ret
+	
 FENV(getround)
-	sub $0x1c,%esp
-	fnstenv (%esp)
-	mov 4(%esp),%eax
-	add $0x1c,%esp
-	and $0xc,%ah
+	push	%eax
+	fnstcw	(%esp)				// store control word
+	pop		%eax
+	and		$0xC00,		%eax	// toward zero ~0xC00
 	ret
+	
 FENV(getenv)
-	mov 4(%esp),%ecx
-	xor %eax,%eax
-	fnstenv (%ecx)
+	mov		4(%esp),	%ecx
+	xor		 %eax,		%eax
+	fnstenv	(%ecx)
 	ret
+	
 FENV(setenv)
-	mov 4(%esp),%ecx
-	xor %eax,%eax
-	test %ecx,%ecx
-	jz 1f
+	mov		4(%esp),	%ecx
+	xor		%eax,		%eax
+	test	%ecx,		%ecx
+	jz 		1f
 	fldenv (%ecx)
 	ret
-1:	push %eax
-	push %eax
-	push %eax
-	push %eax
-	push %eax
-	push %eax
-	pushl $0x37f
-	fldenv (%esp)
-	add $0x1c,%esp
+	
+1:	push	%eax // 6
+	push	%eax // 5
+	push	%eax // 4
+	push	%eax // 3
+	push	%eax // 2
+	push	%eax // 1
+	
+	pushl	$0x37F
+	fldenv	(%esp)
+	add		$0x1C,		%esp
 	ret
 
 .size feclearexcept, .-feclearexcept

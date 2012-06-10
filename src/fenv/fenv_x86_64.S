@@ -45,17 +45,6 @@
  * for another assembler or linker who can't resolve symbols.
  */
 #define FENV(X) fe##X:
-2:	not %edi
-	sub $0x20,%rsp
-	fnstenv (%rsp)
-	and %edi,4(%rsp)
-	or %esi,4(%rsp)
-	fldenv (%rsp)
-	stmxcsr (%rsp)
-	and %edi,(%rsp)
-	ldmxcsr (%rsp)
-	add $0x20,%rsp
-	ret
 /*
  * The following <fenv.h> functions here:
  *
@@ -70,67 +59,94 @@
  *	fesetenv
  */
 FENV(clearexcept)	
-	xor %eax,%eax
-	xor %esi,%esi
-	test %edi,%edi
-	jnz 2b
+	mov		%edi,		%ecx
+	not		%ecx
+	stmxcsr	-8(%esp)
+	and		%ecx,		-8(%rsp)
+	ldmxcsr	-8(%esp)
+	test	$0x3F,		%ecx
+	jnz		2f
+
+1:	fnclex
+	xor		%eax,		%eax
 	ret
+
+2:	fnstsw	%ax
+	and		%ecx,		%eax
+	jz		1b
+	sub		$0x20,		%rsp
+	fnstenv	(%rsp)
+	mov		%al,		4(%esp)
+	fldenv	(%rsp)
+	add		$0x20,		%rsp
+	xor		%eax,		%eax	// zero
+	ret
+	
 FENV(raiseexcept)
-	xor %eax,%eax
-	mov %edi,%esi
-	xor %edi,%edi
-	test %esi,%esi
-	jnz 2b
+	stmxcsr	-8(%rsp)
+	or		%edi,		-8(%rsp)
+	ldmxcsr	-8 (%rsp)
+	fnstenv	-32(%rsp)
+	or		%edi,		-28(%rsp)
+	fldenv	-32(%rsp)
+	xor		%eax,		%eax
 	ret
+	
 FENV(testexcept)
-	push %rax
+	push	%rax
 	stmxcsr (%rsp)
-	pop %rsi
-	fnstsw %ax
-	or %esi,%eax
-	and %edi,%eax
+	pop		%rsi
+	fnstsw	%ax
+	or		%esi,		%eax
+	and		%edi,		%eax
 	ret
+	
 FENV(setround)
-	xor %eax,%eax
-	sub $0x20,%rsp
-	fnstenv (%rsp)
-	andb $0xf3,1(%rsp)
-	or %edi,(%rsp)
-	fldenv (%rsp)
-	stmxcsr (%rsp)
-	shl $0x3,%edi
-	andb $0x9f,1(%rsp)
-	or %edi,(%rsp)
-	ldmxcsr (%rsp)
-	add $0x20,%rsp
+	push	%rax
+	xor		%eax,		%eax	// zero
+	mov		%edi,		%ecx
+	fnstcw	(%rsp)
+	andb	$0xF3,		1(%rsp) // 1 byte (ugly %ch same as i386)
+	or		%ch,		1(%rsp)
+	fldcw	(%rsp)
+	stmxcsr	(%rsp)
+	shl		$0x03,		%ch		// this is faster than the i386 way
+	andb	$0x9F,		1(%rsp) // single byte
+	or		%ch,		1(%rsp)	// 1 byte (ugly %ch same as i386)
+	ldmxcsr	(%rsp)				// ... about time
+	pop		%rcx
 	ret
+	
 FENV(getround)
-	push %rax
-	stmxcsr (%rsp)
-	pop %rax
-	shr $0x3,%eax
-	and $0xc,%ah
+	push	%rax
+	stmxcsr	(%rsp)
+	pop		%rax
+	shr		$0x3,		%eax
+	and		$0xC00,		%eax // 0xC, %ah could work too (this is faster)
 	ret
+	
 FENV(getenv)
-	xor %eax,%eax
-	fnstenv (%rdi)
-	stmxcsr 28(%rdi)
+	xor		%eax,		%eax // zero
+	fnstenv	(%rdi)
+	stmxcsr	28(%rdi)
 	ret
+	
 FENV(setenv)
-	xor %eax,%eax
-	inc %rdi
+	xor		%eax,		%eax
+	inc		%rdi
 	jz 1f
-	fldenv -1(%rdi)
-	ldmxcsr 27(%rdi)
+	fldenv	-1(%rdi)
+	ldmxcsr	27(%rdi)
 	ret
-1:	push %rax
-	push %rax
-	push %rax
-	pushq $0x37f
-	fldenv (%rsp)
-	pushq $0x1f80
-	ldmxcsr (%rsp)
-	add $0x28,%rsp
+	
+1:	push	%rax 			// 5-6
+	push	%rax 			// 3-4
+	push	%rax 			// 1-2
+	pushq	$0x37F
+	fldenv	(%rsp)
+	pushq	$0x1F80
+	ldmxcsr	(%rsp)
+	add		$0x28,		%rsp
 	ret
 	
 .size feclearexcept, .-feclearexcept
