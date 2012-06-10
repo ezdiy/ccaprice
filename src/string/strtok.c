@@ -23,9 +23,10 @@
 #include "inc/string.h"
 
 char *strtok(char *s, const char *d) {
-	static char  *p = 0;
-	if        (s) p = s;
-	else if  (!p) return 0;
+	static char  *p;
+	
+	if (!(p = (s) ? s : 0))
+		return 0;
 
 	s = p + strspn (p,d);
 	p = s + strcspn(s,d);

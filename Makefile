@@ -22,7 +22,6 @@
 #
 CFLAGS += -Wall                          \
           -nostdlib                      \
-          -nostdinc                      \
           -fno-builtin                   \
           -nostartfiles                  \
           -nodefaultlibs                 \
@@ -261,14 +260,15 @@ ifeq (,$(VERBOSE))
 endif
 ifneq ($(OS), WIN)
 	ifeq (,$(NOCOLOR))
-		GREEN  = -e "\033[1;32m
-		BLUE   = -e "\033[1;34m
-		PURPLE = -e "\033[1;35m
-		RED    = -e "\033[1;31m
-		CYAN   = \033[1;36m
-		RRED   = \033[1;31m
-		ENDSUP = \033[m\c"
-		ENDCOL = \033[m"
+		GREEN   = -e "\033[1;32m
+		BLUE    = -e "\033[1;34m
+		PURPLE  = -e "\033[1;35m
+		RED     = -e "\033[1;31m
+		CYAN    = \033[1;36m
+		RRED    = \033[1;31m
+		RPURPLE = \033[1;35m
+		ENDSUP  = \033[m\c"
+		ENDCOL  = \033[m"
 	endif
 endif
 
@@ -289,7 +289,7 @@ else
 		override CFLAGS += -OPT:fast_stdlib=OFF
 	else
 	
-	#supress clang's argument warning verbosity and console spam
+	#supress clang's 
 	ifeq (clang, $(CCC))
 		override CFLAGS += -Qunused-arguments
 	endif
@@ -339,8 +339,13 @@ $(OUT): $(OBJC) $(OBJA)
 
 ifneq ($(DONOT), 1)
 	$(AT) ar rcs $(OUT) $(OBJC) $(OBJA)
+	
+	$(ECHO) $(PURPLE) Stripping library ... $(ENDCOL)
+	@ echo $(BLUE)   Before `du -s $(OUT)` $(ENDCOL)
+	@ strip $(OUT)
+	@ echo $(BLUE)   After  `du -s $(OUT)` $(ENDCOL)
+	@ echo $(GREEN) Completed Build for $(TARGET) $(RPURPLE)(`file src/assert.o | sed -r -e 's@.*: *@@' | sed 's/, not stripped//'`) $(ENDCOL)
 endif
-	$(ECHO) $(GREEN) Completed Build for $(TARGET) $(ENDCOL)
 
 # test target
 test: test.o
