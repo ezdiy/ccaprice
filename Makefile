@@ -272,8 +272,16 @@ ifneq ($(OS), WIN)
 	endif
 endif
 
+# we can try $CC if !CCC
+ifeq (, $(CCC))
+	ifneq (, $(CC))
+		CCC = $(CC)
+	endif
+endif
+
 # Prepreation
 ifeq (, $(CCC))
+	
 	override CCC      = @echo
 	override VERBOSE  = 1
 	override AFLAGS   =
