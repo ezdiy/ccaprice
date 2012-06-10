@@ -59,8 +59,8 @@ double acos(double x) {
 		double z = x * x;
 		double p = \
 			z * (ccaprice_acos_pS[0] + z * (ccaprice_acos_pS[1] + \
-		    z * (ccaprice_acos_pS[2] + z * (ccaprice_acos_pS[3] + \
-		    z * (ccaprice_acos_pS[4] + z * (ccaprice_acos_pS[5]))))));
+	z * (ccaprice_acos_pS[2] + z * (ccaprice_acos_pS[3] + \
+	z * (ccaprice_acos_pS[4] + z * (ccaprice_acos_pS[5]))))));
 		double q = \
 			1.00000000000000000000e+00 + z * ( \
 			ccaprice_acos_qS[0]        + z * ( \
@@ -74,8 +74,8 @@ double acos(double x) {
 		double z = (1.00000000000000000000e+00 + x) * 0.5f;
 		double p = \
 			z * (ccaprice_acos_pS[0] + z * (ccaprice_acos_pS[1] + \
-		    z * (ccaprice_acos_pS[2] + z * (ccaprice_acos_pS[3] + \
-		    z * (ccaprice_acos_pS[4] + z * (ccaprice_acos_pS[5]))))));
+	z * (ccaprice_acos_pS[2] + z * (ccaprice_acos_pS[3] + \
+	z * (ccaprice_acos_pS[4] + z * (ccaprice_acos_pS[5]))))));
 		double q = \
 			1.00000000000000000000e+00 + z * ( \
 			ccaprice_acos_qS[0]        + z * ( \
@@ -94,8 +94,8 @@ double acos(double x) {
 		double c  = (z-df*df)/(s+df);
 		double p  = \
 			z * (ccaprice_acos_pS[0] + z * (ccaprice_acos_pS[1] + \
-		    z * (ccaprice_acos_pS[2] + z * (ccaprice_acos_pS[3] + \
-		    z * (ccaprice_acos_pS[4] + z * (ccaprice_acos_pS[5]))))));
+	z * (ccaprice_acos_pS[2] + z * (ccaprice_acos_pS[3] + \
+	z * (ccaprice_acos_pS[4] + z * (ccaprice_acos_pS[5]))))));
 		double q  = \
 			1.00000000000000000000e+00 + z * ( \
 			ccaprice_acos_qS[0]        + z * ( \

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -26,7 +26,7 @@
 #	define ENTRY __main
 #else
 #	define ENTRY _start
-#endif 
+#endif
 
 .text
 .global __ccaprice_syscall_core
@@ -47,7 +47,7 @@ ENTRY:
 	pushq %rsp
 	call __ccaprice_main
 	hlt
-	
+
 __ccaprice_syscall_core:
 	movq %rdi   , %rax
 	movq %rsi   , %rdi
@@ -56,9 +56,9 @@ __ccaprice_syscall_core:
 	movq %r8    , %r10
 	movq %r9    , %r8
 	movq 8(%rsp), %r9
-	
+
 	syscall
-	cmpq $-4095, %rax 
+	cmpq $-4095, %rax
 	jae __ccaprice_syscall_error
 	ret
 

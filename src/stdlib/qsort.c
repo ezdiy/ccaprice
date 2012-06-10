@@ -97,9 +97,9 @@ typedef struct {
  */
 #define CCAPRICE_QSORT_PUSHDATA(N,L,H) ( \
     (void) (                             \
-	    ((N)->l=(L)),                    \
-	    ((N)->h=(H)),                    \
-	    ++(N)                            \
+((N)->l=(L)),                    \
+((N)->h=(H)),                    \
+++(N)                            \
     )                                    \
 )
 /*
@@ -231,9 +231,9 @@ typedef struct {
                 case 1:  T = *A,*A++ = *B,*B++ = T;       \
             }                                             \
         } else {                                          \
-		    size_t S = (EW);                              \
-		    do {                                          \
-			    T = *A, *A++ = *B, *B++ = T;              \
+	size_t S = (EW);                              \
+	do {                                          \
+		T = *A, *A++ = *B, *B++ = T;              \
 			} while (--S > 0);                            \
         }                                                 \
     } while (0)

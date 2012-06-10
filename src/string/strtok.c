@@ -24,7 +24,7 @@
 
 char *strtok(char *s, const char *d) {
 	static char  *p;
-	
+
 	if (!(p = (s) ? s : 0))
 		return 0;
 

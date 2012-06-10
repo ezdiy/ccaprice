@@ -39,15 +39,15 @@
 int PADD = 80;
 #define TEST_DEF(SPACE, NAME, ...)            \
 	int NAME##_test() {                       \
-	    char  c[]= {                          \
-	        "Running test \033[35m["#SPACE    \
-	        "]\033[0m "#NAME":"               \
-	    };                                    \
-	    fwrite(c, strlen(c), 1, stdout);      \
-	    fflush(stdout);                       \
-	    size_t l=PADD-strlen(c);              \
-	    while (l-->0) { fputc(' ', stdout); } \
-	    __VA_ARGS__                           \
+char  c[]= {                          \
+    "Running test \033[35m["#SPACE    \
+    "]\033[0m "#NAME":"               \
+};                                    \
+fwrite(c, strlen(c), 1, stdout);      \
+fflush(stdout);                       \
+size_t l=PADD-strlen(c);              \
+while (l-->0) { fputc(' ', stdout); } \
+__VA_ARGS__                           \
 	}
 #define TEST_RET(CONDITIONS) return (CONDITIONS);
 #define TEST_TRY(NAME) printf("%s\n", NAME##_test()?"\033[32mpassed\033[0m":"\033[31mfailed\033[0m")

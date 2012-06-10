@@ -39,8 +39,8 @@
 
 #if !defined(offsetof)
 #	if ((__COMPID__ == __CCAPRICE_COMPILER_EKOPATH) || \
-	    (__COMPID__ == __CCAPRICE_COMPILER_CLANG)   || \
-	    (__COMPID__ == __CCAPRICE_COMPILER_GCC))
+(__COMPID__ == __CCAPRICE_COMPILER_CLANG)   || \
+(__COMPID__ == __CCAPRICE_COMPILER_GCC))
 #		define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
 #	else
 		/*

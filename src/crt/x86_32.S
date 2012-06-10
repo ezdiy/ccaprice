@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 
+ * Copyright (C) 2012
  * 	Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -26,7 +26,7 @@
 #	define ENTRY __main
 #else
 #	define ENTRY _start
-#endif 
+#endif
 
 .text
 .global __ccaprice_syscall_core
@@ -192,7 +192,7 @@ __umoddi3:
 	popl   %ebx
 	xorl   %edx,       %edx
 	retl
-	
+
 ENTRY:
 	xorl  %ebp,        %ebp
 	popl  %esi
@@ -202,19 +202,19 @@ ENTRY:
 	pushl %esi
 	call  __ccaprice_main
 	hlt
-	
+
 #ifdef BSD
 __ccaprice_syscall_bsd:
 	int $0x80
 	ret
 #endif
-	
+
 __ccaprice_syscall_core:
 	pushl %ebp
 	pushl %edi
 	pushl %esi
 	pushl %ebx
-	
+
 	movl 44(%esp),%ebp
 	movl 40(%esp),%edi
 	movl 36(%esp),%esi
@@ -234,7 +234,7 @@ __ccaprice_syscall_core:
 	#else
 		int $0x80
 	#endif
-	
+
 	popl %ebx
 	popl %esi
 	popl %edi

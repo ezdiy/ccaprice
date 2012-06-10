@@ -57,7 +57,7 @@ double atan(double x) {
 		if (iter > 0x7FF00000 || (iter == 0x7FF00000 && (__CCAPRICE_MATH_LO_L(x) != 0)))
 			return x+x; /* NaN */
 		return (x_hi > 0)?ccaprice_atan_hi[3]+ccaprice_atan_lo[3]:
-		                 -ccaprice_atan_hi[3]-ccaprice_atan_lo[3];
+	             -ccaprice_atan_hi[3]-ccaprice_atan_lo[3];
 	}
 	if (iter < 0x3FDC0000) {
 		if (iter < 0x3E200000 && 1.0e300+x > 1.0)
@@ -76,11 +76,11 @@ double atan(double x) {
 	double z  = x*x;
 	double w  = z*z;
 	double s1 = z * (ccaprice_atan_at[0x00]+w*(ccaprice_atan_at[0x02]+w*
-	                (ccaprice_atan_at[0x04]+w*(ccaprice_atan_at[0x06]+w*
-	                (ccaprice_atan_at[0x08]+w*(ccaprice_atan_at[0x0A]))))));
+            (ccaprice_atan_at[0x04]+w*(ccaprice_atan_at[0x06]+w*
+            (ccaprice_atan_at[0x08]+w*(ccaprice_atan_at[0x0A]))))));
 	double s2 = w * (ccaprice_atan_at[0x01]+w*(ccaprice_atan_at[0x03]+w*
-	                (ccaprice_atan_at[0x05]+w*(ccaprice_atan_at[0x07]+w*
-	                (ccaprice_atan_at[0x09])))));
+            (ccaprice_atan_at[0x05]+w*(ccaprice_atan_at[0x07]+w*
+            (ccaprice_atan_at[0x09])))));
 	if (!(x_id < 0)) {
 		z = ccaprice_atan_hi[x_id] - ((x*(s1+s2)-ccaprice_atan_lo[x_id])-x);
 		return (x_hi < 0) ? -z:z;
