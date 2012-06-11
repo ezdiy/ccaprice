@@ -415,6 +415,7 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(bsearch);
 	TEST_TRY(malloc);
 	TEST_TRY(free);
+	TEST_TRY(calloc);
 	
 	TEST_TRY(jmpbuf);
 
