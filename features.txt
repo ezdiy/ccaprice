@@ -172,6 +172,8 @@ stdlib.h:
 	getenv ()
 	malloc ()
 	calloc ()
+	realloc()
+	free   ()
 	puts   ()
 	rand   () [SSE2/naive]
 	qsort  () [OPT/native]

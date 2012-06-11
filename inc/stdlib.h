@@ -70,9 +70,11 @@ __CCAPRICE_EXPORT char* getenv (const char *);
 __CCAPRICE_EXPORT void  qsort  (void *, size_t, size_t, int (*)(const void *, const void *));
 __CCAPRICE_EXPORT void *bsearch(const void *, const void *, size_t, size_t, int(*)(const void *, const void *));
 
-/* malloc / free */
-__CCAPRICE_EXPORT void *malloc(size_t);
-__CCAPRICE_EXPORT void *calloc(size_t, size_t);
+/* dynamic memory managment stuff */
+__CCAPRICE_EXPORT void *malloc (size_t);
+__CCAPRICE_EXPORT void *calloc (size_t, size_t);
+__CCAPRICE_EXPORT void  free   (void*);
+__CCAPRICE_EXPORT void *realloc(void *, size_t);
 
 /* rand / srand */
 __CCAPRICE_EXPORT void  srand(unsigned int);

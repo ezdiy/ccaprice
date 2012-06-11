@@ -27,14 +27,7 @@
 #include "inc/locale.h"
 
 /* In [arch].S */
-__CCAPRICE_INTERNAL_FUNC(int, __ccaprice_syscall_core, (int, ...));
-#ifdef BSD
-#	define SYS_BRK SYS_break
-#elif !defined(WIN)
-#	define SYS_BRK SYS_brk
-#else
-#	define SYS_BRK 0
-#endif
+__CCAPRICE_INTERNAL_FUNC(uintptr_t, __ccaprice_syscall_core, (int, ...));
 
 /* ENVIROMENT */
 char **__ccaprice_enviroment;
@@ -58,42 +51,6 @@ int __ccaprice_syscall_error() {
 	return no;
 }
 #endif
-
-void *__ccaprice_malloc_small(size_t n) {
-	static uintptr_t mcur;
-	static uintptr_t mbrk;
-	uintptr_t base;
-	uintptr_t make;
-	size_t    align = 1;
-
-	/* align allocations */
-	while (align < n && align < 16)
-		align += align;
-	n = ((n + align) - 1) & -align;
-
-	if (!mcur) {
-		 mcur = __ccaprice_syscall_core(SYS_BRK, 0) + 16;
-		 mbrk = mcur;
-	}
-	base = ((mcur + align) - 1) & -align;
-
-	/*
-	 * validate allocation is correct
-	 * if n > (SIZE_MAX - PAGE_SIZE - base_address) then
-	 * we're out of memory.
-	 */
-	if (n > SIZE_MAX - PAGE_SIZE - base)
-		return (void*)-1;
-
-	if (base + n > mbrk) {
-		make = (((base + n) + PAGE_SIZE) - 1) & -PAGE_SIZE;
-		if (__ccaprice_syscall_core(SYS_BRK, make) != make)
-			return (void*)-1;
-		mbrk = make;
-	}
-	mcur = base + n;
-	return (void*)base;
-}
 
 #define ISTR1(C) ISTR2(C)
 #define ISTR2(C) #C
@@ -148,6 +105,8 @@ SYSCALL1(int,    ioctl, (int f, int b, void *c),       (SYS_ioctl,f,b,c))
 SYSCALL1(int,    close, (int f),                       (SYS_close,f))
 SYSCALL0(void,  _exit,  (int f),                       (SYS_exit, f))
 SYSCALL1(pid_t,  getpid,(),                            (SYS_getpid))
+SYSCALL1(void*,  mmap,  (void *f,size_t b,int c,int d,int e, off_t q),(SYS_mmap, f, b, c, d, e, q))
+SYSCALL1(int,    munmap,(void *f,size_t b),(SYS_munmap, f, b))
 
 #undef SYSCALL0
 #undef SYSCALL1

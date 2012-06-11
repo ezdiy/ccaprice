@@ -50,6 +50,8 @@ __CCAPRICE_EXPORT int     close (int);
 __CCAPRICE_EXPORT int     kill  (pid_t, int);
 __CCAPRICE_EXPORT void    _exit (int);
 __CCAPRICE_EXPORT pid_t   getpid();
+__CCAPRICE_EXPORT int     munmap(void *, size_t);
+__CCAPRICE_EXPORT void   *mmap  (void *, size_t, int, int, int, off_t);
 
 /* <hack> */
 /* linux/BSD X86 / X86_64 only */

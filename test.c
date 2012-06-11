@@ -275,7 +275,40 @@ TEST_DEF(stdlib, malloc, {
 	data[3] = 'l';
 	data[4] = 'o';
 
-	TEST_RET(strncmp(data, data, 5) == 0);
+	TEST_RET(strncmp(data, "hello", 5) == 0);
+});
+
+TEST_DEF(stdlib, free, {
+	char *data = malloc(5);
+	data[0] = 'h';
+	data[1] = 'e';
+	data[2] = 'l';
+	data[3] = 'l';
+	data[4] = 'o';
+	free(data);
+	char *copy = malloc(5); /* allocator will reuse chunk = same address */
+	copy[0] = 'H';
+	copy[1] = 'E';
+	copy[2] = 'L';
+	copy[3] = 'L';
+	copy[4] = 'O';
+	
+	/*
+	 * should be the same since the `data` is the `copy` in the
+	 * allocator address to understand read how the allocator works.
+	 */
+	TEST_RET(strncmp(copy, data, 5) == 0);
+});
+
+TEST_DEF(stdlib, calloc, {
+	char *data = calloc(5, sizeof(char));
+	data[0] = 'h';
+	data[1] = 'e';
+	data[2] = 'l';
+	data[3] = 'l';
+	data[4] = 'o';
+	
+	TEST_RET(strncmp(data, "hello", 5) == 0);
 });
 
 TEST_DEF(setjmp, jmpbuf, {
@@ -381,6 +414,7 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(qsort);
 	TEST_TRY(bsearch);
 	TEST_TRY(malloc);
+	TEST_TRY(free);
 	
 	TEST_TRY(jmpbuf);
 

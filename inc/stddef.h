@@ -39,8 +39,8 @@
 
 #if !defined(offsetof)
 #	if ((__COMPID__ == __CCAPRICE_COMPILER_EKOPATH) || \
-(__COMPID__ == __CCAPRICE_COMPILER_CLANG)   || \
-(__COMPID__ == __CCAPRICE_COMPILER_GCC))
+	    (__COMPID__ == __CCAPRICE_COMPILER_CLANG)   || \
+	    (__COMPID__ == __CCAPRICE_COMPILER_GCC))
 #		define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
 #	else
 		/*
@@ -51,4 +51,15 @@
 #		define offsetof(TYPE, MEMBER) ((size_t) &((TYPE*)0)->MEMBER)
 #	endif
 #endif
+
+#ifdef _LP64 /* long pointer == 64 */
+    typedef unsigned long uintptr_t;
+    typedef long          intptr_t;
+    typedef uintptr_t     ptrdiff_t;
+#else
+    typedef unsigned int  uintptr_t;
+    typedef int           intptr_t;
+    typedef uintptr_t     ptrdiff_t;
+#endif
+
 #endif /* !CCAPRICE_STDDEF_HDR */
