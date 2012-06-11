@@ -274,6 +274,11 @@ ifneq ($(OS), WIN)
 	endif
 endif
 
+# allow debug
+ifneq (, $(DEBUG))
+	override CFLAGS += -g
+endif
+
 # we can try $CC if !CCC
 ifeq (, $(CCC))
 	ifneq (, $(CC))
@@ -358,10 +363,12 @@ test: test.o
 ifneq ($(DONOT), 1)
 	$(AT) ld $(LFLAGS) -o test test.o $(OUT)
 endif
+ifeq (, $(DEBUG))
 	$(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
 	@ echo $(BLUE)   Before `du -s test` $(ENDCOL)
 	@ strip test
 	@ echo $(BLUE)   After  `du -s test` $(ENDCOL)
+endif
 	$(ECHO) $(GREEN) Completed Build for test $(RPURPLE)(`file test | sed -r -e 's@.*: *@@'`) $(ENDCOL)
 
 printendian:

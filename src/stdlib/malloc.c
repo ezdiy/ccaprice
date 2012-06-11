@@ -40,6 +40,10 @@
 /*#define _DWMALLOC_THREADSAFE*/
 /*#define _DWMALLOC_DEBUG     */
 
+#ifndef NVALGRIND
+# include <valgrind/memcheck.h>
+#endif
+
 #include <sys/mman.h>
 #include "inc/stddef.h"   /* size_t / ptrdiff_t / NULL */
 #include "src/crt/runtime.h"
@@ -69,7 +73,7 @@
 
 static size_t _dwmalloc_pagesize = 0;
 
-#define _DWMALLOC_MMAP(size) (mmap((void*)0, (size), PROT_READ|PROT_WRITE, MAP_ANON|MAP_PRIVATE, -1, 0))
+#define _DWMALLOC_MMAP(size) (mmap(0, (size), PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0))
 
 #ifdef _DWMALLOC_DEBUG
 #    include <stdio.h>         /* fprintf / stderr */
@@ -156,29 +160,29 @@ static dwmalloc_heap_t *dwmalloc_heap_new(size_t size, void *prev, void *next) {
     int ch;
     
     if (!size) {
-	_DWMALLOC_ERROR("size = 0");
-	return (dwmalloc_heap_t*)0;
+        _DWMALLOC_ERROR("size = 0");
+        return (dwmalloc_heap_t*)0;
     }
     
     for (ir = 0; ir < _dwmalloc_copyn; ir++) {
-	if (_dwmalloc_copys[ir].chunksize >= size) {
-	    break;
-	}
+        if (_dwmalloc_copys[ir].chunksize >= size) {
+            break;
+        }
     }
 	    
     bestchuk = (ir < _dwmalloc_copyn) ?  _dwmalloc_copys[ir].chunksize : size;
     tinyheap = sizeof(dwmalloc_heap_t) + sizeof(ptrdiff_t) + bestchuk + sizeof(ptrdiff_t);
     if (tinyheap <  _dwmalloc_pagesize) {
-	heapsize =  _dwmalloc_pagesize;
-	ch       = (_dwmalloc_pagesize - sizeof(dwmalloc_heap_t)) / (sizeof(ptrdiff_t) + bestchuk + sizeof(ptrdiff_t));
+        heapsize =  _dwmalloc_pagesize;
+        ch       = (_dwmalloc_pagesize - sizeof(dwmalloc_heap_t)) / (sizeof(ptrdiff_t) + bestchuk + sizeof(ptrdiff_t));
     } else {
-	heapsize =  _dwmalloc_pagesize * (tinyheap / _dwmalloc_pagesize + 1);
-	ch       =  1;
+        heapsize =  _dwmalloc_pagesize * (tinyheap / _dwmalloc_pagesize + 1);
+        ch       =  1;
     }
     
     if ((peap = _DWMALLOC_MMAP(heapsize)) == MAP_FAILED) {
-	_DWMALLOC_ERROR("mmap() returned MAP_FAILED");
-	return (dwmalloc_heap_t*)0;
+        _DWMALLOC_ERROR("mmap() returned MAP_FAILED");
+        return (dwmalloc_heap_t*)0;
     }
     
     heap             = (dwmalloc_heap_t*)peap;
@@ -191,34 +195,34 @@ static dwmalloc_heap_t *dwmalloc_heap_new(size_t size, void *prev, void *next) {
     heap->heapsize   = heapsize;
     
     if (ir < _dwmalloc_copyn) {
-	heap->copy = &_dwmalloc_copys[ir];
-	if(!(heap->copy)->ready) {
-	    (heap->copy)->ready  = heap;
-	    (heap->copy)->first  = heap;
-	    (heap->copy)->recent = heap;
-	    (heap->copy)->last   = heap;
-	    
-	    /* this is an odd tree system */
-	     heap->prev = NULL;
-	     heap->next = NULL;
-	} else {
-	    (heap->copy)->recent = heap;
-	     heap->prev          = (heap->copy)->last;
-	     heap->next          = NULL;
-	     
-	    if  ((heap->copy)->last) {
-		((heap->copy)->last)->next = heap;
-	    }
-	        ((heap->copy)->last)       = heap;
-	    if (!(heap->copy)->first) {
-		 (heap->copy)->first = heap;
-	    }
-	}
-	(heap->copy)->totalheap ++;
+        heap->copy = &_dwmalloc_copys[ir];
+        if(!(heap->copy)->ready) {
+            (heap->copy)->ready  = heap;
+            (heap->copy)->first  = heap;
+            (heap->copy)->recent = heap;
+            (heap->copy)->last   = heap;
+            
+            /* this is an odd tree system */
+             heap->prev = NULL;
+             heap->next = NULL;
+        } else {
+            (heap->copy)->recent = heap;
+             heap->prev          = (heap->copy)->last;
+             heap->next          = NULL;
+             
+            if  ((heap->copy)->last) {
+                ((heap->copy)->last)->next = heap;
+            }
+                ((heap->copy)->last)       = heap;
+            if (!(heap->copy)->first) {
+                 (heap->copy)->first = heap;
+            }
+        }
+        (heap->copy)->totalheap ++;
     } else {
-	heap->copy = (dwmalloc_copy_t*)0;
-	heap->prev = NULL;
-	heap->next = NULL;
+        heap->copy = (dwmalloc_copy_t*)0;
+        heap->prev = NULL;
+        heap->next = NULL;
     }
     
     /*
@@ -227,13 +231,17 @@ static dwmalloc_heap_t *dwmalloc_heap_new(size_t size, void *prev, void *next) {
      * 	way inside the chunk.
      */
     for (
-	chuk = peap + sizeof(dwmalloc_heap_t);
-	chuk +  sizeof(ptrdiff_t) + bestchuk + sizeof(ptrdiff_t) <= peap + heapsize;
-	chuk += sizeof(ptrdiff_t) + bestchuk + sizeof(ptrdiff_t)
+        chuk = peap + sizeof(dwmalloc_heap_t);
+        chuk +  sizeof(ptrdiff_t) + bestchuk + sizeof(ptrdiff_t) <= peap + heapsize;
+        chuk += sizeof(ptrdiff_t) + bestchuk + sizeof(ptrdiff_t)
     ) {
-	*(ptrdiff_t*)chuk = -(chuk + sizeof(ptrdiff_t) - peap);
+        *(ptrdiff_t*)chuk = -(chuk + sizeof(ptrdiff_t) - peap);
     }
     
+    #ifndef NVALGRIND
+    VALGRIND_CREATE_MEMPOOL(heap, 0, 1);
+    VALGRIND_MAKE_MEM_NOACCESS(heap, heap->heapsize);
+    #endif
     return heap;
 }
 
@@ -241,22 +249,22 @@ dwmalloc_heap_t *dwmalloc_heap_fffh(dwmalloc_copy_t *copy) {
     dwmalloc_heap_t *heap;
     
     if (!copy) {
-	_DWMALLOC_ERROR("copy = 0");
-	return (dwmalloc_heap_t*)0;
+        _DWMALLOC_ERROR("copy = 0");
+        return (dwmalloc_heap_t*)0;
     }
     
     if (copy->signature != _DWMALLOC_SIGNATURE_COPY) {
-	_DWMALLOC_ERROR("invalid heap row");
-	return (dwmalloc_heap_t*)0;
+        _DWMALLOC_ERROR("invalid heap row");
+        return (dwmalloc_heap_t*)0;
     }
     
     for (heap = copy->ready; heap; heap = heap->next) {
-	if (!_DWMALLOC_IS_HEAP_REAL(heap)) {
-	    _DWMALLOC_ERROR("invalid heap found");
-	    return (dwmalloc_heap_t*)0;
-	}
-	if (_DWMALLOC_IS_HEAP_FREE(heap))
-	    break;
+        if (!_DWMALLOC_IS_HEAP_REAL(heap)) {
+            _DWMALLOC_ERROR("invalid heap found");
+            return (dwmalloc_heap_t*)0;
+        }
+        if (_DWMALLOC_IS_HEAP_FREE(heap))
+            break;
     }
     
     return heap;
@@ -318,6 +326,10 @@ void *dwmalloc_alloc(size_t size, dwmalloc_heap_t *heap) {
 		}
     }
     
+    
+    #ifndef NVALGRIND
+    VALGRIND_MEMPOOL_ALLOC(heap, chunk, heap->chunksize);
+    #endif
     return chunk;
 }
 
@@ -375,6 +387,10 @@ void dwmalloc_release(dwmalloc_heap_t *heap) {
     
     if (copy)
 		copy->totalheap ++;
+        
+    #ifndef NVALGRIND
+    VALGRIND_DESTROY_MEMPOOL(heap);
+    #endif
 }
 
 /*
@@ -433,6 +449,10 @@ void dwmalloc_free(void *chunk) {
 		if (!(heap->copy)->first)
 			 (heap->copy)->first = heap;
     }
+    
+    #ifndef NVALGRIND
+    VALGRIND_MEMPOOL_FREE(heap, chunk);
+    #endif
 }
 
 /*
@@ -449,7 +469,7 @@ static void *dwmalloc_malloc(size_t size) {
     if (size == 0)
 	return NULL;
     if (_dwmalloc_pagesize == 0)
-	_dwmalloc_pagesize = getpagesize();
+        _dwmalloc_pagesize = getpagesize();
     
     /*
      * Aligned allocation by guessing (this can be done 100% better)
@@ -499,7 +519,7 @@ static void *dwmalloc_malloc(size_t size) {
      * this allocator.
      */
     if (!(chunk = dwmalloc_alloc(alloc, heap)))
-	_DWMALLOC_ERROR("failed to allocate chunk for heap, returned NULL");
+        _DWMALLOC_ERROR("failed to allocate chunk for heap, returned NULL");
 	
     return chunk;
 }
@@ -513,51 +533,51 @@ static void *dwmalloc_realloc(void *p, size_t size) {
     void            *tap2;
     
     if (!p) {
-	if (!size) {
-	    _DWMALLOC_ERROR("cannot allocate zero");
-	    return NULL;
-	}
-	newp = dwmalloc_malloc(size);
+        if (!size) {
+            _DWMALLOC_ERROR("cannot allocate zero");
+            return NULL;
+        }
+        newp = dwmalloc_malloc(size);
     } else {
-	if (size == 0) {
-	    dwmalloc_free(p);
-	    return NULL;
-	}
-	offs = *(ptrdiff_t*)(p - sizeof(ptrdiff_t));
-	if (offs < 0) {
-	    _DWMALLOC_ERROR("attempt to realloc free chunk");
-	    return NULL;
-	}
-	
-	heap = (dwmalloc_heap_t*)(p - offs);
-	if (!_DWMALLOC_IS_HEAP_REAL(heap)) {
-	    _DWMALLOC_ERROR("invalid pointer");
-	    return NULL;
-	}
-	
-	/*
-	 * We don't need to reallocate or do anything
-	 * if it already fits.
-	 */
-	if (size <= heap->chunksize)
-	    return p;
-	    
-	if ((newp = dwmalloc_malloc(size)) == NULL) {
-	    _DWMALLOC_ERROR("can't allocate new size");
-	    return NULL;
-	}
-	
-	/*
-	 * This is a byte copy and isn't optimized: Perhaps we should use memcpy?
-	 * that would require another include this is suppose to stay self hosting
-	 * we could add it as an option!  Or write our own optimized one.
-	 * 
-	 * TODO: memcpy? ourown? SSE ... ???
-	 */
-	for (tap1 = p, tap2 = newp; tap1 < p + heap->chunksize; tap1++, tap2++)
-	    *(char*)tap2 = *(char*)tap1;
-	    
-	dwmalloc_free(p);
+        if (size == 0) {
+            dwmalloc_free(p);
+            return NULL;
+        }
+        offs = *(ptrdiff_t*)(p - sizeof(ptrdiff_t));
+        if (offs < 0) {
+            _DWMALLOC_ERROR("attempt to realloc free chunk");
+            return NULL;
+        }
+        
+        heap = (dwmalloc_heap_t*)(p - offs);
+        if (!_DWMALLOC_IS_HEAP_REAL(heap)) {
+            _DWMALLOC_ERROR("invalid pointer");
+            return NULL;
+        }
+        
+        /*
+         * We don't need to reallocate or do anything
+         * if it already fits.
+         */
+        if (size <= heap->chunksize)
+            return p;
+            
+        if ((newp = dwmalloc_malloc(size)) == NULL) {
+            _DWMALLOC_ERROR("can't allocate new size");
+            return NULL;
+        }
+        
+        /*
+         * This is a byte copy and isn't optimized: Perhaps we should use memcpy?
+         * that would require another include this is suppose to stay self hosting
+         * we could add it as an option!  Or write our own optimized one.
+         * 
+         * TODO: memcpy? ourown? SSE ... ???
+         */
+        for (tap1 = p, tap2 = newp; tap1 < p + heap->chunksize; tap1++, tap2++)
+            *(char*)tap2 = *(char*)tap1;
+            
+        dwmalloc_free(p);
     }
     
     return newp;

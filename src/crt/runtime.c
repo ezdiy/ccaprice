@@ -105,7 +105,13 @@ SYSCALL1(int,    ioctl, (int f, int b, void *c),       (SYS_ioctl,f,b,c))
 SYSCALL1(int,    close, (int f),                       (SYS_close,f))
 SYSCALL0(void,  _exit,  (int f),                       (SYS_exit, f))
 SYSCALL1(pid_t,  getpid,(),                            (SYS_getpid))
+
+#ifndef SYS_mmap2
 SYSCALL1(void*,  mmap,  (void *f,size_t b,int c,int d,int e, off_t q),(SYS_mmap, f, b, c, d, e, q))
+#else
+SYSCALL1(void*,  mmap,  (void *f,size_t b,int c,int d,int e, off_t q),(SYS_mmap2, (long)f, b, c, d, e, q>>12))
+#endif
+
 SYSCALL1(int,    munmap,(void *f,size_t b),(SYS_munmap, f, b))
 
 #undef SYSCALL0

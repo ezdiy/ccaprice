@@ -68,19 +68,24 @@ __UINT(64); __SINT(64);
 	typedef __ccaprice_sint_16 int16_t;
 	typedef __ccaprice_sint_32 int32_t;
 	typedef __ccaprice_sint_64 int64_t;
-#	if defined (__PTRDIFF_TYPE__)
-		typedef signed   __PTRDIFF_TYPE__ intptr_t;
-		typedef unsigned __PTRDIFF_TYPE__ uintptr_t;
-#	else
-		/*
-		 * These are correct for X86 and x86_64.  Just a thought
-		 * there should be a more correct way to fallbacking if
-		 * __PTRDIFF_TYPE__ is not defined.  TODO!
-		 */
-		typedef signed   long             intptr_t;
-		typedef unsigned long             uintptr_t;
+	
+#	if !defined(__CCAPRICE_TYPE_INTPTR_T_DEFINED)
+		typedef signed   __CCAPRICE_TYPE_INTPTR_T intptr_t;
+		typedef unsigned __CCAPRICE_TYPE_INTPTR_T uintptr_t;
+#	define __CCAPRICE_TYPE_INTPTR_T_DEFINED
+#	endif
+
+/*
+ * Prevent overlapping typedef from stddef.h
+ * this is totally annoying but the standard
+ * says otherwise.
+ */
+#	if !defined(__CCAPRICE_TYPE_PTRDIFF_T_DEFINED)
+	typedef unsigned __CCAPRICE_TYPE_INTPTR_T              ptrdiff_t;
+#	define  __CCAPRICE_TYPE_INTPTR_T_DEFINED
 #	endif
 #endif
+
 /*
  * Generate static assertions only when compiling the library.
  * There might be something broken with someones toolchain if

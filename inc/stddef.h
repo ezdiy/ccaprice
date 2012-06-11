@@ -32,6 +32,13 @@
 	typedef  __CCAPRICE_TYPE__SIZE_T size_t;
 #	define   __CCAPRICE_TYPE__SIZE_T_DEFINED
 #endif
+
+
+/*
+ * We can just undef NULL if it already is.  There is something about
+ * the whole setup of the standard headers that makes it annoying to
+ * manage types.
+ */
 #ifdef  NULL
 #undef  NULL
 #endif
@@ -52,14 +59,9 @@
 #	endif
 #endif
 
-#ifdef _LP64 /* long pointer == 64 */
-    typedef unsigned long uintptr_t;
-    typedef long          intptr_t;
-    typedef uintptr_t     ptrdiff_t;
-#else
-    typedef unsigned int  uintptr_t;
-    typedef int           intptr_t;
-    typedef uintptr_t     ptrdiff_t;
+#if !defined(__CCAPRICE_TYPE__PTRDIFF_T_DEFINED)
+    typedef  unsigned __CCAPRICE_TYPE_INTPTR_T ptrdiff_t;
+#   define   __CCAPRICE_TYPE_PTRDIFF_T_DEFINED
 #endif
 
 #endif /* !CCAPRICE_STDDEF_HDR */

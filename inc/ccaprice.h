@@ -136,6 +136,16 @@
 #	endif
 #endif
 
+#if defined (__PTRDIFF_TYPE__)
+#	define __CCAPRICE_TYPE_INTPTR_T __PTRDIFF_TYPE__
+#else
+#	ifdef _LP64
+#		define __CCAPRICE_TYPE_INTPTR_T long
+#	else
+#		define __CCAPRICE_TYPE_INTPTR_T int
+#	endif
+#endif
+
 /*
  * Ensure that a valid target has been selected for compilation. Otherwise
  * force a compiler error.
