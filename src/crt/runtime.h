@@ -24,14 +24,14 @@
 #define CCAPRICE_CRT_HDR
 #include "inc/ccaprice.h"
 #include "inc/stdint.h"
-#if defined(WIN)
-#	define WIN32_LEAN_AND_MEAN
-#	include <windows.h>
-	typedef size_t ssize_t;
-#else
-#	include <sys/syscall.h>
-#	include <sys/types.h>
+#include "inc/stddef.h"
+#if defined(LINUX)
+#	include "sys/linux.h"
+#elif defined(BSD)
+#	include "sys/bsd.h"
 #endif
+
+
 typedef int32_t pid_t;
 #if defined(i386)   || defined(__x86__)
 #	define PAGE_SIZE 4096

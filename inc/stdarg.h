@@ -43,13 +43,13 @@
  * stdarg system.  This is undefined behaviour.  But it works.
  */
 #if defined(__CCAPRICE_TARGET_X86_32)
-	typedef int   __va_item;
-	typedef char *va_list;
+	typedef int  __va_item;
+	typedef char  *va_list;
 #elif defined(__CCAPRICE_TARGET_X86_64)
 	typedef long  __va_item;
-	typedef char *va_list;
+	typedef char   *va_list;
 #else
-#	error "Cannot find sutible target for stdarg.h"
+#	error Architecture not supported
 #endif
 #	define va_start(A,L)  (A =((va_list)&(L)+__va_size(L)))
 #	define va_arg(A,T)    (A+=__va_rsize(T),*((T*)(A-__va_rsize(T))))

@@ -361,11 +361,8 @@ TEST_DEF(posix\040, rindex, {
 	TEST_RET(find-data+1 == 18)
 })
 
-#include <sys/ioctl.h>
 int main(int argc, char **argv, char **argp) {
-	struct winsize ws;
-	ioctl(1, TIOCGWINSZ, &ws);
-	PADD = ws.ws_col+3;
+	PADD = 80+3;
 
 	int  i = 0;
 	while(*argp++ && *argp)

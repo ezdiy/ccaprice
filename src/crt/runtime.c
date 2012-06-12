@@ -106,10 +106,24 @@ SYSCALL1(int,    close, (int f),                       (SYS_close,f))
 SYSCALL0(void,  _exit,  (int f),                       (SYS_exit, f))
 SYSCALL1(pid_t,  getpid,(),                            (SYS_getpid))
 
-#ifndef SYS_mmap2
-SYSCALL1(void*,  mmap,  (void *f,size_t b,int c,int d,int e, off_t q),(SYS_mmap, f, b, c, d, e, q))
+#ifndef BSD
+#	ifndef SYS_mmap2
+		SYSCALL1(void*,  mmap,  (void *f,size_t b,int c,int d,int e, off_t q),(SYS_mmap, f, b, c, d, e, q))
+#	else
+		SYSCALL1(void*,  mmap,  (void *f,size_t b,int c,int d,int e, off_t q),(SYS_mmap2, (long)f, b, c, d, e, q>>12))
+#	endif
 #else
-SYSCALL1(void*,  mmap,  (void *f,size_t b,int c,int d,int e, off_t q),(SYS_mmap2, (long)f, b, c, d, e, q>>12))
+void *mmap(void *f, size_t b, int c, int d, int e, off_t q) {
+	unsigned long buffer[6];
+	buffer[0] = (unsigned long)f;
+	buffer[1] = (unsigned long)b;
+	buffer[2] = (unsigned long)c;
+	buffer[3] = (unsigned long)d;
+	buffer[4] = (unsigned long)e;
+	buffer[5] = (unsigned long)q;
+	
+	return (void*)__ccaprice_syscall_core(SYS_mmap, buffer);
+}
 #endif
 
 SYSCALL1(int,    munmap,(void *f,size_t b),(SYS_munmap, f, b))

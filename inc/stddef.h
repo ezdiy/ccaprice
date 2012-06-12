@@ -28,9 +28,9 @@
  * types / macros alltogether.  You're not allowed to include other
  * standard headers with other standard headers.
  */
-#if !defined(__CCAPRICE_TYPE__SIZE_T_DEFINED)
-	typedef  __CCAPRICE_TYPE__SIZE_T size_t;
-#	define   __CCAPRICE_TYPE__SIZE_T_DEFINED
+#if !defined(__CCAPRICE_TYPE_SIZE_T_DEFINED)
+	typedef  __CCAPRICE_TYPE_SIZE_T size_t;
+#	define   __CCAPRICE_TYPE_SIZE_T_DEFINED
 #endif
 
 
@@ -59,8 +59,8 @@
 #	endif
 #endif
 
-#if !defined(__CCAPRICE_TYPE__PTRDIFF_T_DEFINED)
-    typedef  unsigned __CCAPRICE_TYPE_INTPTR_T ptrdiff_t;
+#if !defined(__CCAPRICE_TYPE_PTRDIFF_T_DEFINED)
+    typedef  __CCAPRICE_TYPE_INTPTR_T ptrdiff_t;
 #   define   __CCAPRICE_TYPE_PTRDIFF_T_DEFINED
 #endif
 

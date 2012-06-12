@@ -24,9 +24,9 @@
 #define __CCAPRICE_POSIX_STRINGS_HDR__
 #include "inc/ccaprice.h"
 
-#if !defined(__CCAPRICE_TYPE__SIZE_T_DEFINED)
-	typedef  __CCAPRICE_TYPE__SIZE_T size_t;
-#	define   __CCAPRICE_TYPE__SIZE_T_DEFINED
+#if !defined(__CCAPRICE_TYPE_SIZE_T_DEFINED)
+	typedef  __CCAPRICE_TYPE_SIZE_T size_t;
+#	define   __CCAPRICE_TYPE_SIZE_T_DEFINED
 #endif
 
 __CCAPRICE_EXPORT int   bcmp       (const void *, const void *, size_t); // alias to memcmp

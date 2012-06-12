@@ -37,6 +37,8 @@
 #	define __REG64 __DI__
 #	define __SINT(S) typedef int          __ccaprice_sint_##S __attribute__( (__mode__( __REG##S )))
 #	define __UINT(S) typedef unsigned int __ccaprice_uint_##S __attribute__( (__mode__( __REG##S )))
+#else
+#	error Architecture not supported
 #endif
 /*
  * Create the ccaprice_uint_* types for re-typedef to correct types
@@ -53,37 +55,29 @@ __UINT(64); __SINT(64);
 #undef __REG64
 #undef __UINT
 #undef __SINT
-/*
- * Only bother to define these types if we can gurantee that no system or
- * standard stdint.h or inttypes.h was included.
- */
-#if !defined(_STDINT_H)      && !defined(_STDINT_H_)  && \
-    !defined(_SYS_STDINT_H_) && !defined(_INTTYPES_H) && \
-    !defined(_INTTYPES_H_)   && !defined(_SYS__STDINT_H_)
-	typedef __ccaprice_uint_8  uint8_t;
-	typedef __ccaprice_uint_16 uint16_t;
-	typedef __ccaprice_uint_32 uint32_t;
-	typedef __ccaprice_uint_64 uint64_t;
-	typedef __ccaprice_sint_8  int8_t;
-	typedef __ccaprice_sint_16 int16_t;
-	typedef __ccaprice_sint_32 int32_t;
-	typedef __ccaprice_sint_64 int64_t;
+typedef __ccaprice_uint_8  uint8_t;
+typedef __ccaprice_uint_16 uint16_t;
+typedef __ccaprice_uint_32 uint32_t;
+typedef __ccaprice_uint_64 uint64_t;
+typedef __ccaprice_sint_8  int8_t;
+typedef __ccaprice_sint_16 int16_t;
+typedef __ccaprice_sint_32 int32_t;
+typedef __ccaprice_sint_64 int64_t;
 	
-#	if !defined(__CCAPRICE_TYPE_INTPTR_T_DEFINED)
-		typedef signed   __CCAPRICE_TYPE_INTPTR_T intptr_t;
-		typedef unsigned __CCAPRICE_TYPE_INTPTR_T uintptr_t;
-#	define __CCAPRICE_TYPE_INTPTR_T_DEFINED
-#	endif
+#if !defined(__CCAPRICE_TYPE_INTPTR_T_DEFINED)
+	typedef signed   __CCAPRICE_TYPE_INTPTR_T intptr_t;
+	typedef unsigned __CCAPRICE_TYPE_INTPTR_T uintptr_t;
+#define __CCAPRICE_TYPE_INTPTR_T_DEFINED
+#endif
 
 /*
  * Prevent overlapping typedef from stddef.h
  * this is totally annoying but the standard
  * says otherwise.
  */
-#	if !defined(__CCAPRICE_TYPE_PTRDIFF_T_DEFINED)
-	typedef unsigned __CCAPRICE_TYPE_INTPTR_T              ptrdiff_t;
-#	define  __CCAPRICE_TYPE_INTPTR_T_DEFINED
-#	endif
+#if !defined(__CCAPRICE_TYPE_PTRDIFF_T_DEFINED)
+	typedef __CCAPRICE_TYPE_INTPTR_T             ptrdiff_t;
+#define __CCAPRICE_TYPE_PTRDIFF_T_DEFINED
 #endif
 
 /*

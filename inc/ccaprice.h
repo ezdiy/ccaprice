@@ -109,10 +109,15 @@
  * long unsigned int which is most likely correct for all systems.
  */
 #if defined(__SIZE_TYPE__)
-#	define __CCAPRICE_TYPE__SIZE_T __SIZE_TYPE__
+#	define __CCAPRICE_TYPE_SIZE_T __SIZE_TYPE__
 #else
-#	warning "[ccaprice] no __SIZE_TYPE__ found, using long unsigned int (could fail)"
-#	define __CCAPRICE_TYPE__SIZE_T long unsigned int
+#	ifdef __CCAPRICE_TARGET_X86_32
+#		define __CCAPRICE_TYPE_SIZE_T unsigned int
+#	elif defined(__CCAPRICE_TARGET_X86_64)
+#		define __CCAPRICE_TYPE_SIZE_T unsigned long
+#	else
+#		error Architecture not supported
+#	endif
 #endif
 /*
  * We handle null correctly here.
@@ -136,13 +141,13 @@
 #	endif
 #endif
 
-#if defined (__PTRDIFF_TYPE__)
+#if defined(__PTRDIFF_TYPE__)
 #	define __CCAPRICE_TYPE_INTPTR_T __PTRDIFF_TYPE__
 #else
-#	ifdef _LP64
+#	if defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32)
 #		define __CCAPRICE_TYPE_INTPTR_T long
 #	else
-#		define __CCAPRICE_TYPE_INTPTR_T int
+#		error Architecture not supported
 #	endif
 #endif
 

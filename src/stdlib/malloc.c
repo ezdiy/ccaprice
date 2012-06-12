@@ -40,13 +40,14 @@
 /*#define _DWMALLOC_THREADSAFE*/
 /*#define _DWMALLOC_DEBUG     */
 
-#ifndef NVALGRIND
-# include <valgrind/memcheck.h>
-#endif
 
-#include <sys/mman.h>
 #include "inc/stddef.h"   /* size_t / ptrdiff_t / NULL */
 #include "src/crt/runtime.h"
+#if defined(LINUX)
+#   include "sys/linux.h"
+#elif defined(BSD)
+#   include "sys/bsd.h"
+#endif
 #define getpagesize() PAGE_SIZE
 
 /*
@@ -238,10 +239,6 @@ static dwmalloc_heap_t *dwmalloc_heap_new(size_t size, void *prev, void *next) {
         *(ptrdiff_t*)chuk = -(chuk + sizeof(ptrdiff_t) - peap);
     }
     
-    #ifndef NVALGRIND
-    VALGRIND_CREATE_MEMPOOL(heap, 0, 1);
-    VALGRIND_MAKE_MEM_NOACCESS(heap, heap->heapsize);
-    #endif
     return heap;
 }
 
@@ -326,10 +323,6 @@ void *dwmalloc_alloc(size_t size, dwmalloc_heap_t *heap) {
 		}
     }
     
-    
-    #ifndef NVALGRIND
-    VALGRIND_MEMPOOL_ALLOC(heap, chunk, heap->chunksize);
-    #endif
     return chunk;
 }
 
@@ -387,10 +380,6 @@ void dwmalloc_release(dwmalloc_heap_t *heap) {
     
     if (copy)
 		copy->totalheap ++;
-        
-    #ifndef NVALGRIND
-    VALGRIND_DESTROY_MEMPOOL(heap);
-    #endif
 }
 
 /*
@@ -449,10 +438,6 @@ void dwmalloc_free(void *chunk) {
 		if (!(heap->copy)->first)
 			 (heap->copy)->first = heap;
     }
-    
-    #ifndef NVALGRIND
-    VALGRIND_MEMPOOL_FREE(heap, chunk);
-    #endif
 }
 
 /*
