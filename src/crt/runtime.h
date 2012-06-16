@@ -28,7 +28,7 @@
 #if defined(LINUX)
 #	include "sys/linux.h"
 #elif defined(BSD)
-#	include "sys/bsd.h"
+#	include "sys/freebsd.h"
 #endif
 
 
