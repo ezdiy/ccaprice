@@ -324,7 +324,7 @@ TEST_DEF(math\040\040, acos, {
     TEST_RET(acos(0.5)*180.0/M_PI==60.000000000000007);
 })
 TEST_DEF(math\040\040, acosf, {
-    float a = acosf(0.5f)*180.0f/(float)M_PI
+    float a = acosf(0.5f)*180.0f/(float)M_PI;
     float b = 60.0f;
     TEST_RET(a == b);
 })
