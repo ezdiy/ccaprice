@@ -38,17 +38,17 @@
  * This is terrible looking I suppose there should be
  * a nicer way at doing this without all the mov.
  */
-1:  fstcw 4(%esp)
-    mov   5(%esp), %ah
+1:  fstcw 4(%esp)      // control word store
+    mov   5(%esp), %ah  
     mov   %al, 5(%esp)
-    fldcw 4(%esp)
-    frndint
+    fldcw 4(%esp)      // load modified control
+    frndint            // round
     mov   %ah, 5(%esp)
-    fldcw 4(%esp)
+    fldcw 4(%esp)      // restore original
     ret
 
 #define CEIL(X)      \
-    X 4(%esp);       \
+    X 4(%esp);       \ 
     mov $0xB, %al;   \
     jmp 1b
     
