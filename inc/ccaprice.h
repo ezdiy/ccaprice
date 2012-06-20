@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -34,7 +34,7 @@
     defined(__x86_64__)    || \
     defined(__x86_64)      || \
     defined(_M_X64)
-	#define __CCAPRICE_TARGET_X86_64
+ #define __CCAPRICE_TARGET_X86_64
 #if defined(i386)          || \
     defined(__i386__)      || \
     defined(__i486__)      || \
@@ -48,7 +48,7 @@
     defined(__THW_INTEL__) || \
     defined(__I86__)       || \
     defined(__INTEL__)
-	#define __CCAPRICE_TARGET_X86_32
+ #define __CCAPRICE_TARGET_X86_32
 #endif
 #endif
 #endif
@@ -58,7 +58,7 @@
  * did not include information.
  */
 #if !defined(__INFO__)
-#	define __INFO__ "No information Specified during build"
+# define __INFO__ "No information Specified during build"
 #endif
 /* cannot be enumerated required by more preprocessing */
 #define __CCAPRICE_COMPILER_EKOPATH 0xFF0000
@@ -66,19 +66,19 @@
 #define __CCAPRICE_COMPILER_GCC     0x0000FF
 
 #if defined(__PATHCC__)
-#	define __COMP__   "EKOPATH"
-#	define __COMPID__ __CCAPRICE_COMPILER_EKOPATH
-#	define __CCAPRICE_USED __attribute__((__used__))
+# define __COMP__   "EKOPATH"
+# define __COMPID__ __CCAPRICE_COMPILER_EKOPATH
+# define __CCAPRICE_USED __attribute__((__used__))
 #elif defined(__clang__)
-#	define __COMP__   "CLANG"
-#	define __COMPID__ __CCAPRICE_COMPILER_CLANG
-#	define __CCAPRICE_USED __attribute__((__used__))
+# define __COMP__   "CLANG"
+# define __COMPID__ __CCAPRICE_COMPILER_CLANG
+# define __CCAPRICE_USED __attribute__((__used__))
 #elif defined(__GNUC__)
-#	define __COMP__   "GCC"
-#	define __COMPID__ __CCAPRICE_COMPILER_GCC
-#	define __CCAPRICE_USED __attribute__((__used__))
+# define __COMP__   "GCC"
+# define __COMPID__ __CCAPRICE_COMPILER_GCC
+# define __CCAPRICE_USED __attribute__((__used__))
 #else
-#	warning "Unsupported compiler"
+# warning "Unsupported compiler"
 #endif
 
 /*
@@ -86,22 +86,22 @@
  * script.
  */
 #if !defined(__CCAPRICE_NAIVE)
-#	define __STRING_STRLEN_OPTIMAL
-#	define __STRING_MEMCHR_OPTIMAL
-#	define __STRING_MEMCPY_OPTIMAL
-#	define __STRING_MEMSET_OPTIMAL
-#	define __STDLIB_RANDOM_OPTIMAL
-#	if defined(__SSE2__)
-#		define __STRING_STRLEN_OPTIMAL_SSE2
-#		define __STRING_MEMCHR_OPTIMAL_SSE2
-#		define __STRING_MEMCPY_OPTIMAL_SSE2
-#		define __STRING_MEMSET_OPTIMAL_SSE2
-#		define __STDLIB_RANDOM_OPTIMAL_SSE2
-#	endif
+# define __STRING_STRLEN_OPTIMAL
+# define __STRING_MEMCHR_OPTIMAL
+# define __STRING_MEMCPY_OPTIMAL
+# define __STRING_MEMSET_OPTIMAL
+# define __STDLIB_RANDOM_OPTIMAL
+# if defined(__SSE2__)
+#  define __STRING_STRLEN_OPTIMAL_SSE2
+#  define __STRING_MEMCHR_OPTIMAL_SSE2
+#  define __STRING_MEMCPY_OPTIMAL_SSE2
+#  define __STRING_MEMSET_OPTIMAL_SSE2
+#  define __STDLIB_RANDOM_OPTIMAL_SSE2
+# endif
 #endif
 
 #define __CCAPRICE_COMPILE_TIME_ASSERT(name, x) \
-	typedef int __CompileTimeAssertFailed_##name[(x)?1:-1]
+ typedef int __CompileTimeAssertFailed_##name[(x)?1:-1]
 
 /*
  * Almost every GCC-like compiler has __SIZE_TYPE__ defined to be used
@@ -109,15 +109,15 @@
  * long unsigned int which is most likely correct for all systems.
  */
 #if defined(__SIZE_TYPE__)
-#	define __CCAPRICE_TYPE_SIZE_T __SIZE_TYPE__
+# define __CCAPRICE_TYPE_SIZE_T __SIZE_TYPE__
 #else
-#	ifdef __CCAPRICE_TARGET_X86_32
-#		define __CCAPRICE_TYPE_SIZE_T unsigned int
-#	elif defined(__CCAPRICE_TARGET_X86_64)
-#		define __CCAPRICE_TYPE_SIZE_T unsigned long
-#	else
-#		error Architecture not supported
-#	endif
+# ifdef __CCAPRICE_TARGET_X86_32
+#  define __CCAPRICE_TYPE_SIZE_T unsigned int
+# elif defined(__CCAPRICE_TARGET_X86_64)
+#  define __CCAPRICE_TYPE_SIZE_T unsigned long
+# else
+#  error Architecture not supported
+# endif
 #endif
 /*
  * We handle null correctly here.
@@ -128,27 +128,27 @@
  * to the language at play.
  */
 #if defined(__GNUG__) /* C++ */
-#	define __CCAPRICE_NULL __null
+# define __CCAPRICE_NULL __null
 #else
-#	if defined(__cplusplus)
-		/*
-		 * C++ Specification says that NULL should be 0
-		 * opposed to C which defines it as ((void*)0).
-		 */
-#		define __CCAPRICE_NULL 0
-#	else
-#		define __CCAPRICE_NULL ((void*)0)
-#	endif
+# if defined(__cplusplus)
+  /*
+   * C++ Specification says that NULL should be 0
+   * opposed to C which defines it as ((void*)0).
+   */
+#  define __CCAPRICE_NULL 0
+# else
+#  define __CCAPRICE_NULL ((void*)0)
+# endif
 #endif
 
 #if defined(__PTRDIFF_TYPE__)
-#	define __CCAPRICE_TYPE_INTPTR_T __PTRDIFF_TYPE__
+# define __CCAPRICE_TYPE_INTPTR_T __PTRDIFF_TYPE__
 #else
-#	if defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32)
-#		define __CCAPRICE_TYPE_INTPTR_T long
-#	else
-#		error Architecture not supported
-#	endif
+# if defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32)
+#  define __CCAPRICE_TYPE_INTPTR_T long
+# else
+#  error Architecture not supported
+# endif
 #endif
 
 /*
@@ -156,16 +156,16 @@
  * force a compiler error.
  */
 #if !defined(__CCAPRICE_TARGET_X86_64) && !defined(__CCAPRICE_TARGET_X86_32)
-#	error "[ccaprice] Target not supported"
+# error "[ccaprice] Target not supported"
 #endif
 
 #define __CCAPRICE_INTERNAL_TYPE(TYPE, NAME)       extern TYPE NAME
 #define __CCAPRICE_INTERNAL_FUNC(TYPE, NAME, LIST) __CCAPRICE_INTERNAL_TYPE(TYPE,NAME) LIST
 
 #if defined(CCAPRICE_CP)
-#	define __CCAPRICE_EXPORT
+# define __CCAPRICE_EXPORT
 #else
-#	define __CCAPRICE_EXPORT extern
+# define __CCAPRICE_EXPORT extern
 #endif
 
 __CCAPRICE_EXPORT const char *__ccaprice_build_date;
@@ -174,10 +174,10 @@ __CCAPRICE_EXPORT const char *__ccaprice_build_comp;
 __CCAPRICE_EXPORT const char *__ccaprice_build_time;
 __CCAPRICE_EXPORT const char *__ccaprice_build_host;
 #if defined(__CCAPRICE_EXTENSIONS)
-#	define __CCAPRICE_BUILD_DATE __ccaprice_build_date
-#	define __CCAPRICE_BUILD_INFO __ccaprice_build_info
-#	define __CCAPRICE_BUILD_COMP __ccaprice_build_comp
-#	define __CCAPRICE_BUILD_TIME __ccaprice_build_time
-#	define __CCAPRICE_BUILD_HOST __ccaprice_build_host
+# define __CCAPRICE_BUILD_DATE __ccaprice_build_date
+# define __CCAPRICE_BUILD_INFO __ccaprice_build_info
+# define __CCAPRICE_BUILD_COMP __ccaprice_build_comp
+# define __CCAPRICE_BUILD_TIME __ccaprice_build_time
+# define __CCAPRICE_BUILD_HOST __ccaprice_build_host
 #endif
 #endif

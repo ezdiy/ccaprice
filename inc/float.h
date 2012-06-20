@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -59,32 +59,32 @@
  * entries here for better readability.
  */
 #ifdef __CCAPRICE_TARGET_X86_32
-#	define FLT_ROUNDS      1
+# define FLT_ROUNDS      1
 
-#	define LDBL_MIN        3.3621031431120935063e-4932L
-#	define LDBL_MAX        1.1897314953572317650e+4932L
-#	define LDBL_EPSILON    1.0842021724855044340e-19L
+# define LDBL_MIN        3.3621031431120935063e-4932L
+# define LDBL_MAX        1.1897314953572317650e+4932L
+# define LDBL_EPSILON    1.0842021724855044340e-19L
 
-#	define LDBL_DIG        18
-#	define LDBL_MIN_10_EXP (-4931)
-#	define LDBL_MAX_10_EXP 4932
+# define LDBL_DIG        18
+# define LDBL_MIN_10_EXP (-4931)
+# define LDBL_MAX_10_EXP 4932
 
-#	define LDBL_MANT_DIG   64
-#	define LDBL_MIN_EXP    (-16381)
-#	define LDBL_MAX_EXP    16384
+# define LDBL_MANT_DIG   64
+# define LDBL_MIN_EXP    (-16381)
+# define LDBL_MAX_EXP    16384
 #elif defined (__CCAPRICE_TARGET_X86_64)
-#	defome FLT_ROUNDS      1
+# defome FLT_ROUNDS      1
 
-#	define LDBL_MIN        3.3621031431120935063e-4932L
-#	define LDBL_MAX        1.1897314953572317650e+4932L
-#	define LDBL_EPSILON    1.0842021724855044340e-19L
+# define LDBL_MIN        3.3621031431120935063e-4932L
+# define LDBL_MAX        1.1897314953572317650e+4932L
+# define LDBL_EPSILON    1.0842021724855044340e-19L
 
-#	define LDBL_DIG        18
-#	define LDBL_MIN_10_EXP (-4931)
-#	define LDBL_MAX_10_EXP 4932
+# define LDBL_DIG        18
+# define LDBL_MIN_10_EXP (-4931)
+# define LDBL_MAX_10_EXP 4932
 
-#	define LDBL_MANT_DIG   64
-#	define LDBL_MIN_EXP    (-16381)
-#	define LDBL_MAX_EXP    16384
+# define LDBL_MANT_DIG   64
+# define LDBL_MIN_EXP    (-16381)
+# define LDBL_MAX_EXP    16384
 #endif
 #endif

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -30,8 +30,8 @@
  * standard headers with other standard headers.
  */
 #if !defined(__CCAPRICE_TYPE_SIZE_T_DEFINED)
-	typedef  __CCAPRICE_TYPE_SIZE_T size_t;
-#	define   __CCAPRICE_TYPE_SIZE_T_DEFINED
+ typedef  __CCAPRICE_TYPE_SIZE_T size_t;
+# define   __CCAPRICE_TYPE_SIZE_T_DEFINED
 #endif
 #ifdef  NULL
 #undef  NULL
@@ -52,11 +52,11 @@
     } signext = { V }
 
 #ifdef __CCAPRICE_EXTENSIONS
-#	define MIN(X,Y) ({              \
+# define MIN(X,Y) ({              \
     __CCAPRICE_SIGNEXTEND((X)-(Y)); \
     ((Y)+(((X)-(Y))& signext.S.H)); \
 })
-#	define MAX(X,Y) ({              \
+# define MAX(X,Y) ({              \
     __CCAPRICE_SIGNEXTEND((Y)-(X)); \
     ((X)+(((Y)-(X))&~signext.S.H)); \
 })

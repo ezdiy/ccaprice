@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -43,27 +43,27 @@
  * stdarg system.  This is undefined behaviour.  But it works.
  */
 #if defined(__CCAPRICE_TARGET_X86_32)
-	typedef int  __va_item;
-	typedef char  *va_list;
+ typedef int  __va_item;
+ typedef char  *va_list;
 #elif defined(__CCAPRICE_TARGET_X86_64)
-	typedef long  __va_item;
-	typedef char   *va_list;
+ typedef long  __va_item;
+ typedef char   *va_list;
 #else
-#	error Architecture not supported
+# error Architecture not supported
 #endif
-#	define va_start(A,L)  (A =((va_list)&(L)+__va_size(L)))
-#	define va_arg(A,T)    (A+=__va_rsize(T),*((T*)(A-__va_rsize(T))))
-#	define va_end(A)      (A=(void *)(0))
-#	define __va_rsize(T)  (((sizeof(T)+sizeof(int)-1)/sizeof(int))*sizeof(int))
-#	define __va_size(T)   ((sizeof(T)+sizeof(__va_item)-1)&~(sizeof(__va_item)-1))
+# define va_start(A,L)  (A =((va_list)&(L)+__va_size(L)))
+# define va_arg(A,T)    (A+=__va_rsize(T),*((T*)(A-__va_rsize(T))))
+# define va_end(A)      (A=(void *)(0))
+# define __va_rsize(T)  (((sizeof(T)+sizeof(int)-1)/sizeof(int))*sizeof(int))
+# define __va_size(T)   ((sizeof(T)+sizeof(__va_item)-1)&~(sizeof(__va_item)-1))
 #else
 /*
  * GCC has builtins, these are much safer and faster.
  */
-#	define va_list        __builtin_va_list
-#	define va_start(v,f)  __builtin_va_start(v,f)
-#	define va_end(v)      __builtin_va_end(v)
-#	define va_arg(v,a)    __builtin_va_arg(v,a)
+# define va_list        __builtin_va_list
+# define va_start(v,f)  __builtin_va_start(v,f)
+# define va_end(v)      __builtin_va_end(v)
+# define va_arg(v,a)    __builtin_va_arg(v,a)
 #endif
 
 #endif

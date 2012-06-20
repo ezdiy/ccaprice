@@ -29,7 +29,20 @@
 	.type sqrt, @function
 #endif
 
-#warning "x86_64 sqrt.S not implemented"
-sqrt:  ret
-sqrtf: ret
-sqrtl: ret
+sqrt:
+    sqrtsd %xmm0, %xmm0
+    ret
+    
+sqrtf:
+    sqrtss %xmm0, %xmm0
+    ret
+
+/*
+ * The FPU has to be used for long double support since SIMD doesn't
+ * allow 80 bits of precision.  This sucks because the FPU is slower
+ * but there is no optional choice.
+ */
+sqrtl:
+    fldt 8(%rsp)
+    fsqrt
+    ret

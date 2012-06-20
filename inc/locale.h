@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -32,19 +32,19 @@
  * C locale, future locales will come when required.
  */
 typedef struct {
-	int (*fn_isalnum) (int);
-	int (*fn_isalpha) (int);
-	int (*fn_iscntrl) (int);
-	int (*fn_isdigit) (int);
-	int (*fn_isgraph) (int);
-	int (*fn_islower) (int);
-	int (*fn_isprint) (int);
-	int (*fn_ispunct) (int);
-	int (*fn_isspace) (int);
-	int (*fn_isupper) (int);
-	int (*fn_isxdigit)(int);
-	int (*fn_tolower) (int);
-	int (*fn_toupper) (int);
+ int (*fn_isalnum) (int);
+ int (*fn_isalpha) (int);
+ int (*fn_iscntrl) (int);
+ int (*fn_isdigit) (int);
+ int (*fn_isgraph) (int);
+ int (*fn_islower) (int);
+ int (*fn_isprint) (int);
+ int (*fn_ispunct) (int);
+ int (*fn_isspace) (int);
+ int (*fn_isupper) (int);
+ int (*fn_isxdigit)(int);
+ int (*fn_tolower) (int);
+ int (*fn_toupper) (int);
 } ccaprice_ctypes_t;
 
 /*
@@ -73,20 +73,20 @@ typedef struct {
 
 /*
  * setlocale() depends on two paramaters:
- * 	-catageory
- * 	-locale
+ *  -catageory
+ *  -locale
  *
  * The category specifes which parts of the
  * internal library change depending on the
  * selected locale.
  *
  * The category can be any of the following
- * 	-LC_ALL
- * 	-LC_COLLATE
- * 	-LC_CTYPE
- * 	-LC_MONETARY
- * 	-LC_NUMERIC
- * 	-LC_TIME
+ *  -LC_ALL
+ *  -LC_COLLATE
+ *  -LC_CTYPE
+ *  -LC_MONETARY
+ *  -LC_NUMERIC
+ *  -LC_TIME
  *
  * LC_ALL:      changes the behaviour of the entire locale
  * LC_COLLATE:  only affects the behaviour of strcoll, and strxfrm
@@ -101,36 +101,36 @@ typedef struct {
  * default enviroment locale.
  */
 typedef struct lconv {
-	 char *decimal_point;
-	 char *thousands_sep;
-	 char *grouping;
-	 char *int_curr_symbol;
-	 char *currency_symbol;
-	 char *mon_decimal_point;
-	 char *mon_thousands_sep;
-	 char *mon_grouping;
-	 char *positive_sign;
-	 char *negative_sign;
+  char *decimal_point;
+  char *thousands_sep;
+  char *grouping;
+  char *int_curr_symbol;
+  char *currency_symbol;
+  char *mon_decimal_point;
+  char *mon_thousands_sep;
+  char *mon_grouping;
+  char *positive_sign;
+  char *negative_sign;
 
-	 char  int_fract_digits;
-	 char  fract_digits;
-	 char  p_cs_precedes;
-	 char  n_cs_precedes;
-	 char  p_sep_by_space;
-	 char  n_sep_by_space;
-	 char  p_sign_posn;
-	 char  n_sign_posn;
+  char  int_fract_digits;
+  char  fract_digits;
+  char  p_cs_precedes;
+  char  n_cs_precedes;
+  char  p_sep_by_space;
+  char  n_sep_by_space;
+  char  p_sign_posn;
+  char  n_sign_posn;
 } ccaprice_locale_c;
 
 /*
  * The order of data inside this structure matters:
- * 	infact changing the ordering of this will break
- * 	all ctype code.  As well as all locale code.
+ *  infact changing the ordering of this will break
+ *  all ctype code.  As well as all locale code.
  */
 typedef struct {
-	ccaprice_ctypes_t  ctype;
-	struct lconv       lconv;
-	const char        *ident; /* Name of the locale    */
+ ccaprice_ctypes_t  ctype;
+ struct lconv       lconv;
+ const char        *ident; /* Name of the locale    */
 } ccaprice_locale_t;
 
 __CCAPRICE_EXPORT struct lconv *localeconv();

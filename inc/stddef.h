@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -29,8 +29,8 @@
  * standard headers with other standard headers.
  */
 #if !defined(__CCAPRICE_TYPE_SIZE_T_DEFINED)
-	typedef  __CCAPRICE_TYPE_SIZE_T size_t;
-#	define   __CCAPRICE_TYPE_SIZE_T_DEFINED
+ typedef  __CCAPRICE_TYPE_SIZE_T size_t;
+# define   __CCAPRICE_TYPE_SIZE_T_DEFINED
 #endif
 
 
@@ -45,18 +45,18 @@
 #define NULL __CCAPRICE_NULL
 
 #if !defined(offsetof)
-#	if ((__COMPID__ == __CCAPRICE_COMPILER_EKOPATH) || \
-	    (__COMPID__ == __CCAPRICE_COMPILER_CLANG)   || \
-	    (__COMPID__ == __CCAPRICE_COMPILER_GCC))
-#		define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
-#	else
-		/*
-		 * Unsafe fallback: This is actually undefined behaviour. However
-		 * there are a wide range of compilers that make this code do what
-		 * offsetof() is expected to do.
-		 */
-#		define offsetof(TYPE, MEMBER) ((size_t) &((TYPE*)0)->MEMBER)
-#	endif
+# if ((__COMPID__ == __CCAPRICE_COMPILER_EKOPATH) || \
+     (__COMPID__ == __CCAPRICE_COMPILER_CLANG)   || \
+     (__COMPID__ == __CCAPRICE_COMPILER_GCC))
+#  define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
+# else
+  /*
+   * Unsafe fallback: This is actually undefined behaviour. However
+   * there are a wide range of compilers that make this code do what
+   * offsetof() is expected to do.
+   */
+#  define offsetof(TYPE, MEMBER) ((size_t) &((TYPE*)0)->MEMBER)
+# endif
 #endif
 
 #if !defined(__CCAPRICE_TYPE_PTRDIFF_T_DEFINED)

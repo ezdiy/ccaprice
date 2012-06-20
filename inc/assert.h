@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -25,9 +25,9 @@
 #include "ccaprice.h"
 
 #if !defined(NDEBUG)
-#	define assert(expr) __ccaprice_assert(__FILE__,__LINE__,(expr))
+# define assert(expr) __ccaprice_assert(__FILE__,__LINE__,(expr))
 #else
-#	define assert(expr) ((void)0) /* As per standard */
+# define assert(expr) ((void)0) /* As per standard */
 #endif
 
 /*

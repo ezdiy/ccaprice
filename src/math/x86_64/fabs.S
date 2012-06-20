@@ -23,13 +23,37 @@
 .global fabs
 .global fabsf
 .global fabsl
+/*
+ * Pathscale doesn't like .type.  Despite it being valid GAS syntax
+ * and the idea that it should work since pathscale is a GCC fork.
+ */
 #ifndef __PATHCC__
-	.type fabsf,@function
-	.type fabsl,@function
-	.type fabs, @function
+	.type fabs,   @function
+    .type fabsf,  @function
+    .type fabsl,  @function
 #endif
 
-#warning "x86_64 fabs.S not implemented"
-fabs:  ret
-fabsf: ret
-fabsl: ret
+
+fabs:
+    xor   %eax,        %eax
+    dec   %rax
+    shr   %rax
+    movq  %rax,        %xmm1
+    andpd %xmm1,       %xmm0
+    ret
+    
+fabsf:
+    mov   $0x7FFFFFFF, %eax
+    movq  %rax,        %xmm1
+    andps %xmm1,       %xmm0
+    ret
+
+/*
+ * The FPU has to be used for long double support since SIMD doesn't
+ * allow 80 bits of precision.  This sucks because the FPU is slower
+ * but there is no optional choice.
+ */
+fabsl:
+    fldt 8(%rsp)
+    fabs
+    ret

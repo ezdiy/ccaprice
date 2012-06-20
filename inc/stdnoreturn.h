@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -28,10 +28,10 @@
  * work on all GCC, and GCC-like compilers.
  */
 #ifndef noreturn
-#	ifndef _Noreturn
-#		define _Noreturn __attribute__ ((__noreturn__))
-#	endif
-#	define noreturn _Noreturn
+# ifndef _Noreturn
+#  define _Noreturn __attribute__ ((__noreturn__))
+# endif
+# define noreturn _Noreturn
 #endif /* ifndef noreturn                  */
 #endif /* ifndef __cplusplus               */
 #endif /* idndef __CCAPRICE_NORETURN_HDR__ */

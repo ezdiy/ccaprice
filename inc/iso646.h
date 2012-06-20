@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -29,15 +29,15 @@
  * run it through a preprocessor.
  */
 #if !defined(__cplusplus)
-#	define and     &&
-#	define and_eq  &=
-#	define bitand  &
-#	define bitor   |
-#	define compl   ~
-#	define not     !=
-#	define or      ||
-#	define or_eq   |=
-#	define xor     ^
-#	define xor_eq  ^=
+# define and     &&
+# define and_eq  &=
+# define bitand  &
+# define bitor   |
+# define compl   ~
+# define not     !=
+# define or      ||
+# define or_eq   |=
+# define xor     ^
+# define xor_eq  ^=
 #endif
 #endif

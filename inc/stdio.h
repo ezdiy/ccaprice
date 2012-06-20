@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -25,18 +25,18 @@
 #include "ccaprice.h"
 
 #if !defined(__CCAPRICE_TYPE_SIZE_T_DEFINED)
-	typedef  __CCAPRICE_TYPE_SIZE_T size_t;
-#	define   __CCAPRICE_TYPE_SIZE_T_DEFINED
+ typedef  __CCAPRICE_TYPE_SIZE_T size_t;
+# define   __CCAPRICE_TYPE_SIZE_T_DEFINED
 #endif
 
 #define __CCAPRICE_STDIO_FILE_BUFFER_LEN 2048
 typedef struct ccaprice_file {
-	int    fd;
-	int    eof;
-	int    self; /* SELF'ed itself? */
-	int    err;
-	char   buffer_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN];
-	size_t buffer_pos;
+ int    fd;
+ int    eof;
+ int    self; /* SELF'ed itself? */
+ int    err;
+ char   buffer_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN];
+ size_t buffer_pos;
 }  FILE;
 
 #define EOF -1

@@ -35,10 +35,31 @@
 	.type atan2, @function
 #endif
 
-#warning "x86_64 atan.S not implemented"
+#warning "x86_64 atan/atanf/atan2/atan2f not implemented (only atanl and atan2l is supported)"
 atan:   ret
 atanf:  ret
-atanl:  ret
+
+/*
+ * The FPU has to be used for long double support since SIMD doesn't
+ * allow 80 bits of precision.  This sucks because the FPU is slower
+ * but there is no optional choice.
+ */
+atanl:
+    fldt 8(%rsp)
+    fld1
+    fpatan
+    ret
+
 atan2:  ret
 atan2f: ret
-atan2l: ret
+
+/*
+ * The FPU has to be used for long double support since SIMD doesn't
+ * allow 80 bits of precision.  This sucks because the FPU is slower
+ * but there is no optional choice.
+ */
+atan2l:
+    fldt 8 (%rsp)
+    fldt 24(%rsp)
+    fpatan
+    ret

@@ -22,12 +22,12 @@
  */
 #ifndef __CCAPRICE_INTERNAL_EMMINTRIN_HDR
 #define __CCAPRICE_INTERNAL_EMMINTRIN_HDR
-#	ifdef __clang__
-#		include "int/clang/emmintrin.h"
-#	elif defined(__GNUC__)
-#		include "int/gcc/emmintrin.h"
-#	else
-#		warning "No builtin emmintrin.h for your compiler, using what ever we can find (might break)"
-#		include <emmintrin.h>
-#	endif
+# ifdef __clang__
+#  include "int/clang/emmintrin.h"
+# elif defined(__GNUC__)
+#  include "int/gcc/emmintrin.h"
+# else
+#  warning "No builtin emmintrin.h for your compiler, using what ever we can find (might break)"
+#  include <emmintrin.h>
+# endif
 #endif

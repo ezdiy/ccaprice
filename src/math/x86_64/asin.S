@@ -29,7 +29,22 @@
 	.type asin, @function
 #endif
 
-#warning "x86_64 asin.S not implemented"
+#warning "x86_64 asin/asinf not implemented (only asinl is supported)"
 asin:  ret
 asinf: ret
-asinl: ret
+
+/*
+ * The FPU has to be used for long double support since SIMD doesn't
+ * allow 80 bits of precision.  This sucks because the FPU is slower
+ * but there is no optional choice.
+ */
+asinl:
+    fldt 8(%rsp)
+    fld  %st(0)
+    fld1
+    fsub %st(0), %st(1)
+    fadd %st(2)
+    fmulp
+    fsqrt
+    fpatan
+    ret

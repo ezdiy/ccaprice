@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -26,20 +26,20 @@
 #include "inc/stdint.h"
 #include "inc/stddef.h"
 #if defined(LINUX)
-#	include "sys/linux.h"
+# include "sys/linux.h"
 #elif defined(BSD)
-#	include "sys/freebsd.h"
+# include "sys/freebsd.h"
 #endif
 
 
 typedef int32_t pid_t;
 #if defined(i386)   || defined(__x86__)
-#	define PAGE_SIZE 4096
-#	define SIZE_MAX 0xffffffff
+# define PAGE_SIZE 4096
+# define SIZE_MAX 0xffffffff
 #endif
 #if defined(x86_64) || defined(__x86_64__)
-#	define PAGE_SIZE 4096
-#	define SIZE_MAX 0xffffffffffffffff
+# define PAGE_SIZE 4096
+# define SIZE_MAX 0xffffffffffffffff
 #endif
 
 __CCAPRICE_EXPORT ssize_t write (int, const void*, size_t);
@@ -56,20 +56,20 @@ __CCAPRICE_EXPORT void   *mmap  (void *, size_t, int, int, int, off_t);
 /* <hack> */
 /* linux/BSD X86 / X86_64 only */
 #if defined(__CCAPRICE_TARGET_X86_32) || defined(__CCAPRICE_TARGET_X86_64)
-	#define O_ACCMODE   0003
-	#define O_RDONLY    00
-	#define O_WRONLY    01
-	#define O_RDWR      02
-	#define O_CREAT     0100
-	#define O_EXCL      0200
-	#define O_NOCTTY    0400
-	#define O_TRUNC     01000
-	#define O_APPEND    02000
-	#define O_NONBLOCK  04000
-	#define O_NDELAY    04000
-	#define O_SYNC      010000
-	#define O_FSYNC     010000
-	#define O_ASYNC     020000
-	#define O_LARGEFILE 0200000
+ #define O_ACCMODE   0003
+ #define O_RDONLY    00
+ #define O_WRONLY    01
+ #define O_RDWR      02
+ #define O_CREAT     0100
+ #define O_EXCL      0200
+ #define O_NOCTTY    0400
+ #define O_TRUNC     01000
+ #define O_APPEND    02000
+ #define O_NONBLOCK  04000
+ #define O_NDELAY    04000
+ #define O_SYNC      010000
+ #define O_FSYNC     010000
+ #define O_ASYNC     020000
+ #define O_LARGEFILE 0200000
 #endif /* !O_MODES          */
 #endif /* !CCAPRICE_CRT_HDR */

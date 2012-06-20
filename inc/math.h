@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,20 +24,20 @@
 #define __CCAPRICE_MATH_HDR__
 #include "ccaprice.h"
 #if defined(__CCAPRICE_TARGET_X86_32) || defined(__CCAPRICE_TARGET_X86_64)
-	#define __CCAPRICE_MATH_HI_L(X) *(1+((int*)(&X)))
-	#define __CCAPRICE_MATH_LO_L(X) *(0+((int*)(&X)))
-	#define __CCAPRICE_MATH_HI_P(X) *(1+((int*) (X)))
-	#define __CCAPRICE_MATH_LO_P(X) *(0+((int*) (X)))
+#define __CCAPRICE_MATH_HI_L(X) *(1+((int*)(&X)))
+#define __CCAPRICE_MATH_LO_L(X) *(0+((int*)(&X)))
+#define __CCAPRICE_MATH_HI_P(X) *(1+((int*) (X)))
+#define __CCAPRICE_MATH_LO_P(X) *(0+((int*) (X)))
 #else
-	#define __CCAPRICE_MATH_HI_L(X) *(0+((int*)(&X)))
-	#define __CCAPRICE_MATH_LO_L(X) *(1+((int*)(&X)))
-	#define __CCAPRICE_MATH_HI_P(X) *(0+((int*) (X)))
-	#define __CCAPRICE_MATH_LO_P(X) *(1+((int*) (X)))
+#define __CCAPRICE_MATH_HI_L(X) *(0+((int*)(&X)))
+#define __CCAPRICE_MATH_LO_L(X) *(1+((int*)(&X)))
+#define __CCAPRICE_MATH_HI_P(X) *(0+((int*) (X)))
+#define __CCAPRICE_MATH_LO_P(X) *(1+((int*) (X)))
 #endif
 
 #if defined(__CCAPRICE_TARGET_X86_32) || defined(__CCAPRICE_TARGET_X86_64)
-	#define FP_ILOGB0      (-2147483647 - 1)
-	#define FP_ILOGBNAN    (-2147483647 - 1)
+#define FP_ILOGB0      (-2147483647 - 1)
+#define FP_ILOGBNAN    (-2147483647 - 1)
 #endif
 
 /* Math constants */
@@ -49,7 +49,7 @@
 #define M_PI_2  (1.5707963267948966)
 #define M_PI_4  (0.7853981633974483)
 #ifdef __CCAPRICE_EXTENSIONS
-#	define M_TAU   (6.2831853071795864)
+# define M_TAU   (6.2831853071795864)
 #endif
 
 

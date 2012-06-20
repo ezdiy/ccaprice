@@ -29,7 +29,24 @@
 	.type acos, @function
 #endif
 
-#warning "x86_64 acos.S not implemented"
+#warning "x86_64 acos/acosf not implemented (only acosl is supported)"
 acos:  ret
 acosf: ret
-acosl: ret
+
+/*
+ * The FPU has to be used for long double support since SIMD doesn't
+ * allow 80 bits of precision.  This sucks because the FPU is slower
+ * but there is no optional choice.
+ */
+acosl:
+    fldt 8(%rsp)
+    fld  %st(0)
+    fld1
+    fsub %st(0), %st(1)
+    fadd %st(2)
+    fmulp
+    fsqrt
+    fabs
+    fxch %st(1)
+    fpatan
+    ret

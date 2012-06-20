@@ -23,12 +23,12 @@
  */
 #ifndef __CCAPRICE_INTERNAL_MM3DNOW_HDR
 #define __CCAPRICE_INTERNAL_MM3DNOW_HDR
-#	ifdef __clang__
-#		include "int/clang/mm3dnow.h"
-#	elif defined(__GNUC__)
-#		include "int/gcc/mm3dnow.h"
-#	else
-#		warning "No builtin mm3dnow.h for your compiler, using what ever we can find (might break)"
-#		include <mmintrin.h>
-#	endif
+# ifdef __clang__
+#  include "int/clang/mm3dnow.h"
+# elif defined(__GNUC__)
+#  include "int/gcc/mm3dnow.h"
+# else
+#  warning "No builtin mm3dnow.h for your compiler, using what ever we can find (might break)"
+#  include <mmintrin.h>
+# endif
 #endif

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -41,55 +41,55 @@
 #define  INT_MIN      __CCAPRICE_MIN(INT)
 
 #ifdef __CCAPRICE_TARGET_X86_64
-#	define LONG_MAX      0x7FFFFFFFFFFFFFFFL
-#	define LLONG_MAX     0x7FFFFFFFFFFFFFFFLL
-#	define LONG_BIT      64
-#	define CHAR_BIT      8
-	/*
-	 * GCC and GCC like compilers when used with -unsigned-char flag define
-	 * a special constant __CHAR_UNSIGNED__ that needs to modify the behaviour
-	 * of the following constants below.
-	 */
-#	ifdef __CHAR_UNSIGNED__
-#		define	CHAR_MAX UCHAR_MAX
-#		define	CHAR_MIN 0
-#	else
-#		define	CHAR_MAX SCHAR_MAX
-#		define	CHAR_MIN SCHAR_MIN
-#	endif
-#	define	SCHAR_MAX    0x7F
-#	define	UCHAR_MAX    0xFFU
-#	define	USHRT_MAX    0xFFFFU
-#	define	SHRT_MAX     0x7FFF
-#	define	UINT_MAX     0xFFFFFFFFU
-#	define	INT_MAX      0x7FFFFFFF
-#	define	ULLONG_MAX   0xFFFFFFFFFFFFFFFFULL
-#	define	LLONG_MAX    0x7FFFFFFFFFFFFFFFLL
+# define LONG_MAX      0x7FFFFFFFFFFFFFFFL
+# define LLONG_MAX     0x7FFFFFFFFFFFFFFFLL
+# define LONG_BIT      64
+# define CHAR_BIT      8
+/*
+ * GCC and GCC like compilers when used with -unsigned-char flag define
+ * a special constant __CHAR_UNSIGNED__ that needs to modify the behaviour
+ * of the following constants below.
+ */
+# ifdef __CHAR_UNSIGNED__
+#  define CHAR_MAX UCHAR_MAX
+#  define CHAR_MIN 0
+# else
+#  define CHAR_MAX SCHAR_MAX
+#  define CHAR_MIN SCHAR_MIN
+# endif
+# define SCHAR_MAX    0x7F
+# define UCHAR_MAX    0xFFU
+# define USHRT_MAX    0xFFFFU
+# define SHRT_MAX     0x7FFF
+# define UINT_MAX     0xFFFFFFFFU
+# define INT_MAX      0x7FFFFFFF
+# define ULLONG_MAX   0xFFFFFFFFFFFFFFFFULL
+# define LLONG_MAX    0x7FFFFFFFFFFFFFFFLL
 #elif defined(CCAPRICE_TARGET_X86_32)
-#	define LONG_MAX      0x7FFFFFFFL
-#	define LLONG_MAX     0x7FFFFFFFFFFFFFFLL
-#	define LONG_BIT      32
-#	define CHAR_BIT      8
-	/*
-	 * GCC and GCC like compilers when used with -unsigned-char flag define
-	 * a special constant __CHAR_UNSIGNED__ that needs to modify the behaviour
-	 * of the following constants below.
-	 */
-#	ifdef __CHAR_UNSIGNED__
-#		define	CHAR_MAX UCHAR_MAX
-#		define	CHAR_MIN 0
-#	else
-#		define	CHAR_MAX SCHAR_MAX
-#		define	CHAR_MIN SCHAR_MIN
-#	endif
-#	define  SCHAR_MAX    0x7F
-#	define  UCHAR_MAX    0xFF
-#	define  USHRT_MAX    0xFFFF
-#	define  SHRT_MAX     0x7FFF
-#	define  UINT_MAX     0xFFFFFFFFU
-#	define  INT_MAX      0x7FFFFFFF
-#	define  ULLONG_MAX   0xFFFFFFFFFFFFFFFFULL
-#	define	LLONG_MAX    0x7FFFFFFFFFFFFFFFLL
+# define LONG_MAX      0x7FFFFFFFL
+# define LLONG_MAX     0x7FFFFFFFFFFFFFFLL
+# define LONG_BIT      32
+# define CHAR_BIT      8
+/*
+ * GCC and GCC like compilers when used with -unsigned-char flag define
+ * a special constant __CHAR_UNSIGNED__ that needs to modify the behaviour
+ * of the following constants below.
+ */
+# ifdef __CHAR_UNSIGNED__
+#  define CHAR_MAX UCHAR_MAX
+#  define CHAR_MIN 0
+# else
+#  define CHAR_MAX SCHAR_MAX
+#  define CHAR_MIN SCHAR_MIN
+# endif
+# define  SCHAR_MAX    0x7F
+# define  UCHAR_MAX    0xFF
+# define  USHRT_MAX    0xFFFF
+# define  SHRT_MAX     0x7FFF
+# define  UINT_MAX     0xFFFFFFFFU
+# define  INT_MAX      0x7FFFFFFF
+# define  ULLONG_MAX   0xFFFFFFFFFFFFFFFFULL
+# define LLONG_MAX    0x7FFFFFFFFFFFFFFFLL
 #endif
 
 /*
@@ -97,6 +97,6 @@
  * only define SSIZE_MAX if we're not defined as _ANSI_SOURCE
  */
 #if !defined(_ANSI_SOURCE)
-#	define SSIZE_MAX INT_MAX
+# define SSIZE_MAX INT_MAX
 #endif
 #endif

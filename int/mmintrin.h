@@ -23,12 +23,12 @@
  */
 #ifndef __CCAPRICE_INTERNAL_MMINTRIN_HDR
 #define __CCAPRICE_INTERNAL_MMINTRIN_HDR
-#	ifdef __clang__
-#		include "int/clang/mmintrin.h"
-#	elif defined(__GNUC__)
-#		include "int/gcc/mmintrin.h"
-#	else
-#		warning "No builtin mmintrin.h for your compiler, using what ever we can find (might break)"
-#		include <mmintrin.h>
-#	endif
+# ifdef __clang__
+#  include "int/clang/mmintrin.h"
+# elif defined(__GNUC__)
+#  include "int/gcc/mmintrin.h"
+# else
+#  warning "No builtin mmintrin.h for your compiler, using what ever we can find (might break)"
+#  include <mmintrin.h>
+# endif
 #endif

@@ -29,7 +29,23 @@
 	.type ceil, @function
 #endif
 
-#warning "x86_64 ceil.S not implemented"
+#warning "x86_64 ceil/ceilf not implemented (only ceill is supported)"
 ceil:  ret
 ceilf: ret
-ceill: ret
+
+/*
+ * The FPU has to be used for long double support since SIMD doesn't
+ * allow 80 bits of precision.  This sucks because the FPU is slower
+ * but there is no optional choice.
+ */
+ceill:
+    fldt 8(%rsp)
+    mov $0xB, %al
+    fstcw 8(%rsp)
+    mov 9(%rsp), %ah
+    mov %al, 9(%rsp)
+    fldcw 8(%rsp)
+    frndint
+    mov %ah, 9(%rsp)
+    fldcw 8(%rsp)
+    ret

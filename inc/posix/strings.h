@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -25,8 +25,8 @@
 #include "inc/ccaprice.h"
 
 #if !defined(__CCAPRICE_TYPE_SIZE_T_DEFINED)
-	typedef  __CCAPRICE_TYPE_SIZE_T size_t;
-#	define   __CCAPRICE_TYPE_SIZE_T_DEFINED
+ typedef  __CCAPRICE_TYPE_SIZE_T size_t;
+# define   __CCAPRICE_TYPE_SIZE_T_DEFINED
 #endif
 
 __CCAPRICE_EXPORT int   bcmp       (const void *, const void *, size_t); // alias to memcmp
