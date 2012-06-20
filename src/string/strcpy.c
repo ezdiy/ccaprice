@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,5 +23,5 @@
 #include "inc/string.h"
 
 char *strcpy(char *dst, const char *src) {
-	return strncpy(dst, src, strlen(src)+1);
+    return strncpy(dst, src, strlen(src)+1);
 }

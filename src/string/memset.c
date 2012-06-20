@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,33 +23,33 @@
 #include "inc/string.h"
 #include "inc/stdint.h"
 void *memset(void *dst, int ctr, register size_t len) {
-	#if  defined(__STRING_MEMSET_OPTIMAL)  && \
-		(defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32))
-		size_t    search = (len % 4);
-		uint32_t  check4 = (ctr | (ctr << 8) | (ctr << 16) | (ctr << 24));
-		uint8_t   check1 = (uint8_t)ctr;
-		uint32_t *destp4;
-		uint8_t  *destp1;
+    #if  defined(__STRING_MEMSET_OPTIMAL)  && \
+        (defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32))
+        size_t    search = (len % 4);
+        uint32_t  check4 = (ctr | (ctr << 8) | (ctr << 16) | (ctr << 24));
+        uint8_t   check1 = (uint8_t)ctr;
+        uint32_t *destp4;
+        uint8_t  *destp1;
 
-		destp4 = (uint32_t*)dst;
-		len /= 4;
-		while (len--)
-			*destp4++ = check4;
+        destp4 = (uint32_t*)dst;
+        len /= 4;
+        while (len--)
+            *destp4++ = check4;
 
-		destp1 = (uint8_t*)destp4;
-		switch (search) {
-			case 3: *destp1++ = check1;
-			case 2: *destp1++ = check1;
-			case 1: *destp1++ = check1;
-		}
+        destp1 = (uint8_t*)destp4;
+        switch (search) {
+            case 3: *destp1++ = check1;
+            case 2: *destp1++ = check1;
+            case 1: *destp1++ = check1;
+        }
 
-		return dst;
-	#else
-		#warning "[ccaprice] no optimized memset implementation, using naive method (could be slow)"
-		register unsigned char *p=(unsigned char*)dst;
-		while (len--)
-			*p++ = ctr;
-		return dst;
-	#endif
-	return NULL;
+        return dst;
+    #else
+        #warning "[ccaprice] no optimized memset implementation, using naive method (could be slow)"
+        register unsigned char *p=(unsigned char*)dst;
+        while (len--)
+            *p++ = ctr;
+        return dst;
+    #endif
+    return NULL;
 }

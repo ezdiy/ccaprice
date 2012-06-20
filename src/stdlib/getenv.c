@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,26 +23,26 @@
 #include "inc/ccaprice.h"
 #include "inc/stddef.h"
 char *getenv(const char *name) {
-	__CCAPRICE_INTERNAL_TYPE(char **, __ccaprice_enviroment);
+    __CCAPRICE_INTERNAL_TYPE(char **, __ccaprice_enviroment);
 
-	size_t finds;
-	size_t grabs;
-	const char  *equal;
-	char        *fills;
-	char       **lists;
+    size_t finds;
+    size_t grabs;
+    const char  *equal;
+    char        *fills;
+    char       **lists;
 
-	if(!name || !__ccaprice_enviroment)
-		return NULL;
+    if(!name || !__ccaprice_enviroment)
+        return NULL;
 
-	for   (equal = name; *equal && *equal != '='; ++equal) ;
-	finds =equal - name;
+    for   (equal = name; *equal && *equal != '='; ++equal) ;
+    finds =equal - name;
 
-	for (lists = __ccaprice_enviroment; (fills = *lists) != NULL; ++lists) {
-		for (equal = name, grabs = finds; grabs && *fills; grabs--)
-			if (*fills++ != *equal++)
-				break;
-		if (!grabs && *fills++ == '=')
-			return fills;
-	}
-	return NULL;
+    for (lists = __ccaprice_enviroment; (fills = *lists) != NULL; ++lists) {
+        for (equal = name, grabs = finds; grabs && *fills; grabs--)
+            if (*fills++ != *equal++)
+                break;
+        if (!grabs && *fills++ == '=')
+            return fills;
+    }
+    return NULL;
 }

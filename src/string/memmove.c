@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,21 +24,21 @@
 
 void *memmove(void *dst, const void *src, register size_t count)
 {
-	char *dst8 = (char*) dst;
-	char *src8 = (char*) src;
+    char *dst8 = (char*) dst;
+    char *src8 = (char*) src;
 
-	if (dst > src) {
-		/*
-		 * Move backwards, this routine is highly
-		 * optimized.
-		 */
-		if (count != 0) {
-			do {
-				count--;
-				*dst8++ = *src8++;
-			} while (count != 0);
-		}
-		return dst;
-	}
-	return memcpy(dst, src, count);
+    if (dst > src) {
+        /*
+         * Move backwards, this routine is highly
+         * optimized.
+         */
+        if (count != 0) {
+            do {
+                count--;
+                *dst8++ = *src8++;
+            } while (count != 0);
+        }
+        return dst;
+    }
+    return memcpy(dst, src, count);
 }

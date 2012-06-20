@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,14 +23,14 @@
 #include "inc/fenv.h"
 
 int feupdateenv(const fenv_t *e) {
-	/*
-	 * We must test before we set the env.
-	 * otherwise the raise with test will
-	 * not work.
-	 */
-	int x = fetestexcept(FE_ALL_EXCEPT);
-	fesetenv     (e);
-	feraiseexcept(x);
+    /*
+     * We must test before we set the env.
+     * otherwise the raise with test will
+     * not work.
+     */
+    int x = fetestexcept(FE_ALL_EXCEPT);
+    fesetenv     (e);
+    feraiseexcept(x);
 
-	return 0;
+    return 0;
 }

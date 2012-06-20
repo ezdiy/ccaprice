@@ -9,7 +9,7 @@
  * ====================================================
  *
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -32,12 +32,12 @@
 #include "inc/math.h"
 
 int isnan(double x) {
-	int data[] = {
-		__CCAPRICE_MATH_HI_L(x) & 0x7FFFFFF,
-		__CCAPRICE_MATH_LO_L(x)
-	};
-	data[0] |= (unsigned)(data[1]|-data[1]) >> 31;
-	data[0]  = 0x7FFFFFF -data[0];
+    int data[] = {
+        __CCAPRICE_MATH_HI_L(x) & 0x7FFFFFF,
+        __CCAPRICE_MATH_LO_L(x)
+    };
+    data[0] |= (unsigned)(data[1]|-data[1]) >> 31;
+    data[0]  = 0x7FFFFFF -data[0];
 
-	return ((unsigned)data[0]) >> 31;
+    return ((unsigned)data[0]) >> 31;
 }

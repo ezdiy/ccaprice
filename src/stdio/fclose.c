@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -27,12 +27,12 @@
 
 __CCAPRICE_INTERNAL_TYPE(int*, __ccaprice_posix_errno);
 int fclose(FILE *fp) {
-	if (!fp) {
-		errno = EBADF;
-		return EOF;
-	}
+    if (!fp) {
+        errno = EBADF;
+        return EOF;
+    }
 
-	fflush(fp);
+    fflush(fp);
 
-	return close(fp->fd);
+    return close(fp->fd);
 }

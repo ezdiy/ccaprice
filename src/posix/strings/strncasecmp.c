@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,13 +24,13 @@
 #include "inc/ctype.h" /* toupper() tolower() */
 
 int strncasecmp(const char *s1, const char *s2, size_t n) {
-	if (!n) return 0;
+    if (!n) return 0;
 
-	while (n-- != 0 && tolower(*s1) == tolower(*s2)) {
-		if (!n || *s1 == '\0' || *s2 == '\0')
-			break;
-		s1++,s2++;
-	}
+    while (n-- != 0 && tolower(*s1) == tolower(*s2)) {
+        if (!n || *s1 == '\0' || *s2 == '\0')
+            break;
+        s1++,s2++;
+    }
 
-	return tolower(*s1) - tolower(*s2);
+    return tolower(*s1) - tolower(*s2);
 }

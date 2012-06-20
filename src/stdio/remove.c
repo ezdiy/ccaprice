@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,5 +23,5 @@
 #include "inc/stdio.h"
 #include "src/crt/runtime.h"
 int remove(const char *filename) {
-	return unlink(filename);
+    return unlink(filename);
 }

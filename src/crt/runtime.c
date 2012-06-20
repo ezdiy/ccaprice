@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -34,54 +34,54 @@ char **__ccaprice_enviroment;
 
 #if defined(__CCAPRICE_TARGET_X86_32)
 int __ccaprice_syscall_error() {
-	register int no __asm__("%edx");
-	__asm__ __volatile__ (
-		"mov  %eax, %edx\n\t"
-		"negl %edx      \n\t"
-	);
-	return no;
+    register int no __asm__("%edx");
+    __asm__ __volatile__ (
+        "mov  %eax, %edx\n\t"
+        "negl %edx      \n\t"
+    );
+    return no;
 }
 #elif defined(__CCAPRICE_TARGET_X86_64)
 int __ccaprice_syscall_error() {
-	register int no __asm__("%rcx");
-	__asm__ __volatile__ (
-		"mov %rax, %rcx\n\t"
-		"neg %rcx      \n\t"
-	);
-	return no;
+    register int no __asm__("%rcx");
+    __asm__ __volatile__ (
+        "mov %rax, %rcx\n\t"
+        "neg %rcx      \n\t"
+    );
+    return no;
 }
 #endif
 
 #define ISTR1(C) ISTR2(C)
 #define ISTR2(C) #C
-	const char *__ccaprice_build_date __CCAPRICE_USED = __DATE__;
-	const char *__ccaprice_build_time __CCAPRICE_USED = __TIME__;
-	const char *__ccaprice_build_comp __CCAPRICE_USED = __COMP__;
-	const char *__ccaprice_build_info __CCAPRICE_USED = ISTR1(__INFO__);
+    const char *__ccaprice_build_date __CCAPRICE_USED = __DATE__;
+    const char *__ccaprice_build_time __CCAPRICE_USED = __TIME__;
+    const char *__ccaprice_build_comp __CCAPRICE_USED = __COMP__;
+    const char *__ccaprice_build_info __CCAPRICE_USED = ISTR1(__INFO__);
 #undef ISTR1
 #undef ISTR2
 
 #if defined(BSD)
-	const char *__ccaprice_build_host __CCAPRICE_USED = "BSD";
+    const char *__ccaprice_build_host __CCAPRICE_USED = "BSD";
 #elif defined(LINUX)
-	const char *__ccaprice_build_host __CCAPRICE_USED = "LINUX";
+    const char *__ccaprice_build_host __CCAPRICE_USED = "LINUX";
 #elif defined(WIN)
-	const char *__ccaprice_build_host __CCAPRICE_USED = "WIN";
+    const char *__ccaprice_build_host __CCAPRICE_USED = "WIN";
 #endif
 
 void __ccaprice_main(int argc, char **argv) {
-	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_locale_init, ());
-	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_init, ());
-	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_exit, (int));
-	__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_posix_errno_set, (int*));
-	__CCAPRICE_INTERNAL_FUNC(int, main, (int, char **, char **));
+    __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_locale_init, ());
+    __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_init, ());
+    __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_exit, (int));
+    __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_posix_errno_set, (int*));
+    __CCAPRICE_INTERNAL_FUNC(int, main, (int, char **, char **));
 
-	int function_only_errno;
-	__ccaprice_posix_errno_set(&function_only_errno);
-	__ccaprice_enviroment = &argv[argc+1];
-	__ccaprice_locale_init();
-	__ccaprice_init();
-	__ccaprice_exit(main(argc, argv, __ccaprice_enviroment));
+    int function_only_errno;
+    __ccaprice_posix_errno_set(&function_only_errno);
+    __ccaprice_enviroment = &argv[argc+1];
+    __ccaprice_locale_init();
+    __ccaprice_init();
+    __ccaprice_exit(main(argc, argv, __ccaprice_enviroment));
 }
 
 /*
@@ -89,11 +89,11 @@ void __ccaprice_main(int argc, char **argv) {
  * SYSCALL1 does    return
  */
 #if !defined(WIN)
-#	define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST {        (TYPE)__ccaprice_syscall_core CORE; }
-#	define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)__ccaprice_syscall_core CORE; }
+#    define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST {        (TYPE)__ccaprice_syscall_core CORE; }
+#    define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)__ccaprice_syscall_core CORE; }
 #else
-#	define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST { }
-#	define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)0; }
+#    define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST { }
+#    define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)0; }
 #endif
 
 SYSCALL1(ssize_t,write, (int f,const void *b,size_t c),(SYS_write,f,b,c))

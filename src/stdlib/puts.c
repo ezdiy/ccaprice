@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,12 +23,12 @@
 #include "inc/stdio.h"
 
 int puts(const char *m) {
-	int go;
-	go = fputs(m   , stdout);
-	go = fputc('\n', stdout);
+    int go;
+    go = fputs(m   , stdout);
+    go = fputc('\n', stdout);
 
-	fflush(stdout);
-	return go;
+    fflush(stdout);
+    return go;
 }
 
 

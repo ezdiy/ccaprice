@@ -9,7 +9,7 @@
  * ====================================================
  *
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -32,24 +32,24 @@
 #include "inc/math.h"
 
 double frexp(double x, int *p) {
-	int x_hi = __CCAPRICE_MATH_HI_L(x);
-	int x_lo = __CCAPRICE_MATH_LO_L(x);
-	int iter = 0x7FFFFFFF & x_hi;
+    int x_hi = __CCAPRICE_MATH_HI_L(x);
+    int x_lo = __CCAPRICE_MATH_LO_L(x);
+    int iter = 0x7FFFFFFF & x_hi;
 
-	*p = 0;
-	if (iter >=0x7FFFFFFF || ((iter | x_lo) == 0))
-		return x;
+    *p = 0;
+    if (iter >=0x7FFFFFFF || ((iter | x_lo) == 0))
+        return x;
 
-	if (iter < 0x00100000) {
-		x   *= 1.80143985094819840000e+16;
-		x_hi = __CCAPRICE_MATH_HI_L(x);
-		x_lo = __CCAPRICE_MATH_LO_L(x);
-		iter = x_hi & 0x7FFFFFFF;
-		*p   = -54;
-	}
-	*p  += (iter >> 20) - 1022;
-	x_hi = (x_hi & 0x800FFFFF) | 0x3FE00000;
+    if (iter < 0x00100000) {
+        x   *= 1.80143985094819840000e+16;
+        x_hi = __CCAPRICE_MATH_HI_L(x);
+        x_lo = __CCAPRICE_MATH_LO_L(x);
+        iter = x_hi & 0x7FFFFFFF;
+        *p   = -54;
+    }
+    *p  += (iter >> 20) - 1022;
+    x_hi = (x_hi & 0x800FFFFF) | 0x3FE00000;
 
-	__CCAPRICE_MATH_HI_L(x) = x_hi;
-	return x;
+    __CCAPRICE_MATH_HI_L(x) = x_hi;
+    return x;
 }

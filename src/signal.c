@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -42,35 +42,35 @@
  * ARM and alpha support will require more fine-tuned regard
  * to signal numbers (when those architectures are supported)
  */
-	int __ccaprice_signal_selector[6] = {
-		/* SIGABRT */ 6,
-		/* SIGILL  */ 4,
-		/* SIGSEGV */ 11,
-		/* SIGFPE  */ 8,
-		/* SIGINT  */ 2,
-		/* SIGTERM */ 15
-	};
+    int __ccaprice_signal_selector[6] = {
+        /* SIGABRT */ 6,
+        /* SIGILL  */ 4,
+        /* SIGSEGV */ 11,
+        /* SIGFPE  */ 8,
+        /* SIGINT  */ 2,
+        /* SIGTERM */ 15
+    };
 #else
-#	error "No implemented __ccaprice_signal_selector for OS"
+#    error "No implemented __ccaprice_signal_selector for OS"
 #endif
 
 /* internal handlers */
 int __ccaprice_signal_dfl(int sig) {
-	return kill (
-		getpid(),
-		__ccaprice_signal_selector[sig]
-	);
+    return kill (
+        getpid(),
+        __ccaprice_signal_selector[sig]
+    );
 }
 int __ccaprice_signal_ign(int sig) {
-	return __ccaprice_signal_selector[sig];
+    return __ccaprice_signal_selector[sig];
 }
 
 int raise(int sig) {
-	/*
-	 * Execute the default signal action which is kill()
-	 * this whole system is odd
-	 */
-	return __ccaprice_signal_dfl(sig);
+    /*
+     * Execute the default signal action which is kill()
+     * this whole system is odd
+     */
+    return __ccaprice_signal_dfl(sig);
 }
 
 /* TODO: implement signal and sig_atomic_t */

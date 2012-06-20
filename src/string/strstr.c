@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,20 +22,20 @@
  */
 #include "inc/string.h"
 char *strstr(const char *ehay, const char *ened) {
-	char  *hay = (char*)ehay;
-	char  *ned = (char*)ened;
-	char   c,s;
-	size_t len;
+    char  *hay = (char*)ehay;
+    char  *ned = (char*)ened;
+    char   c,s;
+    size_t len;
 
-	if ((c = *ned++)) {
-		len = strlen(ned);
-		do {
-			do {
-				if (!(s = *hay++))
-					return NULL;
-			} while (s!=c);
-		} while (strncmp(hay,ned,len));
-		hay--;
-	}
-	return hay;
+    if ((c = *ned++)) {
+        len = strlen(ned);
+        do {
+            do {
+                if (!(s = *hay++))
+                    return NULL;
+            } while (s!=c);
+        } while (strncmp(hay,ned,len));
+        hay--;
+    }
+    return hay;
 }

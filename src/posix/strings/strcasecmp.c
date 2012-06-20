@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,7 +24,7 @@
 #include "inc/ctype.h" /* toupper() tolower() */
 
 int strcasecmp(const char *s1, const char *s2) {
-	while (*s1 && *s2 && toupper(*s1) == toupper(*s2))
-		s1++,s2++;
-	return (!*s1 && !*s2) ? 0 : (toupper(*s1) - toupper(*s2));
+    while (*s1 && *s2 && toupper(*s1) == toupper(*s2))
+        s1++,s2++;
+    return (!*s1 && !*s2) ? 0 : (toupper(*s1) - toupper(*s2));
 }

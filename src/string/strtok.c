@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,17 +23,17 @@
 #include "inc/string.h"
 
 char *strtok(char *s, const char *d) {
-	static char  *p;
+    static char  *p;
 
-	if (!(p = (s) ? s : 0))
-		return 0;
+    if (!(p = (s) ? s : 0))
+        return 0;
 
-	s = p + strspn (p,d);
-	p = s + strcspn(s,d);
+    s = p + strspn (p,d);
+    p = s + strcspn(s,d);
 
-	if (p == s)
-		return p = 0;
-	p= *p ? *p = 0, p + 1 : 0;
+    if (p == s)
+        return p = 0;
+    p= *p ? *p = 0, p + 1 : 0;
 
-	return s;
+    return s;
 }

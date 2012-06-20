@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,5 +23,5 @@
 #include "inc/posix/strings.h"
 #include "inc/string.h"
 int bcmp(const void *s1, const void *s2, size_t n) {
-	return memcmp(s1, s2, n);
+    return memcmp(s1, s2, n);
 }

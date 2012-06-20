@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,16 +24,16 @@
 #include "inc/errno.h"
 #include "inc/posix/errno.h"
 int fputc(int c, FILE *fp) {
-	if (!fp) {
-		errno = EBADF;
-		return EOF;
-	}
+    if (!fp) {
+        errno = EBADF;
+        return EOF;
+    }
 
-	if (fp->buffer_pos + 1 > sizeof(fp->buffer_pos))
-		fflush(fp);
+    if (fp->buffer_pos + 1 > sizeof(fp->buffer_pos))
+        fflush(fp);
 
-	/* buffer the data */
-	fp->buffer_dat[fp->buffer_pos] = c;
-	fp->buffer_pos ++;
-	return 0;
+    /* buffer the data */
+    fp->buffer_dat[fp->buffer_pos] = c;
+    fp->buffer_pos ++;
+    return 0;
 }

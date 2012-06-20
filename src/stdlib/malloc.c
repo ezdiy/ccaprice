@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -115,8 +115,8 @@ typedef struct dwmalloc_heap {
  * this is aliased.
  */
 typedef struct dwmalloc_copy {
-    size_t	signature;
-    size_t	chunksize;
+    size_t    signature;
+    size_t    chunksize;
     int         totalheap;
     
     dwmalloc_heap_t *ready;
@@ -170,7 +170,7 @@ static dwmalloc_heap_t *dwmalloc_heap_new(size_t size, void *prev, void *next) {
             break;
         }
     }
-	    
+        
     bestchuk = (ir < _dwmalloc_copyn) ?  _dwmalloc_copys[ir].chunksize : size;
     tinyheap = sizeof(dwmalloc_heap_t) + sizeof(ptrdiff_t) + bestchuk + sizeof(ptrdiff_t);
     if (tinyheap <  _dwmalloc_pagesize) {
@@ -228,8 +228,8 @@ static dwmalloc_heap_t *dwmalloc_heap_new(size_t size, void *prev, void *next) {
     
     /*
      * This is quite the for loop:
-     * 	Essentially the process is quite basic, we're finding head
-     * 	way inside the chunk.
+     *     Essentially the process is quite basic, we're finding head
+     *     way inside the chunk.
      */
     for (
         chuk = peap + sizeof(dwmalloc_heap_t);
@@ -273,18 +273,18 @@ void *dwmalloc_alloc(size_t size, dwmalloc_heap_t *heap) {
     void *point  = NULL;
     
     if (!_DWMALLOC_IS_HEAP_REAL(heap)) {
-		_DWMALLOC_ERROR("invalid heap");
-		return NULL;
+        _DWMALLOC_ERROR("invalid heap");
+        return NULL;
     }
     
     if (!size) {
-		_DWMALLOC_ERROR("size = 0");
-		return NULL;
+        _DWMALLOC_ERROR("size = 0");
+        return NULL;
     }
     
     if (!_DWMALLOC_IS_HEAP_FREE(heap)) {
-		_DWMALLOC_ERROR("non-free heap");
-		return NULL;
+        _DWMALLOC_ERROR("non-free heap");
+        return NULL;
     }
     
     /*
@@ -300,14 +300,14 @@ void *dwmalloc_alloc(size_t size, dwmalloc_heap_t *heap) {
     heap->freechunks --;
     
     for (
-	point = (void*)heap + sizeof(dwmalloc_heap_t) + sizeof(ptrdiff_t);
-	point +  heap->chunksize + sizeof(ptrdiff_t) <= (void*)heap + heap->heapsize;
-	point += heap->chunksize + sizeof(ptrdiff_t) + sizeof(ptrdiff_t)
+    point = (void*)heap + sizeof(dwmalloc_heap_t) + sizeof(ptrdiff_t);
+    point +  heap->chunksize + sizeof(ptrdiff_t) <= (void*)heap + heap->heapsize;
+    point += heap->chunksize + sizeof(ptrdiff_t) + sizeof(ptrdiff_t)
     ) {
-		if (*(ptrdiff_t*)(point - sizeof(ptrdiff_t)) < 0) {
-			heap->fchunkoff = point - (void*)heap;
-			break;
-		}
+        if (*(ptrdiff_t*)(point - sizeof(ptrdiff_t)) < 0) {
+            heap->fchunkoff = point - (void*)heap;
+            break;
+        }
     }
     
     /*
@@ -315,12 +315,12 @@ void *dwmalloc_alloc(size_t size, dwmalloc_heap_t *heap) {
      * for the OS.
      */
     if (point + heap->chunksize + sizeof(ptrdiff_t) > (void*)heap + heap->heapsize) {
-		heap->fchunkoff = -1;
-		if  (heap->copy) {
-			(heap->copy)->recent = heap;
-			if (heap == (heap->copy)->first)
-			(heap->copy)->first = dwmalloc_heap_fffh(heap->copy);
-		}
+        heap->fchunkoff = -1;
+        if  (heap->copy) {
+            (heap->copy)->recent = heap;
+            if (heap == (heap->copy)->first)
+            (heap->copy)->first = dwmalloc_heap_fffh(heap->copy);
+        }
     }
     
     return chunk;
@@ -330,18 +330,18 @@ void dwmalloc_release(dwmalloc_heap_t *heap) {
     dwmalloc_copy_t *copy;
     
     if (!heap) {
-		_DWMALLOC_ERROR("heap = 0");
-		return;
+        _DWMALLOC_ERROR("heap = 0");
+        return;
     }
     
     if (!_DWMALLOC_IS_HEAP_REAL(heap)) {
-		_DWMALLOC_ERROR("invalid heap");
-		return;
+        _DWMALLOC_ERROR("invalid heap");
+        return;
     }
     
     if (heap->freechunks != heap->usedchunks) {
-		_DWMALLOC_ERROR("freechunks != usedchunks, can't release heap");
-		return;
+        _DWMALLOC_ERROR("freechunks != usedchunks, can't release heap");
+        return;
     }
     
     /*
@@ -349,37 +349,37 @@ void dwmalloc_release(dwmalloc_heap_t *heap) {
      * the heap tree balanced.
      */
     if ((copy = heap->copy)) {
-		if (heap->prev)
-			(heap->prev)->next = heap->next;
-		if (heap->next)
-			(heap->next)->prev = heap->prev;
-		
-		/*
-		 * Manage the ready and last heaps if they're in the
-		 * rotation this heap release.
-		 */
-		if (copy->ready == heap)
-			copy->ready =  heap->next;
-		if (copy->last  == heap)
-			copy->last  =  heap->prev;
-			
-		/*
-		 * Find a free heap and assign to the first raw copy
-		 * if the existing one is already the heap.
-		 */
-		if (copy->first == heap)
-			copy->first = dwmalloc_heap_fffh(copy);
-			
-		copy->recent = copy->last;
+        if (heap->prev)
+            (heap->prev)->next = heap->next;
+        if (heap->next)
+            (heap->next)->prev = heap->prev;
+        
+        /*
+         * Manage the ready and last heaps if they're in the
+         * rotation this heap release.
+         */
+        if (copy->ready == heap)
+            copy->ready =  heap->next;
+        if (copy->last  == heap)
+            copy->last  =  heap->prev;
+            
+        /*
+         * Find a free heap and assign to the first raw copy
+         * if the existing one is already the heap.
+         */
+        if (copy->first == heap)
+            copy->first = dwmalloc_heap_fffh(copy);
+            
+        copy->recent = copy->last;
     }
     
     if (munmap((void*)heap, heap->heapsize) != 0) {
-		_DWMALLOC_ERROR("munmap() failed");
-		return;
+        _DWMALLOC_ERROR("munmap() failed");
+        return;
     }
     
     if (copy)
-		copy->totalheap ++;
+        copy->totalheap ++;
 }
 
 /*
@@ -394,30 +394,30 @@ void dwmalloc_free(void *chunk) {
     ptrdiff_t        offs;
     
     if (!chunk) {
-		_DWMALLOC_ERROR("chunk = 0");
-		return;
+        _DWMALLOC_ERROR("chunk = 0");
+        return;
     }
     
     if ((offs = *(ptrdiff_t*)(chunk - sizeof(ptrdiff_t))) < 0) {
-		_DWMALLOC_ERROR("double free");
-		return;
+        _DWMALLOC_ERROR("double free");
+        return;
     }
     
     if (offs < sizeof(dwmalloc_heap_t) + sizeof(ptrdiff_t)) {
-		_DWMALLOC_ERROR("invalid pointer");
-		return;
+        _DWMALLOC_ERROR("invalid pointer");
+        return;
     }
     
     heap = (dwmalloc_heap_t*)(chunk - offs);
     if (!_DWMALLOC_IS_HEAP_REAL(heap)) {
-		_DWMALLOC_ERROR("invalid pointer");
-		return;
+        _DWMALLOC_ERROR("invalid pointer");
+        return;
     }
     
     *(ptrdiff_t*)(chunk - sizeof(ptrdiff_t)) = -offs;
     heap->rchunkoff = offs;
     if (heap->fchunkoff == -1 || heap->fchunkoff > offs)
-	heap->fchunkoff = offs;
+    heap->fchunkoff = offs;
     heap->freechunks ++;
     
     /*
@@ -425,8 +425,8 @@ void dwmalloc_free(void *chunk) {
      * the OS to make everyone happy.
      */
     if (heap->freechunks == heap->usedchunks) {
-		dwmalloc_release(heap);
-		return;
+        dwmalloc_release(heap);
+        return;
     }
     
     /*
@@ -434,9 +434,9 @@ void dwmalloc_free(void *chunk) {
      * this really is an important step.
      */
     if (heap->copy) {
-		(heap->copy)->recent = heap;
-		if (!(heap->copy)->first)
-			 (heap->copy)->first = heap;
+        (heap->copy)->recent = heap;
+        if (!(heap->copy)->first)
+             (heap->copy)->first = heap;
     }
 }
 
@@ -452,7 +452,7 @@ static void *dwmalloc_malloc(size_t size) {
     int i;
     
     if (size == 0)
-	return NULL;
+    return NULL;
     if (_dwmalloc_pagesize == 0)
         _dwmalloc_pagesize = getpagesize();
     
@@ -461,42 +461,42 @@ static void *dwmalloc_malloc(size_t size) {
      * TODO: make better
      */
     for (i = 0; i < _dwmalloc_copyn; i++) {
-		if (_dwmalloc_copys[i].chunksize >= size) {
-			alloc = _dwmalloc_copys[i].chunksize;
-			break;
-		}
+        if (_dwmalloc_copys[i].chunksize >= size) {
+            alloc = _dwmalloc_copys[i].chunksize;
+            break;
+        }
     }
     
     if (i == _dwmalloc_copyn) {
-		if (!(heap = dwmalloc_heap_new(size, NULL, NULL))) {
-			_DWMALLOC_ERROR("failed to create new heap, returned NULL");
-			return NULL;
-		}
-		
-		/* 
-		 * We got the allocated size we need which means it fits the
-		 * alignment and will work.
-		 */
-		alloc = size;
+        if (!(heap = dwmalloc_heap_new(size, NULL, NULL))) {
+            _DWMALLOC_ERROR("failed to create new heap, returned NULL");
+            return NULL;
+        }
+        
+        /* 
+         * We got the allocated size we need which means it fits the
+         * alignment and will work.
+         */
+        alloc = size;
     } else {
-		/*
-		 * Try the existing raws, before attempting to create a new heap
-		 * this usually is the case for applications that free memory as
-		 * they use it.
-		 */
-		if (_dwmalloc_copys[i].recent && _DWMALLOC_IS_HEAP_FREE(_dwmalloc_copys[i].recent))
-			heap = _dwmalloc_copys[i].recent;
-		else if (_dwmalloc_copys[i].first)
-			heap = _dwmalloc_copys[i].first;
-			
-		/*
-		 * Otherwise create a new heap (assuming an application has to
-		 * breach this well fuck them for using so much ram like that.
-		 */
-		else if (!(heap = dwmalloc_heap_new(_dwmalloc_copys[i].chunksize, _dwmalloc_copys[i].last, NULL))) {
-			_DWMALLOC_ERROR("failed to create a new heap, returned NULL");
-			return NULL;
-		}
+        /*
+         * Try the existing raws, before attempting to create a new heap
+         * this usually is the case for applications that free memory as
+         * they use it.
+         */
+        if (_dwmalloc_copys[i].recent && _DWMALLOC_IS_HEAP_FREE(_dwmalloc_copys[i].recent))
+            heap = _dwmalloc_copys[i].recent;
+        else if (_dwmalloc_copys[i].first)
+            heap = _dwmalloc_copys[i].first;
+            
+        /*
+         * Otherwise create a new heap (assuming an application has to
+         * breach this well fuck them for using so much ram like that.
+         */
+        else if (!(heap = dwmalloc_heap_new(_dwmalloc_copys[i].chunksize, _dwmalloc_copys[i].last, NULL))) {
+            _DWMALLOC_ERROR("failed to create a new heap, returned NULL");
+            return NULL;
+        }
     }
     
     /*
@@ -505,7 +505,7 @@ static void *dwmalloc_malloc(size_t size) {
      */
     if (!(chunk = dwmalloc_alloc(alloc, heap)))
         _DWMALLOC_ERROR("failed to allocate chunk for heap, returned NULL");
-	
+    
     return chunk;
 }
 
@@ -570,10 +570,10 @@ static void *dwmalloc_realloc(void *p, size_t size) {
 
 /*
  * Now the actuall interface
- * 	malloc
- * 	realloc
- * 	free
- * 	calloc
+ *     malloc
+ *     realloc
+ *     free
+ *     calloc
  */
 void *malloc(size_t size) {
     void *r;
@@ -602,7 +602,7 @@ void *realloc(void *p, size_t size) {
 void free(void *p) {
     _DWMALLOC_LOCK();
     if (p)
-	dwmalloc_free(p);
+    dwmalloc_free(p);
     _DWMALLOC_UNLOCK();
 }
 
@@ -617,10 +617,10 @@ void *calloc(size_t nmemb, size_t size) {
     
     /* Null terminate please */
     if (ret) {
-	for (off = 0; off < tap; off++)
-	    *(char*)(ret+off) = '\0';
+    for (off = 0; off < tap; off++)
+        *(char*)(ret+off) = '\0';
     }
-	    
+        
     _DWMALLOC_UNLOCK();
     return ret;
 }

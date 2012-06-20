@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,10 +24,10 @@
 #include "src/crt/runtime.h"
 
 size_t fwrite(const void *p, size_t size, size_t count, FILE *fp) {
-	/* TODO use fputc ... */
-	size_t times = count;
-	while (times-->0)
-		if(write(fp->fd, p, size) == -1)
-			break;
-	return (times==0)?count:times;
+    /* TODO use fputc ... */
+    size_t times = count;
+    while (times-->0)
+        if(write(fp->fd, p, size) == -1)
+            break;
+    return (times==0)?count:times;
 }
