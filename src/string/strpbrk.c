@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,8 +23,8 @@
 #include "inc/string.h"
 
 char *strpbrk(const char *s1, const char *s2) {
-	while (*s1)
-		if (strchr(s2, *s1++))
-			return (char*)--s1;
-	return 0;
+    while (*s1)
+        if (strchr(s2, *s1++))
+            return (char*)--s1;
+    return 0;
 }

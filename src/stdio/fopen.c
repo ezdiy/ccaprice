@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -29,44 +29,44 @@ size_t __ccaprice_stdio_file_pos = 0;
 
 FILE *fopen(const char *file, const char *mode) {
 
-	size_t flags = O_RDONLY;
-	size_t other = 0;
+    size_t flags = O_RDONLY;
+    size_t other = 0;
 
-	/*
-	 * Determine file mode.
-	 */
-	while (*mode) {
-		switch (*mode) {
-			case 'r': flags = O_RDONLY;                      break;
-			case 'w': flags = O_WRONLY | O_CREAT | O_TRUNC;  break;
-			case 'a': flags = O_WRONLY | O_CREAT | O_APPEND; break;
-			case '+': other = 1;                             break;
-		}
-		mode++;
-	}
+    /*
+     * Determine file mode.
+     */
+    while (*mode) {
+        switch (*mode) {
+            case 'r': flags = O_RDONLY;                      break;
+            case 'w': flags = O_WRONLY | O_CREAT | O_TRUNC;  break;
+            case 'a': flags = O_WRONLY | O_CREAT | O_APPEND; break;
+            case '+': other = 1;                             break;
+        }
+        mode++;
+    }
 
-	if (other) {
-		flags = (flags &~(O_RDONLY|O_WRONLY))|O_RDWR;
-	}
-	/*
-	 * On 32-bit systems  O_LARGEFILE needs  to be used to
-	 * ensure file opens are 64-bit safe; otherwise errors
-	 * could occur.
-	 */
-	#ifdef __CCAPRICE_TARGET_X86_32
-		/*
-		 * (LFS) Allow files whose sizes cannot be represented in an off_t
-		 * (but can be represented in an off64_t) to be opened.
-		 **/
-		flags |= O_LARGEFILE;
-	#endif
+    if (other) {
+        flags = (flags &~(O_RDONLY|O_WRONLY))|O_RDWR;
+    }
+    /*
+     * On 32-bit systems  O_LARGEFILE needs  to be used to
+     * ensure file opens are 64-bit safe; otherwise errors
+     * could occur.
+     */
+    #ifdef __CCAPRICE_TARGET_X86_32
+        /*
+         * (LFS) Allow files whose sizes cannot be represented in an off_t
+         * (but can be represented in an off64_t) to be opened.
+         **/
+        flags |= O_LARGEFILE;
+    #endif
 
-	FILE *fp       = &__ccaprice_stdio_file_dat[__ccaprice_stdio_file_pos];
-	fp->fd         = open(file, flags);
-	fp->buffer_pos = 0;
-	fp->eof        = 0;
-	fp->err        = 0;
+    FILE *fp       = &__ccaprice_stdio_file_dat[__ccaprice_stdio_file_pos];
+    fp->fd         = open(file, flags);
+    fp->buffer_pos = 0;
+    fp->eof        = 0;
+    fp->err        = 0;
 
-	__ccaprice_stdio_file_pos ++;
-	return fp;
+    __ccaprice_stdio_file_pos ++;
+    return fp;
 }

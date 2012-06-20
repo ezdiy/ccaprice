@@ -9,7 +9,7 @@
  * ====================================================
  *
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -32,5 +32,5 @@
 #include "inc/math.h"
 
 int finite(double x) {
-	return (unsigned)((__CCAPRICE_MATH_HI_L(x) & 0x7FFFFFFF) - 0x7FFFFFFF) >> 31;
+    return (unsigned)((__CCAPRICE_MATH_HI_L(x) & 0x7FFFFFFF) - 0x7FFFFFFF) >> 31;
 }

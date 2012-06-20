@@ -9,7 +9,7 @@
  * ====================================================
  *
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -32,44 +32,44 @@
 #include "inc/math.h"
 
 double floor(double x) {
-	unsigned i,j;
+    unsigned i,j;
 
-	int x_hi =  __CCAPRICE_MATH_HI_L(x);
-	int x_lo =  __CCAPRICE_MATH_LO_L(x);
-	int iter = ((x_hi>>20)&0x7ff)-0x3ff;
+    int x_hi =  __CCAPRICE_MATH_HI_L(x);
+    int x_lo =  __CCAPRICE_MATH_LO_L(x);
+    int iter = ((x_hi>>20)&0x7ff)-0x3ff;
 
-	if (iter < 20) {
-		if (iter < 0) {
-			if (1.0e300+x > 0.0) {
-				if(x_hi >= 0)
-					x_hi = 0x00000000, x_lo = 0x00000000;
-				else if (((x_hi & 0x7FFFFFFF) | x_lo) != 0)
-					x_hi = 0xbff00000, x_lo = 0x00000000;
-			}
-		} else {
-			i = (0x000FFFFF) >> iter;
-			if (((x_hi & i) | x_lo) == 0)
-				return x;
-			if (1.0e300+x > 0.0)
-				x_hi = (x_hi<0) ? (x_hi+(0x00100000>>iter)) : x_hi, x_hi &= (~i), x_lo=0;
-		}
-	} else if (iter > 51)
-		return (iter==0x400)?x+x:x;
-	else {
-		i = ((unsigned)(0xFFFFFFFF)) >> (iter - 20);
-		if ((x_lo & i) == 0)
-			return x;
-		if (1.0e300+x > 0.0) {
-			if (x_hi < 0) {
-				if (iter == 20)
-					x_hi ++;
-				else
-					j = x_lo + (1<<(52-iter)), x_hi = (j < x_lo) ? x+1: x, x_lo = j;
-			}
-			x_lo &= (~i);
-		}
-	}
-	__CCAPRICE_MATH_HI_L(x) = x_hi;
-	__CCAPRICE_MATH_LO_L(x) = x_lo;
-	return x;
+    if (iter < 20) {
+        if (iter < 0) {
+            if (1.0e300+x > 0.0) {
+                if(x_hi >= 0)
+                    x_hi = 0x00000000, x_lo = 0x00000000;
+                else if (((x_hi & 0x7FFFFFFF) | x_lo) != 0)
+                    x_hi = 0xbff00000, x_lo = 0x00000000;
+            }
+        } else {
+            i = (0x000FFFFF) >> iter;
+            if (((x_hi & i) | x_lo) == 0)
+                return x;
+            if (1.0e300+x > 0.0)
+                x_hi = (x_hi<0) ? (x_hi+(0x00100000>>iter)) : x_hi, x_hi &= (~i), x_lo=0;
+        }
+    } else if (iter > 51)
+        return (iter==0x400)?x+x:x;
+    else {
+        i = ((unsigned)(0xFFFFFFFF)) >> (iter - 20);
+        if ((x_lo & i) == 0)
+            return x;
+        if (1.0e300+x > 0.0) {
+            if (x_hi < 0) {
+                if (iter == 20)
+                    x_hi ++;
+                else
+                    j = x_lo + (1<<(52-iter)), x_hi = (j < x_lo) ? x+1: x, x_lo = j;
+            }
+            x_lo &= (~i);
+        }
+    }
+    __CCAPRICE_MATH_HI_L(x) = x_hi;
+    __CCAPRICE_MATH_LO_L(x) = x_lo;
+    return x;
 }

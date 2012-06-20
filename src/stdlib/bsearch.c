@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,19 +23,19 @@
 #include "inc/stdlib.h"
 
 void *bsearch(const void *key, const void *pbase, size_t nmemb, size_t size, int(*cmp)(const void *, const void *)) {
-	char *base = (char*)pbase;
-	int   line;
-	int   test;
+    char *base = (char*)pbase;
+    int   line;
+    int   test;
 
-	for (line = nmemb; line != 0; line >>= 1) {
-		void *ptr = base + (line >> 1) * size;
-		if((test = (*cmp)(key, ptr)) <= 0)
-			return ptr;
-		else {
-			base = (char*)ptr + size;
-			line --;
-		}
-	}
-	return NULL;
+    for (line = nmemb; line != 0; line >>= 1) {
+        void *ptr = base + (line >> 1) * size;
+        if((test = (*cmp)(key, ptr)) <= 0)
+            return ptr;
+        else {
+            base = (char*)ptr + size;
+            line --;
+        }
+    }
+    return NULL;
 }
 

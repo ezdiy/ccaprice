@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -29,12 +29,12 @@ size_t             ccaprice_locales = 0;                    /* Location in local
 ccaprice_locale_t  ccaprice_localed[__CCAPRICE_LOCALE_MAX]; /* Array of Locales        */
 
 #define LOCALE_INIT(N0) \
-	ccaprice_locale_define (&N0##_locale)
+    ccaprice_locale_define (&N0##_locale)
 #define LOCALE_INT LOCALE_INIT
 #define LOCALE_DEFINE(                          \
-	N00,N01,N02,N03,N04,N05,N06,N07,N08,N09,N10,\
-	N11,N12,N13,N14,N15,N16,N17,N18,N19,N20,N21,\
-	N22,N23,N24,N25,N26,N27,N28,N29,N30,N31,N32 \
+    N00,N01,N02,N03,N04,N05,N06,N07,N08,N09,N10,\
+    N11,N12,N13,N14,N15,N16,N17,N18,N19,N20,N21,\
+    N22,N23,N24,N25,N26,N27,N28,N29,N30,N31,N32 \
 )                                               \
     static int N00##_isalnum (int c) {N01}      \
     static int N00##_isalpha (int c) {N02}      \
@@ -73,8 +73,8 @@ ccaprice_locale_t  ccaprice_localed[__CCAPRICE_LOCALE_MAX]; /* Array of Locales 
     }
 
 void ccaprice_locale_define(ccaprice_locale_t *l) {
-	ccaprice_localed[ccaprice_locales] = *l;
-	ccaprice_locales ++;
+    ccaprice_localed[ccaprice_locales] = *l;
+    ccaprice_locales ++;
 }
 
 #define LOCALE_CODEPAGE_ISO88591 "" /* ascii should be nothing */
@@ -96,55 +96,55 @@ void ccaprice_locale_define(ccaprice_locale_t *l) {
  * the target locale.
  */
 #ifndef CCAPRICE_LOCALE_SET
-	/*
-	 * We should warn the person compiling that all locales are
-	 * being built into the library since he/she did not specify
-	 * which locale to use for the build.
-	 */
-	#warning "[ccaprice] No locale specified for CCAPRICE_LOCALE_SET compiling with all locales, this could take a lot of space"
-	#include "inc/locale/en_US.h"
-	#include "inc/locale/en_CA.h"
-	#include "inc/locale/en_AU.h"
+    /*
+     * We should warn the person compiling that all locales are
+     * being built into the library since he/she did not specify
+     * which locale to use for the build.
+     */
+    #warning "[ccaprice] No locale specified for CCAPRICE_LOCALE_SET compiling with all locales, this could take a lot of space"
+    #include "inc/locale/en_US.h"
+    #include "inc/locale/en_CA.h"
+    #include "inc/locale/en_AU.h"
 #else
-	/*
-	 * This just includes one LOCALE, the one set by CCAPRICE_LOCALE_SET
-	 * the build file could search for this localed by checking the LANG
-	 * enviroment variable.
-	 */
-	#undef   LOCALE_INT
-	#define  LOCALE_INT(X)                   LOCALE_INIT ( X )
-	#define  LOCALE_STR(X)                   #X
-	#define  LOCALE_INC(X)                   LOCALE_STR(inc/locale/X.h)
-	#include LOCALE_INC(CCAPRICE_LOCALE_SET)
-	#undef   LOCALE_STR
-	#undef   LOCALE_INC
+    /*
+     * This just includes one LOCALE, the one set by CCAPRICE_LOCALE_SET
+     * the build file could search for this localed by checking the LANG
+     * enviroment variable.
+     */
+    #undef   LOCALE_INT
+    #define  LOCALE_INT(X)                   LOCALE_INIT ( X )
+    #define  LOCALE_STR(X)                   #X
+    #define  LOCALE_INC(X)                   LOCALE_STR(inc/locale/X.h)
+    #include LOCALE_INC(CCAPRICE_LOCALE_SET)
+    #undef   LOCALE_STR
+    #undef   LOCALE_INC
 #endif
 #undef LOCALE_CODEPAGE_IBM850   /* ????? */
 #undef LOCALE_CODEPAGE_UTF8     /* UTF8  */
 #undef LOCALE_CODEPAGE_ISO88591 /* ASCII */
 
 void __ccaprice_locale_init() {
-	LOCALE_INIT(C);
+    LOCALE_INIT(C);
 
-	/*
-	 * Add LOCALE initializations here so ccaprice
-	 * can add the locale into it self for usage.
-	 */
-	#ifndef CCAPRICE_LOCALE_SET
-		LOCALE_INT(en_US);
-		LOCALE_INT(en_CA);
-		LOCALE_INT(en_AU);
-	#else
-		LOCALE_INT(CCAPRICE_LOCALE_SET);
-	#endif
+    /*
+     * Add LOCALE initializations here so ccaprice
+     * can add the locale into it self for usage.
+     */
+    #ifndef CCAPRICE_LOCALE_SET
+        LOCALE_INT(en_US);
+        LOCALE_INT(en_CA);
+        LOCALE_INT(en_AU);
+    #else
+        LOCALE_INT(CCAPRICE_LOCALE_SET);
+    #endif
 
-	/*
-	 * This is not to be changed, this sets the DEFAULT
-	 * locale used by ccaprice.  This is the _DEFAULT_
-	 * locale, DO NOT TOUCH.
-	 */
-	  ccaprice_localec = &ccaprice_localed[0];
-	__ccaprice_localep = ccaprice_localec;
+    /*
+     * This is not to be changed, this sets the DEFAULT
+     * locale used by ccaprice.  This is the _DEFAULT_
+     * locale, DO NOT TOUCH.
+     */
+      ccaprice_localec = &ccaprice_localed[0];
+    __ccaprice_localep = ccaprice_localec;
 }
 
 /*
@@ -165,68 +165,68 @@ void __ccaprice_locale_init() {
  * for the locale argument.
  */
 char *setlocale(int cat, const char *cap) {
-	if (!cat) return NULL;
-	/*
-	 * Get the current locale from the system via
-	 * getenv("LANG"). of no caption is specified
-	 */
-	if (!cap) {
-		char *locale = getenv("LANG");
-		if  (!locale) {
-			/* No LANG set in enviroment .. BAIL */
-			return NULL;
-		}
-		/*
-		 * Search ccaprice locales for locale based
-		 * on one in enviroment.
-		 */
-		size_t i;
-		for (i = 0; i < ccaprice_locales; i++) {
-			if (!strcmp(locale, ccaprice_localed[i].ident)) {
-				ccaprice_localec = &ccaprice_localed[i];
-				return locale;
-			}
-		}
-		/*
-		 * We've made it here which suggests a locale could
-		 * not be found for the specificed request.  Try looking
-		 * for something else simaler.  Perhaps non-UTF8?
-		 */
+    if (!cat) return NULL;
+    /*
+     * Get the current locale from the system via
+     * getenv("LANG"). of no caption is specified
+     */
+    if (!cap) {
+        char *locale = getenv("LANG");
+        if  (!locale) {
+            /* No LANG set in enviroment .. BAIL */
+            return NULL;
+        }
+        /*
+         * Search ccaprice locales for locale based
+         * on one in enviroment.
+         */
+        size_t i;
+        for (i = 0; i < ccaprice_locales; i++) {
+            if (!strcmp(locale, ccaprice_localed[i].ident)) {
+                ccaprice_localec = &ccaprice_localed[i];
+                return locale;
+            }
+        }
+        /*
+         * We've made it here which suggests a locale could
+         * not be found for the specificed request.  Try looking
+         * for something else simaler.  Perhaps non-UTF8?
+         */
 
-		/* Truncate the string before the . */
-		locale[strchr(locale,'.')-locale] = '\0';
+        /* Truncate the string before the . */
+        locale[strchr(locale,'.')-locale] = '\0';
 
-		/*
-		 * Lets try searching again this time we might find something
-		 * suitable as an alternitive.
-		 */
-		for (i = 0; i < ccaprice_locales; i++) {
-			if (!strcmp(locale, ccaprice_localed[i].ident)) {
-				ccaprice_localec = &ccaprice_localed[i];
-				return (char*)ccaprice_localed[i].ident;
-			}
-		}
-		/*
-		 * We could not find anything, bail, looks like the user doesn't
-		 * speak at all. Perhaps he's mute or worse a caveman.  We should
-		 * probably just return NULL.
-		 */
-		return NULL;
-	}
-	/*
-	 * Search for locale in list of all locales.
-	 * This could be made a lot faster with a hash
-	 * table or something of that nature. TODO!
-	 */
-	size_t i;
-	for (i=0; i < ccaprice_locales; i++) {
-		if (!strcmp(cap, ccaprice_localed[i].ident)) {
-			ccaprice_localec = &ccaprice_localed[i];
-			return (char*)cap;
-			break;
-		}
-	}
-	return NULL;
+        /*
+         * Lets try searching again this time we might find something
+         * suitable as an alternitive.
+         */
+        for (i = 0; i < ccaprice_locales; i++) {
+            if (!strcmp(locale, ccaprice_localed[i].ident)) {
+                ccaprice_localec = &ccaprice_localed[i];
+                return (char*)ccaprice_localed[i].ident;
+            }
+        }
+        /*
+         * We could not find anything, bail, looks like the user doesn't
+         * speak at all. Perhaps he's mute or worse a caveman.  We should
+         * probably just return NULL.
+         */
+        return NULL;
+    }
+    /*
+     * Search for locale in list of all locales.
+     * This could be made a lot faster with a hash
+     * table or something of that nature. TODO!
+     */
+    size_t i;
+    for (i=0; i < ccaprice_locales; i++) {
+        if (!strcmp(cap, ccaprice_localed[i].ident)) {
+            ccaprice_localec = &ccaprice_localed[i];
+            return (char*)cap;
+            break;
+        }
+    }
+    return NULL;
 }
 
 /*
@@ -235,5 +235,5 @@ char *setlocale(int cat, const char *cap) {
  * set by ccaprice by default "C"
  */
 struct lconv *localeconv() {
-	return &ccaprice_localec->lconv;
+    return &ccaprice_localec->lconv;
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,14 +24,14 @@
 #include "inc/stdlib.h"
 
 void __ccaprice_assert(const char *file, int line, int expr) {
-	__CCAPRICE_INTERNAL_FUNC(int, printf, (const char *, ...));
-	/*
-	 * Standard states the output needs to look as such:
-	 * 	program_name: file.c:line function: Assertion `code` failed.
-	 */
-	if (!expr) {
-		/* TODO to move stderr: according to the spec */
-		printf("assertion failed: %s on line %d\n", file, line);
-		abort();
-	}
+    __CCAPRICE_INTERNAL_FUNC(int, printf, (const char *, ...));
+    /*
+     * Standard states the output needs to look as such:
+     *     program_name: file.c:line function: Assertion `code` failed.
+     */
+    if (!expr) {
+        /* TODO to move stderr: according to the spec */
+        printf("assertion failed: %s on line %d\n", file, line);
+        abort();
+    }
 }

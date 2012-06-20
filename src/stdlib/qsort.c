@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,59 +23,59 @@
 #include "inc/stdlib.h"
 /*
  * Optimizations:
- * 	This is non-recurisive, instead a stack of pointers store the next
- * 	array (partition) to sort, this is immensly sped up by allocating
- * 	CHAR_BIT * sizeof(size_t) worth space on the stack for the array.
+ *     This is non-recurisive, instead a stack of pointers store the next
+ *     array (partition) to sort, this is immensly sped up by allocating
+ *     CHAR_BIT * sizeof(size_t) worth space on the stack for the array.
  *
- * 	We use a median-of-three decision tree to determine pivot elements,
- * 	this reduces the likelyhood of selecting a pivot value which may
- * 	be bad, or already selected (prevent extra comparisions).
+ *     We use a median-of-three decision tree to determine pivot elements,
+ *     this reduces the likelyhood of selecting a pivot value which may
+ *     be bad, or already selected (prevent extra comparisions).
  *
- * 	We only actually quick sort on E/T worth paritions, leaving the
- * 	insertion sort to sort the T worth items within each of the
- * 	partitions, this works well since insertion sort works fast on
- * 	semi-sorted, small, array segments; which at this point it's already
- * 	guranteed to be.
+ *     We only actually quick sort on E/T worth paritions, leaving the
+ *     insertion sort to sort the T worth items within each of the
+ *     partitions, this works well since insertion sort works fast on
+ *     semi-sorted, small, array segments; which at this point it's already
+ *     guranteed to be.
  *
- * 	The larger of the sub paritions is pushed onto the stack before
- * 	others, this allows the sorter to work on smaller partitions.  This
- * 	gurantees no more than O(1) space complexity.
+ *     The larger of the sub paritions is pushed onto the stack before
+ *     others, this allows the sorter to work on smaller partitions.  This
+ *     gurantees no more than O(1) space complexity.
  *
- * 	The internal swapping taking care of the sorting mechanisims uses
- * 	a fall-through swap for data less than 8, and a duffs-device for
- * 	array segements > 8, this gurantees comparision-less, branchless
- * 	swapping for short-width segements < 8, and may-speed up for larger
- * 	segements depending on the system, if not, no actual overhead is added
- * 	compared to a traditional naive swap.
+ *     The internal swapping taking care of the sorting mechanisims uses
+ *     a fall-through swap for data less than 8, and a duffs-device for
+ *     array segements > 8, this gurantees comparision-less, branchless
+ *     swapping for short-width segements < 8, and may-speed up for larger
+ *     segements depending on the system, if not, no actual overhead is added
+ *     compared to a traditional naive swap.
  *
- * 	When doing the pivot swap there is a goto used to skip the next pivot
+ *     When doing the pivot swap there is a goto used to skip the next pivot
  *  if the check passes for the given partition. This allows us to ignore
- * 	potential branches. This might not actually be the optimal case depending
- * 	on certian variables. This can be overrode however where branches will
- * 	be used instead.
+ *     potential branches. This might not actually be the optimal case depending
+ *     on certian variables. This can be overrode however where branches will
+ *     be used instead.
  *
- *	When performing swapping, pushing to the stack, or popping from the
- * 	stack no function call overhead is added.  Instead macros are used for
- * 	absolute inlinability, this in some cases can offer greater performance
- * 	over a function call (that the compiler might not inline).
+ *    When performing swapping, pushing to the stack, or popping from the
+ *     stack no function call overhead is added.  Instead macros are used for
+ *     absolute inlinability, this in some cases can offer greater performance
+ *     over a function call (that the compiler might not inline).
  *
- * 	No memory is allocated dynamically, it should be noted memory is still
- * 	allocated on the stack, but thats cheap.  This qsort doesn't perform a
- * 	single dynamic allocation.
+ *     No memory is allocated dynamically, it should be noted memory is still
+ *     allocated on the stack, but thats cheap.  This qsort doesn't perform a
+ *     single dynamic allocation.
  *
- * 	When searching for the first element during insertion sort we use an
- * 	unrolled loop, which is mostly faster since we only have to search for
- * 	inside half of the range max worth elements.
+ *     When searching for the first element during insertion sort we use an
+ *     unrolled loop, which is mostly faster since we only have to search for
+ *     inside half of the range max worth elements.
  */
 #ifdef CCAPRICE_STDLIB_QSORT_OPTIMAL
-#	define CCAPRICE_QSORT_GOTO /* Use goto jump for jump check */
-#	define CCAPRICE_QSORT_SWAP /* Use optimal swap function    */
-#	define CCAPRICE_QSORT_LOOP
+#    define CCAPRICE_QSORT_GOTO /* Use goto jump for jump check */
+#    define CCAPRICE_QSORT_SWAP /* Use optimal swap function    */
+#    define CCAPRICE_QSORT_LOOP
 #endif
 
 typedef struct {
-	char *l; /* pointer to LO */
-	char *h; /* pointer to HI */
+    char *l; /* pointer to LO */
+    char *h; /* pointer to HI */
 } ccaprice_qsort_node;
 
 /*
@@ -165,7 +165,7 @@ typedef struct {
  * do weird things for us that are more optimal in certian cases.
  */
 #ifdef CCAPRICE_QSORT_LOOP
-	/* MUST ALWAYS BE HALF OF CCAPRICE_QSORT_RANGEMAX (MUST BE CONSTANT) */
+    /* MUST ALWAYS BE HALF OF CCAPRICE_QSORT_RANGEMAX (MUST BE CONSTANT) */
     #define CCAPRICE_QSORT_SMALLMAX 4
     #define CCAPRICE_QSORT_SMALLE1                        \
     do {                                                  \
@@ -231,10 +231,10 @@ typedef struct {
                 case 1:  T = *A,*A++ = *B,*B++ = T;       \
             }                                             \
         } else {                                          \
-	size_t S = (EW);                              \
-	do {                                          \
-		T = *A, *A++ = *B, *B++ = T;              \
-			} while (--S > 0);                            \
+    size_t S = (EW);                              \
+    do {                                          \
+        T = *A, *A++ = *B, *B++ = T;              \
+            } while (--S > 0);                            \
         }                                                 \
     } while (0)
 #else
@@ -256,97 +256,97 @@ typedef struct {
 #endif
 
 void qsort(void * ebase, size_t items, size_t size, int (*cmp)(const void *, const void *)) {
-	ccaprice_qsort_node  sdata   [CHAR_BIT * sizeof(size_t)];
-	ccaprice_qsort_node *stack = sdata;
-	char                *pbase = (char*)ebase;
-	size_t               thold = CCAPRICE_QSORT_RANGEMAX * size;
-	char *run, *end;
-	char *tmp, *thr;
+    ccaprice_qsort_node  sdata   [CHAR_BIT * sizeof(size_t)];
+    ccaprice_qsort_node *stack = sdata;
+    char                *pbase = (char*)ebase;
+    size_t               thold = CCAPRICE_QSORT_RANGEMAX * size;
+    char *run, *end;
+    char *tmp, *thr;
 
-	if (items == 0)
-		return;
+    if (items == 0)
+        return;
 
-	if (items > CCAPRICE_QSORT_RANGEMAX) {
-		char *lo = pbase;
-		char *hi = &pbase[size * (items-1)];
+    if (items > CCAPRICE_QSORT_RANGEMAX) {
+        char *lo = pbase;
+        char *hi = &pbase[size * (items-1)];
 
-		CCAPRICE_QSORT_PUSHDATA(stack, NULL, NULL);
-		while (sdata < stack) {
-			char *lp, *rp;
-			char *md = lo + size * ((hi - lo) / size >> 1);
+        CCAPRICE_QSORT_PUSHDATA(stack, NULL, NULL);
+        while (sdata < stack) {
+            char *lp, *rp;
+            char *md = lo + size * ((hi - lo) / size >> 1);
 
-			/* Jump check */
-			CCAPRICE_QSORT_JUMPCHECK0(tt);
-			CCAPRICE_QSORT_JUMPCHECK1(md, lo, md, lo, tt);
-			CCAPRICE_QSORT_JUMPCHECK2(hi, md, md, hi, tt);
-			CCAPRICE_QSORT_JUMPLABEL ();
-			CCAPRICE_QSORT_JUMPAFTER ();
-			lp = lo + size;
-			rp = hi - size;
+            /* Jump check */
+            CCAPRICE_QSORT_JUMPCHECK0(tt);
+            CCAPRICE_QSORT_JUMPCHECK1(md, lo, md, lo, tt);
+            CCAPRICE_QSORT_JUMPCHECK2(hi, md, md, hi, tt);
+            CCAPRICE_QSORT_JUMPLABEL ();
+            CCAPRICE_QSORT_JUMPAFTER ();
+            lp = lo + size;
+            rp = hi - size;
 
-			/* Tight inner loops collapsing the walls performance sort */
-			do {
-				while((*cmp)((void *)lp, (void *)md)<0) lp += size;
-				while((*cmp)((void *)md, (void *)rp)<0) rp -= size;
+            /* Tight inner loops collapsing the walls performance sort */
+            do {
+                while((*cmp)((void *)lp, (void *)md)<0) lp += size;
+                while((*cmp)((void *)md, (void *)rp)<0) rp -= size;
 
-				if (lp < rp) {
-					CCAPRICE_QSORT_SWAP(lp, rp, size);
-					if      (md == lp) md = rp;
-					else if (md == rp) md = lp;
-					lp += size, rp -= size;
-				}
-				else if (lp == rp) {
-					lp += size, rp -= size;
-					break;
-				}
-			} while (lp <= rp);
+                if (lp < rp) {
+                    CCAPRICE_QSORT_SWAP(lp, rp, size);
+                    if      (md == lp) md = rp;
+                    else if (md == rp) md = lp;
+                    lp += size, rp -= size;
+                }
+                else if (lp == rp) {
+                    lp += size, rp -= size;
+                    break;
+                }
+            } while (lp <= rp);
 
-			/* Setup next iteration */
-			if ((size_t)(rp - lo) <= thold) {
-				if ((size_t)(hi - lp) <= thold)
-					CCAPRICE_QSORT_POPSDATA(stack, lo, hi);
-				else
-					lo = lp;
-			}
-			else if ((size_t)(hi - lp) <= thold)
-				hi = rp;
-			else if ((rp - lo) > (hi - lp)) {
-				CCAPRICE_QSORT_PUSHDATA(stack, lo, rp);
-				lo = lp;
-			} else {
-				CCAPRICE_QSORT_PUSHDATA(stack, lp, hi);
-				hi = rp;
-			}
-		}
-	}
-	tmp = pbase;
-	end = &pbase[size * (items-1)];
-	thr = (end < (pbase+thold)) ? end : pbase+thold;
+            /* Setup next iteration */
+            if ((size_t)(rp - lo) <= thold) {
+                if ((size_t)(hi - lp) <= thold)
+                    CCAPRICE_QSORT_POPSDATA(stack, lo, hi);
+                else
+                    lo = lp;
+            }
+            else if ((size_t)(hi - lp) <= thold)
+                hi = rp;
+            else if ((rp - lo) > (hi - lp)) {
+                CCAPRICE_QSORT_PUSHDATA(stack, lo, rp);
+                lo = lp;
+            } else {
+                CCAPRICE_QSORT_PUSHDATA(stack, lp, hi);
+                hi = rp;
+            }
+        }
+    }
+    tmp = pbase;
+    end = &pbase[size * (items-1)];
+    thr = (end < (pbase+thold)) ? end : pbase+thold;
 
-	/* Smallest element first */
-	for (run = tmp + size; run <= thr; run += size)
-		CCAPRICE_QSORT_SMALLE(CCAPRICE_QSORT_SMALLMAX);
-	if (tmp != pbase)
-		CCAPRICE_QSORT_SWAP(tmp, pbase, size);
+    /* Smallest element first */
+    for (run = tmp + size; run <= thr; run += size)
+        CCAPRICE_QSORT_SMALLE(CCAPRICE_QSORT_SMALLMAX);
+    if (tmp != pbase)
+        CCAPRICE_QSORT_SWAP(tmp, pbase, size);
 
-	/* Insertion sort */
-	run = pbase + size;
-	while((run += size) <= end) {
-		tmp = run - size;
-		while ((*cmp)((void*)run, (void*)tmp) < 0)
-			tmp -= size;
-		tmp += size;
-		if (tmp != run) {
-			char *trav = run + size;
-			while (--trav >= run) {
-				char  cc = *trav;
-				char *hi, *lo;
-				for (hi = lo = trav; (lo -= size) >= tmp; hi = lo)
-					*hi = *lo;
-				*hi = cc;
-			}
-		}
-	}
+    /* Insertion sort */
+    run = pbase + size;
+    while((run += size) <= end) {
+        tmp = run - size;
+        while ((*cmp)((void*)run, (void*)tmp) < 0)
+            tmp -= size;
+        tmp += size;
+        if (tmp != run) {
+            char *trav = run + size;
+            while (--trav >= run) {
+                char  cc = *trav;
+                char *hi, *lo;
+                for (hi = lo = trav; (lo -= size) >= tmp; hi = lo)
+                    *hi = *lo;
+                *hi = cc;
+            }
+        }
+    }
 }
 /*
  * We don't want these to get into any global scope.  We have no use from

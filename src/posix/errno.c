@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -25,5 +25,5 @@
 int *__ccaprice_posix_errno;
 /* Sets errno pointer. */
 void __ccaprice_posix_errno_set(int *ptr) {
-	__ccaprice_posix_errno = (ptr)?ptr:0;
+    __ccaprice_posix_errno = (ptr)?ptr:0;
 }

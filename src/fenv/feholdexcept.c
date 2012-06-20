@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +23,6 @@
 #include "inc/fenv.h"
 
 int feholdexcept(fenv_t *e) {
-	fegetenv(e);
-	return 0;
+    fegetenv(e);
+    return 0;
 }

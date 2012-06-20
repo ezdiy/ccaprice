@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,12 +22,12 @@
  */
 #include "inc/string.h"
 size_t strcspn(const char *src, const char *reg) {
-	size_t ret = 0;
-	while (*src) {
-		if (strchr(reg, *src))
-			return ret;
-		else
-			src++,ret++;
-	}
-	return ret;
+    size_t ret = 0;
+    while (*src) {
+        if (strchr(reg, *src))
+            return ret;
+        else
+            src++,ret++;
+    }
+    return ret;
 }

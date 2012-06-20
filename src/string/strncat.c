@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,7 +23,7 @@
 #include "inc/string.h"
 
 char *strncat(char *dst, const char *src, register size_t cnt) {
-	size_t off = strlen(dst);
-	strncpy(dst+off, src, cnt);
-	return dst;
+    size_t off = strlen(dst);
+    strncpy(dst+off, src, cnt);
+    return dst;
 }

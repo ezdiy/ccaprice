@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,9 +24,9 @@
 #include "inc/signal.h"
 
 void abort() {
-	#if !defined(WIN)
-		raise(SIGABRT);
-	#else
-		raise(0);
-	#endif
+    #if !defined(WIN)
+        raise(SIGABRT);
+    #else
+        raise(0);
+    #endif
 }

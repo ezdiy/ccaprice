@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,10 +23,10 @@
 #include "inc/string.h"
 
 char *strrchr(const char *src, int cmp) {
-	char *ret = 0;
-	do {
-		if (*src == (char)cmp)
-			ret = (char*)src;
-	} while (*src++);
-	return ret;
+    char *ret = 0;
+    do {
+        if (*src == (char)cmp)
+            ret = (char*)src;
+    } while (*src++);
+    return ret;
 }
