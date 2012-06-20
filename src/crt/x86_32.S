@@ -223,6 +223,7 @@ __ccaprice_syscall_core:
 	movl 24(%esp),%ebx
 	movl 20(%esp),%eax
 	#ifdef BSD
+        pushl $0x00
 		pushl %ebp
 		pushl %edi
 		pushl %esi
@@ -230,7 +231,7 @@ __ccaprice_syscall_core:
 		pushl %ecx
 		pushl %ebx
 		call __ccaprice_syscall_bsd
-		addl $24, %esp
+		addl $28, %esp
 	#else
 		int $0x80
 	#endif
