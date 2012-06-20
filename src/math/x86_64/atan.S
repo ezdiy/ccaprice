@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -27,12 +27,12 @@
 .global atan2f
 .global atan2l
 #ifndef __PATHCC__
-	.type atanf, @function
-	.type atanl, @function
-	.type atan,  @function
+    .type atanf, @function
+    .type atanl, @function
+    .type atan,  @function
     .type atan2f,@function
-	.type atan2l,@function
-	.type atan2, @function
+    .type atan2l,@function
+    .type atan2, @function
 #endif
 
 #warning "x86_64 atan/atanf/atan2/atan2f not implemented (only atanl and atan2l is supported)"

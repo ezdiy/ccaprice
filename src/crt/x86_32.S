@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,11 +21,11 @@
  * SOFTWARE.
  */
 #if defined(MAC)
-#	define ENTRY start
+#    define ENTRY start
 #elif defined(WIN)
-#	define ENTRY __main
+#    define ENTRY __main
 #else
-#	define ENTRY _start
+#    define ENTRY _start
 #endif
 
 .text
@@ -49,200 +49,200 @@
 
 .align 4
 __udivdi3:
-	pushl  %ebx
-	movl   20(%esp),   %ebx
-	bsrl   %ebx,       %ecx
-	jz     9f
-	movl   16(%esp),   %eax
-	shrl   %cl,        %eax
-	shrl   %eax
-	notl   %ecx
-	shll   %cl,        %ebx
-	orl    %eax,       %ebx
-	movl   12(%esp),   %edx
-	movl   8(%esp),    %eax
-	cmpl   %ebx,       %edx
-	jae    1f
-	divl   %ebx
-	pushl  %edi
-	notl   %ecx
-	shrl   %eax
-	shrl   %cl,        %eax
-	movl   %eax,       %edi
-	mull   20(%esp)
-	movl   12(%esp),   %ebx
-	movl   16(%esp),   %ecx
-	subl   %eax,       %ebx
-	sbbl   %edx,       %ecx
-	movl   24(%esp),   %eax
-	imull  %edi,       %eax
-	subl   %eax,       %ecx
-	sbbl   $0,         %edi
-	xorl   %edx,       %edx
-	movl   %edi,       %eax
-	popl   %edi
-	popl   %ebx
-	ret
+    pushl  %ebx
+    movl   20(%esp),   %ebx
+    bsrl   %ebx,       %ecx
+    jz     9f
+    movl   16(%esp),   %eax
+    shrl   %cl,        %eax
+    shrl   %eax
+    notl   %ecx
+    shll   %cl,        %ebx
+    orl    %eax,       %ebx
+    movl   12(%esp),   %edx
+    movl   8(%esp),    %eax
+    cmpl   %ebx,       %edx
+    jae    1f
+    divl   %ebx
+    pushl  %edi
+    notl   %ecx
+    shrl   %eax
+    shrl   %cl,        %eax
+    movl   %eax,       %edi
+    mull   20(%esp)
+    movl   12(%esp),   %ebx
+    movl   16(%esp),   %ecx
+    subl   %eax,       %ebx
+    sbbl   %edx,       %ecx
+    movl   24(%esp),   %eax
+    imull  %edi,       %eax
+    subl   %eax,       %ecx
+    sbbl   $0,         %edi
+    xorl   %edx,       %edx
+    movl   %edi,       %eax
+    popl   %edi
+    popl   %ebx
+    ret
 1:
-	subl   %ebx,       %edx
-	divl   %ebx
-	pushl  %edi
-	notl   %ecx
-	shrl   %eax
-	orl    $0x80000000,%eax
-	shrl   %cl,        %eax
-	movl   %eax,       %edi
-	mull   20(%esp)
-	movl   12(%esp),   %ebx
-	movl   16(%esp),   %ecx
-	subl   %eax,       %ebx
-	sbbl   %edx,       %ecx
-	movl   24(%esp),   %eax
-	imull  %edi,       %eax
-	subl   %eax,       %ecx
-	sbbl   $0,         %edi
-	xorl   %edx,       %edx
-	movl   %edi,       %eax
-	popl   %edi
-	popl   %ebx
-	retl
+    subl   %ebx,       %edx
+    divl   %ebx
+    pushl  %edi
+    notl   %ecx
+    shrl   %eax
+    orl    $0x80000000,%eax
+    shrl   %cl,        %eax
+    movl   %eax,       %edi
+    mull   20(%esp)
+    movl   12(%esp),   %ebx
+    movl   16(%esp),   %ecx
+    subl   %eax,       %ebx
+    sbbl   %edx,       %ecx
+    movl   24(%esp),   %eax
+    imull  %edi,       %eax
+    subl   %eax,       %ecx
+    sbbl   $0,         %edi
+    xorl   %edx,       %edx
+    movl   %edi,       %eax
+    popl   %edi
+    popl   %ebx
+    retl
 9:
-	movl   12(%esp),   %eax
-	movl   16(%esp),   %ecx
-	xorl   %edx,       %edx
-	divl   %ecx
-	movl   %eax,       %ebx
-	movl   8(%esp),    %eax
-	divl   %ecx
-	movl   %ebx,       %edx
-	popl   %ebx
-	retl
+    movl   12(%esp),   %eax
+    movl   16(%esp),   %ecx
+    xorl   %edx,       %edx
+    divl   %ecx
+    movl   %eax,       %ebx
+    movl   8(%esp),    %eax
+    divl   %ecx
+    movl   %ebx,       %edx
+    popl   %ebx
+    retl
 
 __umoddi3:
-	pushl  %ebx
-	movl   20(%esp),   %ebx
-	bsrl   %ebx,       %ecx
-	jz     9f
-	movl   16(%esp),   %eax
-	shrl   %cl,        %eax
-	shrl   %eax
-	notl   %ecx
-	shll   %cl,        %ebx
-	orl    %eax,       %ebx
-	movl   12(%esp),   %edx
-	movl   8(%esp),    %eax
-	cmpl   %ebx,       %edx
-	jae    2f
-	divl   %ebx
-	pushl  %edi
-	notl   %ecx
-	shrl   %eax
-	shrl   %cl,        %eax
-	movl   %eax,       %edi
-	mull   20(%esp)
-	movl   12(%esp),   %ebx
-	movl   16(%esp),   %ecx
-	subl   %eax,       %ebx
-	sbbl   %edx,       %ecx
-	movl   24(%esp),   %eax
-	imull  %edi,       %eax
-	subl   %eax,       %ecx
-	jnc    1f
-	addl   20(%esp),   %ebx
-	adcl   24(%esp),   %ecx
-	1:movl %ebx,       %eax
-	movl   %ecx,       %edx
-	popl   %edi
-	popl   %ebx
-	retl
+    pushl  %ebx
+    movl   20(%esp),   %ebx
+    bsrl   %ebx,       %ecx
+    jz     9f
+    movl   16(%esp),   %eax
+    shrl   %cl,        %eax
+    shrl   %eax
+    notl   %ecx
+    shll   %cl,        %ebx
+    orl    %eax,       %ebx
+    movl   12(%esp),   %edx
+    movl   8(%esp),    %eax
+    cmpl   %ebx,       %edx
+    jae    2f
+    divl   %ebx
+    pushl  %edi
+    notl   %ecx
+    shrl   %eax
+    shrl   %cl,        %eax
+    movl   %eax,       %edi
+    mull   20(%esp)
+    movl   12(%esp),   %ebx
+    movl   16(%esp),   %ecx
+    subl   %eax,       %ebx
+    sbbl   %edx,       %ecx
+    movl   24(%esp),   %eax
+    imull  %edi,       %eax
+    subl   %eax,       %ecx
+    jnc    1f
+    addl   20(%esp),   %ebx
+    adcl   24(%esp),   %ecx
+    1:movl %ebx,       %eax
+    movl   %ecx,       %edx
+    popl   %edi
+    popl   %ebx
+    retl
 2:
-	subl   %ebx,       %edx
-	divl   %ebx
-	pushl  %edi
-	notl   %ecx
-	shrl   %eax
-	orl    $0x80000000,%eax
-	shrl   %cl,        %eax
-	movl   %eax,       %edi
-	mull   20(%esp)
-	movl   12(%esp),   %ebx
-	movl   16(%esp),   %ecx
-	subl   %eax,       %ebx
-	sbbl   %edx,       %ecx
-	movl   24(%esp),   %eax
-	imull  %edi,       %eax
-	subl   %eax,       %ecx
-	jnc    3f
-	addl   20(%esp),   %ebx
-	adcl   24(%esp),   %ecx
-	3:movl %ebx,       %eax
-	movl   %ecx,       %edx
-	popl   %edi
-	popl   %ebx
-	retl
+    subl   %ebx,       %edx
+    divl   %ebx
+    pushl  %edi
+    notl   %ecx
+    shrl   %eax
+    orl    $0x80000000,%eax
+    shrl   %cl,        %eax
+    movl   %eax,       %edi
+    mull   20(%esp)
+    movl   12(%esp),   %ebx
+    movl   16(%esp),   %ecx
+    subl   %eax,       %ebx
+    sbbl   %edx,       %ecx
+    movl   24(%esp),   %eax
+    imull  %edi,       %eax
+    subl   %eax,       %ecx
+    jnc    3f
+    addl   20(%esp),   %ebx
+    adcl   24(%esp),   %ecx
+    3:movl %ebx,       %eax
+    movl   %ecx,       %edx
+    popl   %edi
+    popl   %ebx
+    retl
 9:
-	movl   12(%esp),   %eax
-	movl   16(%esp),   %ecx
-	xorl   %edx,       %edx
-	divl   %ecx
-	movl   %eax,       %ebx
-	movl   8(%esp),    %eax
-	divl   %ecx
-	movl   %edx,       %eax
-	popl   %ebx
-	xorl   %edx,       %edx
-	retl
+    movl   12(%esp),   %eax
+    movl   16(%esp),   %ecx
+    xorl   %edx,       %edx
+    divl   %ecx
+    movl   %eax,       %ebx
+    movl   8(%esp),    %eax
+    divl   %ecx
+    movl   %edx,       %eax
+    popl   %ebx
+    xorl   %edx,       %edx
+    retl
 
 ENTRY:
-	xorl  %ebp,        %ebp
-	popl  %esi
-	movl  %esp,        %ecx
-	andl  $0xfffffff0, %esp
-	pushl %ecx
-	pushl %esi
-	call  __ccaprice_main
-	hlt
+    xorl  %ebp,        %ebp
+    popl  %esi
+    movl  %esp,        %ecx
+    andl  $0xfffffff0, %esp
+    pushl %ecx
+    pushl %esi
+    call  __ccaprice_main
+    hlt
 
 #ifdef BSD
 __ccaprice_syscall_bsd:
-	int $0x80
-	ret
+    int $0x80
+    ret
 #endif
 
 __ccaprice_syscall_core:
-	pushl %ebp
-	pushl %edi
-	pushl %esi
-	pushl %ebx
+    pushl %ebp
+    pushl %edi
+    pushl %esi
+    pushl %ebx
 
-	movl 44(%esp),%ebp
-	movl 40(%esp),%edi
-	movl 36(%esp),%esi
-	movl 32(%esp),%edx
-	movl 28(%esp),%ecx
-	movl 24(%esp),%ebx
-	movl 20(%esp),%eax
-	#ifdef BSD
+    movl 44(%esp),%ebp
+    movl 40(%esp),%edi
+    movl 36(%esp),%esi
+    movl 32(%esp),%edx
+    movl 28(%esp),%ecx
+    movl 24(%esp),%ebx
+    movl 20(%esp),%eax
+    #ifdef BSD
         pushl $0x00
-		pushl %ebp
-		pushl %edi
-		pushl %esi
-		pushl %edx
-		pushl %ecx
-		pushl %ebx
-		call __ccaprice_syscall_bsd
-		addl $28, %esp
-	#else
-		int $0x80
-	#endif
+        pushl %ebp
+        pushl %edi
+        pushl %esi
+        pushl %edx
+        pushl %ecx
+        pushl %ebx
+        call __ccaprice_syscall_bsd
+        addl $28, %esp
+    #else
+        int $0x80
+    #endif
 
-	popl %ebx
-	popl %esi
-	popl %edi
-	popl %ebp
-	cmpl $-4095,%eax
-	jae  __ccaprice_syscall_error
-	ret
+    popl %ebx
+    popl %esi
+    popl %edi
+    popl %ebp
+    cmpl $-4095,%eax
+    jae  __ccaprice_syscall_error
+    ret
 
 #ifdef BSD
 .size __ccaprice_syscall_bsd,.-__ccaprice_syscall_bsd

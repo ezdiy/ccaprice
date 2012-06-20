@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,9 +24,9 @@
 .global ceilf
 .global ceill
 #ifndef __PATHCC__
-	.type ceilf,@function
-	.type ceill,@function
-	.type ceil, @function
+    .type ceilf,@function
+    .type ceill,@function
+    .type ceil, @function
 #endif
 
 #warning "x86_64 ceil/ceilf not implemented (only ceill is supported)"

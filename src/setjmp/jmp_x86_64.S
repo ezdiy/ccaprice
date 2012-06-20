@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -32,34 +32,34 @@
 #endif
 
 longjmp:
-    mov	%rsi,	%rax
-    test	%rax,	%rax
-    jnz	1f
-    inc	%rax
+    mov    %rsi,    %rax
+    test    %rax,    %rax
+    jnz    1f
+    inc    %rax
     
 1:
-    mov	  (%rdi),	%rbp
-    mov	 8(%rdi),	%rbp
-    mov 16(%rdi),	%r12
-    mov 24(%rdi),	%r13
-    mov	32(%rdi),	%r14
-    mov	40(%rdi),	%r15
-    mov	48(%rdi),	%rdx	// stack pointer
+    mov      (%rdi),    %rbp
+    mov     8(%rdi),    %rbp
+    mov 16(%rdi),    %r12
+    mov 24(%rdi),    %r13
+    mov    32(%rdi),    %r14
+    mov    40(%rdi),    %r15
+    mov    48(%rdi),    %rdx    // stack pointer
     
-    mov	%rdx,	%rsp
-    mov 56(%rdi),	%rdx	// instruction pointer
-    jmp	*%rdx			// goto (doesn't alter %rsp)
+    mov    %rdx,    %rsp
+    mov 56(%rdi),    %rdx    // instruction pointer
+    jmp    *%rdx            // goto (doesn't alter %rsp)
     
 setjmp:
-    mov	%rbx,	  (%rdi)
-    mov	%rbp,	 8(%rdi)
-    mov	%r12,	16(%rdi)
-    mov	%r13,	24(%rdi)
-    mov	%r14,	32(%rdi)
-    mov %r15,	40(%rdi)
-    lea	8(%rsp),	%rdx	// %rsp
-    mov	%rdx,	48(%rdi)
-    mov (%rsp),	%rdx		// address for %rip
-    mov	%rdx,	56(%rdi)
-    xor %rax,	%rax		// zero
+    mov    %rbx,      (%rdi)
+    mov    %rbp,     8(%rdi)
+    mov    %r12,    16(%rdi)
+    mov    %r13,    24(%rdi)
+    mov    %r14,    32(%rdi)
+    mov %r15,    40(%rdi)
+    lea    8(%rsp),    %rdx    // %rsp
+    mov    %rdx,    48(%rdi)
+    mov (%rsp),    %rdx        // address for %rip
+    mov    %rdx,    56(%rdi)
+    xor %rax,    %rax        // zero
     ret

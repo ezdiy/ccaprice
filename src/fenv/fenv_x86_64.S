@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -32,13 +32,13 @@
  * and the idea that it should work since pathscale is a GCC fork.
  */
 #ifndef __PATHCC__
-	.type feclearexcept,@function
-	.type feraiseexcept,@function
-	.type fetestexcept, @function
-	.type fegetround,   @function
-	.type fesetround,   @function
-	.type fesetenv,     @function
-	.type fegetenv,     @function
+    .type feclearexcept,@function
+    .type feraiseexcept,@function
+    .type fetestexcept, @function
+    .type fegetround,   @function
+    .type fesetround,   @function
+    .type fesetenv,     @function
+    .type fegetenv,     @function
 #endif
 /*
  * FENV stub macro incase additional underscores need to be added later
@@ -48,106 +48,106 @@
 /*
  * The following <fenv.h> functions here:
  *
- *	feclearexcept
- *	feraiseexcept
- *	fetextexcept
+ *    feclearexcept
+ *    feraiseexcept
+ *    fetextexcept
  *
- *	fesetround
- *	fegetround
+ *    fesetround
+ *    fegetround
  *
- *	fegetenv
- *	fesetenv
+ *    fegetenv
+ *    fesetenv
  */
 FENV(clearexcept)
-	mov	%edi,		%ecx
-	not	%ecx
-	stmxcsr	-8(%esp)
-	and	%ecx,		-8(%rsp)
-	ldmxcsr	-8(%esp)
-	test	$0x3F,		%ecx
-	jnz	2f
+    mov    %edi,        %ecx
+    not    %ecx
+    stmxcsr    -8(%esp)
+    and    %ecx,        -8(%rsp)
+    ldmxcsr    -8(%esp)
+    test    $0x3F,        %ecx
+    jnz    2f
 
-1:	fnclex
-	xor	%eax,		%eax
-	ret
+1:    fnclex
+    xor    %eax,        %eax
+    ret
 
-2:	fnstsw	%ax
-	and	%ecx,		%eax
-	jz	1b
-	sub	$0x20,		%rsp
-	fnstenv	(%rsp)
-	mov	%al,		4(%esp)
-	fldenv	(%rsp)
-	add	$0x20,		%rsp
-	xor	%eax,		%eax	// zero
-	ret
+2:    fnstsw    %ax
+    and    %ecx,        %eax
+    jz    1b
+    sub    $0x20,        %rsp
+    fnstenv    (%rsp)
+    mov    %al,        4(%esp)
+    fldenv    (%rsp)
+    add    $0x20,        %rsp
+    xor    %eax,        %eax    // zero
+    ret
 
 FENV(raiseexcept)
-	stmxcsr	-8(%rsp)
-	or	%edi,		-8(%rsp)
-	ldmxcsr	-8 (%rsp)
-	fnstenv	-32(%rsp)
-	or	%edi,		-28(%rsp)
-	fldenv	-32(%rsp)
-	xor	%eax,		%eax
-	ret
+    stmxcsr    -8(%rsp)
+    or    %edi,        -8(%rsp)
+    ldmxcsr    -8 (%rsp)
+    fnstenv    -32(%rsp)
+    or    %edi,        -28(%rsp)
+    fldenv    -32(%rsp)
+    xor    %eax,        %eax
+    ret
 
 FENV(testexcept)
-	push	%rax
-	stmxcsr (%rsp)
-	pop	%rsi
-	fnstsw	%ax
-	or	%esi,		%eax
-	and	%edi,		%eax
-	ret
+    push    %rax
+    stmxcsr (%rsp)
+    pop    %rsi
+    fnstsw    %ax
+    or    %esi,        %eax
+    and    %edi,        %eax
+    ret
 
 FENV(setround)
-	push	%rax
-	xor	%eax,		%eax	// zero
-	mov	%edi,		%ecx
-	fnstcw	(%rsp)
-	andb	$0xF3,		1(%rsp) // 1 byte (ugly %ch same as i386)
-	or	%ch,		1(%rsp)
-	fldcw	(%rsp)
-	stmxcsr	(%rsp)
-	shl	$0x03,		%ch	// this is faster than the i386 way
-	andb	$0x9F,		1(%rsp) // single byte
-	or	%ch,		1(%rsp)	// 1 byte (ugly %ch same as i386)
-	ldmxcsr	(%rsp)			// ... about time
-	pop	%rcx
-	ret
+    push    %rax
+    xor    %eax,        %eax    // zero
+    mov    %edi,        %ecx
+    fnstcw    (%rsp)
+    andb    $0xF3,        1(%rsp) // 1 byte (ugly %ch same as i386)
+    or    %ch,        1(%rsp)
+    fldcw    (%rsp)
+    stmxcsr    (%rsp)
+    shl    $0x03,        %ch    // this is faster than the i386 way
+    andb    $0x9F,        1(%rsp) // single byte
+    or    %ch,        1(%rsp)    // 1 byte (ugly %ch same as i386)
+    ldmxcsr    (%rsp)            // ... about time
+    pop    %rcx
+    ret
 
 FENV(getround)
-	push	%rax
-	stmxcsr	(%rsp)
-	pop	%rax
-	shr	$0x3,		%eax
-	and	$0xC00,		%eax 	// 0xC, %ah could work too (this is faster)
-	ret
+    push    %rax
+    stmxcsr    (%rsp)
+    pop    %rax
+    shr    $0x3,        %eax
+    and    $0xC00,        %eax     // 0xC, %ah could work too (this is faster)
+    ret
 
 FENV(getenv)
-	xor	%eax,		%eax 	// zero
-	fnstenv	(%rdi)
-	stmxcsr	28(%rdi)
-	ret
+    xor    %eax,        %eax     // zero
+    fnstenv    (%rdi)
+    stmxcsr    28(%rdi)
+    ret
 
 FENV(setenv)
-	xor	%eax,		%eax
-	inc	%rdi
-	jz 1f
-	fldenv	-1(%rdi)
-	ldmxcsr	27(%rdi)
-	ret
+    xor    %eax,        %eax
+    inc    %rdi
+    jz 1f
+    fldenv    -1(%rdi)
+    ldmxcsr    27(%rdi)
+    ret
 
-1:	push	%rax 			// 5-6
-	push	%rax 			// 3-4
-	push	%rax 			// 1-2
-	pushq	$0x37F
-	fldenv	(%rsp)
-	pushq	$0x1F80
-	ldmxcsr	(%rsp)
-	add	$0x28,		%rsp
-	ret
+1:    push    %rax             // 5-6
+    push    %rax             // 3-4
+    push    %rax             // 1-2
+    pushq    $0x37F
+    fldenv    (%rsp)
+    pushq    $0x1F80
+    ldmxcsr    (%rsp)
+    add    $0x28,        %rsp
+    ret
 
 .size feclearexcept, .-feclearexcept
 .size feraiseexcept, .-feraiseexcept
