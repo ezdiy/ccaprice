@@ -39,3 +39,26 @@ Sat Apr  7 16:20:15 EDT 2012
 	Fixed bug in atoi().  Fixed udivdi3 for x86_32 (was terribly broken).
 	Implemented <limits.h>  Added informative readmes, some indendation
 	refactoring, and that's it.
+	
+Wed Jun 20 17:39:00 EDT 2012
+	ccaprice fourth public release -- version 0.1.3
+	implemented compiler intrinsic headers as part of the library.  This
+	is to combat hosted enviroment includes.  Fixed fenv functions for
+	i386 and x86_64.  Implemented many many routines for x86, and x86_64.
+	Removed old allocator code and implemented conformant allocator to
+	malloc,calloc,realloc and free (uses mmap).  Fixed tons of build
+	issues across multiple compilers (now compiles with gcc/clang/pathcc).
+	Starting using -nostdinc for compilation which resulted in a new sys/
+	directory for system specific code (which is now included with the lib
+	to prevent issues across toolchains).  Cleaned up a bunch of code
+	mess by replacing tabs with spaces and preserving editor rules.
+	Some additional notes about the allocator:
+		It's threadsafe
+		Allows multiple heaps
+		Bounds checks to prevent crashing
+		Offers double free protection
+		Offers invalid pointer protection
+		Heap protection via signatures
+		Debug support (debug messages, TODO valgrind support)
+		Configurable
+		Retargetable

@@ -172,6 +172,8 @@ stdlib.h:
 	getenv ()
 	malloc ()
 	calloc ()
+	realloc()
+	free   ()
 	puts   ()
 	rand   () [SSE2/naive]
 	qsort  () [OPT/native]
@@ -214,7 +216,7 @@ limits.h
 	UINT_MAX
 	LONG_MIN
 	LONG_MAX
-	ULONG_MAX\
+	ULONG_MAX
 	
 math.h:
 	FP_ILOGB0
@@ -227,17 +229,37 @@ math.h:
 	M_PI_2
 	M_PI_4
 	M_TAU  [EXTENSION]
-	abs    () [branchless]
-	acos   ()
-	atan   ()
-	ceil   ()
-	fabs   ()
-	finite ()
-	floor  ()
-	frexp  ()
-	ilogb  ()
-	isnan  ()
-	sqrt   ()
+    acos  ()
+    acosf ()
+    acosl ()
+    atan  ()
+    atanf ()
+    atanl ()
+    atan2 ()
+    atan2f()
+    ceil  ()
+    ceilf ()
+    ceill ()
+    fabs  ()
+    fabsf ()
+    fabsl ()
+    fmod  ()
+    fmodf ()
+    fmodl ()
+    log   ()
+    logf  ()
+    logl  ()
+    log10 ()
+    log10f()
+    log10l()
+    sqrt  ()
+    sqrtf ()
+    sqrtl ()
+	
+setjmp.h:
+	longjmp()
+	setjmp ()
+	jmp_buf
 	
 
 POSIX features are below.  Note these do not clash with the C
@@ -375,3 +397,4 @@ __CCAPRICE_BUILD_TIME -- returns a constant string literal of the build time of 
 __CCAPRICE_BUILD_INFO -- returns a constant string literal of the info of the system used to compile ccaprice   [uname -a]
 __CCAPRICE_BUILD_COMP -- returns a constant string literal (all in caps) of the compiler used to build ccaprice ["GCC", "CLANG", "PATHCC"]
 __CCAPRICE_BUILD_HOST -- returns a constant string literal (all in caps) of the os used to build ccaprice       ["WIN", "LINUX", "BSD"]
+
