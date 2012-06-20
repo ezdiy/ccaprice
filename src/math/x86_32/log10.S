@@ -20,40 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global ceil
-.global ceilf
-.global ceill
+.global log10
+.global log10f
+.global log10l
 /*
  * Pathscale doesn't like .type.  Despite it being valid GAS syntax
  * and the idea that it should work since pathscale is a GCC fork.
  */
 #ifndef __PATHCC__
-	.type ceil,   @function
-    .type ceilf,  @function
-    .type ceill,  @function
-
+	.type log10,   @function
+    .type log10f,  @function
+    .type log10l,  @function
 #endif
 
-/*
- * This is terrible looking I suppose there should be
- * a nicer way at doing this without all the mov.
- */
-1:  fstcw 4(%esp)      // control word store
-    mov   5(%esp), %ah
-    mov   %al, 5(%esp)
-    fldcw 4(%esp)      // load modified control
-    frndint            // round
-    mov   %ah, 5(%esp)
-    fldcw 4(%esp)      // restore original
+#define LOG(X) \
+    fldlg2;    \
+    X 4(%esp); \
+    fyl2x;     \
     ret
+    
+log10:  LOG(fldl)
+log10f: LOG(flds)
+log10l: LOG(fldt)
 
-#define CEIL(X)      \
-    X 4(%esp);       \
-    mov $0xB, %al;   \
-    jmp 1b
-    
-ceil:   CEIL(fldl)
-ceilf:  CEIL(flds)
-ceill:  CEIL(fldt)
-    
-#undef CEIL
+#undef LOG

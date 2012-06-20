@@ -114,7 +114,11 @@ ASM64  =  src/crt/x86_64.S               \
           src/math/x86_64/atan.S         \
           src/math/x86_64/ceil.S         \
           src/math/x86_64/fabs.S         \
+          src/math/x86_64/fmod.S         \
+          src/math/x86_64/log.S          \
+          src/math/x86_64/log10.S        \
           src/math/x86_64/sqrt.S
+          
 ASM32  =  src/crt/x86_32.S               \
           src/fenv/fenv_x86_32.S         \
           src/setjmp/jmp_x86_32.S        \
@@ -123,6 +127,9 @@ ASM32  =  src/crt/x86_32.S               \
           src/math/x86_32/atan.S         \
           src/math/x86_32/ceil.S         \
           src/math/x86_32/fabs.S         \
+          src/math/x86_32/fmod.S         \
+          src/math/x86_32/log.S          \
+          src/math/x86_32/log10.S        \
           src/math/x86_32/sqrt.S
           
 
@@ -447,3 +454,4 @@ clean:
 	$(AT) find . -type f -name "*.o" -not -path "*/.*/*" -not -name ".*" -exec rm -f {} \;
 	$(AT) rm -f ccaprice.lib ccaprice.a
 	$(AT) rm -f endian endian.c endian_type endian_info endian_data endian.h
+	$(AT) rm -f test
