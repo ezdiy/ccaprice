@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -32,33 +32,33 @@
 #endif
 
 longjmp:
-    mov	4(%esp),	%edx
-    mov	8(%esp),	%eax
-    test	%eax,	%eax
-    jnz	1f
-    inc	%eax
+    mov    4(%esp),    %edx
+    mov    8(%esp),    %eax
+    test    %eax,    %eax
+    jnz    1f
+    inc    %eax
 
 // 4 byte move (32 bit)
 1:
-    mov	  (%edx),	%ebx
-    mov  4(%edx),	%esi
-    mov  8(%edx),	%edi
-    mov	12(%edx),	%ebp
-    mov 16(%edx),	%ecx
-    mov	%ecx,	%esp
-    mov	20(%edx),	%ecx
+    mov      (%edx),    %ebx
+    mov  4(%edx),    %esi
+    mov  8(%edx),    %edi
+    mov    12(%edx),    %ebp
+    mov 16(%edx),    %ecx
+    mov    %ecx,    %esp
+    mov    20(%edx),    %ecx
     jmp *%ecx
     
 setjmp:
-    mov	4(%esp),	%eax
-    mov	%ebx,	(%eax)
-    mov	%esi,	4(%eax)
-    mov	%edi,	8(%eax)
-    mov	%ebp,	12(%eax)
-    lea	4(%esp),	%ecx
-    mov	%ecx,	16(%eax)
-    mov	(%esp),	%ecx
-    mov	%ecx,	20(%eax)
-    xor	%eax,	%eax
+    mov    4(%esp),    %eax
+    mov    %ebx,    (%eax)
+    mov    %esi,    4(%eax)
+    mov    %edi,    8(%eax)
+    mov    %ebp,    12(%eax)
+    lea    4(%esp),    %ecx
+    mov    %ecx,    16(%eax)
+    mov    (%esp),    %ecx
+    mov    %ecx,    20(%eax)
+    xor    %eax,    %eax
     ret
     

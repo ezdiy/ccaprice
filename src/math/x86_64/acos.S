@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,9 +24,9 @@
 .global acosf
 .global acosl
 #ifndef __PATHCC__
-	.type acosf,@function
-	.type acosl,@function
-	.type acos, @function
+    .type acosf,@function
+    .type acosl,@function
+    .type acos, @function
 #endif
 
 #warning "x86_64 acos/acosf not implemented (only acosl is supported)"

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -28,7 +28,7 @@
  * and the idea that it should work since pathscale is a GCC fork.
  */
 #ifndef __PATHCC__
-	.type fmod,   @function
+    .type fmod,   @function
     .type fmodf,  @function
     .type lmodl,  @function
 #endif
