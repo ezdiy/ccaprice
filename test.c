@@ -324,7 +324,9 @@ TEST_DEF(math\040\040, acos, {
     TEST_RET(acos(0.5)*180.0/M_PI==60.000000000000007);
 })
 TEST_DEF(math\040\040, acosf, {
-    TEST_RET((acosf(0.5f)*180.0f/(float)M_PI)==60.f);
+    float a = acosf(0.5f)*180.0f/(float)M_PI
+    float b = 60.0f;
+    TEST_RET(a == b);
 })
 TEST_DEF(math\040\040, acosl, {
     TEST_RET((acosl(0.5l)*180.0l/(long double)M_PI)==60.000000000000002338407245616735963l);
@@ -334,7 +336,9 @@ TEST_DEF(math\040\040, asin, {
     TEST_RET(asin(0.5)*180.0/M_PI==30.000000000000004);
 })
 TEST_DEF(math\040\040, asinf, {
-    TEST_RET((asinf(0.5f)*180.0f/(float)M_PI)==30.f);
+    float a = asinf(0.5f)*180.0f/(float)M_PI;
+    float b = 30.0f;
+    TEST_RET(a == b);
 })
 TEST_DEF(math\040\040, asinl, {
     TEST_RET((asinl(0.5l)*180.0l/(long double)M_PI)==30.000000000000001169203622808367982l);
@@ -344,7 +348,9 @@ TEST_DEF(math\040\040, atan, {
     TEST_RET(atan(1.0)*180.0/M_PI==45.0);
 })
 TEST_DEF(math\040\040, atanf, {
-    TEST_RET((atanf(1.0f)*180.0f/(float)M_PI)==45.f);
+    float a = atanf(1.0f)*180.0f/(float)M_PI;
+    float b = 45.0f;
+    TEST_RET(a == b);
 })
 TEST_DEF(math\040\040, atanl, {
     TEST_RET((atanl(1.0l)*180.0l/(long double)M_PI)==45.000000000000001752070710736575165l);
@@ -354,7 +360,9 @@ TEST_DEF(math\040\040, atan2, {
     TEST_RET(atan2(10.0, -10.0)*180.0/M_PI==135.0);
 })
 TEST_DEF(math\040\040, atan2f, {
-    TEST_RET((atan2f(10.0f, -10.0f)*180.0f/(float)M_PI)==135.f);
+    float a = atan2f(10.0f, -10.0f)*180.0f/(float)M_PI;
+    float b = 135.0f;
+    TEST_RET(a == b);
 })
 TEST_DEF(math\040\040, atan2l, {
     TEST_RET((atan2l(10.0l, -10.0l)*180.0l/(long double)M_PI)==135.00000000000000525968157916167911l);
