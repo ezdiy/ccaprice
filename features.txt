@@ -229,17 +229,23 @@ math.h:
 	M_PI_2
 	M_PI_4
 	M_TAU  [EXTENSION]
-	abs    () [branchless]
-	acos   ()
-	atan   ()
-	ceil   ()
-	fabs   ()
-	finite ()
-	floor  ()
-	frexp  ()
-	ilogb  ()
-	isnan  ()
-	sqrt   ()
+    acos  ()
+    acosf ()
+    acosl ()
+    atan  ()
+    atanf ()
+    atanl ()
+    atan2 ()
+    atan2f()
+    ceil  ()
+    ceilf ()
+    ceill ()
+    fabs  ()
+    fabsf ()
+    fabsl ()
+    sqrt  ()
+    sqrtf ()
+    sqrtl ()
 	
 setjmp.h:
 	longjmp()

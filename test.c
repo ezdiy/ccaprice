@@ -200,51 +200,6 @@ TEST_DEF(string, strtok, {
 	TEST_RET(strtok(data, find) != NULL)
 })
 
-TEST_DEF(math\040\040, abs, {
-	TEST_RET(abs(23) == 23 && abs(-11) == 11)
-})
-TEST_DEF(math\040\040, acos, {
-	TEST_RET((int)(acos(0.5f)*180.0/M_PI) == 60);
-})
-
-TEST_DEF(math\040\040, atan, {
-	TEST_RET((int)(atan(1.0f)*180.0/M_PI) == 45)
-})
-
-TEST_DEF(math\040\040, ceil, {
-	TEST_RET(ceil(2.3) == 3.0f)
-})
-
-TEST_DEF(math\040\040, fabs, {
-	TEST_RET(fabs(3.1416) == 3.141600)
-})
-
-TEST_DEF(math\040\040, finite, {
-	TEST_RET(finite(M_PI) != 0)
-})
-
-TEST_DEF(math\040\040, floor, {
-	TEST_RET(floor(2.3) == 2.0f)
-})
-
-TEST_DEF(math\040\040, frexp, {
-	int    n = 0;
-	double r = frexp(8.0f, &n);
-	TEST_RET(n == 4 && r == 0.500000)
-})
-
-TEST_DEF(math\040\040, ilogb, {
-	TEST_RET(ilogb(123.45) == 6)
-})
-
-TEST_DEF(math\040\040, isnan, {
-	TEST_RET(!isnan(M_PI))
-})
-
-TEST_DEF(math\040\040, sqrt, {
-	TEST_RET((int)(sqrt(1024)) == 32);
-})
-
 TEST_DEF(stdlib, min, { TEST_RET(MIN(100,50) ==  50) })
 TEST_DEF(stdlib, max, { TEST_RET(MAX(50,100) == 100) })
 
@@ -361,6 +316,54 @@ TEST_DEF(posix\040, rindex, {
 	TEST_RET(find-data+1 == 18)
 })
 
+/*
+ * There is a better way to do these checks since precision isn't exactly
+ * guranteed for things this large.
+ */
+TEST_DEF(math\040\040, acos, {    
+    TEST_RET(acos(0.5)*180.0/M_PI==60.000000000000007);
+})
+TEST_DEF(math\040\040, acosf, {
+    TEST_RET((acosf(0.5f)*180.0f/(float)M_PI)==60.f);
+})
+TEST_DEF(math\040\040, acosl, {
+    TEST_RET((acosl(0.5l)*180.0l/(long double)M_PI)==60.000000000000002338407245616735963l);
+})
+
+TEST_DEF(math\040\040, asin, {
+    TEST_RET(asin(0.5)*180.0/M_PI==30.000000000000004);
+})
+TEST_DEF(math\040\040, asinf, {
+    TEST_RET((asinf(0.5f)*180.0f/(float)M_PI)==30.f);
+})
+TEST_DEF(math\040\040, asinl, {
+    TEST_RET((asinl(0.5l)*180.0l/(long double)M_PI)==30.000000000000001169203622808367982l);
+})
+
+TEST_DEF(math\040\040, atan, {
+    TEST_RET(atan(1.0)*180.0/M_PI==45.0);
+})
+TEST_DEF(math\040\040, atanf, {
+    TEST_RET((atanf(1.0f)*180.0f/(float)M_PI)==45.f);
+})
+TEST_DEF(math\040\040, atanl, {
+    TEST_RET((atanl(1.0l)*180.0l/(long double)M_PI)==45.000000000000001752070710736575165l);
+})
+
+TEST_DEF(math\040\040, atan2, {
+    TEST_RET(atan2(10.0, -10.0)*180.0/M_PI==135.0);
+})
+TEST_DEF(math\040\040, atan2f, {
+    TEST_RET((atan2f(10.0f, -10.0f)*180.0f/(float)M_PI)==135.f);
+})
+TEST_DEF(math\040\040, atan2l, {
+    TEST_RET((atan2l(10.0l, -10.0l)*180.0l/(long double)M_PI)==135.00000000000000525968157916167911l);
+})
+
+/*
+ * TODO: ceil, ceilf, ceill, fabs, fabsf, fabsl, sqrt, sqrtf, sqrtl tests
+ */
+
 int main(int argc, char **argv, char **argp) {
 	PADD = 80+3;
 
@@ -395,17 +398,6 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(strstr);
 	TEST_TRY(strtok);
 
-	TEST_TRY(abs);
-	TEST_TRY(acos);
-	TEST_TRY(atan);
-	TEST_TRY(ceil);
-	TEST_TRY(fabs);
-	TEST_TRY(finite);
-	TEST_TRY(floor);
-	TEST_TRY(frexp);
-	TEST_TRY(ilogb);
-	TEST_TRY(isnan);
-
 	TEST_TRY(min);
 	TEST_TRY(max);
 	TEST_TRY(qsort);
@@ -422,6 +414,18 @@ int main(int argc, char **argv, char **argp) {
 	TEST_TRY(ffs);
 	TEST_TRY(index);
 	TEST_TRY(rindex);
-
+    
+    TEST_TRY(acos);
+    TEST_TRY(acosf);
+    TEST_TRY(acosl);
+    TEST_TRY(asin);
+    TEST_TRY(asinf);
+    TEST_TRY(asinl);
+    TEST_TRY(atan);
+    TEST_TRY(atanf);
+    TEST_TRY(atanl);
+    TEST_TRY(atan2);
+    TEST_TRY(atan2f);
+    TEST_TRY(atan2l);   
 	return 0;
 }

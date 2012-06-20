@@ -52,15 +52,27 @@
 #	define M_TAU   (6.2831853071795864)
 #endif
 
-__CCAPRICE_EXPORT int    abs   (int); /* STDLIB-ify */
-__CCAPRICE_EXPORT double acos  (double);
-__CCAPRICE_EXPORT double atan  (double);
-__CCAPRICE_EXPORT double ceil  (double);
-__CCAPRICE_EXPORT double fabs  (double);
-__CCAPRICE_EXPORT int    finite(double);
-__CCAPRICE_EXPORT double floor (double);
-__CCAPRICE_EXPORT double frexp (double, int*);
-__CCAPRICE_EXPORT int    ilogb (double);
-__CCAPRICE_EXPORT int    isnan (double);
-__CCAPRICE_EXPORT double sqrt  (double);
+
+__CCAPRICE_EXPORT double      acos  (double);
+__CCAPRICE_EXPORT float       acosf (float);
+__CCAPRICE_EXPORT long double acosl (long double);
+__CCAPRICE_EXPORT double      asin  (double);
+__CCAPRICE_EXPORT float       asinf (float);
+__CCAPRICE_EXPORT long double asinl (long double);
+__CCAPRICE_EXPORT double      atan  (double);
+__CCAPRICE_EXPORT float       atanf (float);
+__CCAPRICE_EXPORT long double atanl (long double);
+__CCAPRICE_EXPORT double      atan2 (double, double);
+__CCAPRICE_EXPORT float       atan2f(float, float);
+__CCAPRICE_EXPORT long double atan2l(long double, long double);
+__CCAPRICE_EXPORT double      ceil  (double);
+__CCAPRICE_EXPORT float       ceilf (float);
+__CCAPRICE_EXPORT long double ceill (long double);
+__CCAPRICE_EXPORT double      fabs  (double);
+__CCAPRICE_EXPORT float       fabsf (float);
+__CCAPRICE_EXPORT long double fabsl (long double);
+__CCAPRICE_EXPORT double      sqrt  (double);
+__CCAPRICE_EXPORT float       sqrtf (float);
+__CCAPRICE_EXPORT long double sqrtl (long double);
+
 #endif /* !CCAPRICE_MATH_HDR */

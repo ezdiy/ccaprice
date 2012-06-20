@@ -33,6 +33,19 @@ CFLAGS += -Wall                          \
           -D__CCAPRICE_CP                \
           -DCCAPRICE_LOCALE_SET=en_US
 
+# uncomment the following for softfpu
+# and add to SRC=
+#          src/math/abs.c
+#          src/math/acos.c
+#          src/math/atan.c
+#          src/math/ceil.c
+#          src/math/floor.c
+#          src/math/fabs.c
+#          src/math/finite.c 
+#          src/math/isnan.c
+#          src/math/frexp.c 
+#          src/math/ilogb.c
+#          src/math/sqrt.c
           
 SRC     = src/assert.c                   \
           src/locale.c                   \
@@ -79,17 +92,6 @@ SRC     = src/assert.c                   \
           src/stdio/fwrite.c             \
           src/stdio/printf.c             \
           src/stdio/remove.c             \
-          src/math/abs.c                 \
-          src/math/acos.c                \
-          src/math/atan.c                \
-          src/math/ceil.c                \
-          src/math/floor.c               \
-          src/math/fabs.c                \
-          src/math/finite.c              \
-          src/math/isnan.c               \
-          src/math/frexp.c               \
-          src/math/ilogb.c               \
-          src/math/sqrt.c                \
           src/fenv/fegetexceptflag.c     \
           src/fenv/feholdexcept.c        \
           src/fenv/fesetexceptflag.c     \
@@ -106,10 +108,22 @@ SRC     = src/assert.c                   \
           
 ASM64  =  src/crt/x86_64.S               \
           src/fenv/fenv_x86_64.S         \
-          src/setjmp/jmp_x86_64.S
+          src/setjmp/jmp_x86_64.S        \
+          src/math/x86_64/acos.S         \
+          src/math/x86_64/asin.S         \
+          src/math/x86_64/atan.S         \
+          src/math/x86_64/ceil.S         \
+          src/math/x86_64/fabs.S         \
+          src/math/x86_64/sqrt.S
 ASM32  =  src/crt/x86_32.S               \
           src/fenv/fenv_x86_32.S         \
-          src/setjmp/jmp_x86_32.S
+          src/setjmp/jmp_x86_32.S        \
+          src/math/x86_32/acos.S         \
+          src/math/x86_32/asin.S         \
+          src/math/x86_32/atan.S         \
+          src/math/x86_32/ceil.S         \
+          src/math/x86_32/fabs.S         \
+          src/math/x86_32/sqrt.S
           
 
 # figure out host OS
@@ -348,6 +362,7 @@ ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *crt/*    ]]; then echo $(PURPLE) [crt]    $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *fenv/*   ]]; then echo $(PURPLE) [fenv]   $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *setjmp/* ]]; then echo $(PURPLE) [setjmp] $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *math/*   ]]; then echo $(PURPLE) [math]   $(RRED) Building a ASM object file $(CYAN) $@ $(ENDCOL); fi
 endif
 
 # libc target
