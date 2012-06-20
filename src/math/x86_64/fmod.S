@@ -28,7 +28,7 @@
  * and the idea that it should work since pathscale is a GCC fork.
  */
 #ifndef __PATHCC__
-	.type fmod,   @function
+    .type fmod,   @function
     .type fmodf,  @function
     .type lmodl,  @function
 #endif
