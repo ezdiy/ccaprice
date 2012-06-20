@@ -1,0 +1,119 @@
+Porting ccaprice to other architectures takes a little work, and isn't
+exactly obvious to figure out, which is why this readme was created.
+
+Since an ARM port doesn't exist I'll use it as an example to writing a port
+following the list in here and the naming conventions to show you exactly
+how it's acomplished.
+
+[] Implement the runtime startup routine code
+[] Implement <fenv.h>   specifics
+[] Implement <setjmp.h> specifics
+[] Implement <math.h>   specifics
+
+To implement the runtime code (so that main is initialized) a _start: stub
+needs to be created.  Lets drop to a shell and create the runtime assembly
+file.
+
+# cd src/crt
+# touch arm.S
+
+Now it's just a matter of implementing a few runtime specific stubs
+__ccaprice_syscall_core: should implement the correct abilities to perform
+a systemcall. _start: should implement the ability to setup arguments for main
+and call it. Finally the startup code must implement __umoddi3: and __udivdi3:
+for systems that can't do 64-bit modulas or division in hardware.
+
+Once the startup code is implemented it will need to be added to the Makefile
+The MakeFile is self-documenting so it should be trivial to add it.  The architecture
+switches and determining must also be wrote for the MakeFile.
+
+Once the MakeFile is updated, try a test compilation.  It will likely fail for missing
+assembly sources.  That is because we're mising a lot of other things.  We still need
+to implement the fenv.h, setjmp.h, and math.h stubs.
+
+Lets implement the fenv.h stubs; drop to a shell and create the fenv assembly file
+like so.
+
+# cd src/fenv
+# touch fenv_arm.S
+
+Now implement the following stubs:
+    *feclearexcept
+    *feraiseexcept
+    *fetestexcept
+    *fegetround
+    *fesetround
+    *fesetenv
+    *fegetenv
+    
+To understand what they're suppose to do read the documentation of the standard
+and the architecture manuals for instructions pertaining to them.
+
+Now lets implement the setjmp.h functionaly.  This stuff is trivial to implement
+it's just a wrapper around a longjmp.  On some architecture it might be tricky to
+preserve the registers.  Lets do this; drop to a shell like so.
+
+# cd src/setjmp
+# touch jmp_arm.S
+
+Thankfully setjmp.h doesn't expect much.  The following stubs need to be created
+    * longjmp
+    * setjmp
+    
+Note: During the process you should be adding the assembly files in question for
+      the architecture to their correct places in the MakeFile.
+      
+Now comes the fun and hard part math.h.  Implementing this requires you to create
+a directory and to touch all the files for every math.h function (as to follow
+our convention).  Here we go.
+
+# cd src/math
+# mkdir arm
+# cd arm
+# touch acos.S
+# touch asin.S
+# touch atan.S
+# touch ceil.S
+# touch fabs.S
+# touch sqrt.S
+# etc
+
+Implement all the functionality for each function inaccordance to the documentation
+of the standard library and the architecture manuals.  Once complete as normally
+add the files to the MakeFile for inclusion into the build.
+
+Now the moment of truth is here, lets test our new architecture to see if the library
+builds as intended.  Using the MakeFile options lets try building for arm
+
+# make TARGET=arm
+
+If there are any compilation errors fix them and try again until it compiles and produces
+a valid ccaprice.a in the current directory.  Now we can test to see if the testrunner
+compiles and links against the library; from a shell:
+
+# make TARGET=arm test
+
+If there are any link errors there is likely a problem with the port.  There should be no
+compilation errors.  If there is it's the fault of the test.c file which isn't related to
+your port.
+
+Now we can test to see if everything is functional in the port.  To do this we simply run
+the testrunner.  Which can easily be executed from shell
+
+# ./test
+
+If it shows anything like the following: ./test Permission Denied
+Try the following from a shell first:
+# chmod +x test
+
+Now try to execute, if it runs and shows all tests pass the port was successfull
+now fork us on github, push and send a pull request.  Otherwise if there are fails
+during the test take note of what it is.  For example if it shows `[math] acos`
+failed it's most likely because your acos.S implementation is incorrect.  Try debugging
+and working out the issues.
+
+
+Of course take note that if the architecture you're porting to doesn't have a FPU and you
+cannot implement fenv.h or math functionaly there is a softfpu you can use instead.  The
+only thing that needs to be wrote is empty stubs for fenv.h.  Which can be turned out in
+C and simply return NULL/0 or nothing.

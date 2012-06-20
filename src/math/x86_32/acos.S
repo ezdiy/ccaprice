@@ -42,7 +42,7 @@ acosl:
     jmp  1f
     
 acos:
-    fldt 4(%esp)
+    fldl 4(%esp)
 1:  fld  %st(0)
     fld1
     fsub %st(0), %st(1)
