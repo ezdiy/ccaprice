@@ -20,15 +20,27 @@ inc/posix/          This is where all posix headers go, they should then be syml
 src/crt/            This is a _special_ directory that implemenets the
                     core runtime support for ccaprice.
                     
-src/                This is the source folder for all functionality of the C library
+src/                This is the source directory for all functionality of the C library
                     each header has it's own subdirectory in here if there are multiple
                     functions in it.  Otherwise single files are created here for those
                     headers.
+                    
+src/math/           This is where all sources for <math.h> exists.  Most architecture
+                    specific math functionality will exist in a subdirectory within
+                    this directory.  For example all x86_32 stuff exists in x86_32.
+                    
+src/math/x86_32     All architecture specific math code for x86_32 exists here
+src/math/x86_64     All architecture specific math code for x86_64 exists here
+
+src/math/softfpu    This directory contains a portable implementation of all math features
+                    for architectures that lack a FPU or where we lack an implementation
+                    for the architecture.  As this is implemented naively it's much slower.
+                    If the system supports a FPU and we simply lack the code to support it
+                    send us a patch!  This should only be used for systems that LACK a FPU!
     
 src/string/         All <string.h> functionality is here
 src/fenv/           All <fenv.h>   functionality is here
 src/stdlib/         All <stdlib.h> functionality is here
-src/math/           All <math.h>   functionality is here
 src/stdio/          All <stdio.h>  functionality is here
 src/setjmp/         All <setjmp.h> functionality is here
 
