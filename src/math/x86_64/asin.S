@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,9 +24,9 @@
 .global asinf
 .global asinl
 #ifndef __PATHCC__
-	.type asinf,@function
-	.type asinl,@function
-	.type asin, @function
+    .type asinf,@function
+    .type asinl,@function
+    .type asin, @function
 #endif
 
 #warning "x86_64 asin/asinf not implemented (only asinl is supported)"

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,11 +21,11 @@
  * SOFTWARE.
  */
 #if defined(MAC)
-#	define ENTRY start
+#    define ENTRY start
 #elif defined(WIN)
-#	define ENTRY __main
+#    define ENTRY __main
 #else
-#	define ENTRY _start
+#    define ENTRY _start
 #endif
 
 .text
@@ -38,29 +38,29 @@
 #endif
 
 ENTRY:
-	xorq %rbp,%rbp
-	popq %rsi
-	movq %rsi,%rdi
-	movq %rsp,%rsi
-	andq $~15,%rsp
-	pushq %rax
-	pushq %rsp
-	call __ccaprice_main
-	hlt
+    xorq %rbp,%rbp
+    popq %rsi
+    movq %rsi,%rdi
+    movq %rsp,%rsi
+    andq $~15,%rsp
+    pushq %rax
+    pushq %rsp
+    call __ccaprice_main
+    hlt
 
 __ccaprice_syscall_core:
-	movq %rdi   , %rax
-	movq %rsi   , %rdi
-	movq %rdx   , %rsi
-	movq %rcx   , %rdx
-	movq %r8    , %r10
-	movq %r9    , %r8
-	movq 8(%rsp), %r9
+    movq %rdi   , %rax
+    movq %rsi   , %rdi
+    movq %rdx   , %rsi
+    movq %rcx   , %rdx
+    movq %r8    , %r10
+    movq %r9    , %r8
+    movq 8(%rsp), %r9
 
-	syscall
-	cmpq $-4095, %rax
-	jae __ccaprice_syscall_error
-	ret
+    syscall
+    cmpq $-4095, %rax
+    jae __ccaprice_syscall_error
+    ret
 
 .size __ccaprice_syscall_core,.-__ccaprice_syscall_core
 .size ENTRY,.-ENTRY

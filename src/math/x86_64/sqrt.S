@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- * 	Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,9 +24,9 @@
 .global sqrtf
 .global sqrtl
 #ifndef __PATHCC__
-	.type sqrtf,@function
-	.type sqrtl,@function
-	.type sqrt, @function
+    .type sqrtf,@function
+    .type sqrtl,@function
+    .type sqrt, @function
 #endif
 
 sqrt:
