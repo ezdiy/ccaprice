@@ -22,6 +22,10 @@
  */
 #ifndef __CCAPRICE_SYS_LINUX_TYPES_HDR
 #define __CCAPRICE_SYS_LINUX_TYPES_HDR
-typedef int       ssize_t;
-typedef long long off_t;
+typedef int           ssize_t;
+typedef long long     off_t;
+typedef unsigned      size_t;
+typedef long          intptr_t;
+typedef unsigned long uintptr_t;
+typedef long          ptrdiff_t;
 #endif

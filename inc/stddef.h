@@ -23,15 +23,7 @@
 #ifndef __CCAPRICE_STDDEF_HDR__
 #define __CCAPRICE_STDDEF_HDR__
 #include "ccaprice.h"
-/*
- * Handle size_t and NULL according to standard.  By themselfs as new
- * types / macros alltogether.  You're not allowed to include other
- * standard headers with other standard headers.
- */
-#if !defined(__CCAPRICE_TYPE_SIZE_T_DEFINED)
- typedef  __CCAPRICE_TYPE_SIZE_T size_t;
-# define   __CCAPRICE_TYPE_SIZE_T_DEFINED
-#endif
+#include "bits/types.h"
 
 
 /*
@@ -46,8 +38,8 @@
 
 #if !defined(offsetof)
 # if ((__COMPID__ == __CCAPRICE_COMPILER_EKOPATH) || \
-     (__COMPID__ == __CCAPRICE_COMPILER_CLANG)   || \
-     (__COMPID__ == __CCAPRICE_COMPILER_GCC))
+      (__COMPID__ == __CCAPRICE_COMPILER_CLANG)   || \
+      (__COMPID__ == __CCAPRICE_COMPILER_GCC))
 #  define offsetof(TYPE, MEMBER) __builtin_offsetof(TYPE, MEMBER)
 # else
   /*
@@ -57,11 +49,6 @@
    */
 #  define offsetof(TYPE, MEMBER) ((size_t) &((TYPE*)0)->MEMBER)
 # endif
-#endif
-
-#if !defined(__CCAPRICE_TYPE_PTRDIFF_T_DEFINED)
-    typedef  __CCAPRICE_TYPE_INTPTR_T ptrdiff_t;
-#   define   __CCAPRICE_TYPE_PTRDIFF_T_DEFINED
 #endif
 
 #endif /* !CCAPRICE_STDDEF_HDR */

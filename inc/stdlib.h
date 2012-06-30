@@ -23,16 +23,8 @@
 #ifndef __CCAPRICE_STDLIB_HDR__
 #define __CCAPRICE_STDLIB_HDR__
 #include "ccaprice.h"
+#include "bits/types.h"
 
-/*
- * Handle size_t and NULL according to standard.  By themselfs as new
- * types / macros alltogether.  You're not allowed to include other
- * standard headers with other standard headers.
- */
-#if !defined(__CCAPRICE_TYPE_SIZE_T_DEFINED)
- typedef  __CCAPRICE_TYPE_SIZE_T size_t;
-# define   __CCAPRICE_TYPE_SIZE_T_DEFINED
-#endif
 #ifdef  NULL
 #undef  NULL
 #endif

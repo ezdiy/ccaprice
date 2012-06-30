@@ -35,6 +35,7 @@
     defined(__x86_64)      || \
     defined(_M_X64)
  #define __CCAPRICE_TARGET_X86_64
+ #define __CCAPRICE_SUPPORTED
 #if defined(i386)          || \
     defined(__i386__)      || \
     defined(__i486__)      || \
@@ -49,9 +50,21 @@
     defined(__I86__)       || \
     defined(__INTEL__)
  #define __CCAPRICE_TARGET_X86_32
+ #define __CCAPRICE_SUPPORTED
 #endif
 #endif
 #endif
+
+/*
+ * Ensure that a valid target has been selected for compilation. Otherwise
+ * force a compiler error.
+ */
+#if !defined(__CCAPRICE_SUPPORTED)     && \
+    !defined(__CCAPRICE_TARGET_X86_64) && \
+    !defined(__CCAPRICE_TARGET_X86_32)
+# error "[ccaprice] Target not supported"
+#endif
+
 /*
  * The makefile should set a -D__INFO__=, if it doesn't we'll handle
  * defining __INFO__ to a string literal explaining that the build
@@ -81,44 +94,28 @@
 # warning "Unsupported compiler"
 #endif
 
-/*
- * We can override code if -DNAIVE is passed by the build
- * script.
- */
-#if !defined(__CCAPRICE_NAIVE)
-# define __STRING_STRLEN_OPTIMAL
-# define __STRING_MEMCHR_OPTIMAL
-# define __STRING_MEMCPY_OPTIMAL
-# define __STRING_MEMSET_OPTIMAL
-# define __STDLIB_RANDOM_OPTIMAL
-# if defined(__SSE2__)
-#  define __STRING_STRLEN_OPTIMAL_SSE2
-#  define __STRING_MEMCHR_OPTIMAL_SSE2
-#  define __STRING_MEMCPY_OPTIMAL_SSE2
-#  define __STRING_MEMSET_OPTIMAL_SSE2
-#  define __STDLIB_RANDOM_OPTIMAL_SSE2
-# endif
-#endif
+#define __CCAPRICE_INTERNAL_TYPE(TYPE, NAME)       extern TYPE NAME
+#define __CCAPRICE_INTERNAL_FUNC(TYPE, NAME, LIST) __CCAPRICE_INTERNAL_TYPE(TYPE,NAME) LIST
 
-#define __CCAPRICE_COMPILE_TIME_ASSERT(name, x) \
- typedef int __CompileTimeAssertFailed_##name[(x)?1:-1]
-
-/*
- * Almost every GCC-like compiler has __SIZE_TYPE__ defined to be used
- * safely by library implementators.  Otherwise we fall back to a lame
- * long unsigned int which is most likely correct for all systems.
- */
-#if defined(__SIZE_TYPE__)
-# define __CCAPRICE_TYPE_SIZE_T __SIZE_TYPE__
+#if defined(CCAPRICE_CP)
+# define __CCAPRICE_EXPORT
 #else
-# ifdef __CCAPRICE_TARGET_X86_32
-#  define __CCAPRICE_TYPE_SIZE_T unsigned int
-# elif defined(__CCAPRICE_TARGET_X86_64)
-#  define __CCAPRICE_TYPE_SIZE_T unsigned long
-# else
-#  error Architecture not supported
-# endif
+# define __CCAPRICE_EXPORT extern
 #endif
+
+__CCAPRICE_EXPORT const char *__ccaprice_build_date;
+__CCAPRICE_EXPORT const char *__ccaprice_build_info;
+__CCAPRICE_EXPORT const char *__ccaprice_build_comp;
+__CCAPRICE_EXPORT const char *__ccaprice_build_time;
+__CCAPRICE_EXPORT const char *__ccaprice_build_host;
+#if defined(__CCAPRICE_EXTENSIONS)
+# define __CCAPRICE_BUILD_DATE __ccaprice_build_date
+# define __CCAPRICE_BUILD_INFO __ccaprice_build_info
+# define __CCAPRICE_BUILD_COMP __ccaprice_build_comp
+# define __CCAPRICE_BUILD_TIME __ccaprice_build_time
+# define __CCAPRICE_BUILD_HOST __ccaprice_build_host
+#endif
+
 /*
  * We handle null correctly here.
  * In GNUG mode there is a builtin __null we can
@@ -141,43 +138,28 @@
 # endif
 #endif
 
-#if defined(__PTRDIFF_TYPE__)
-# define __CCAPRICE_TYPE_INTPTR_T __PTRDIFF_TYPE__
-#else
-# if defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32)
-#  define __CCAPRICE_TYPE_INTPTR_T long
-# else
-#  error Architecture not supported
+#define __CCAPRICE_COMPILE_TIME_ASSERT(name, x) \
+ typedef int __CompileTimeAssertFailed_##name[(x)?1:-1]
+
+/* TODO: everything here on down needs to be removed! */
+
+/*
+ * We can override code if -DNAIVE is passed by the build
+ * script.
+ */
+#if !defined(__CCAPRICE_NAIVE)
+# define __STRING_STRLEN_OPTIMAL
+# define __STRING_MEMCHR_OPTIMAL
+# define __STRING_MEMCPY_OPTIMAL
+# define __STRING_MEMSET_OPTIMAL
+# define __STDLIB_RANDOM_OPTIMAL
+# if defined(__SSE2__)
+#  define __STRING_STRLEN_OPTIMAL_SSE2
+#  define __STRING_MEMCHR_OPTIMAL_SSE2
+#  define __STRING_MEMCPY_OPTIMAL_SSE2
+#  define __STRING_MEMSET_OPTIMAL_SSE2
+#  define __STDLIB_RANDOM_OPTIMAL_SSE2
 # endif
 #endif
 
-/*
- * Ensure that a valid target has been selected for compilation. Otherwise
- * force a compiler error.
- */
-#if !defined(__CCAPRICE_TARGET_X86_64) && !defined(__CCAPRICE_TARGET_X86_32)
-# error "[ccaprice] Target not supported"
-#endif
-
-#define __CCAPRICE_INTERNAL_TYPE(TYPE, NAME)       extern TYPE NAME
-#define __CCAPRICE_INTERNAL_FUNC(TYPE, NAME, LIST) __CCAPRICE_INTERNAL_TYPE(TYPE,NAME) LIST
-
-#if defined(CCAPRICE_CP)
-# define __CCAPRICE_EXPORT
-#else
-# define __CCAPRICE_EXPORT extern
-#endif
-
-__CCAPRICE_EXPORT const char *__ccaprice_build_date;
-__CCAPRICE_EXPORT const char *__ccaprice_build_info;
-__CCAPRICE_EXPORT const char *__ccaprice_build_comp;
-__CCAPRICE_EXPORT const char *__ccaprice_build_time;
-__CCAPRICE_EXPORT const char *__ccaprice_build_host;
-#if defined(__CCAPRICE_EXTENSIONS)
-# define __CCAPRICE_BUILD_DATE __ccaprice_build_date
-# define __CCAPRICE_BUILD_INFO __ccaprice_build_info
-# define __CCAPRICE_BUILD_COMP __ccaprice_build_comp
-# define __CCAPRICE_BUILD_TIME __ccaprice_build_time
-# define __CCAPRICE_BUILD_HOST __ccaprice_build_host
-#endif
 #endif

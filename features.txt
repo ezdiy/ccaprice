@@ -261,8 +261,6 @@ setjmp.h:
     setjmp ()
     jmp_buf
     
-    
-    
 The current supported locales for ccaprice
     C      -- default C locale
     en_CA  -- English Canada

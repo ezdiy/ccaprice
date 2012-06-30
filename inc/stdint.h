@@ -23,6 +23,7 @@
 #ifndef __CCAPRICE_STDINT_HDR__
 #define __CCAPRICE_STDINT_HDR__
 #include "ccaprice.h"
+#include "bits/types.h"
 /*
  * Only tage advantage of type attributes if the compiler supports it.
  * Thankfully PathScale/EkoPath/Clang/GCC are all backwards compatible
@@ -67,22 +68,6 @@ typedef __ccaprice_sint_8  int8_t;
 typedef __ccaprice_sint_16 int16_t;
 typedef __ccaprice_sint_32 int32_t;
 typedef __ccaprice_sint_64 int64_t;
-
-#if !defined(__CCAPRICE_TYPE_INTPTR_T_DEFINED)
-typedef signed   __CCAPRICE_TYPE_INTPTR_T intptr_t;
-typedef unsigned __CCAPRICE_TYPE_INTPTR_T uintptr_t;
-#define __CCAPRICE_TYPE_INTPTR_T_DEFINED
-#endif
-
-/*
- * Prevent overlapping typedef from stddef.h
- * this is totally annoying but the standard
- * says otherwise.
- */
-#if !defined(__CCAPRICE_TYPE_PTRDIFF_T_DEFINED)
-typedef __CCAPRICE_TYPE_INTPTR_T             ptrdiff_t;
-#define __CCAPRICE_TYPE_PTRDIFF_T_DEFINED
-#endif
 
 /*
  * Generate static assertions only when compiling the library.
