@@ -23,6 +23,7 @@
 #ifndef __CCAPRICE_LIMITS_HDR__
 #define __CCAPRICE_LIMITS_HDR__
 #include <ccaprice.h>
+#include <bits/limits.h>
 
 /*
  * Macro to make min constants universal.  This determins min sizes from
@@ -40,63 +41,28 @@
 #define  LLONG_MIN    __CCAPRICE_MIN(LLONG)
 #define  INT_MIN      __CCAPRICE_MIN(INT)
 
-#ifdef __CCAPRICE_TARGET_X86_64
-# define LONG_MAX      0x7FFFFFFFFFFFFFFFL
-# define LLONG_MAX     0x7FFFFFFFFFFFFFFFLL
-# define LONG_BIT      64
-# define CHAR_BIT      8
-/*
- * GCC and GCC like compilers when used with -unsigned-char flag define
- * a special constant __CHAR_UNSIGNED__ that needs to modify the behaviour
- * of the following constants below.
- */
-# ifdef __CHAR_UNSIGNED__
-#  define CHAR_MAX UCHAR_MAX
-#  define CHAR_MIN 0
-# else
-#  define CHAR_MAX SCHAR_MAX
-#  define CHAR_MIN SCHAR_MIN
-# endif
-# define SCHAR_MAX    0x7F
-# define UCHAR_MAX    0xFFU
-# define USHRT_MAX    0xFFFFU
-# define SHRT_MAX     0x7FFF
-# define UINT_MAX     0xFFFFFFFFU
-# define INT_MAX      0x7FFFFFFF
-# define ULLONG_MAX   0xFFFFFFFFFFFFFFFFULL
-# define LLONG_MAX    0x7FFFFFFFFFFFFFFFLL
-#elif defined(CCAPRICE_TARGET_X86_32)
-# define LONG_MAX      0x7FFFFFFFL
-# define LLONG_MAX     0x7FFFFFFFFFFFFFFLL
-# define LONG_BIT      32
-# define CHAR_BIT      8
-/*
- * GCC and GCC like compilers when used with -unsigned-char flag define
- * a special constant __CHAR_UNSIGNED__ that needs to modify the behaviour
- * of the following constants below.
- */
-# ifdef __CHAR_UNSIGNED__
-#  define CHAR_MAX UCHAR_MAX
-#  define CHAR_MIN 0
-# else
-#  define CHAR_MAX SCHAR_MAX
-#  define CHAR_MIN SCHAR_MIN
-# endif
-# define  SCHAR_MAX    0x7F
-# define  UCHAR_MAX    0xFF
-# define  USHRT_MAX    0xFFFF
-# define  SHRT_MAX     0x7FFF
-# define  UINT_MAX     0xFFFFFFFFU
-# define  INT_MAX      0x7FFFFFFF
-# define  ULLONG_MAX   0xFFFFFFFFFFFFFFFFULL
-# define LLONG_MAX    0x7FFFFFFFFFFFFFFFLL
+#ifdef __CHAR_UNSIGNED__
+#   define CHAR_MIN 0
+#   define CHAR_MAX 255
+#else
+#   define CHAR_MIN (-128)
+#   define CHAR_MAX 127
 #endif
 
-/*
- * More universal constants follow:
- * only define SSIZE_MAX if we're not defined as _ANSI_SOURCE
- */
-#if !defined(_ANSI_SOURCE)
-# define SSIZE_MAX INT_MAX
-#endif
+/* Universal pretyt much! */
+#define CHAR_BIT   8
+#define SCHAR_MIN  (-128)
+#define SCHAR_MAX  127
+#define UCHAR_MAX  255
+#define SHRT_MIN   (-1-0x7fff)
+#define SHRT_MAX   0x7fff
+#define USHRT_MAX  0xffff
+#define INT_MIN   (-1-0x7fffffff)
+#define INT_MAX    0x7fffffff
+#define UINT_MAX   0xffffffffU
+#define LONG_MIN   (-LONG_MAX-1)
+#define ULONG_MAX  (2UL*LONG_MAX+1)
+#define LLONG_MIN  (-LLONG_MAX-1)
+#define ULLONG_MAX (2ULL*LLONG_MAX+1)
+
 #endif

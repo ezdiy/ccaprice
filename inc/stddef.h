@@ -25,7 +25,6 @@
 #include <ccaprice.h>
 #include <bits/types.h>
 
-
 /*
  * We can just undef NULL if it already is.  There is something about
  * the whole setup of the standard headers that makes it annoying to
