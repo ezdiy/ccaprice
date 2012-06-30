@@ -21,7 +21,8 @@
  * SOFTWARE.
  */
 #include "inc/stdio.h"
-#include "src/crt/runtime.h"
+#include "bits/fcntl.h"
+#include "crt/runtime.h" /* todo remove */
 
 /* manage list of all open files here */
 FILE   __ccaprice_stdio_file_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN];

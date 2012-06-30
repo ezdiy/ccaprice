@@ -22,8 +22,7 @@
  */
 #include "inc/signal.h"
 #include "inc/errno.h"
-#include "src/crt/runtime.h"
-#include "inc/posix/errno.h"
+#include "crt/runtime.h"
 
 /*
  * Proper signum's

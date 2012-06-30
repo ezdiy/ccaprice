@@ -20,29 +20,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_POSIX_CPIO_HDR__
-#define __CCAPRICE_POSIX_CPIO_HDR__
-#define MAGIC    "070707"
+#ifndef __CCAPRICE_SYS_LINUX_MMAN_HDR
+#define __CCAPRICE_SYS_LINUX_MMAN_HDR
+#   define MAP_FAILED ((void *) -1)
 
-#define C_IRUSR  0000400 /* Read by owner      */
-#define C_IWUSR  0000200 /* Write by owner     */
-#define C_IXUSR  0000100 /* Execute by owner   */
-#define C_IRGRP  0000040 /* Read by group      */
-#define C_IWGRP  0000020 /* Write by group     */
-#define C_IXGRP  0000010 /* Execute by group   */
-#define C_IROTH  0000004 /* Read by others     */
-#define C_IWOTH  0000002 /* Write by others    */
-#define C_IXOTH  0000001 /* Execute by others  */
-#define C_ISUID  0004000 /* Set user ID        */
-#define C_ISGID  0002000 /* Set group ID       */
-#define C_ISVXT  0001000 /* Restricted delflag */
-#define C_ISDIR  0040000 /* Directory          */
-#define C_ISFIFO 0010000 /* FIFO               */
-#define C_ISREG  0100000 /* Regular file       */
-#define C_ISBLK  0060000 /* Block special      */
-#define C_ISCHR  0020000 /* Character special  */
-#define C_ISCTG  0110000 /* Reserved           */
-#define C_ISLNK  0120000 /* Symbolic link      */
-#define C_ISSOCK 0x14000 /* Socket             */
+#   define PROT_NONE      0
+#   define PROT_READ      1
+#   define PROT_WRITE     2
+#   define PROT_EXEC      4
+#   define PROT_GROWSDOWN 0x01000000
+#   define PROT_GROWSUP   0x02000000
 
+#   define MAP_SHARED     0x01
+#   define MAP_PRIVATE    0x02
+#   define MAP_FIXED      0x10
+
+#   define MAP_TYPE       0x0f
+#   define MAP_FILE       0x00
+#   define MAP_ANON       0x20
+#   define MAP_ANONYMOUS  MAP_ANON
+#   define MAP_32BIT      0x40
 #endif

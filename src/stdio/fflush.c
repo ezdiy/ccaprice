@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 #include "inc/stdio.h"
-#include "inc/posix/errno.h"
 
 __CCAPRICE_INTERNAL_TYPE(int * , __ccaprice_posix_errno);
 __CCAPRICE_INTERNAL_TYPE(size_t, __ccaprice_stdio_file_pos);

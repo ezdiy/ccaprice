@@ -22,13 +22,11 @@
  */
 #include "inc/stdio.h"
 #include "inc/stdlib.h"
-#include "inc/posix/errno.h"
-#include "src/crt/runtime.h"
+#include "crt/runtime.h"
 
 __CCAPRICE_INTERNAL_TYPE(int*, __ccaprice_posix_errno);
 int fclose(FILE *fp) {
     if (!fp) {
-        errno = EBADF;
         return EOF;
     }
 

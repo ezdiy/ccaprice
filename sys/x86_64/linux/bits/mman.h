@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- *     Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -20,11 +20,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/posix/strings.h"
-#include "inc/ctype.h" /* toupper() tolower() */
+#ifndef __CCAPRICE_SYS_LINUX_MMAN_HDR
+#define __CCAPRICE_SYS_LINUX_MMAN_HDR
+#   define MAP_FAILED ((void *) -1)
 
-int strcasecmp(const char *s1, const char *s2) {
-    while (*s1 && *s2 && toupper(*s1) == toupper(*s2))
-        s1++,s2++;
-    return (!*s1 && !*s2) ? 0 : (toupper(*s1) - toupper(*s2));
-}
+#   define PROT_NONE       0
+#   define PROT_READ       1
+#   define PROT_WRITE      2
+#   define PROT_EXEC       4
+#   define PROT_GROWSDOWN  0x01000000
+#   define PROT_GROWSUP    0x02000000
+
+#   define MAP_SHARED      0x01
+#   define MAP_PRIVATE     0x02
+#   define MAP_FIXED       0x10
+
+#   define MAP_TYPE        0x0f
+#   define MAP_FILE        0x00
+#   define MAP_ANON        0x20
+#   define MAP_ANONYMOUS   MAP_ANON
+#   define MAP_32BIT       0x40
+#endif

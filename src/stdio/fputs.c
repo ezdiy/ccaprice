@@ -22,18 +22,14 @@
  */
 #include "inc/stdio.h"
 #include "inc/string.h"
-#include "inc/posix/errno.h"
 
 int fputs(const char *str, FILE *fp) {
-    __CCAPRICE_INTERNAL_TYPE(int *, __ccaprice_posix_errno);
-
     if (!str) return EOF;
     /*
      * Invalid file pointer passed to fputs
      * return EOF.
      */
     if (!fp) {
-        errno = EBADF;
         return EOF;
     }
 

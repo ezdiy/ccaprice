@@ -23,7 +23,7 @@
 #include "inc/stdlib.h"
 #include "inc/signal.h"
 #include "inc/stdio.h"
-#include "src/crt/runtime.h"
+#include "crt/runtime.h"
 /* this is nasty ... */
 FILE *__ccaprice_o_dat = ((void*)0);
 FILE *__ccaprice_i_dat = ((void*)0);

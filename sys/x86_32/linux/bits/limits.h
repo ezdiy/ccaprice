@@ -20,22 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_POSIX_STRINGS_HDR__
-#define __CCAPRICE_POSIX_STRINGS_HDR__
-#include "inc/ccaprice.h"
-
-#if !defined(__CCAPRICE_TYPE_SIZE_T_DEFINED)
- typedef  __CCAPRICE_TYPE_SIZE_T size_t;
-# define   __CCAPRICE_TYPE_SIZE_T_DEFINED
-#endif
-
-__CCAPRICE_EXPORT int   bcmp       (const void *, const void *, size_t); // alias to memcmp
-__CCAPRICE_EXPORT void  bcopy      (const void *, void *,       size_t); // alias to bcopy
-__CCAPRICE_EXPORT void  bzero      (void *,                     size_t); // memset(0)
-__CCAPRICE_EXPORT int   ffs        (int);
-__CCAPRICE_EXPORT char *index      (const char *, int);                  // strchr
-__CCAPRICE_EXPORT char *rindex     (const char *, int);                  // strstr
-__CCAPRICE_EXPORT int   strcasecmp (const char *, const char *);
-__CCAPRICE_EXPORT int   strncasecmp(const char *, const char *, size_t);
-
+#ifndef __CCAPRICE_SYS_LINUX_LIMITS_HDR
+#define __CCAPRICE_SYS_LINUX_LIMITS_HDR
+#   define PAGE_SIZE  4096
+#   define LONG_BIT   64
+#   define LONG_MAX   0x7FFFFFFFL
+#   define LLONG_MAX  0x7FFFFFFFFFFFFFFFLL
 #endif

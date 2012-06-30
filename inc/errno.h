@@ -29,5 +29,6 @@
  * the macro is defined in <inc/posix/errno.h>.  The pointer
  * if defined in errno.c in <src/posic/errno.c>.
  */
-__CCAPRICE_EXPORT int* __ccaprice_posix_errno;
+__CCAPRICE_EXPORT int* __ccaprice_errno;
+#define errno (*__ccaprice_errno);
 #endif

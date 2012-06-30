@@ -50,7 +50,7 @@ CFLAGS += -Wall                          \
 SRC     = src/assert.c                   \
           src/locale.c                   \
           src/signal.c                   \
-          src/crt/runtime.c              \
+          crt/runtime.c                  \
           src/string/memchr.c            \
           src/string/memcmp.c            \
           src/string/memcpy.c            \
@@ -95,18 +95,9 @@ SRC     = src/assert.c                   \
           src/fenv/fegetexceptflag.c     \
           src/fenv/feholdexcept.c        \
           src/fenv/fesetexceptflag.c     \
-          src/fenv/feupdateenv.c         \
-          src/posix/errno.c              \
-          src/posix/strings/bcmp.c       \
-          src/posix/strings/bcopy.c      \
-          src/posix/strings/bzero.c      \
-          src/posix/strings/ffs.c        \
-          src/posix/strings/index.c      \
-          src/posix/strings/rindex.c     \
-          src/posix/strings/strcasecmp.c \
-          src/posix/strings/strncasecmp.c
+          src/fenv/feupdateenv.c
           
-ASM64  =  src/crt/x86_64.S               \
+ASM64  =  crt/x86_64.S                   \
           src/fenv/fenv_x86_64.S         \
           src/setjmp/jmp_x86_64.S        \
           src/math/x86_64/acos.S         \
@@ -119,7 +110,7 @@ ASM64  =  src/crt/x86_64.S               \
           src/math/x86_64/log10.S        \
           src/math/x86_64/sqrt.S
           
-ASM32  =  src/crt/x86_32.S               \
+ASM32  =  crt/x86_32.S                   \
           src/fenv/fenv_x86_32.S         \
           src/setjmp/jmp_x86_32.S        \
           src/math/x86_32/acos.S         \
@@ -141,6 +132,8 @@ ifneq (,$(findstring BSD,$(shell uname -s)))
 	LARCH_X86_32  = elf_i386_fbsd
 	LARCH_X86_64  = elf_x86_64_fbsd
 	OS            = BSD
+	SYSDIR_X86_32 = sys/x86_32/freebsd/
+	SYSDIR_X86_64 = sys/x86_64/freebsd/
 	LFLAGS        =
 	OUT           = ccaprice.a
 else
@@ -158,6 +151,8 @@ ifneq (,$(findstring Linux,$(shell uname -s)))
 	LARCH_X86_32  = elf_i386
 	LARCH_X86_64  = elf_x86_64
 	OS            = LINUX
+	SYSDIR_X86_32 = sys/x86_32/linux/
+	SYSDIR_X86_64 = sys/x86_64/linux/
 	LFLAGS        =
 	OUT           = ccaprice.a
 endif
@@ -167,49 +162,49 @@ endif
 ifeq (, $(TARGET))
 	ifneq (,$(findstring x86_64, $(shell uname -m)))
 		TARGET  = x86_64
-		CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64
+		CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64 -I$(SYSDIR_X86_64)
 		LFLAGS += -m$(LARCH_X86_64)
 		AFLAGS  = -m64
 		ASM     = $(ASM64)
 	else
 	ifneq (,$(findstring amd64, $(shell uname -m)))
 		TARGET  = x86_64
-		CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64
+		CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64 -I$(SYSDIR_X86_64)
 		LFLAGS += -m$(LARCH_X86_64)
 		AFLAGS  = -m64
 		ASM     = $(ASM64)
 	else
 	ifneq (,$(findstring x86_32, $(shell uname -m)))
 		TARGET  = x86_32
-		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
+		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i386, $(shell uname -m)))
 		TARGET  = i386
-		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
+		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i486, $(shell uname -m)))
 		TARGET  = i486
-		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
+		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i586, $(shell uname -m)))
 		TARGET  = i586
-		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
+		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i686, $(shell uname -m)))
 		TARGET  = i686
-		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
+		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
@@ -223,49 +218,49 @@ ifeq (, $(TARGET))
 else
 ifeq (x86_64, $(TARGET))
 	TARGET  = x86_64
-	CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64
+	CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64 -I$(SYSDIR_X86_64)
 	LFLAGS += -m$(LARCH_X86_64)
 	AFLAGS  = -m64
 	ASM     = $(ASM64)
 else
 ifeq (amd64, $(TARGET))
 	TARGET  = x86_64
-	CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64
+	CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64 -I$(SYSDIR_X86_64)
 	LFLAGS += -m$(LARCH_X86_64)
 	AFLAGS  = -m64
 	ASM     = $(ASM64)
 else
 ifeq (x86_32, $(TARGET))
 	TARGET  = i386
-	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
+	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)
 else
 ifeq (i386, $(TARGET))
 	TARGET  = i386
-	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
+	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)
 else
 ifeq (i486, $(TARGET))
 	TARGET  = i386
-	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
+	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)
 else
 ifeq (i586, $(TARGET))
 	TARGET  = i386
-	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
+	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)
 else
 ifeq (i686, $(TARGET))
 	TARGET  = i386
-	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32
+	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)
@@ -357,7 +352,6 @@ ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *stdlib/* ]]; then echo $(PURPLE) [stdlib] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *string/* ]]; then echo $(PURPLE) [string] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *math/*   ]]; then echo $(PURPLE) [math]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
-	@ if [[ $@ == *posix/*  ]]; then echo $(PURPLE) [posix]  $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *fenv/*   ]]; then echo $(PURPLE) [fenv]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 endif
 

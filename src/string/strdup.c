@@ -23,14 +23,12 @@
 #include "inc/string.h"
 #include "inc/stdlib.h"
 #include "inc/errno.h"
-#include "inc/posix/errno.h"
 char *strdup(const char *s) {
     if (!s) return NULL;
 
     size_t len = strlen(s);
     char *r = (char*)malloc(len);
     if  (!r) {
-        errno = ENOMEM;
         return NULL;
     }
     strncpy(r, s, len);

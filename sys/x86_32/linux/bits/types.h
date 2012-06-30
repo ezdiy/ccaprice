@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- *     Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -20,15 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/posix/strings.h"
-int ffs(int v) {
-    int i;
-
-    if (!v) return 0;
-
-    for (i = 1; i <= sizeof(int) * 8; i++, v >>= 1)
-        if (v & i)
-            return i;
-
-    return 0;
-}
+#ifndef __CCAPRICE_SYS_LINUX_TYPES_HDR
+#define __CCAPRICE_SYS_LINUX_TYPES_HDR
+typedef int       ssize_t;
+typedef long long off_t;
+#endif

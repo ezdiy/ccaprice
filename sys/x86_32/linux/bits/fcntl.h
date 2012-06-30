@@ -20,22 +20,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_POSIX_STRINGS_HDR__
-#define __CCAPRICE_POSIX_STRINGS_HDR__
-#include "inc/ccaprice.h"
+#ifndef __CCAPRICE_SYS_LINUX_FCNTL_HDR
+#define __CCAPRICE_SYS_LINUX_FCNTL_HDR
+#   define O_RDONLY    00
+#   define O_WRONLY    01
+#   define O_RDWR      02
+#   define O_ACCMODE   03
 
-#if !defined(__CCAPRICE_TYPE_SIZE_T_DEFINED)
- typedef  __CCAPRICE_TYPE_SIZE_T size_t;
-# define   __CCAPRICE_TYPE_SIZE_T_DEFINED
-#endif
+#   define O_CREAT     0100
+#   define O_EXCL      0200
+#   define O_NOCTTY    0400
+#   define O_TRUNC     01000
+#   define O_APPEND    02000
+#   define O_NONBLOCK  04000
+#   define O_DSYNC     010000
+#   define O_SYNC      04010000
+#   define O_RSYNC     04010000
+#   define O_DIRECTORY 0200000
+#   define O_NOFOLLOW  0400000
+#   define O_CLOEXEC   02000000
 
-__CCAPRICE_EXPORT int   bcmp       (const void *, const void *, size_t); // alias to memcmp
-__CCAPRICE_EXPORT void  bcopy      (const void *, void *,       size_t); // alias to bcopy
-__CCAPRICE_EXPORT void  bzero      (void *,                     size_t); // memset(0)
-__CCAPRICE_EXPORT int   ffs        (int);
-__CCAPRICE_EXPORT char *index      (const char *, int);                  // strchr
-__CCAPRICE_EXPORT char *rindex     (const char *, int);                  // strstr
-__CCAPRICE_EXPORT int   strcasecmp (const char *, const char *);
-__CCAPRICE_EXPORT int   strncasecmp(const char *, const char *, size_t);
+#   define O_ASYNC     020000
+#   define O_DIRECT    040000
+#   define O_LARGEFILE 0100000
+#   define O_NOATIME   01000000
+#   define O_NDELAY    O_NONBLOCK
 
+#   define F_DUPFD     0
+#   define F_GETFD     1
+#   define F_SETFD     2
+#   define F_GETFL     3
+#   define F_SETFL     4
+
+#   define F_SETOWN    8
+#   define F_GETOWN    9
+#   define F_SETSIG    10
+#   define F_GETSIG    11
+#   define F_GETLK     12
+#   define F_SETLK     13
+#   define F_SETLKW    14
+#   define F_SETOWN_EX 15
+#   define F_GETOWN_EX 16
 #endif

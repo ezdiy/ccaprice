@@ -13,13 +13,7 @@ int/clang           This is where clang-specifics stuff exists
 inc/                This is the include folder, pretty much every header is guranteed
                     to be here.  This is where headers should also be put too.
 
-inc/posix/          This is where all posix headers go, they should then be symlinked
-                    down a directory into just inc/
-
 [SOURCES]
-src/crt/            This is a _special_ directory that implemenets the
-                    core runtime support for ccaprice.
-                    
 src/                This is the source directory for all functionality of the C library
                     each header has it's own subdirectory in here if there are multiple
                     functions in it.  Otherwise single files are created here for those
@@ -44,16 +38,21 @@ src/stdlib/         All <stdlib.h> functionality is here
 src/stdio/          All <stdio.h>  functionality is here
 src/setjmp/         All <setjmp.h> functionality is here
 
+[SYSTEM]
+sys/                This is where all system specific headers go, and os specific as well.
+                    This directory contains folders of the architecture and inside those
+                    The operating system (if it's OS specific) and finally the headers.
+                
+sys/x86_64          All x86_64 specific headers here
+sys/x86_32          All x86_32 specific hraders here
+sys/x86_64/linux    All linux-x86_64 specific headers here
+sys/x86_64/freebsd  All freebsd-x86_64 specific headers here
+sys/x86_32/linux    All linux-x86_32 specific headers here
+sys/x86_32/freebsd  All freebsd-x86_32 specific headers here
 
-src/posix/          This is the source folder for all functionality of the posix
-                    library.  Each header not part of C (but part of posix) has
-                    has it's own subdirectory in here if there are multiple
-                    functions in it.  Otherwise single files are create here for those
-                    headers.
-              
-src/posix/strings/  All <strings.h> functionality is here
-                   
-                    
+[RUNTIME]
+crt/                This contains the runtime stuff for _start for the architecture
+                    and OS.
 I request this directory structure is followed so things are trivial to
 find, and so things don't get easily mixed up.  This list should be updated
 when new directories are added.

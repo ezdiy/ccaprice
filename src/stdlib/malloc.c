@@ -42,12 +42,10 @@
 
 
 #include "inc/stddef.h"   /* size_t / ptrdiff_t / NULL */
-#include "src/crt/runtime.h"
-#if defined(LINUX)
-#   include "sys/linux.h"
-#elif defined(BSD)
-#   include "sys/freebsd.h"
-#endif
+#include "crt/runtime.h"
+
+#include "bits/mman.h"
+#include "bits/limits.h"
 #define getpagesize() PAGE_SIZE
 
 /*

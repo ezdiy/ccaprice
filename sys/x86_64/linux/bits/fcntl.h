@@ -20,29 +20,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_POSIX_CPIO_HDR__
-#define __CCAPRICE_POSIX_CPIO_HDR__
-#define MAGIC    "070707"
+#ifndef __CCAPRICE_SYS_LINUX_FCNTL_HDR
+#define __CCAPRICE_SYS_LINUX_FCNTL_HDR
 
-#define C_IRUSR  0000400 /* Read by owner      */
-#define C_IWUSR  0000200 /* Write by owner     */
-#define C_IXUSR  0000100 /* Execute by owner   */
-#define C_IRGRP  0000040 /* Read by group      */
-#define C_IWGRP  0000020 /* Write by group     */
-#define C_IXGRP  0000010 /* Execute by group   */
-#define C_IROTH  0000004 /* Read by others     */
-#define C_IWOTH  0000002 /* Write by others    */
-#define C_IXOTH  0000001 /* Execute by others  */
-#define C_ISUID  0004000 /* Set user ID        */
-#define C_ISGID  0002000 /* Set group ID       */
-#define C_ISVXT  0001000 /* Restricted delflag */
-#define C_ISDIR  0040000 /* Directory          */
-#define C_ISFIFO 0010000 /* FIFO               */
-#define C_ISREG  0100000 /* Regular file       */
-#define C_ISBLK  0060000 /* Block special      */
-#define C_ISCHR  0020000 /* Character special  */
-#define C_ISCTG  0110000 /* Reserved           */
-#define C_ISLNK  0120000 /* Symbolic link      */
-#define C_ISSOCK 0x14000 /* Socket             */
+#   define O_RDONLY    00
+#   define O_WRONLY    01
+#   define O_RDWR      02
+#   define O_ACCMODE   03
 
+#   define O_CREAT     0100
+#   define O_EXCL      0200
+#   define O_NOCTTY    0400
+#   define O_TRUNC     01000
+#   define O_APPEND    02000
+#   define O_NONBLOCK  04000
+#   define O_DSYNC     010000
+#   define O_SYNC      04010000
+#   define O_RSYNC     04010000
+#   define O_DIRECTORY 0200000
+#   define O_NOFOLLOW  0400000
+#   define O_CLOEXEC   02000000
+
+#   define O_ASYNC     020000
+#   define O_DIRECT    040000
+#   define O_LARGEFILE 0100000
+#   define O_NOATIME   01000000
+#   define O_NDELAY    O_NONBLOCK
+
+#   define F_DUPFD     0
+#   define F_GETFD     1
+#   define F_SETFD     2
+#   define F_GETFL     3
+#   define F_SETFL     4
+
+#   define F_SETOWN    8
+#   define F_GETOWN    9
+#   define F_SETSIG    10
+#   define F_GETSIG    11
+#   define F_GETLK     12
+#   define F_SETLK     13
+#   define F_SETLKW    14
+#   define F_SETOWN_EX 15
+#   define F_GETOWN_EX 16
 #endif

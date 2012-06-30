@@ -32,6 +32,7 @@ __CCAPRICE_INTERNAL_FUNC(uintptr_t, __ccaprice_syscall_core, (int, ...));
 /* ENVIROMENT */
 char **__ccaprice_enviroment;
 
+/* TODO: fix fix fix fix! */
 #if defined(__CCAPRICE_TARGET_X86_32)
 int __ccaprice_syscall_error() {
     register int no __asm__("%edx");
@@ -69,15 +70,17 @@ int __ccaprice_syscall_error() {
     const char *__ccaprice_build_host __CCAPRICE_USED = "WIN";
 #endif
 
+int *__ccaprice_errno = NULL;
 void __ccaprice_main(int argc, char **argv) {
     __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_locale_init, ());
     __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_init, ());
     __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_exit, (int));
-    __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_posix_errno_set, (int*));
     __CCAPRICE_INTERNAL_FUNC(int, main, (int, char **, char **));
 
+    /* TODO: fix fix fix!! */
     int function_only_errno;
-    __ccaprice_posix_errno_set(&function_only_errno);
+    __ccaprice_errno = &function_only_errno;
+    
     __ccaprice_enviroment = &argv[argc+1];
     __ccaprice_locale_init();
     __ccaprice_init();

@@ -22,10 +22,8 @@
  */
 #include "inc/stdio.h"
 #include "inc/errno.h"
-#include "inc/posix/errno.h"
 int fputc(int c, FILE *fp) {
     if (!fp) {
-        errno = EBADF;
         return EOF;
     }
 

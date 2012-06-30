@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- *     Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -20,17 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/posix/strings.h"
-#include "inc/ctype.h" /* toupper() tolower() */
+#ifndef __CCAPRICE_SYS_FREEBSD_TYPES_HDR
+#define __CCAPRICE_SYS_FREEBSD_TYPES_HDR
+typedef int       ssize_t;
+typedef long long off_t;
+#endif
 
-int strncasecmp(const char *s1, const char *s2, size_t n) {
-    if (!n) return 0;
-
-    while (n-- != 0 && tolower(*s1) == tolower(*s2)) {
-        if (!n || *s1 == '\0' || *s2 == '\0')
-            break;
-        s1++,s2++;
-    }
-
-    return tolower(*s1) - tolower(*s2);
-}

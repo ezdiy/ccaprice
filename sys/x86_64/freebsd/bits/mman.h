@@ -20,35 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_POSIX_TAR_HDR__
-#define __CCAPRICE_POSIX_TAR_HDR__
+#ifndef __CCAPRICE_SYS_FREEBSD_MMAN_HDR
+#define __CCAPRICE_SYS_FREEBSD_MMAN_HDR
+#   define MAP_FAILED ((void *) -1)
 
-#define TGMAGIC   "ustar\0"
-#define TGMAGLEN   6
-#define TVERSION  "00"
-#define TVERSLEN   2
+#   define PROT_NONE      0x00
+#   define PROT_READ      0x01
+#   define PROT_WRITE     0x02
+#   define PROT_EXEC      0x04
 
-#define REGTYPE   '0'
-#define AREGTYPE '\0'
-#define LNKTYPE   '1'
-#define SYMTYPE   '2'
-#define CHRTYPE   '3'
-#define BLKTYPE   '4'
-#define DIRTYPE   '5'
-#define FIFOTYPE  '6'
-#define CONTYPE   '7'
+#   define MAP_SHARED     0x0001
+#   define MAP_PRIVATE    0x0002
+#   define MAP_FIXED      0x0010
 
-#define TSUID     04000
-#define TSGID     02000
-#define TSVTX     01000
-#define TUREAD    00400
-#define TUWRITE   00200
-#define TUEXEC    00100
-#define TGREAD    00040
-#define TGWRITE   00020
-#define TGEXEC    00010
-#define TOREAD    00004
-#define TOWRITE   00002
-#define TOEXEC    00001
-
+#   define MAP_FILE       0x0000
+#   define MAP_ANON       0x1000
+#   define MAP_ANONYMOUS  MAP_ANON
 #endif

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- *     Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -20,10 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/posix/errno.h"
+#ifndef __CCAPRICE_SYS_FREEBSD_TYPES_HDR
+#define __CCAPRICE_SYS_FREEBSD_TYPES_HDR
+typedef long ssize_t;
+typedef long off_t;
+#endif
 
-int *__ccaprice_posix_errno;
-/* Sets errno pointer. */
-void __ccaprice_posix_errno_set(int *ptr) {
-    __ccaprice_posix_errno = (ptr)?ptr:0;
-}

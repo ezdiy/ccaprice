@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- *     Dale Weiler
+ *  Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -20,8 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/posix/strings.h"
-#include "inc/string.h"
-void bzero(void *src, size_t n) {
-    memset(src, 0, n);
-}
+#ifndef __CCAPRICE_SYS_LINUX_LIMITS_HDR
+#define __CCAPRICE_SYS_LINUX_LIMITS_HDR
+#   define PAGE_SIZE  4096
+#   define LONG_BIT   64
+#   define LONG_MAX   0x7FFFFFFFFFFFFFFFL
+#   define LLONG_MAX  0x7FFFFFFFFFFFFFFFLL
+#endif
