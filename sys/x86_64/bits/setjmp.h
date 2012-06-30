@@ -20,23 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_FENV_HDR__
-#define __CCAPRICE_FENV_HDR__
-#include <ccaprice.h>
-#include <bits/fenv.h>
-
-__CCAPRICE_EXPORT int feclearexcept  (int);
-__CCAPRICE_EXPORT int feraiseexcept  (int);
-
-__CCAPRICE_EXPORT int fegetexceptflag(fexcept_t*, int);
-__CCAPRICE_EXPORT int fesetexceptflag(const fexcept_t*, int);
-__CCAPRICE_EXPORT int fetestexcept   (int);
-__CCAPRICE_EXPORT int fesetround     (int);
-__CCAPRICE_EXPORT int fegetround     ();
-
-__CCAPRICE_EXPORT int fegetenv       (fenv_t*);
-__CCAPRICE_EXPORT int feholdexcept   (fenv_t*);
-
-__CCAPRICE_EXPORT int fesetenv       (const fenv_t*);
-__CCAPRICE_EXPORT int feupdateenv    (const fenv_t*);
+#ifndef __CCAPRICE_SYS_SETJMP_HDR
+#define __CCAPRICE_SYS_SETJMP_HDR
+typedef unsigned long jmp_buf[9];
 #endif

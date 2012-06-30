@@ -20,23 +20,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_FENV_HDR__
-#define __CCAPRICE_FENV_HDR__
-#include <ccaprice.h>
-#include <bits/fenv.h>
+#ifndef __CCAPRICE_SYS_FENV_HDR
+#define __CCAPRICE_SYS_FENV_HDR
 
-__CCAPRICE_EXPORT int feclearexcept  (int);
-__CCAPRICE_EXPORT int feraiseexcept  (int);
+# define FE_INVALID    1
+# define FE_DIVBYZERO  4
+# define FE_OVERFLOW   8
+# define FE_UNDERFLOW  16
+# define FE_INEXACT    32
 
-__CCAPRICE_EXPORT int fegetexceptflag(fexcept_t*, int);
-__CCAPRICE_EXPORT int fesetexceptflag(const fexcept_t*, int);
-__CCAPRICE_EXPORT int fetestexcept   (int);
-__CCAPRICE_EXPORT int fesetround     (int);
-__CCAPRICE_EXPORT int fegetround     ();
+# define FE_ALL_EXCEPT 63
 
-__CCAPRICE_EXPORT int fegetenv       (fenv_t*);
-__CCAPRICE_EXPORT int feholdexcept   (fenv_t*);
+# define FE_TONEAREST  0
+# define FE_DOWNWARD   0x400
+# define FE_UPWARD     0x800
+# define FE_TOWARDZERO 0xC00
 
-__CCAPRICE_EXPORT int fesetenv       (const fenv_t*);
-__CCAPRICE_EXPORT int feupdateenv    (const fenv_t*);
+# define FE_DFL_ENV    ((const fenv_t*)-1)
+
+typedef unsigned short fexcept_t;
+typedef struct {
+    fexcept_t __cntrlword;
+    fexcept_t __dummy0000;
+    fexcept_t __statuword;
+    fexcept_t __dummy1111;
+    fexcept_t __tagsndata;
+    fexcept_t __dummy2222;
+
+    unsigned int  __eip;
+    fexcept_t     __cs_sel;
+    unsigned int  __opcode:11;
+    unsigned int  __dummy3333:5;
+    unsigned int  __datoffset;
+    fexcept_t     __datselect;
+    fexcept_t     __dummy4444;
+    unsigned int  __mxcsr;
+} fenv_t;
+
 #endif

@@ -20,23 +20,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_FENV_HDR__
-#define __CCAPRICE_FENV_HDR__
-#include <ccaprice.h>
-#include <bits/fenv.h>
+#ifndef __CCAPRICE_SYS_MMAN_HDR
+#define __CCAPRICE_SYS_MMAN_HDR
+#   define MAP_FAILED ((void *) -1)
 
-__CCAPRICE_EXPORT int feclearexcept  (int);
-__CCAPRICE_EXPORT int feraiseexcept  (int);
+#   define PROT_NONE      0
+#   define PROT_READ      1
+#   define PROT_WRITE     2
+#   define PROT_EXEC      4
+#   define PROT_GROWSDOWN 0x01000000
+#   define PROT_GROWSUP   0x02000000
 
-__CCAPRICE_EXPORT int fegetexceptflag(fexcept_t*, int);
-__CCAPRICE_EXPORT int fesetexceptflag(const fexcept_t*, int);
-__CCAPRICE_EXPORT int fetestexcept   (int);
-__CCAPRICE_EXPORT int fesetround     (int);
-__CCAPRICE_EXPORT int fegetround     ();
+#   define MAP_SHARED     0x01
+#   define MAP_PRIVATE    0x02
+#   define MAP_FIXED      0x10
 
-__CCAPRICE_EXPORT int fegetenv       (fenv_t*);
-__CCAPRICE_EXPORT int feholdexcept   (fenv_t*);
-
-__CCAPRICE_EXPORT int fesetenv       (const fenv_t*);
-__CCAPRICE_EXPORT int feupdateenv    (const fenv_t*);
+#   define MAP_TYPE       0x0f
+#   define MAP_FILE       0x00
+#   define MAP_ANON       0x20
+#   define MAP_ANONYMOUS  MAP_ANON
+#   define MAP_32BIT      0x40
 #endif

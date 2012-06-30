@@ -20,23 +20,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_FENV_HDR__
-#define __CCAPRICE_FENV_HDR__
-#include <ccaprice.h>
-#include <bits/fenv.h>
+#ifndef __CCAPRICE_SYS_FLOAT_HDR
+#define __CCAPRICE_SYS_FLOAT_HDR
 
-__CCAPRICE_EXPORT int feclearexcept  (int);
-__CCAPRICE_EXPORT int feraiseexcept  (int);
+#define FLT_RADIX        2
 
-__CCAPRICE_EXPORT int fegetexceptflag(fexcept_t*, int);
-__CCAPRICE_EXPORT int fesetexceptflag(const fexcept_t*, int);
-__CCAPRICE_EXPORT int fetestexcept   (int);
-__CCAPRICE_EXPORT int fesetround     (int);
-__CCAPRICE_EXPORT int fegetround     ();
+#define FLT_MIN          1.17549435e-38F
+#define FLT_MAX          3.40282347e+38F
+#define FLT_EPSILON      1.19209290e-07F
 
-__CCAPRICE_EXPORT int fegetenv       (fenv_t*);
-__CCAPRICE_EXPORT int feholdexcept   (fenv_t*);
+#define FLT_MANT_DIG     24
+#define FLT_MIN_EXP      (-125)
+#define FLT_MAX_EXP      128
 
-__CCAPRICE_EXPORT int fesetenv       (const fenv_t*);
-__CCAPRICE_EXPORT int feupdateenv    (const fenv_t*);
+#define FLT_DIG          6
+#define FLT_MIN_10_EXP   (-37)
+#define FLT_MAX_10_EXP   38
+
+#define DBL_MIN          2.2250738585072014e-308
+#define DBL_MAX          1.7976931348623157e+308
+#define DBL_EPSILON      2.2204460492503131e-16
+
+#define DBL_MANT_DIG     53
+#define DBL_MIN_EXP      (-1021)
+#define DBL_MAX_EXP      1024
+
+#define DBL_DIG          15
+#define DBL_MIN_10_EXP   (-307)
+#define DBL_MAX_10_EXP   308
+
+#define FLT_ROUNDS       1
+
+#define LDBL_MIN         3.3621031431120935063e-4932L
+#define LDBL_MAX         1.1897314953572317650e+4932L
+#define LDBL_EPSILON     1.0842021724855044340e-19L
+
+#define LDBL_DIG         18
+#define LDBL_MIN_10_EXP  (-4931)
+#define LDBL_MAX_10_EXP  4932
+
+#define LDBL_MANT_DIG    64
+#define LDBL_MIN_EXP     (-16381)
+#define LDBL_MAX_EXP     16384
+
 #endif

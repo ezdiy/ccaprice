@@ -20,23 +20,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_FENV_HDR__
-#define __CCAPRICE_FENV_HDR__
-#include <ccaprice.h>
-#include <bits/fenv.h>
+#ifndef __CCAPRICE_SYS_FCNTL_HDR
+#define __CCAPRICE_SYS_FCNTL_HDR
+#   define O_RDONLY    00
+#   define O_WRONLY    01
+#   define O_RDWR      02
+#   define O_ACCMODE   03
 
-__CCAPRICE_EXPORT int feclearexcept  (int);
-__CCAPRICE_EXPORT int feraiseexcept  (int);
+#   define O_CREAT     0100
+#   define O_EXCL      0200
+#   define O_NOCTTY    0400
+#   define O_TRUNC     01000
+#   define O_APPEND    02000
+#   define O_NONBLOCK  04000
+#   define O_DSYNC     010000
+#   define O_SYNC      04010000
+#   define O_RSYNC     04010000
+#   define O_DIRECTORY 0200000
+#   define O_NOFOLLOW  0400000
+#   define O_CLOEXEC   02000000
 
-__CCAPRICE_EXPORT int fegetexceptflag(fexcept_t*, int);
-__CCAPRICE_EXPORT int fesetexceptflag(const fexcept_t*, int);
-__CCAPRICE_EXPORT int fetestexcept   (int);
-__CCAPRICE_EXPORT int fesetround     (int);
-__CCAPRICE_EXPORT int fegetround     ();
+#   define O_ASYNC     020000
+#   define O_DIRECT    040000
+#   define O_LARGEFILE 0100000
+#   define O_NOATIME   01000000
+#   define O_NDELAY    O_NONBLOCK
 
-__CCAPRICE_EXPORT int fegetenv       (fenv_t*);
-__CCAPRICE_EXPORT int feholdexcept   (fenv_t*);
+#   define F_DUPFD     0
+#   define F_GETFD     1
+#   define F_SETFD     2
+#   define F_GETFL     3
+#   define F_SETFL     4
 
-__CCAPRICE_EXPORT int fesetenv       (const fenv_t*);
-__CCAPRICE_EXPORT int feupdateenv    (const fenv_t*);
+#   define F_SETOWN    8
+#   define F_GETOWN    9
+#   define F_SETSIG    10
+#   define F_GETSIG    11
+#   define F_GETLK     12
+#   define F_SETLK     13
+#   define F_SETLKW    14
+#   define F_SETOWN_EX 15
+#   define F_GETOWN_EX 16
 #endif
