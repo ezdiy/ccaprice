@@ -29,13 +29,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/math.h"
-#include "inc/errno.h"
-#include "inc/posix/errno.h"
+#include <math.h>
+#include <errno.h>
 
 int ilogb(double x) {
     if (x == 0) {
-        errno = EDOM;
         return FP_ILOGB0;
     }
 

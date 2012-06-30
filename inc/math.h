@@ -22,7 +22,7 @@
  */
 #ifndef __CCAPRICE_MATH_HDR__
 #define __CCAPRICE_MATH_HDR__
-#include "ccaprice.h"
+#include <ccaprice.h>
 #if defined(__CCAPRICE_TARGET_X86_32) || defined(__CCAPRICE_TARGET_X86_64)
 	#define __CCAPRICE_MATH_HI_L(X) *(1+((int*)(&X)))
 	#define __CCAPRICE_MATH_LO_L(X) *(0+((int*)(&X)))

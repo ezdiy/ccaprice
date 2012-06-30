@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/string.h"
-#include "inc/stdlib.h"
-#include "inc/errno.h"
+#include <string.h>
+#include <stdlib.h>
+
 char *strdup(const char *s) {
     if (!s) return NULL;
 

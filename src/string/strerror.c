@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/errno.h"
+#include <errno.h>
 char *strerror(int errnum) {
     return "strerror(int) is unimplemented";
 }

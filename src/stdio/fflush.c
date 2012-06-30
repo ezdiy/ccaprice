@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdio.h"
+#include <stdio.h>
 
 __CCAPRICE_INTERNAL_TYPE(int * , __ccaprice_posix_errno);
 __CCAPRICE_INTERNAL_TYPE(size_t, __ccaprice_stdio_file_pos);

@@ -20,12 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/ccaprice.h"
+#include <ccaprice.h>
+#include <string.h>
+#include <stdint.h>
 #ifdef __STRING_STRLEN_OPTIMAL_SSE2
-    #include "int/emmintrin.h"
+    #include <emmintrin.h>
 #endif
-#include "inc/string.h"
-#include "inc/stdint.h"
 
 static const unsigned char strlen_bsf_table[256] = {
     __CCAPRICE_BSF_TABLE_EXPAND

@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdlib.h" /* CCAPRICE_SIGNEXTEND() */
-#include "inc/stdint.h"
+#include <stdlib.h> /* CCAPRICE_SIGNEXTEND() */
+#include <stdint.h>
 
 int abs(int i) {
     __CCAPRICE_SIGNEXTEND(i);

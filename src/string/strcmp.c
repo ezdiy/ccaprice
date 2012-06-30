@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/string.h"
+#include <string.h>
 
 int strcmp(const char *s1, const char *s2) {
     for (; *s1 == *s2; s1++, s2++)

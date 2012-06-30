@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/string.h"
+#include <string.h>
 
 char *strtok(char *s, const char *d) {
     static char  *p;

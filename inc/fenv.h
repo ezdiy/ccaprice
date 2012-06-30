@@ -22,7 +22,7 @@
  */
 #ifndef __CCAPRICE_FENV_HDR__
 #define __CCAPRICE_FENV_HDR__
-#include "ccaprice.h"
+#include <ccaprice.h>
 /*
  * X86_32 and X86_64 have the same fenv implementation.  Thanks intel for
  * not breaking compatability.  But it makes sense x86_64 should execute

@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/math.h"
+#include <math.h>
 double sqrt(double x) {
     #ifndef __clang__
     return __builtin_sqrt(x);

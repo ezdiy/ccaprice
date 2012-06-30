@@ -22,7 +22,7 @@
  */
 #ifndef __CCAPRICE_LIMITS_HDR__
 #define __CCAPRICE_LIMITS_HDR__
-#include "ccaprice.h"
+#include <ccaprice.h>
 
 /*
  * Macro to make min constants universal.  This determins min sizes from

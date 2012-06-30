@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdio.h"
-#include "inc/string.h"
+#include <stdio.h>
+#include <string.h>
 
 int fputs(const char *str, FILE *fp) {
     if (!str) return EOF;

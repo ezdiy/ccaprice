@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdio.h"
-#include "crt/runtime.h"
+#include <stdio.h>
+#include "crt/runtime.h" /* TODO: fix! fix! fix! */
 int remove(const char *filename) {
     return unlink(filename);
 }

@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/string.h"
+#include <string.h>
 void *memcpy(void *dst, const void *src, register size_t cnt) {
     #if defined(__STRING_MEMCPY_OPTIMAL) && (defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32)) && !defined(__STRING_MEMCPY_OPTIMAL_SSE2)
         /*

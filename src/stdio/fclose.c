@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdio.h"
-#include "inc/stdlib.h"
-#include "crt/runtime.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "crt/runtime.h" /* TODO: fix! fix! fix! */
 
 __CCAPRICE_INTERNAL_TYPE(int*, __ccaprice_posix_errno);
 int fclose(FILE *fp) {

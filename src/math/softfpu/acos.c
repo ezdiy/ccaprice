@@ -29,7 +29,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/math.h"
+#include <math.h>
 
 static const double ccaprice_acos_pS[]   = {
     1.66666666666666657415e-01, -3.25565818622400915405e-01,

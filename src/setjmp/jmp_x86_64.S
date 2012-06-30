@@ -33,7 +33,7 @@
 
 longjmp:
     mov    %rsi,    %rax
-    test    %rax,    %rax
+    test   %rax,    %rax
     jnz    1f
     inc    %rax
     

@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/string.h"
-#include "inc/stdint.h"
+#include <string.h>
+#include <stdint.h>
 void *memset(void *dst, int ctr, register size_t len) {
     #if  defined(__STRING_MEMSET_OPTIMAL)  && \
         (defined(__CCAPRICE_TARGET_X86_64) || defined(__CCAPRICE_TARGET_X86_32))

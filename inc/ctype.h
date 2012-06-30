@@ -22,7 +22,7 @@
  */
 #ifndef __CCAPRICE_CTYPE_HDR__
 #define __CCAPRICE_CTYPE_HDR__
-#include "ccaprice.h"
+#include <ccaprice.h>
 /*
  * I'm sure these can be made into functions but macros
  * are fine for now. Also I don't think the C standard

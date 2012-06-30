@@ -20,7 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/string.h"
+#include <string.h>
+
 size_t strcspn(const char *src, const char *reg) {
     size_t ret = 0;
     while (*src) {

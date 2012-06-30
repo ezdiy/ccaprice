@@ -22,8 +22,8 @@
  */
 #ifndef __CCAPRICE_STDIO_HDR__
 #define __CCAPRICE_STDIO_HDR__
-#include "ccaprice.h"
-#include "bits/types.h"
+#include <ccaprice.h>
+#include <bits/types.h>
 
 #define __CCAPRICE_STDIO_FILE_BUFFER_LEN 2048
 typedef struct ccaprice_file {

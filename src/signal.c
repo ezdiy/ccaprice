@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/signal.h"
-#include "inc/errno.h"
-#include "crt/runtime.h"
+#include <signal.h>
+#include <errno.h>
+#include "crt/runtime.h" /*TODO: fix!*/
 
 /*
  * Proper signum's

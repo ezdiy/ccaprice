@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/string.h"
+#include <string.h>
 
 char *strchr(const char *src, int cmp) {
     return memchr((void*)src, cmp, strlen(src));

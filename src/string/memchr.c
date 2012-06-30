@@ -20,11 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/ccaprice.h"
+#include <ccaprice.h>
+#include <string.h>
 #if defined(__STRING_MEMCHR_OPTIMAL_SSE2)
-#    include "int/emmintrin.h"
+#    include <emmintrin.h>
 #endif
-#include "inc/string.h"
 static const size_t memchr_bsf_table[256] = {
     __CCAPRICE_BSF_TABLE_EXPAND
 };

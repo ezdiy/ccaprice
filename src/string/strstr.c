@@ -20,7 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/string.h"
+#include <string.h>
+
 char *strstr(const char *ehay, const char *ened) {
     char  *hay = (char*)ehay;
     char  *ned = (char*)ened;

@@ -22,8 +22,8 @@
  */
 #ifndef __CCAPRICE_STDINT_HDR__
 #define __CCAPRICE_STDINT_HDR__
-#include "ccaprice.h"
-#include "bits/types.h"
+#include <ccaprice.h>
+#include <bits/types.h>
 /*
  * Only tage advantage of type attributes if the compiler supports it.
  * Thankfully PathScale/EkoPath/Clang/GCC are all backwards compatible

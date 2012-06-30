@@ -22,7 +22,7 @@
  */
 #ifndef __CCAPRICE_LOCALE_HDR__
 #define __CCAPRICE_LOCALE_HDR__
-#include "ccaprice.h"
+#include <ccaprice.h>
 /*
  * Standard says these need to be locale conformant
  * We'll use a structure to define the ctype locale

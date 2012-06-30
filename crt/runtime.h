@@ -26,8 +26,8 @@
 #include "inc/stdint.h"
 #include "inc/stddef.h"
 
-#include "bits/syscall.h"
-#include "bits/types.h"
+#include <bits/syscall.h>
+#include <bits/types.h>
 
 typedef int32_t pid_t;
 

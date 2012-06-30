@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/assert.h"
-#include "inc/stdlib.h"
+#include <assert.h>
+#include <stdlib.h>
 
 void __ccaprice_assert(const char *file, int line, int expr) {
     __CCAPRICE_INTERNAL_FUNC(int, printf, (const char *, ...));

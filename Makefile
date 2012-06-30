@@ -31,7 +31,9 @@ CFLAGS += -Wall                          \
           -Wno-sign-compare              \
           -fno-strict-aliasing           \
           -D__CCAPRICE_CP                \
-          -DCCAPRICE_LOCALE_SET=en_US
+          -DCCAPRICE_LOCALE_SET=en_US    \
+          -Iinc/                         \
+          -Iint/
 
 # uncomment the following for softfpu
 # and add to SRC=

@@ -29,7 +29,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/math.h"
+#include <math.h>
 
 double frexp(double x, int *p) {
     int x_hi = __CCAPRICE_MATH_HI_L(x);

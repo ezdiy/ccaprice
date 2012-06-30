@@ -29,7 +29,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/math.h"
+#include <math.h>
 
 static const double ccaprice_atan_hi[] = {
     4.63647609000806093515e-01,  7.85398163397448278999e-01,

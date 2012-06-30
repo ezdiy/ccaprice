@@ -22,7 +22,7 @@
  */
 #ifndef __CCAPRICE_ERRNO_HDR__
 #define __CCAPRICE_ERRNO_HDR__
-#include "ccaprice.h"
+#include <ccaprice.h>
 
 /*
  * errno is a macro that expands to (*ccaprice_posix_errno)

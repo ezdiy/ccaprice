@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdlib.h"
+#include <stdlib.h>
 
 void *bsearch(const void *key, const void *pbase, size_t nmemb, size_t size, int(*cmp)(const void *, const void *)) {
     char *base = (char*)pbase;

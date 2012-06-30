@@ -22,7 +22,7 @@
  */
 #ifndef __CCAPRICE_SIGNAL_HDR__
 #define __CCAPRICE_SIGNAL_HDR__
-#include "inc/ccaprice.h"
+#include <ccaprice.h>
 /*
  * The C standard only states that the following be implemented:
  * SIGABRT

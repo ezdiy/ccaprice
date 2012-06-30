@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/ccaprice.h"
-#include "inc/stddef.h"
+#include <ccaprice.h>
+#include <stddef.h>
 char *getenv(const char *name) {
     __CCAPRICE_INTERNAL_TYPE(char **, __ccaprice_enviroment);
 

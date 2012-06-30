@@ -22,7 +22,7 @@
  */
 #ifndef __CCAPRICE_ASSERT_HDR__
 #define __CCAPRICE_ASSERT_HDR__
-#include "ccaprice.h"
+#include <ccaprice.h>
 
 #if !defined(NDEBUG)
 # define assert(expr) __ccaprice_assert(__FILE__,__LINE__,(expr))

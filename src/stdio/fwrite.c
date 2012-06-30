@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdio.h"
-#include "crt/runtime.h"
+#include <stdio.h>
+#include "crt/runtime.h" /* TODO: fix! fix! fix! */
 
 size_t fwrite(const void *p, size_t size, size_t count, FILE *fp) {
     /* TODO use fputc ... */

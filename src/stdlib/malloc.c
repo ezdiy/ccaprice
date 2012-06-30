@@ -41,11 +41,11 @@
 /*#define _DWMALLOC_DEBUG     */
 
 
-#include "inc/stddef.h"   /* size_t / ptrdiff_t / NULL */
-#include "crt/runtime.h"
+#include <stddef.h>   /* size_t / ptrdiff_t / NULL */
+#include "crt/runtime.h" /* TODO: fix! fix! fix! */
 
-#include "bits/mman.h"
-#include "bits/limits.h"
+#include <bits/mman.h>
+#include <bits/limits.h>
 #define getpagesize() PAGE_SIZE
 
 /*

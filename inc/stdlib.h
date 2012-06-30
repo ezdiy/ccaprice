@@ -22,8 +22,8 @@
  */
 #ifndef __CCAPRICE_STDLIB_HDR__
 #define __CCAPRICE_STDLIB_HDR__
-#include "ccaprice.h"
-#include "bits/types.h"
+#include <ccaprice.h>
+#include <bits/types.h>
 
 #ifdef  NULL
 #undef  NULL

@@ -20,12 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/string.h"
-#include "inc/stdarg.h"
-#include "inc/stddef.h"
-#include "inc/stdlib.h"
-#include "inc/stdio.h"
-#include "inc/stdint.h"
+#include <string.h>
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
 static int __ccaprice_printf_extract(uint64_t *x, uint32_t radix) {
     uint32_t hi  = *x >> 32;
     uint32_t lo  = *x;

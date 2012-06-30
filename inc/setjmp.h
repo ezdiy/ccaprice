@@ -22,15 +22,8 @@
  */
 #ifndef __CCAPRICE_SETJMP_HDR__
 #define __CCAPRICE_SETJMP_HDR__
-#include "ccaprice.h"
-
-#ifdef __CCAPRICE_TARGET_X86_32
-    typedef unsigned long jmp_buf[7];
-#elif defined(__CCAPRICE_TARGET_X86_64)
-    typedef unsigned long jmp_buf[9];
-#else
-    typedef unsigned long jmp_buf[-1]; /* error here */
-#endif
+#include <ccaprice.h>
+#include <bits/setjmp.h>
 
 __CCAPRICE_EXPORT int  setjmp (jmp_buf);
 __CCAPRICE_EXPORT void longjmp(jmp_buf, int);

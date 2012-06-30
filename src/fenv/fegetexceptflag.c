@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/fenv.h"
+#include <fenv.h>
 
 int fegetexceptflag(fexcept_t *f, int m) {
     *f = fetestexcept(m);

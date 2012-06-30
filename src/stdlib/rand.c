@@ -20,10 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/ccaprice.h"
+#include <ccaprice.h>
 #if defined(__STDLIB_RANDOM_OPTIMAL)
 #    if defined(__STDLIB_RANDOM_OPTIMAL_SSE2)
-#        include "int/emmintrin.h"
+#        include <emmintrin.h>
 #        define __CCAPRICE_STDLIB_RANDOM_SSE_STAIRS1 0x00
 #        define __CCAPRICE_STDLIB_RANDOM_SSE_STAIRS2 0x01
 #        define __CCAPRICE_STDLIB_RANDOM_SSE_SHUFFLE _MM_SHUFFLE(2,3,0,1)

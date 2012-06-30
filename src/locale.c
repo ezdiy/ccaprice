@@ -20,9 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/locale.h"
-#include "inc/string.h"
-#include "inc/stdlib.h"
+#include <locale.h>
+#include <string.h>
+#include <stdlib.h>
 void              *__ccaprice_localep;                      /* Void version of above   */
 ccaprice_locale_t *ccaprice_localec;                        /* Current Selected Locale */
 size_t             ccaprice_locales = 0;                    /* Location in locales     */

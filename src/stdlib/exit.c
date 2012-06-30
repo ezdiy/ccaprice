@@ -20,10 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdlib.h"
-#include "inc/signal.h"
-#include "inc/stdio.h"
-#include "crt/runtime.h"
+#include <stdlib.h>
+#include <signal.h>
+#include <stdio.h>
+#include "crt/runtime.h" /* TODO: fix! fix! fix! */
 /* this is nasty ... */
 FILE *__ccaprice_o_dat = ((void*)0);
 FILE *__ccaprice_i_dat = ((void*)0);

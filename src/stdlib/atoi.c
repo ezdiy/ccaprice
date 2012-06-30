@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdlib.h"
-#include "inc/string.h"
+#include <stdlib.h>
+#include <string.h>
 
 int atoi(const char *s) {
     int                valueto = 0;

@@ -20,8 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "inc/stdio.h"
-#include "inc/errno.h"
+#include <stdio.h>
 int fputc(int c, FILE *fp) {
     if (!fp) {
         return EOF;
