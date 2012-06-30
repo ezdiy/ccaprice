@@ -134,8 +134,8 @@ ifneq (,$(findstring BSD,$(shell uname -s)))
 	LARCH_X86_32  = elf_i386_fbsd
 	LARCH_X86_64  = elf_x86_64_fbsd
 	OS            = BSD
-	SYSDIR_X86_32 = sys/x86_32/freebsd/
-	SYSDIR_X86_64 = sys/x86_64/freebsd/
+	SYSDIR_X86_32 = sys/x86_32/
+	SYSDIR_X86_64 = sys/x86_64/
 	LFLAGS        =
 	OUT           = ccaprice.a
 else
@@ -153,8 +153,8 @@ ifneq (,$(findstring Linux,$(shell uname -s)))
 	LARCH_X86_32  = elf_i386
 	LARCH_X86_64  = elf_x86_64
 	OS            = LINUX
-	SYSDIR_X86_32 = sys/x86_32/linux/
-	SYSDIR_X86_64 = sys/x86_64/linux/
+	SYSDIR_X86_32 = sys/x86_32/
+	SYSDIR_X86_64 = sys/x86_64/
 	LFLAGS        =
 	OUT           = ccaprice.a
 endif

@@ -45,10 +45,6 @@ sys/                This is where all system specific headers go, and os specifi
                 
 sys/x86_64          All x86_64 specific headers here
 sys/x86_32          All x86_32 specific hraders here
-sys/x86_64/linux    All linux-x86_64 specific headers here
-sys/x86_64/freebsd  All freebsd-x86_64 specific headers here
-sys/x86_32/linux    All linux-x86_32 specific headers here
-sys/x86_32/freebsd  All freebsd-x86_32 specific headers here
 
 [RUNTIME]
 crt/                This contains the runtime stuff for _start for the architecture
