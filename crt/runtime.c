@@ -20,38 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "runtime.h"
-#include "inc/stdarg.h"
-#include "inc/stdio.h"
-#include "inc/string.h"
-#include "inc/locale.h"
+#include <bits/syscall.h>
+#include "runtime.h" /* TODO: fix! fix! fix! */
+#include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
+#include <locale.h>
 
-/* In [arch].S */
-__CCAPRICE_INTERNAL_FUNC(uintptr_t, __ccaprice_syscall_core, (int, ...));
-
-/* ENVIROMENT */
-char **__ccaprice_enviroment;
-
-/* TODO: fix fix fix fix! */
-#if defined(__CCAPRICE_TARGET_X86_32)
-int __ccaprice_syscall_error() {
-    register int no __asm__("%edx");
-    __asm__ __volatile__ (
-        "mov  %eax, %edx\n\t"
-        "negl %edx      \n\t"
-    );
-    return no;
-}
-#elif defined(__CCAPRICE_TARGET_X86_64)
-int __ccaprice_syscall_error() {
-    register int no __asm__("%rcx");
-    __asm__ __volatile__ (
-        "mov %rax, %rcx\n\t"
-        "neg %rcx      \n\t"
-    );
-    return no;
-}
-#endif
+/*
+ * These are global: TODO: guard for thread safe support in C11
+ * I really dislike errno since in ANSI C it can only be two values
+ */
+char **__ccaprice_enviroment = NULL;
+int   *__ccaprice_errno      = NULL;
 
 #define ISTR1(C) ISTR2(C)
 #define ISTR2(C) #C
@@ -62,60 +43,85 @@ int __ccaprice_syscall_error() {
 #undef ISTR1
 #undef ISTR2
 
+/*
+ * This can be extended when more OS's are actually supported.  I think this
+ * would do much better as a build step somehow so this doesn't need to be
+ * modified on each new supported OS.
+ */
 #if defined(BSD)
     const char *__ccaprice_build_host __CCAPRICE_USED = "BSD";
 #elif defined(LINUX)
     const char *__ccaprice_build_host __CCAPRICE_USED = "LINUX";
-#elif defined(WIN)
-    const char *__ccaprice_build_host __CCAPRICE_USED = "WIN";
 #endif
 
-int *__ccaprice_errno = NULL;
 void __ccaprice_main(int argc, char **argv) {
     __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_locale_init, ());
-    __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_init, ());
-    __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_exit, (int));
-    __CCAPRICE_INTERNAL_FUNC(int, main, (int, char **, char **));
-
-    /* TODO: fix fix fix!! */
-    int function_only_errno;
-    __ccaprice_errno = &function_only_errno;
+    __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_init,        ());
+    __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_exit,     (int));
     
+    /*
+     * It's assumed an int main exists.  This will throw an undefined
+     * error on link anyways if not present which we want.
+     */
+    __CCAPRICE_INTERNAL_FUNC (
+        /* 
+         * The standard states we must always return integer.  The waiting
+         * process needs a return status value.  The problem is a char will
+         * work equally as well.  Since main is invoked via exit(main(...))
+         * which will truncate the return status integer to the least 8
+         * significant bits [intval & 0377].  We could very well use a char
+         * to save on the bitand.  But that would break the rules of the
+         * standard.  Lets provide it as an extension.
+         */
+        #ifdef __CCAPRICE_MAIN_RETURN_CHAR
+            char,
+        #else
+            int,
+        #endif
+        main,
+        (   int,     /* argc */
+            char **, /* argv */
+            char **  /* argp */
+        )
+    );
+
+    int arno;
+    __ccaprice_errno      = &arno;
     __ccaprice_enviroment = &argv[argc+1];
     __ccaprice_locale_init();
     __ccaprice_init();
-    __ccaprice_exit(main(argc, argv, __ccaprice_enviroment));
+    __ccaprice_exit (
+        main (
+            argc,
+            argv,
+            
+            /*
+             * Also known as argp on unix platforms.  We provide it because
+             * we want to.  The standard doesn't care about this.
+             * 
+             * It's just a general assumption that at &argv[arc+1] is the
+             * address of enviroment variables.
+             */
+            __ccaprice_enviroment
+        )
+    );
 }
 
 /*
- * SYSCALL0 doesn't return
- * SYSCALL1 does    return
+ * There is only a required 10 system calls to implement the entire functionality
+ * of the standard library.  We assume all systems have these.  We also assume
+ * the way at invoking them is by syscall which is why there is a syscall template
+ * to easily implement the functionality to call the kernel.  We use the SYS_*
+ * identifers for syscall numbers (implemented in sys/bits).
  */
-#if !defined(WIN)
-#    define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST {        (TYPE)__ccaprice_syscall_core CORE; }
-#    define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)__ccaprice_syscall_core CORE; }
-#else
-#    define SYSCALL0(TYPE, NAME, LIST, CORE) TYPE NAME LIST { }
-#    define SYSCALL1(TYPE, NAME, LIST, CORE) TYPE NAME LIST { return (TYPE)0; }
-#endif
-
-SYSCALL1(ssize_t,write, (int f,const void *b,size_t c),(SYS_write,f,b,c))
-SYSCALL1(ssize_t,read,  (int f,void *b,size_t c),      (SYS_read, f,b,c))
-SYSCALL1(int,    open,  (const char *f,int b),         (SYS_open, f,b,0777))
-SYSCALL1(int,    kill,  (pid_t f,int b),               (SYS_kill, f,b))
-SYSCALL1(int,    unlink,(const char *f),               (SYS_unlink,f))
-SYSCALL1(int,    ioctl, (int f, int b, void *c),       (SYS_ioctl,f,b,c))
-SYSCALL1(int,    close, (int f),                       (SYS_close,f))
-SYSCALL0(void,  _exit,  (int f),                       (SYS_exit, f))
-SYSCALL1(pid_t,  getpid,(),                            (SYS_getpid))
-
-#ifndef SYS_mmap2
-    SYSCALL1(void*,  mmap,  (void *f,size_t b,int c,int d,int e, off_t q),(SYS_mmap, f, b, c, d, e, q))
-#else
-    SYSCALL1(void*,  mmap,  (void *f,size_t b,int c,int d,int e, off_t q),(SYS_mmap2, (long)f, b, c, d, e, q>>12))
-#endif
-
-SYSCALL1(int,    munmap,(void *f,size_t b),(SYS_munmap, f, b))
-
-#undef SYSCALL0
-#undef SYSCALL1
+__SYS_WRITE  { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_write,  3); }
+__SYS_READ   { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_read,   3); }
+__SYS_OPEN   { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_open,   2); }
+__SYS_KILL   { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_kill,   2); }
+__SYS_UNLINK { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_unlink, 1); }
+__SYS_IOCTL  { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_ioctl,  3); }
+__SYS_CLOSE  { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_close,  1); }
+__SYS_EXIT   { __SYSCALL_PERFORM(__SYSCALL_NORETURN,       SYS_exit,   1); }
+__SYS_GETPID { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_getpid, 0); }
+__SYS_MMAP   { __SYSCALL_PERFORM(__SYSCALL_DORETURN(void*),SYS_mmap,   6); }
+__SYS_MUNMAP { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_munmap, 2); }

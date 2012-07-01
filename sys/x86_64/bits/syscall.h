@@ -20,8 +20,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_SYS_SYSCALL_HDR
-#define __CCAPRICE_SYS_SYSCALL_HDR
+
+/*
+ * Implements the system call functions scall[*] via magic look at
+ * runtime.h for more information
+ */
+#define __CCAPRICE_SYSCALL_TEMPLATE
+#   define SYSCALL_LST_0                "a" (A0)
+#   define SYSCALL_LST_1 SYSCALL_LST_0, "D" (A1)
+#   define SYSCALL_LST_2 SYSCALL_LST_1, "S" (A2)
+#   define SYSCALL_LST_3 SYSCALL_LST_2, "d" (A3)
+#   define SYSCALL_LST_4 SYSCALL_LST_3, "r" (R0)
+#   define SYSCALL_LST_5 SYSCALL_LST_4, "r" (R1)
+#   define SYSCALL_LST_6 SYSCALL_LST_5, "r" (R2)
+#   define SYSCALL_EXP_4                register SYSCALL_TYPE R0 __asm__("r10") = A4;
+#   define SYSCALL_EXP_5 SYSCALL_EXP_4  register SYSCALL_TYPE R1 __asm__("r8")  = A5;
+#   define SYSCALL_EXP_6 SYSCALL_EXP_5  register SYSCALL_TYPE R2 __asm__("r9")  = A6;
+#   define SYSCALL_RETURN               "=a"
+#   define SYSCALL_CLOBBERS             "rcx", "r11", "memory"
+#   define SYSCALL_CALL                 "syscall"
+#   include "../../../crt/runtime.h"
+#undef __CCAPRICE_SYSCALL_TEMPLATE
+
 #   define  SYS_read                    0
 #   define  SYS_write                   1
 #   define  SYS_open                    2
@@ -325,4 +345,3 @@
 #   define  SYS_fanotify_init           300
 #   define  SYS_fanotify_mark           301
 #   define  SYS_prlimit64               302
-#endif

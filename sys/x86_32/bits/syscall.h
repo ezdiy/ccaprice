@@ -20,8 +20,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_SYS_SYSCALL_HDR
-#define __CCAPRICE_SYS_SYSCALL_HDR
+
+/*
+ * Implements the system call functions scall[*] via magic look at
+ * runtime.h for more information
+ */
+#define __CCAPRICE_SYSCALL_TEMPLATE
+#   define SYSCALL_LST_0                "a" (A0)
+#   define SYSCALL_LST_1 SYSCALL_LST_0, "b" (A1)
+#   define SYSCALL_LST_2 SYSCALL_LST_1, "c" (A2)
+#   define SYSCALL_LST_3 SYSCALL_LST_2, "d" (A3)
+#   define SYSCALL_LST_4 SYSCALL_LST_3, "S" (A4)
+#   define SYSCALL_LST_5 SYSCALL_LST_4, "D" (A5)
+#   define SYSCALL_LST_6 SYSCALL_LST_5, "g" (A6)
+#   define SYSCALL_BEFORE               \
+        "pushl %7            \n\t"      \
+        "pushl %%ebp         \n\t"      \
+        "mov 4(%%esp), %%ebp \n\t"
+#   define SYSCALL_AFTER                \
+        "popl  %%ebp         \n\t"      \
+        "popl  %%ecx         \n\t"
+#   define SYSCALL_RETURN               "=a"
+#   define SYSCALL_CLOBBERS             "memory"
+#   define SYSCALL_CALL                 "int $128"
+#   include "../../../crt/runtime.h"
+#undef __CCAPRICE_SYSCALL_TEMPLATE
+
 #   define  SYS_exit                    1
 #   define  SYS_fork                    2
 #   define  SYS_read                    3
@@ -354,4 +378,3 @@
 #   define  SYS_preadv                  333
 #   define  SYS_pwritev                 334
 #   define  SYS_prlimit64               340
-#endif

@@ -20,29 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#if defined(MAC)
-#    define ENTRY start
-#elif defined(WIN)
-#    define ENTRY __main
-#else
-#    define ENTRY _start
-#endif
-
 .text
-.global __ccaprice_syscall_core
 .global __ccaprice_main
 .global __udivdi3
 .global __umoddi3
-.global ENTRY
-#ifdef BSD
-.global __ccaprice_syscall_bsd
-#ifndef __PATHCC__
-.type   __ccaprice_syscall_bsd,%function
-#endif
-#endif
-#if !defined(__PATHCC__) && !defined(WIN)
-.type   __ccaprice_syscall_core,%function
-.type   ENTRY,%function
+.global _start
+
+#if !defined(__PATHCC__) 
+.type   _start,  %function
 .type   __udivdi3,%function
 .type   __umoddi3,%function
 #endif
@@ -193,7 +178,7 @@ __umoddi3:
     xorl   %edx,       %edx
     retl
 
-ENTRY:
+_start:
     xorl  %ebp,        %ebp
     popl  %esi
     movl  %esp,        %ecx
@@ -203,52 +188,6 @@ ENTRY:
     call  __ccaprice_main
     hlt
 
-#ifdef BSD
-__ccaprice_syscall_bsd:
-    int $0x80
-    ret
-#endif
-
-__ccaprice_syscall_core:
-    pushl %ebp
-    pushl %edi
-    pushl %esi
-    pushl %ebx
-
-    movl 44(%esp),%ebp
-    movl 40(%esp),%edi
-    movl 36(%esp),%esi
-    movl 32(%esp),%edx
-    movl 28(%esp),%ecx
-    movl 24(%esp),%ebx
-    movl 20(%esp),%eax
-    #ifdef BSD
-        pushl $0x00
-        pushl %ebp
-        pushl %edi
-        pushl %esi
-        pushl %edx
-        pushl %ecx
-        pushl %ebx
-        call __ccaprice_syscall_bsd
-        addl $28, %esp
-    #else
-        int $0x80
-    #endif
-
-    popl %ebx
-    popl %esi
-    popl %edi
-    popl %ebp
-    cmpl $-4095,%eax
-    jae  __ccaprice_syscall_error
-    ret
-
-#ifdef BSD
-.size __ccaprice_syscall_bsd,.-__ccaprice_syscall_bsd
-#elif !defined(WIN)
-.size __ccaprice_syscall_core,.-__ccaprice_syscall_core
-.size ENTRY,.-ENTRY
+.size _start  ,.-_start
 .size __udivdi3,.-__udivdi3
 .size __umoddi3,.-__umoddi3
-#endif
