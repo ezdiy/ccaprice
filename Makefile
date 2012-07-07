@@ -76,10 +76,15 @@ SRC     = src/assert.c                   \
           src/string/strstr.c            \
           src/string/strtok.c            \
           src/stdlib/abort.c             \
+          src/stdlib/abs.c               \
           src/stdlib/atoi.c              \
+          src/stdlib/atol.c              \
+          src/stdlib/atoll.c             \
           src/stdlib/bsearch.c           \
           src/stdlib/exit.c              \
           src/stdlib/getenv.c            \
+          src/stdlib/labs.c              \
+          src/stdlib/llabs.c             \
           src/stdlib/malloc.c            \
           src/stdlib/puts.c              \
           src/stdlib/qsort.c             \

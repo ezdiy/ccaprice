@@ -34,42 +34,69 @@
 #define EXIT_FAILURE (0xFF)
 #define CHAR_BIT      8
 
-#define __CCAPRICE_SIGNEXTEND(V) \
-    union {                      \
-        int32_t W;               \
-        struct {                 \
-            int16_t L;           \
-            int16_t H;           \
-        } S;                     \
+#define __CCAPRICE_SIGNEXTEND(V)  \
+    union {                       \
+        int32_t W;                \
+        struct {                  \
+            int16_t L;            \
+            int16_t H;            \
+        } S;                      \
     } signext = { V }
 
+/*
+ * Used to implement atoi, atol, atoll
+ */
+#define __CCAPRICE_STR2NUMERIC(T,S) \
+    T   r=0;                        \
+    int n=0;                        \
+    while (isspace(*S)) {           \
+        S++;                        \
+    }                               \
+    switch (*S) {                   \
+        case '-': n=1;              \
+        case '+': S++;              \
+    }                               \
+    while (isdigit(*S)) {           \
+        r = r * 10 - (*S++-'0');    \
+    }                               \
+    return n?r:-r
+    
+/*
+ * Used to implement abs, labs, llabs
+ */
+#define __CCAPRICE_ABS(T, S)        \
+    return (T)((S>0)?S:-S)
+
 #ifdef __CCAPRICE_EXTENSIONS
-# define MIN(X,Y) ({              \
+# define MIN(X,Y) ({                \
     __CCAPRICE_SIGNEXTEND((X)-(Y)); \
     ((Y)+(((X)-(Y))& signext.S.H)); \
 })
-# define MAX(X,Y) ({              \
+# define MAX(X,Y) ({                \
     __CCAPRICE_SIGNEXTEND((Y)-(X)); \
     ((X)+(((Y)-(X))&~signext.S.H)); \
 })
 #endif
 
-__CCAPRICE_EXPORT void  atexit (void (*)());
-__CCAPRICE_EXPORT void  exit   (int);
-__CCAPRICE_EXPORT void  abort  ();
-__CCAPRICE_EXPORT int   raise  (int);
-__CCAPRICE_EXPORT char* getenv (const char *);
-__CCAPRICE_EXPORT void  qsort  (void *, size_t, size_t, int (*)(const void *, const void *));
-__CCAPRICE_EXPORT void *bsearch(const void *, const void *, size_t, size_t, int(*)(const void *, const void *));
-
-/* dynamic memory managment stuff */
-__CCAPRICE_EXPORT void *malloc (size_t);
-__CCAPRICE_EXPORT void *calloc (size_t, size_t);
-__CCAPRICE_EXPORT void  free   (void*);
-__CCAPRICE_EXPORT void *realloc(void *, size_t);
-
-/* rand / srand */
-__CCAPRICE_EXPORT void  srand(unsigned int);
-__CCAPRICE_EXPORT int   rand();
+__CCAPRICE_EXPORT void      abort  ();
+__CCAPRICE_EXPORT int       abs    (int);
+__CCAPRICE_EXPORT int       atoi   (const char *);
+__CCAPRICE_EXPORT long      atol   (const char *);
+__CCAPRICE_EXPORT long long atoll  (const char *);
+__CCAPRICE_EXPORT void     *bsearch(const void *, const void *, size_t, size_t, int(*)(const void *, const void *));
+__CCAPRICE_EXPORT void      exit   (int);
+__CCAPRICE_EXPORT void      atexit (void (*)());
+__CCAPRICE_EXPORT int       raise  (int);
+__CCAPRICE_EXPORT char     *getenv (const char *);
+__CCAPRICE_EXPORT long      labs   (long);
+__CCAPRICE_EXPORT long long llabs  (long long);
+__CCAPRICE_EXPORT void     *malloc (size_t);
+__CCAPRICE_EXPORT void     *calloc (size_t, size_t);
+__CCAPRICE_EXPORT void      free   (void*);
+__CCAPRICE_EXPORT void     *realloc(void *, size_t);
+__CCAPRICE_EXPORT int       puts   (const char *);
+__CCAPRICE_EXPORT void      qsort  (void *, size_t, size_t, int (*)(const void *, const void *));
+__CCAPRICE_EXPORT void      srand  (unsigned int);
+__CCAPRICE_EXPORT int       rand   ();
 
 #endif

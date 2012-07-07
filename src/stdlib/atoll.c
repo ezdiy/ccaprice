@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- *  Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -20,18 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_NORETURN_HDR__
-#define __CCAPRICE_NORETURN_HDR__
-#ifndef __cplusplus
-/*
- * This is a working implementation of noreturn.  For C11, this should
- * work on all GCC, and GCC-like compilers.
- */
-#ifndef noreturn
-#   ifndef _Noreturn
-#       define _Noreturn __attribute__ ((__noreturn__))
-#   endif
-#   define noreturn _Noreturn
-#endif /* ifndef noreturn                  */
-#endif /* ifndef __cplusplus               */
-#endif /* idndef __CCAPRICE_NORETURN_HDR__ */
+#include <stdlib.h>
+#include <ctype.h>
+long long atoll(const char *s) { __CCAPRICE_STR2NUMERIC(long long, s); }

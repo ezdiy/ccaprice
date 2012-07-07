@@ -166,10 +166,15 @@ stdlib.h:
     MIN    () [extension/branchless]
     MAX    () [extension/branchless]
     abort  ()
+    abs    ()
     atoi   ()
+    atol   ()
+    atoll  ()
     bsearch()
     exit   ()
     getenv ()
+    labs   ()
+    llabs  ()
     malloc ()
     calloc ()
     realloc()

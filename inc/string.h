@@ -55,6 +55,7 @@ __CCAPRICE_EXPORT size_t  strspn (const char*, const char*);
 __CCAPRICE_EXPORT char   *strtok (char *, const char*);
 
 /* Others */
+__CCAPRICE_EXPORT char   *strdup  (const char*);
 __CCAPRICE_EXPORT char   *strerror(int);
 __CCAPRICE_EXPORT void   *memset  (void *, int, register size_t);
 __CCAPRICE_EXPORT size_t  strlen  (const char*);
