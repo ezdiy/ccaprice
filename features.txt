@@ -171,10 +171,13 @@ stdlib.h:
     atol   ()
     atoll  ()
     bsearch()
+    div    ()
     exit   ()
     getenv ()
     labs   ()
+    ldiv   ()
     llabs  ()
+    lldiv  ()
     malloc ()
     calloc ()
     realloc()
@@ -183,6 +186,9 @@ stdlib.h:
     rand   () [SSE2/naive]
     qsort  () [OPT/native]
     srand  () [SSE2/naive]
+    div_t
+    ldiv_t
+    lldiv_t
     
 string.h:
     memchr  () [SSE2/naive]

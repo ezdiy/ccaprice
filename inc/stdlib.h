@@ -66,6 +66,13 @@
  */
 #define __CCAPRICE_ABS(T, S)        \
     return (T)((S>0)?S:-S)
+    
+    
+/*
+ * Used to implement div, ldiv, lldiv
+ */
+#define __CCAPRICE_DIV(T, S1, S2)   \
+    return (T){S1/S2, S1%S2}
 
 #ifdef __CCAPRICE_EXTENSIONS
 # define MIN(X,Y) ({                \
@@ -78,18 +85,30 @@
 })
 #endif
 
+/*
+ * I wonder if C++ has any template specialized versions of these
+ * like div<T>.  If it does these will need to be __cplusplus protected
+ * for sanity reasons.
+ */
+typedef struct { int       quot, rem; } div_t;
+typedef struct { long      quot, rem; } ldiv_t;
+typedef struct { long long quot, rem; } lldiv_t;
+
 __CCAPRICE_EXPORT void      abort  ();
 __CCAPRICE_EXPORT int       abs    (int);
 __CCAPRICE_EXPORT int       atoi   (const char *);
 __CCAPRICE_EXPORT long      atol   (const char *);
 __CCAPRICE_EXPORT long long atoll  (const char *);
 __CCAPRICE_EXPORT void     *bsearch(const void *, const void *, size_t, size_t, int(*)(const void *, const void *));
+__CCAPRICE_EXPORT div_t     div    (int, int);
 __CCAPRICE_EXPORT void      exit   (int);
 __CCAPRICE_EXPORT void      atexit (void (*)());
 __CCAPRICE_EXPORT int       raise  (int);
 __CCAPRICE_EXPORT char     *getenv (const char *);
 __CCAPRICE_EXPORT long      labs   (long);
+__CCAPRICE_EXPORT ldiv_t    ldiv   (long, long);
 __CCAPRICE_EXPORT long long llabs  (long long);
+__CCAPRICE_EXPORT lldiv_t   lldiv  (long long, long long);
 __CCAPRICE_EXPORT void     *malloc (size_t);
 __CCAPRICE_EXPORT void     *calloc (size_t, size_t);
 __CCAPRICE_EXPORT void      free   (void*);

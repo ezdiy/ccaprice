@@ -81,10 +81,13 @@ SRC     = src/assert.c                   \
           src/stdlib/atol.c              \
           src/stdlib/atoll.c             \
           src/stdlib/bsearch.c           \
+          src/stdlib/div.c               \
           src/stdlib/exit.c              \
           src/stdlib/getenv.c            \
           src/stdlib/labs.c              \
+          src/stdlib/ldiv.c              \
           src/stdlib/llabs.c             \
+          src/stdlib/lldiv.c             \
           src/stdlib/malloc.c            \
           src/stdlib/puts.c              \
           src/stdlib/qsort.c             \
