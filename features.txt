@@ -130,7 +130,16 @@ locale.h:
     localeconv() [LOCALE SUPPORT]
     
 signal.h:
+    SIGABRT
+    SIGILL
+    SIGSEGV
+    SIGFPE
+    SIGINT
+    IGTERM
+    SIG_DFL
+    SIG_IGN 
     raise()
+    sig_atomic_t
     
 stdarg.h:
     va_list

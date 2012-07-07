@@ -39,6 +39,12 @@
  * To properly select the right signum we compose an array which when
  * indexed by one of these will select the right signum for it.
  */
+ 
+/*
+ * Integers are literally atomic always for literally every CPU in
+ * existance.
+ */
+typedef int sig_atomic_t;
 
 #define SIGABRT 0 /*__ccaprice_signal_selector[0]*/
 #define SIGILL  1 /*__ccaprice_signal_selector[1]*/
