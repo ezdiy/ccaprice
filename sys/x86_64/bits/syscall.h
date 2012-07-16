@@ -21,26 +21,68 @@
  * SOFTWARE.
  */
 
-/*
- * Implements the system call functions scall[*] via magic look at
- * runtime.h for more information
- */
-#define __CCAPRICE_SYSCALL_TEMPLATE
-#   define SYSCALL_LST_0                "a" (A0)
-#   define SYSCALL_LST_1 SYSCALL_LST_0, "D" (A1)
-#   define SYSCALL_LST_2 SYSCALL_LST_1, "S" (A2)
-#   define SYSCALL_LST_3 SYSCALL_LST_2, "d" (A3)
-#   define SYSCALL_LST_4 SYSCALL_LST_3, "r" (R0)
-#   define SYSCALL_LST_5 SYSCALL_LST_4, "r" (R1)
-#   define SYSCALL_LST_6 SYSCALL_LST_5, "r" (R2)
-#   define SYSCALL_EXP_4                register SYSCALL_TYPE R0 __asm__("r10") = A4;
-#   define SYSCALL_EXP_5 SYSCALL_EXP_4  register SYSCALL_TYPE R1 __asm__("r8")  = A5;
-#   define SYSCALL_EXP_6 SYSCALL_EXP_5  register SYSCALL_TYPE R2 __asm__("r9")  = A6;
-#   define SYSCALL_RETURN               "=a"
-#   define SYSCALL_CLOBBERS             "rcx", "r11", "memory"
-#   define SYSCALL_CALL                 "syscall"
-#   include "../../../crt/runtime.h"
-#undef __CCAPRICE_SYSCALL_TEMPLATE
+static inline long __ccaprice_syscall_args_0(long A0) {
+    unsigned long R;
+    __asm__ __volatile__(
+        "syscall" : "=a"(R) : "a"(A0) :
+            "rcx", "r11", "memory"
+    );
+    return R;
+}
+static inline long __ccaprice_syscall_args_1(long A0, long A1) {
+    unsigned long R;
+    __asm__ __volatile__(
+        "syscall" : "=a"(R) : "a"(A0), "D"(A1) :
+            "rcx", "r11", "memory"
+    );
+    return R;
+}
+static inline long __ccaprice_syscall_args_2(long A0, long A1, long A2) {
+    unsigned long R;
+    __asm__ __volatile__(
+        "syscall" : "=a"(R) : "a"(A0), "D"(A1), "S"(A2) :
+            "rcx", "r11", "memory"
+    );
+    return R;
+}
+static inline long __ccaprice_syscall_args_3(long A0, long A1, long A2, long A3) {
+    unsigned long R;
+    __asm__ __volatile__(
+        "syscall" : "=a"(R) : "a"(A0), "D"(A1), "S"(A2), "d"(A3) :
+            "rcx", "r11", "memory"
+    );
+    return R;
+}
+static inline long __ccaprice_syscall_args_4(long A0, long A1, long A2, long A3, long A4) {
+    unsigned long R;
+    register long R10 __asm__("r10") = A4;
+    __asm__ __volatile__(
+        "syscall" : "=a"(R) : "a"(A0), "D"(A1), "S"(A2), "d"(A3), "r"(R10) :
+            "rcx", "r11", "memory"
+    );
+    return R;
+}
+static inline long __ccaprice_syscall_args_5(long A0, long A1, long A2, long A3, long A4, long A5) {
+    unsigned long R;
+    register long R10 __asm__("r10") = A4;
+    register long R08 __asm__("r8")  = A5;
+    __asm__ __volatile__(
+        "syscall": "=a"(R) : "a"(A0), "D"(A1), "S"(A2), "d"(A3), "r"(R10), "r"(R08) :
+            "rcx", "r11", "memory"
+    );
+    return R;
+}
+static inline long __ccaprice_syscall_args_6(long A0, long A1, long A2, long A3, long A4, long A5, long A6) {
+    unsigned long R;
+    register long R10 __asm__("r10") = A4;
+    register long R08 __asm__("r8")  = A5;
+    register long R09 __asm__("r9")  = A6;
+    __asm__ __volatile__(
+        "syscall" : "=a"(R) :"a"(A0), "D"(A1), "S"(A2), "d"(A3), "r"(R10), "r"(R08), "r"(R09) :
+            "rcx", "r11", "memory"
+    );
+    return R;
+}
 
 #   define  SYS_read                    0
 #   define  SYS_write                   1

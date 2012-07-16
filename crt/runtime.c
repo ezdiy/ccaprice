@@ -20,7 +20,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include <bits/syscall.h>
 #include "runtime.h" /* TODO: fix! fix! fix! */
 #include <stdarg.h>
 #include <stdio.h>
