@@ -133,6 +133,9 @@ ASM32  =  crt/x86_32.S                   \
           src/math/x86_32/log10.S        \
           src/math/x86_32/sqrt.S
           
+ASMARM =  crt/arm.S                      \
+          src/setjmp/jmp_arm.S
+          
 
 # figure out host OS
 # figure out linker architecture and bash shell
@@ -141,6 +144,7 @@ ifneq (,$(findstring BSD,$(shell uname -s)))
 	SHELL         = /usr/local/bin/bash
 	LARCH_X86_32  = elf_i386_fbsd
 	LARCH_X86_64  = elf_x86_64_fbsd
+	LARCH_ARM     = earmelf_fbsd
 	OS            = BSD
 	SYSDIR_X86_32 = sys/x86_32/
 	SYSDIR_X86_64 = sys/x86_64/
@@ -152,6 +156,7 @@ ifneq (,$(findstring Windows,$(shell uname -s)))
 	# it most likely doesn't support colors.
 	LARCH_X86_32  = i386pe
 	LARCH_X86_64  = x86_64pe
+	LARCH_ARM     = armpe
 	OS            = WIN
 	LFLAGS        = -luser32 -lkernel32
 	OUT           = ccaprice.lib
@@ -160,6 +165,7 @@ ifneq (,$(findstring Linux,$(shell uname -s)))
 	SHELL         = /bin/bash
 	LARCH_X86_32  = elf_i386
 	LARCH_X86_64  = elf_x86_64
+	LARCH_ARM     = armelf_linux_eabi
 	OS            = LINUX
 	SYSDIR_X86_32 = sys/x86_32/
 	SYSDIR_X86_64 = sys/x86_64/
@@ -218,6 +224,13 @@ ifeq (, $(TARGET))
 		LFLAGS += -m$(LARCH_X86_32)
 		AFLAGS  = -m32
 		ASM     = $(ASM32)
+	else
+	ifneq (,$(findstring arm, $(shell uname -m)))
+		TARGET  = arm
+		CFLAGS += -D__CCAPRICE_TARGET_ARM -I(SYSDIR_ARM)
+		LFLAGS += -m$(LARCH_ARM)
+		ASM     = $(ASMARM)
+	endif
 	endif
 	endif
 	endif
@@ -274,6 +287,13 @@ ifeq (i686, $(TARGET))
 	LFLAGS += -m$(LARCH_X86_32)
 	AFLAGS  = -m32
 	ASM     = $(ASM32)
+else
+ifeq (arm, $(TARGET))
+	TARGET  = arm
+	CFLAGS += -D__CCAPRICE_TARGET_ARM -I$(SYSDIR_ARM)
+	LFLAGS += -m$(LARCH_ARM)
+	ASM     = $(ASMARM)
+endif
 endif
 endif
 endif

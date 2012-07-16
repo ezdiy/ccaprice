@@ -33,7 +33,8 @@
     defined(__amd64)       || \
     defined(__x86_64__)    || \
     defined(__x86_64)      || \
-    defined(_M_X64)
+    defined(_M_X64)        || \
+    defined(_M_AMD64)
  #define __CCAPRICE_TARGET_X86_64
  #define __CCAPRICE_SUPPORTED
 #if defined(i386)          || \
@@ -51,6 +52,14 @@
     defined(__INTEL__)
  #define __CCAPRICE_TARGET_X86_32
  #define __CCAPRICE_SUPPORTED
+#if defined(__arm__)             || \
+    defined(__thumb__)           || \
+    defined(__TARGET_ARCH_ARM)   || \
+    defined(__TARGET_ARCH_THUMB) || \
+    defined(_ARM)
+ #define __CCAPRICE_TARGET_ARM
+ #define __CCAPRICE_SUPPORTED
+#endif
 #endif
 #endif
 #endif
@@ -61,7 +70,8 @@
  */
 #if !defined(__CCAPRICE_SUPPORTED)     && \
     !defined(__CCAPRICE_TARGET_X86_64) && \
-    !defined(__CCAPRICE_TARGET_X86_32)
+    !defined(__CCAPRICE_TARGET_X86_32) && \
+    !defined(__CCAPRICE_TARGET_ARM)
 # error "[ccaprice] Target not supported"
 #endif
 
