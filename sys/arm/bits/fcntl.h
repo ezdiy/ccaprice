@@ -1,0 +1,56 @@
+/*
+ * Copyright (C) 2012
+ *  Dale Weiler
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+#ifndef __CCAPRICE_SYS_FCNTL_HDR
+#define __CCAPRICE_SYS_FCNTL_HDR
+#   define    O_CREAT      0100
+#   define    O_EXCL       0200
+#   define    O_NOCTTY     0400
+#   define    O_TRUNC      01000
+#   define    O_APPEND     02000
+#   define    O_NONBLOCK   04000
+#   define    O_DSYNC      010000
+#   define    O_SYNC       04010000
+#   define    O_RSYNC      04010000
+#   define    O_DIRECTORY  040000
+#   define    O_NOFOLLOW   0100000
+#   define    O_CLOEXEC    02000000
+#   define    O_ASYNC      020000
+#   define    O_DIRECT     0200000
+#   define    O_LARGEFILE  0400000
+#   define    O_NOATIME    01000000
+#   define    O_NDELAY     O_NONBLOCK
+#   define    F_DUPFD      0
+#   define    F_GETFD      1
+#   define    F_SETFD      2
+#   define    F_GETFL      3
+#   define    F_SETFL      4
+#   define    F_SETOWN     8
+#   define    F_GETOWN     9
+#   define    F_SETSIG     10
+#   define    F_GETSIG     11
+#   define    F_GETLK      12
+#   define    F_SETLK      13
+#   define    F_SETLKW     14
+#   define    F_SETOWN_EX  15
+#   define    F_GETOWN_EX  16
+#endif
