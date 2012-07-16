@@ -22,25 +22,10 @@
  */
 #include <stdio.h>
 
-__CCAPRICE_INTERNAL_TYPE(int * , __ccaprice_posix_errno);
 __CCAPRICE_INTERNAL_TYPE(size_t, __ccaprice_stdio_file_pos);
 __CCAPRICE_INTERNAL_TYPE(FILE  , __ccaprice_stdio_file_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN]);
-/*
- * fflush() is used to write out buffered data stuck in
- * the fp->buffer_dat.
- */
+
 int fflush(FILE *fp) {
-    /* If NULL is passed free all open files */
-    //if (!fp && !fp->self) {
-    //    while(--ccaprice_stdio_file_pos>0) {
-    //        /* Recursive call: SELF required to ensure EBADF */
-    //        ccaprice_stdio_file_dat[ccaprice_stdio_file_pos].self = 1;
-    //        fflush(&ccaprice_stdio_file_dat[ccaprice_stdio_file_pos]);
-    //    }
-    //} else if (!fp) {
-    //    errno = EBADF;
-    //    return EOF;
-    //}
 
     fwrite(fp->buffer_dat, fp->buffer_pos, 1, fp);
     fp->buffer_dat[0] = 0;

@@ -22,9 +22,8 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "crt/runtime.h" /* TODO: fix! fix! fix! */
 
-__CCAPRICE_INTERNAL_TYPE(int*, __ccaprice_posix_errno);
+__CCAPRICE_INTERNAL_FUNC(int, close, (int));
 int fclose(FILE *fp) {
     if (!fp) {
         return EOF;

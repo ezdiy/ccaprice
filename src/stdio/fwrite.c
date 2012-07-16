@@ -21,8 +21,8 @@
  * SOFTWARE.
  */
 #include <stdio.h>
-#include "crt/runtime.h" /* TODO: fix! fix! fix! */
 
+__CCAPRICE_INTERNAL_FUNC(int, write, (int, const void *, size_t));
 size_t fwrite(const void *p, size_t size, size_t count, FILE *fp) {
     /* TODO use fputc ... */
     size_t times = count;

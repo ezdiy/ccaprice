@@ -21,7 +21,8 @@
  * SOFTWARE.
  */
 #include <stdio.h>
-#include "crt/runtime.h" /* TODO: fix! fix! fix! */
+
+__CCAPRICE_INTERNAL_FUNC(int, unlink, (const char*));
 int remove(const char *filename) {
     return unlink(filename);
 }
