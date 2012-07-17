@@ -53,57 +53,39 @@ int   *__ccaprice_errno      = NULL;
     const char *__ccaprice_build_host __CCAPRICE_USED = "LINUX";
 #endif
 
-void __ccaprice_main(int argc, char **argv) {
+int __ccaprice_start (
+    int  (*main)(int, char **, char **), int argc, char **argv,
+    int  (*init)(int, char **, char **),
+    void (*fini)(void),
+    void (*lini)(void) /* for ldso */
+) {
     __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_locale_init, ());
     __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_init,        ());
     __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_exit,     (int));
     
-    /*
-     * It's assumed an int main exists.  This will throw an undefined
-     * error on link anyways if not present which we want.
-     */
-    __CCAPRICE_INTERNAL_FUNC (
-        /* 
-         * The standard states we must always return integer.  The waiting
-         * process needs a return status value.  The problem is a char will
-         * work equally as well.  Since main is invoked via exit(main(...))
-         * which will truncate the return status integer to the least 8
-         * significant bits [intval & 0377].  We could very well use a char
-         * to save on the bitand.  But that would break the rules of the
-         * standard.  Lets provide it as an extension.
-         */
-        #ifdef __CCAPRICE_MAIN_RETURN_CHAR
-            char,
-        #else
-            int,
-        #endif
-        main,
-        (   int,     /* argc */
-            char **, /* argv */
-            char **  /* argp */
-        )
-    );
-
     int arno;
     __ccaprice_errno      = &arno;
     __ccaprice_enviroment = &argv[argc+1];
     __ccaprice_locale_init();
     __ccaprice_init();
+    
+     /* static constructors */
+    if (init) {
+        init (
+            argc,
+            argv,
+            __ccaprice_enviroment /* &argv[argc+1] */
+        );
+    }
+        
     __ccaprice_exit (
         main (
             argc,
             argv,
-            
-            /*
-             * Also known as argp on unix platforms.  We provide it because
-             * we want to.  The standard doesn't care about this.
-             * 
-             * It's just a general assumption that at &argv[arc+1] is the
-             * address of enviroment variables.
-             */
-            __ccaprice_enviroment
+            __ccaprice_enviroment /* &argv[argc+1] */
         )
     );
+    return 0;
 }
 
 /*

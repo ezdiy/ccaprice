@@ -23,9 +23,6 @@
 #ifndef __CCAPRICE_CRT_ARM_ASM_HDR
 #define __CCAPRICE_CRT_ARM_ASM_HDR
 
-#define INTERNAL(X)       __##ccaprice_##X
-#define RESERVED(X)       _##X
-
 #define LOCAL_SYM(X)      L__##X
 #define LOCAL_LABEL(X)    LOCAL_SYM(X):
 

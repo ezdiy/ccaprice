@@ -107,7 +107,9 @@ SRC     = src/assert.c                   \
           src/fenv/fesetexceptflag.c     \
           src/fenv/feupdateenv.c
           
-ASM64  =  crt/x86_64.S                   \
+ASM64  =  crt/x86_64/crt1.S              \
+          crt/x86_64/crti.S              \
+          crt/x86_64/crtn.S              \
           src/fenv/fenv_x86_64.S         \
           src/setjmp/jmp_x86_64.S        \
           src/math/x86_64/acos.S         \
@@ -120,7 +122,11 @@ ASM64  =  crt/x86_64.S                   \
           src/math/x86_64/log10.S        \
           src/math/x86_64/sqrt.S
           
-ASM32  =  crt/x86_32.S                   \
+ASM32  =  crt/x86_32/crt1.S              \
+          crt/x86_32/crti.S              \
+          crt/x86_32/crtn.S              \
+          crt/x86_32/udivdi3.S           \
+          crt/x86_32/umoddi3.S           \
           src/fenv/fenv_x86_32.S         \
           src/setjmp/jmp_x86_32.S        \
           src/math/x86_32/acos.S         \
@@ -133,9 +139,11 @@ ASM32  =  crt/x86_32.S                   \
           src/math/x86_32/log10.S        \
           src/math/x86_32/sqrt.S
           
-ASMARM =  crt/arm/aeabi_uidiv.S          \
+ASMARM =  crt/arm/crt1.S                 \
+          crt/arm/crti.S                 \
+          crt/arm/crtn.S                 \
+          crt/arm/aeabi_uidiv.S          \
           crt/arm/aeabi_uidivmod.S       \
-          crt/arm/crt.S                  \
           crt/arm/syscall.S              \
           src/setjmp/jmp_arm.S
           

@@ -20,13 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "asm.h"
-.global INTERNAL(main)
-.global RESERVED(start)
-
-RESERVED(start):
-    /*
-     * TODO: Implement the startup routine in according to the spec
-     * this is rather tricky.
-     */
-    push {lr}
+.section .init
+    pop  {lr}
+    tst   lr, #1
+    moveq pc, lr
+    bx    lr
+    
+.section .fini
+    pop  {lr}
+    tst   lr, #1
+    moveq pc, lr
+    bx    lr

@@ -20,23 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.text
-.global __ccaprice_main
-.global _start
-
-#ifndef __PATHCC__
-.type   _start                ,%function
-#endif
-
-_start:
-    xorq %rbp,%rbp
-    popq %rsi
-    movq %rsi,%rdi
-    movq %rsp,%rsi
-    andq $~15,%rsp
-    pushq %rax
-    pushq %rsp
-    call __ccaprice_main
-    hlt
+.section .init
+.global  _init
+_init:
+    push {lr}
     
-.size _start                ,.-_start
+.section .fini
+.global  _fini
+_fini:
+    push {lr}

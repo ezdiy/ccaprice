@@ -20,18 +20,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global __ccaprice_syscall_arm
+.weak _init
+.weak _fini
 
-__ccaprice_syscall_arm:
-    mov   ip, sp
-    stmfd sp!,{r4,r5,r6,r7}
-    mov   r7, r0
-    mov   r0, r1
-    mov   r1, r2
-    mov   r2, r3
-    ldmfd ip, {r3,r4,r5,r6}
-    svc   0
-    ldmfd sp!,{r4,r5,r6,r7}
-    tst   lr, #1
-    moveq pc, lr
-    bx    lr
+.text
+.global _start
+
+_start:
+    xor  %ebp, %ebp
+    pop  %ecx
+    mov  %esp, %eax
+    and  $-16, %esp
+    push %esp
+    push %esp
+    push %edx
+    push $_fini
+    push $_init
+    push %eax
+    push %ecx
+    push $main
+    call __ccaprice_start
+1:  jmp  1b

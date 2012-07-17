@@ -20,18 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global __ccaprice_syscall_arm
+.section .init
+.global  _init
+_init: /* nothing */
 
-__ccaprice_syscall_arm:
-    mov   ip, sp
-    stmfd sp!,{r4,r5,r6,r7}
-    mov   r7, r0
-    mov   r0, r1
-    mov   r1, r2
-    mov   r2, r3
-    ldmfd ip, {r3,r4,r5,r6}
-    svc   0
-    ldmfd sp!,{r4,r5,r6,r7}
-    tst   lr, #1
-    moveq pc, lr
-    bx    lr
+.section .fini
+.global  _fini
+_fini: /* nothing */

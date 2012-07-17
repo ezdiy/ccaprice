@@ -20,19 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.text
-.global __ccaprice_main
 .global __udivdi3
-.global __umoddi3
-.global _start
-
-#if !defined(__PATHCC__) 
-.type   _start,  %function
-.type   __udivdi3,%function
-.type   __umoddi3,%function
-#endif
-
 .align 4
+
 __udivdi3:
     pushl  %ebx
     movl   20(%esp),   %ebx
@@ -102,92 +92,3 @@ __udivdi3:
     movl   %ebx,       %edx
     popl   %ebx
     retl
-
-__umoddi3:
-    pushl  %ebx
-    movl   20(%esp),   %ebx
-    bsrl   %ebx,       %ecx
-    jz     9f
-    movl   16(%esp),   %eax
-    shrl   %cl,        %eax
-    shrl   %eax
-    notl   %ecx
-    shll   %cl,        %ebx
-    orl    %eax,       %ebx
-    movl   12(%esp),   %edx
-    movl   8(%esp),    %eax
-    cmpl   %ebx,       %edx
-    jae    2f
-    divl   %ebx
-    pushl  %edi
-    notl   %ecx
-    shrl   %eax
-    shrl   %cl,        %eax
-    movl   %eax,       %edi
-    mull   20(%esp)
-    movl   12(%esp),   %ebx
-    movl   16(%esp),   %ecx
-    subl   %eax,       %ebx
-    sbbl   %edx,       %ecx
-    movl   24(%esp),   %eax
-    imull  %edi,       %eax
-    subl   %eax,       %ecx
-    jnc    1f
-    addl   20(%esp),   %ebx
-    adcl   24(%esp),   %ecx
-    1:movl %ebx,       %eax
-    movl   %ecx,       %edx
-    popl   %edi
-    popl   %ebx
-    retl
-2:
-    subl   %ebx,       %edx
-    divl   %ebx
-    pushl  %edi
-    notl   %ecx
-    shrl   %eax
-    orl    $0x80000000,%eax
-    shrl   %cl,        %eax
-    movl   %eax,       %edi
-    mull   20(%esp)
-    movl   12(%esp),   %ebx
-    movl   16(%esp),   %ecx
-    subl   %eax,       %ebx
-    sbbl   %edx,       %ecx
-    movl   24(%esp),   %eax
-    imull  %edi,       %eax
-    subl   %eax,       %ecx
-    jnc    3f
-    addl   20(%esp),   %ebx
-    adcl   24(%esp),   %ecx
-    3:movl %ebx,       %eax
-    movl   %ecx,       %edx
-    popl   %edi
-    popl   %ebx
-    retl
-9:
-    movl   12(%esp),   %eax
-    movl   16(%esp),   %ecx
-    xorl   %edx,       %edx
-    divl   %ecx
-    movl   %eax,       %ebx
-    movl   8(%esp),    %eax
-    divl   %ecx
-    movl   %edx,       %eax
-    popl   %ebx
-    xorl   %edx,       %edx
-    retl
-
-_start:
-    xorl  %ebp,        %ebp
-    popl  %esi
-    movl  %esp,        %ecx
-    andl  $0xfffffff0, %esp
-    pushl %ecx
-    pushl %esi
-    call  __ccaprice_main
-    hlt
-
-.size _start  ,.-_start
-.size __udivdi3,.-__udivdi3
-.size __umoddi3,.-__umoddi3
