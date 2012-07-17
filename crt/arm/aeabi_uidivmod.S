@@ -21,6 +21,8 @@
  * SOFTWARE.
  */
 #include "asm.h"
+.syntax unified
+.align 3
 
 AEABI_LABEL(uidivmod)
     push  {lr}
@@ -38,7 +40,7 @@ LOCAL_LABEL(divmod)
     tst    r1, r1
     clz    r3, r1
     mov    ip, #0
-    beg    LOCAL_SYM(ret)
+    beq    LOCAL_SYM(ret)
     mov    lr, #1
     subs   r3, r3, r4
     blt    LOCAL_SYM(ret)

@@ -29,8 +29,8 @@
 #define LOCAL_SYM(X)      L__##X
 #define LOCAL_LABEL(X)    LOCAL_SYM(X):
 
-#define AEABI_LABEL(X)    \
-    .global __##aeabi_##X \
+#define AEABI_LABEL(X)     \
+    .global __##aeabi_##X; \
     __##aeabi_##X:
 
 #endif

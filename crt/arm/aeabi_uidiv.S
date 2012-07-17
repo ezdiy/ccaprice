@@ -21,6 +21,8 @@
  * SOFTWARE.
  */
 #include "asm.h"
+.syntax unified
+.align 3
 
 AEABI_LABEL(uidiv)
     push  {r7, lr}

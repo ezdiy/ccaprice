@@ -137,8 +137,7 @@ ASMARM =  crt/arm/aeabi_uidiv.S          \
           crt/arm/aeabi_uidivmod.S       \
           crt/arm/crt.S                  \
           crt/arm/syscall.S              \
-          src/setjmp/jmp_arm.S           \
-          src/math/arm/aeabi_dmul.S
+          src/setjmp/jmp_arm.S
           
 
 # figure out host OS
