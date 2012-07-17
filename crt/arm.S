@@ -23,9 +23,11 @@
 .text
 .global __ccaprice_main
 .global _start
+.global __ccaprice_syscall_arm
 
 #ifndef __PATHCC__
 .type   _start                ,%function
+.type   __ccaprice_syscall_arm,%function
 #endif
 
 /*
@@ -33,5 +35,20 @@
  */
 _start:
     push {lr}
-    
+
+__ccaprice_syscall_arm:
+    mov   ip, sp
+    stmfd sp!,{r4,r5,r6,r7}
+    mov   r7, r0
+    mov   r0, r1
+    mov   r1, r2
+    mov   r2, r3
+    ldmfd ip, {r3,r4,r5,r6}
+    svc   0
+    ldmfd sp!,{r4,r5,r6,r7}
+    tst   lr, #1
+    moveq pc, lr
+    bx    lr
+
 .size _start                ,.-_start
+.size __ccaprice_syscall_arm,.-__ccaprice_syscall_arm
