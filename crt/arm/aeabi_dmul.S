@@ -21,10 +21,9 @@
  * SOFTWARE.
  */
 #include "asm.h"
-.syntax unified
 .align 3
 
-#ifdef __VFP_FP__ && !defined(__ARMEB__)
+#if defined(__VFP_FP__) && !defined(__ARMEB__)
 #   define xl r0
 #   define xh r1
 #   define yl r2
