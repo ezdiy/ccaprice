@@ -39,7 +39,7 @@
     .endm
     
     .macro shift1 op, arg0, arg1, arg2
-        \arg0, \arg1, \op \arg2
+        mov  \arg0, \arg1, \op \arg2
     .endm
 
 #   define cond(o1,o2,c) o1##c##o2
@@ -54,7 +54,7 @@ AEABI_LABEL(fmul)
     doit           ne,  tt
     cond(and,s,ne) r3,  ip, r1, lsr #23
     teqne          r2,  ip
-    reqne          r3,  ip
+    teqne          r3,  ip
     beq            LOCAL_SYM(fmul_s)
 
 LOCAL_LABEL(fmul_x)
