@@ -42,7 +42,7 @@
         \arg0, \arg1, \op \arg2
     .endm
 
-#   define cond(o2,o2,c) o1##c##o2
+#   define cond(o1,o2,c) o1##c##o2
 #endif
 
 #define sret     bx         lr
