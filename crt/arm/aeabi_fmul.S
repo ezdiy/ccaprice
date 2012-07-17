@@ -206,7 +206,7 @@ LOCAL_LABEL(fmul_s)
  * Result is zero but we determine the sign anyways so we don't use
  * another branch.  Computing sign for any case is cheaper.
  */
-LOCAL_LABEL(fmul_z):
+LOCAL_LABEL(fmul_z)
     eor            r0,  r0, r1
     bic            r0,  r0, #0x7fffffff
     sret
