@@ -148,18 +148,9 @@ ifneq (,$(findstring BSD,$(shell uname -s)))
 	OS            = BSD
 	SYSDIR_X86_32 = sys/x86_32/
 	SYSDIR_X86_64 = sys/x86_64/
+	SYSDIR_ARM    = sys/arm
 	LFLAGS        =
 	OUT           = ccaprice.a
-else
-ifneq (,$(findstring Windows,$(shell uname -s)))
-	# use what ever Make starts with for shell
-	# it most likely doesn't support colors.
-	LARCH_X86_32  = i386pe
-	LARCH_X86_64  = x86_64pe
-	LARCH_ARM     = armpe
-	OS            = WIN
-	LFLAGS        = -luser32 -lkernel32
-	OUT           = ccaprice.lib
 else
 ifneq (,$(findstring Linux,$(shell uname -s)))
 	SHELL         = /bin/bash
@@ -169,9 +160,9 @@ ifneq (,$(findstring Linux,$(shell uname -s)))
 	OS            = LINUX
 	SYSDIR_X86_32 = sys/x86_32/
 	SYSDIR_X86_64 = sys/x86_64/
+	SYSDIR_ARM    = sys/arm/
 	LFLAGS        =
 	OUT           = ccaprice.a
-endif
 endif
 endif
 
