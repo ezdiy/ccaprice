@@ -30,6 +30,31 @@
     .global __##aeabi_##X; \
     __##aeabi_##X:
 
+#if defined(__thumb2__)
+    .macro doit cond, suffix=""
+        it\suffix   \cond
+    .endm
+
+    .macro shift1 op, arg0, arg1, arg2
+        \op  \arg0, \arg1, \arg2
+    .endm
+
+#   define cond(o1,o2,c) o1##o2##c
+#else
+    .macro doit cond, suffix=""
+    .endm
+    
+    .macro shift1 op, arg0, arg1, arg2
+        mov  \arg0, \arg1, \op \arg2
+    .endm
+
+#   define cond(o1,o2,c) o1##c##o2
+#endif
+
+#define sret     bx         lr
+#define mret(X)  bx##X      lr
+
+
 /*
  * Handy utility for returning based on registers
  * and such (must be stringized)
