@@ -218,7 +218,7 @@ ifeq (, $(TARGET))
 	else
 	ifneq (,$(findstring arm, $(shell uname -m)))
 		TARGET  = arm
-		CFLAGS += -D__CCAPRICE_TARGET_ARM -I(SYSDIR_ARM)
+		CFLAGS += -D__CCAPRICE_TARGET_ARM -I$(SYSDIR_ARM)
 		LFLAGS += -m$(LARCH_ARM)
 		ASM     = $(ASMARM)
 	endif
