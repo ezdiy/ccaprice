@@ -71,7 +71,7 @@ LOCAL_LABEL(fmul_x)
      */
     movs           r0,  r0, lsl #9
     doit           ne
-    cond(mov,s,ne) ri,  ri, lsl #9
+    cond(mov,s,ne) r1,  r1, lsl #9
     beq            LOCAL_SYM(fmul_l)
     mov            r3,  #0x08000000
     orr            r0,  r3, r0, lsr #5
