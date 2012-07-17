@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 #include "asm.h"
-.syntax unified
 .align 3
 
 #if defined(__thumb2__)
