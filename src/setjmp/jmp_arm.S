@@ -27,15 +27,15 @@
  * and the idea that it should work since pathscale is a GCC fork.
  */
 #ifndef __PATHCC__
-    .type longjmp,@function
-    .type setjmp, @function
+    .type longjmp,%function
+    .type setjmp, %function
 #endif
 
 longjmp:
     mov   ip,  r0
     movs  r0,  r1
     moveq r0,  #1
-    ldmia ip!, {v2,v2,v3,v4,v5,v6,sl,fp}
+    ldmia ip!, {v1,v2,v3,v4,v5,v6,sl,fp}
     ldr   sp, [ip], #4
     ldr   lr, [ip], #4
     tst   lr,  #1
