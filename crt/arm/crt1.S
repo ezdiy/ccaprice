@@ -29,7 +29,7 @@
 _start:
     mov fp, #0
     mov lr, #0
-    ldr as,[sp],#4
+    ldr a2,[sp],#4
     mov a3, sp
     ldr a4,=_fini
     str fp,[sp,#-4]!
