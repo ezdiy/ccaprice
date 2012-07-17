@@ -30,4 +30,17 @@
     .global __##aeabi_##X; \
     __##aeabi_##X:
 
+/*
+ * Handy utility for returning based on registers
+ * and such (must be stringized)
+ */
+.macro RLDM regs=, cond=, dirn=ia
+    .ifc "\regs", ""
+    ldr\cond      lr, [sp], #4
+    .else
+    ldm\cond\dirn sp!, {\regs, lr}
+    .endif
+    bx\cond       lr
+.endm
+
 #endif

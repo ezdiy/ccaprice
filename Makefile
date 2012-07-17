@@ -142,6 +142,7 @@ ASM32  =  crt/x86_32/crt1.S              \
 ASMARM =  crt/arm/crt1.S                 \
           crt/arm/crti.S                 \
           crt/arm/crtn.S                 \
+          crt/arm/aeabi_dmul.S           \
           crt/arm/aeabi_uidiv.S          \
           crt/arm/aeabi_uidivmod.S       \
           crt/arm/syscall.S              \
