@@ -20,35 +20,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.text
-.global __ccaprice_main
-.global _start
-.global __ccaprice_syscall_arm
+#ifndef __CCAPRICE_CRT_ARM_ASM_HDR
+#define __CCAPRICE_CRT_ARM_ASM_HDR
 
-#ifndef __PATHCC__
-.type   _start                ,%function
-.type   __ccaprice_syscall_arm,%function
+#define INTERNAL(X)       __##ccaprice_##X
+#define RESERVED(X)       _##X
+
+#define LOCAL_SYM(X)      L__##X
+#define LOCAL_LABEL(X)    LOCAL_SYM(X):
+
+#define AEABI_LABEL(X)    \
+    .global __##aeabi_##X \
+    __##aeabi_##X:
+
 #endif
-
-/*
- * TODO: figure this mess out.  It's rather confusing.
- */
-_start:
-    push {lr}
-
-__ccaprice_syscall_arm:
-    mov   ip, sp
-    stmfd sp!,{r4,r5,r6,r7}
-    mov   r7, r0
-    mov   r0, r1
-    mov   r1, r2
-    mov   r2, r3
-    ldmfd ip, {r3,r4,r5,r6}
-    svc   0
-    ldmfd sp!,{r4,r5,r6,r7}
-    tst   lr, #1
-    moveq pc, lr
-    bx    lr
-
-.size _start                ,.-_start
-.size __ccaprice_syscall_arm,.-__ccaprice_syscall_arm

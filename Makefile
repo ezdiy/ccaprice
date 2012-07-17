@@ -133,8 +133,12 @@ ASM32  =  crt/x86_32.S                   \
           src/math/x86_32/log10.S        \
           src/math/x86_32/sqrt.S
           
-ASMARM =  crt/arm.S                      \
-          src/setjmp/jmp_arm.S
+ASMARM =  crt/arm/aeabi_uidiv.S          \
+          crt/arm/aeabi_uidivmod.S       \
+          crt/arm/crt.S                  \
+          crt/arm/syscall.S              \
+          src/setjmp/jmp_arm.S           \
+          src/math/arm/aeabi_dmul.S
           
 
 # figure out host OS
