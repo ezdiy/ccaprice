@@ -49,7 +49,7 @@
         #define DATA(X) \
         static const unsigned int data_##X[4]
 
-        inline int rand() {
+        int rand() {
             __m128i split;
             __m128i multi;
             __m128i adder;
