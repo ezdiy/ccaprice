@@ -326,7 +326,7 @@ TEST_DEF("setjmp", jmpbuf, {
  * guranteed for things this large.
  */
 TEST_DEF("math  ", acos, {
-    double a = acos(0.5)*180.0/M_PI;
+    double a = acos(0.5)*180.0/(double)M_PI;
     double b = 60.000000000000007;
     TEST_RET(a==b);
 })
@@ -342,7 +342,7 @@ TEST_DEF("math  ", acosl, {
 })
 
 TEST_DEF("math  ", asin, {
-    double a = asin(0.5)*180.0/M_PI;
+    double a = asin(0.5)*180.0/(double)M_PI;
     double b = 30.000000000000004;
     TEST_RET(a==b);
 })
@@ -358,7 +358,7 @@ TEST_DEF("math  ", asinl, {
 })
 
 TEST_DEF("math  ", atan, {
-    double a = atan(1.0)*180.0/M_PI;
+    double a = atan(1.0)*180.0/(double)M_PI;
     double b = 45.0f;
     TEST_RET(a==b);
 })
@@ -374,7 +374,7 @@ TEST_DEF("math  ", atanl, {
 })
 
 TEST_DEF("math  ", atan2, {
-    double a = atan2(10.0, -10.0)*180.0/M_PI;
+    double a = atan2(10.0, -10.0)*180.0/(double)M_PI;
     double b = 135.0;
     TEST_RET(a==b);
 })
