@@ -28,28 +28,27 @@
  * and the idea that it should work since pathscale is a GCC fork.
  */
 #ifndef __PATHCC__
-    .type sinf,@function
+    .type sinf, @function
     .type asinl,@function
     .type asin, @function
 #endif
 
 asinf:
     flds 4(%esp)
-    jmp  1f
+    jmp  __asin
 
 asinl:
     fldt 4(%esp)
-    jmp  1f
+    jmp  __asin
     
 asin:
     fldl 4(%esp)
-
-1:
-    fld  %st(0)
+    
+__asin:
+    fld  %st
+    fmul %st
     fld1
-    fsub %st(0), %st(1)
-    fadd %st(2)
-    fmulp
+    fsubp
     fsqrt
     fpatan
     ret
