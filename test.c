@@ -388,7 +388,7 @@ TEST_DEF("math  ", ceill,  {
 int main(int argc, char **argv, char **argp) {
     int cols = 0;
     if (argc < 2) {
-        printf("expected argument for terminal columns: %s <columns>\n");
+        printf("expected argument for terminal columns: %s <columns>\n", *argv);
         return 0;
     }
     
