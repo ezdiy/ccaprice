@@ -28,7 +28,7 @@ AEABI_LABEL(d2iz)
     adds   r2, r2, #(1 << 21)
     bcs    2f
     bpl    1f
-    mov    r3 #(0xFFFFFC00 + 31)
+    mov    r3, #(0xFFFFFC00 + 31)
     subs   r2, r3, r2, asr #21
     bls    3f
     
@@ -39,7 +39,7 @@ AEABI_LABEL(d2iz)
     mov    r3, xh, lsl #11
     orr    r3, r3, #0x80000000
     orr    r3, r3, xl, lsl #21
-    tst    xh #0x80000000
+    tst    xh, #0x80000000
     shift1 lsr, r0, r3, r2
     doit   ne
     rsbne  r0, r0, #0
@@ -48,7 +48,7 @@ AEABI_LABEL(d2iz)
 1:  mov    r0, #0
     sret
     
-2:  orrs   x1, x1, xh, lsl #12
+2:  orrs   xl, xl, xh, lsl #12
     bne    4f                    @ is nan?
     
 3:  ands   r0, xh, #0x80000000   @ sign bit
