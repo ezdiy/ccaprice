@@ -386,7 +386,17 @@ TEST_DEF("math  ", ceill,  {
  */
 
 int main(int argc, char **argv, char **argp) {
-    PADD = 80+3;
+    int cols = 0;
+    if (argc < 2) {
+        printf("expected argument for terminal columns: %s <columns>\n");
+        return 0;
+    }
+    
+    if ((cols = atoi(argv[1])) < 3) {
+        printf("expected column size must be 3+\n");
+        return 0;
+    }
+    PADD = cols + 3;
 
     int  i = 0;
     while(*argp++ && *argp)

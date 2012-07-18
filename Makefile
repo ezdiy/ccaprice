@@ -411,7 +411,7 @@ ifneq ($(DONOT), 1)
 endif
 
 # test target
-test: test.o
+test_core: test.o
 ifneq ($(DONOT), 1)
 	$(AT) ld $(LFLAGS) -o test test.o $(OUT)
 endif
@@ -421,7 +421,11 @@ ifeq (, $(DEBUG))
 	@ strip test
 	@ echo $(BLUE)   After  `du -s test` $(ENDCOL)
 endif
+	
+test: test_core
 	$(ECHO) $(GREEN) Completed Build for test $(RPURPLE)(`file test | sed -r -e 's@.*: *@@'`) $(ENDCOL)
+	$(ECHO) $(RED) Executing ./test `stty -a | grep 'columns' | sed -e 's/.*columns //' -e 's/;.*//' `$(ENDCOL)
+	@ ./test `stty -a | grep 'columns' | sed -e 's/.*columns //' -e 's/;.*//'`
 
 printendian:
 ifneq ($(DONOT), 1)
