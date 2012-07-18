@@ -34,22 +34,41 @@
 #endif
 
 acosf:
-    flds 4(%esp)
-    jmp  __acos
-
-acosl:
-    fldt 4(%esp)
-    jmp  __acos
-    
-acos:
-    fldl 4(%esp)
-    
-__acos:
-    fld  %st
-    fmul %st
+    flds   4(%esp)
+    fld    %st
+    fmul   %st(0)
     fld1
     fsubp
     fsqrt
-    fxch %st(1)
+    fabs
+    fxch   %st(1)
+    fpatan
+    ret
+    
+acosl:
+    fldt   4(%esp)
+    fld    %st
+    fld1
+    fsubp
+    fld1
+    fadd   %st(2)
+    fmulp
+    fsqrt
+    fabs
+    fxch   %st(1)
+    fpatan
+    ret
+    
+acos:
+    fldl   4(%esp)
+    fld    %st
+    fld1
+    fsubp
+    fld1
+    fadd   %st(2)
+    fmulp
+    fsqrt
+    fabs
+    fxch   %st(1)
     fpatan
     ret
