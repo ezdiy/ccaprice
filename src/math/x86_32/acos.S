@@ -35,21 +35,21 @@
 
 acosf:
     flds 4(%esp)
-    jmp  1f
+    jmp  __acos
 
 acosl:
     fldt 4(%esp)
-    jmp  1f
+    jmp  __acos
     
 acos:
     fldl 4(%esp)
-1:  fld  %st(0)
+    
+__acos:
+    fld  %st
+    fmul %st
     fld1
-    fsub %st(0), %st(1)
-    fadd %st(2)
-    fmulp
+    fsubp
     fsqrt
-    fabs
     fxch %st(1)
     fpatan
     ret

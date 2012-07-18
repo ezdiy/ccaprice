@@ -419,6 +419,7 @@ int main(int argc, char **argv, char **argp) {
         return 0;
     }
     PADD = cols + 3;
+    fesetround(FE_TONEAREST);
 
     int  i = 0;
     while(*argp++ && *argp)
