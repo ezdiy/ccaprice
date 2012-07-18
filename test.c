@@ -325,8 +325,10 @@ TEST_DEF("setjmp", jmpbuf, {
  * There is a better way to do these checks since precision isn't exactly
  * guranteed for things this large.
  */
-TEST_DEF("math  ", acos, {    
-    TEST_RET(acos(0.5)*180.0/M_PI==60.000000000000007);
+TEST_DEF("math  ", acos, {
+    double a = acos(0.5)*180.0/M_PI;
+    double b = 60.000000000000007;
+    TEST_RET(a==b);
 })
 TEST_DEF("math  ", acosf, {
     float a = acosf(0.5f)*180.0f/(float)M_PI;
@@ -334,11 +336,15 @@ TEST_DEF("math  ", acosf, {
     TEST_RET(a == b);
 })
 TEST_DEF("math  ", acosl, {
-    TEST_RET((acosl(0.5l)*180.0l/(long double)M_PI)==60.000000000000002338407245616735963l);
+    long double a = acosl(0.5l)*180.0l/(long double)M_PI;
+    long double b = 60.000000000000002338407245616735963l;
+    TEST_RET(a==b);
 })
 
 TEST_DEF("math  ", asin, {
-    TEST_RET(asin(0.5)*180.0/M_PI==30.000000000000004);
+    double a = asin(0.5)*180.0/M_PI;
+    double b = 30.000000000000004;
+    TEST_RET(a==b);
 })
 TEST_DEF("math  ", asinf, {
     float a = asinf(0.5f)*180.0f/(float)M_PI;
@@ -346,11 +352,15 @@ TEST_DEF("math  ", asinf, {
     TEST_RET(a == b);
 })
 TEST_DEF("math  ", asinl, {
-    TEST_RET((asinl(0.5l)*180.0l/(long double)M_PI)==30.000000000000001169203622808367982l);
+    long double a = asinl(0.5l)*180.0l/(long double)M_PI;
+    long double b = 30.000000000000001169203622808367982l;
+    TEST_RET(a==b);
 })
 
 TEST_DEF("math  ", atan, {
-    TEST_RET(atan(1.0)*180.0/M_PI==45.0);
+    double a = atan(1.0)*180.0/M_PI;
+    double b = 45.0f;
+    TEST_RET(a==b);
 })
 TEST_DEF("math  ", atanf, {
     float a = atanf(1.0f)*180.0f/(float)M_PI;
@@ -358,11 +368,15 @@ TEST_DEF("math  ", atanf, {
     TEST_RET(a == b);
 })
 TEST_DEF("math  ", atanl, {
-    TEST_RET((atanl(1.0l)*180.0l/(long double)M_PI)==45.000000000000001752070710736575165l);
+    long double a = atanl(1.0l)*180.0l/(long double)M_PI;
+    long double b = 45.000000000000001752070710736575165l;
+    TEST_RET(a==b);
 })
 
 TEST_DEF("math  ", atan2, {
-    TEST_RET(atan2(10.0, -10.0)*180.0/M_PI==135.0);
+    double a = atan2(10.0, -10.0)*180.0/M_PI;
+    double b = 135.0;
+    TEST_RET(a==b);
 })
 TEST_DEF("math  ", atan2f, {
     float a = atan2f(10.0f, -10.0f)*180.0f/(float)M_PI;
@@ -370,16 +384,24 @@ TEST_DEF("math  ", atan2f, {
     TEST_RET(a == b);
 })
 TEST_DEF("math  ", atan2l, {
-    TEST_RET((atan2l(10.0l, -10.0l)*180.0l/(long double)M_PI)==135.00000000000000525968157916167911l);
+    long double a = atan2l(10.0l, -10.0l)*180.0l/(long double)M_PI;
+    long double b = 135.00000000000000525968157916167911l;
+    TEST_RET(a==b);
 })
 TEST_DEF("math  ", ceil,   {
-    TEST_RET((ceil(2.3) == 3.0));
+    double a = ceil(2.3);
+    double b = 3.0;
+    TEST_RET(a==b);
 })
 TEST_DEF("math  ", ceilf,  {
-    TEST_RET((ceilf(2.3) == 3.0));
+    float a = ceilf(2.3);
+    float b = 3.0;
+    TEST_RET(a==b);
 })
 TEST_DEF("math  ", ceill,  {
-    TEST_RET((ceill(2.3) == 3.0));
+    long double a = ceill(2.3);
+    long double b = 3.0;
+    TEST_RET(a==b);
 })
 /*
  * TODO: fabs, fabsf, fabsl, sqrt, sqrtf, sqrtl tests
