@@ -35,20 +35,20 @@
 
 asinf:
     flds 4(%esp)
-    jmp  __asin
+    jmp  1f
 
 asinl:
     fldt 4(%esp)
-    jmp  __asin
+    jmp  1f
     
 asin:
     fldl 4(%esp)
-    
-__asin:
-    fld  %st
-    fmul %st
+1:  fld  %st(0)
     fld1
-    fsubp
+    fsub %st(0), %st(1)
+    fadd %st(2)
+    fmulp
     fsqrt
     fpatan
-    ret
+    ret    
+    

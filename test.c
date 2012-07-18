@@ -326,81 +326,81 @@ TEST_DEF("setjmp", jmpbuf, {
  * guranteed for things this large.
  */
 TEST_DEF("math  ", acos, {
-    double a = acos(0.5)*180.0/(double)M_PI;
-    double b = 60.000000000000007;
+    volatile double a = acos(0.5)*180.0/(double)M_PI;
+    volatile double b = 60.000000000000007;
     TEST_RET(a==b);
 })
 TEST_DEF("math  ", acosf, {
-    float a = acosf(0.5f)*180.0f/(float)M_PI;
-    float b = 60.0f;
+    volatile float a = acosf(0.5f)*180.0f/(float)M_PI;
+    volatile float b = 60.0f;
     TEST_RET(a == b);
 })
 TEST_DEF("math  ", acosl, {
-    long double a = acosl(0.5l)*180.0l/(long double)M_PI;
-    long double b = 60.000000000000002338407245616735963l;
+    volatile long double a = acosl(0.5l)*180.0l/(long double)M_PI;
+    volatile long double b = 60.000000000000002338407245616735963l;
     TEST_RET(a==b);
 })
 
 TEST_DEF("math  ", asin, {
-    double a = asin(0.5)*180.0/(double)M_PI;
-    double b = 30.000000000000004;
+    volatile double a = asin(0.5)*180.0/(double)M_PI;
+    volatile double b = 30.000000000000004;
     TEST_RET(a==b);
 })
 TEST_DEF("math  ", asinf, {
-    float a = asinf(0.5f)*180.0f/(float)M_PI;
-    float b = 30.0f;
+    volatile float a = asinf(0.5f)*180.0f/(float)M_PI;
+    volatile float b = 30.0f;
     TEST_RET(a == b);
 })
 TEST_DEF("math  ", asinl, {
-    long double a = asinl(0.5l)*180.0l/(long double)M_PI;
-    long double b = 30.000000000000001169203622808367982l;
+    volatile long double a = asinl(0.5l)*180.0l/(long double)M_PI;
+    volatile long double b = 30.000000000000001169203622808367982l;
     TEST_RET(a==b);
 })
 
 TEST_DEF("math  ", atan, {
-    double a = atan(1.0)*180.0/(double)M_PI;
-    double b = 45.0f;
+    volatile double a = atan(1.0)*180.0/(double)M_PI;
+    volatile double b = 45.0f;
     TEST_RET(a==b);
 })
 TEST_DEF("math  ", atanf, {
-    float a = atanf(1.0f)*180.0f/(float)M_PI;
-    float b = 45.0f;
+    volatile float a = atanf(1.0f)*180.0f/(float)M_PI;
+    volatile float b = 45.0f;
     TEST_RET(a == b);
 })
 TEST_DEF("math  ", atanl, {
-    long double a = atanl(1.0l)*180.0l/(long double)M_PI;
-    long double b = 45.000000000000001752070710736575165l;
+    volatile long double a = atanl(1.0l)*180.0l/(long double)M_PI;
+    volatile long double b = 45.000000000000001752070710736575165l;
     TEST_RET(a==b);
 })
 
 TEST_DEF("math  ", atan2, {
-    double a = atan2(10.0, -10.0)*180.0/(double)M_PI;
-    double b = 135.0;
+    volatile double a = atan2(10.0, -10.0)*180.0/(double)M_PI;
+    volatile double b = 135.0;
     TEST_RET(a==b);
 })
 TEST_DEF("math  ", atan2f, {
-    float a = atan2f(10.0f, -10.0f)*180.0f/(float)M_PI;
-    float b = 135.0f;
+    volatile float a = atan2f(10.0f, -10.0f)*180.0f/(float)M_PI;
+    volatile float b = 135.0f;
     TEST_RET(a == b);
 })
 TEST_DEF("math  ", atan2l, {
-    long double a = atan2l(10.0l, -10.0l)*180.0l/(long double)M_PI;
-    long double b = 135.00000000000000525968157916167911l;
+    volatile long double a = atan2l(10.0l, -10.0l)*180.0l/(long double)M_PI;
+    volatile long double b = 135.00000000000000525968157916167911l;
     TEST_RET(a==b);
 })
 TEST_DEF("math  ", ceil,   {
-    double a = ceil(2.3);
-    double b = 3.0;
+    volatile double a = ceil(2.3);
+    volatile double b = 3.0;
     TEST_RET(a==b);
 })
 TEST_DEF("math  ", ceilf,  {
-    float a = ceilf(2.3);
-    float b = 3.0;
+    volatile float a = ceilf(2.3);
+    volatile float b = 3.0;
     TEST_RET(a==b);
 })
 TEST_DEF("math  ", ceill,  {
-    long double a = ceill(2.3);
-    long double b = 3.0;
+    volatile long double a = ceill(2.3);
+    volatile long double b = 3.0;
     TEST_RET(a==b);
 })
 /*
