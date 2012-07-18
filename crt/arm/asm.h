@@ -23,6 +23,23 @@
 #ifndef __CCAPRICE_CRT_ARM_ASM_HDR
 #define __CCAPRICE_CRT_ARM_ASM_HDR
 
+/*
+ * For double precision floating point only.
+ * The endianess order is different between the
+ * FPA and VFP.
+ */
+#if defined(__VFP_FP__) && !defined(__ARMEB__)
+#   define xl r0
+#   define xh r1
+#   define yl r2
+#   define yh r3
+#else
+#   define xh r0
+#   define xl r1
+#   define yh r2
+#   define yl r3
+#endif
+
 #define LOCAL_SYM(X)      L__##X
 #define LOCAL_LABEL(X)    LOCAL_SYM(X):
 

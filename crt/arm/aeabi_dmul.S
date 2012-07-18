@@ -23,18 +23,6 @@
 #include "asm.h"
 .align 3
 
-#if defined(__VFP_FP__) && !defined(__ARMEB__)
-#   define xl r0
-#   define xh r1
-#   define yl r2
-#   define yh r3
-#else
-#   define xh r0
-#   define xl r1
-#   define yh r2
-#   define yl r3
-#endif
-
 AEABI_LABEL(dmul)
     stmfd  sp!, {r4, r5, r6, lr}
     
