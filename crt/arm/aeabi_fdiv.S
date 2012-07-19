@@ -27,6 +27,7 @@ IMPORT_LOCAL_SYM(fmul_n) /* NAN       */
 IMPORT_LOCAL_SYM(fmul_i) /* INF       */
 IMPORT_LOCAL_SYM(fmul_z) /* ZERO      */
 IMPORT_LOCAL_SYM(fmul_d) /* DENORMALS */
+IMPORT_LOCAL_SYM(fmul_u)
 
 AEABI_LABEL(fdiv)
     mov            ip, #0xFF
