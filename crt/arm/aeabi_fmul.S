@@ -23,6 +23,11 @@
 #include "asm.h"
 .align 3
 
+EXPORT_LOCAL_SYM(fmul_n) /* NAN       */
+EXPORT_LOCAL_SYM(fmul_i) /* INF       */
+EXPORT_LOCAL_SYM(fmul_z) /* ZERO      */
+EXPORT_LOCAL_SYM(fmul_d) /* DENORMALS */
+
 AEABI_LABEL(fmul)
     mov            ip,  #0xFF
     and            r2,  ip, r0, lsr #23

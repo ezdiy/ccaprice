@@ -41,7 +41,9 @@
 #endif
 
 #define LOCAL_SYM(X)      L__##X
-#define LOCAL_LABEL(X)    LOCAL_SYM(X):
+#define LOCAL_LABEL(X,B)  LOCAL_SYM(X):
+    
+
 
 #define AEABI_LABEL(X)     \
     .global __##aeabi_##X; \
@@ -71,8 +73,8 @@
 #define sret     bx         lr
 #define mret(X)  bx##X      lr
 
-#define IMPORT_LOCAL_SYM(N) \
-    .global LOCAL_SYM(N)
+#define IMPORT_LOCAL_SYM(N) .global LOCAL_SYM(N)
+#define EXPORT_LOCAL_SYM(N) .global LOCAL_SYM(N)
 
 /*
  * Handy utility for returning based on registers
