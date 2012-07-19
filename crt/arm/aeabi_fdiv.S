@@ -52,7 +52,7 @@ LOCAL_LABEL(fdiv_x)
     
     cmp            r3, r1
     doit           cc
-    movcc          r3, 43, lsl #1
+    movcc          r3, r3, lsl #1
     adc            r2, r2, #(127 - 2)
     
     mov            ip, #0x00800000
