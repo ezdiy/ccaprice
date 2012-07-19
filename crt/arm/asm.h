@@ -40,8 +40,8 @@
 #   define yl r3
 #endif
 
-#define LOCAL_SYM(X)      L__##X
-#define LOCAL_LABEL(X,B)  LOCAL_SYM(X):
+#define LOCAL_SYM(X)    L__##X
+#define LOCAL_LABEL(X)  LOCAL_SYM(X):
     
 
 
