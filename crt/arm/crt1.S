@@ -38,4 +38,4 @@ _start:
     ldr a4,=_init
     ldr a1,= main
     bl  __ccaprice_start
-1:  b   lb
+1:  b   1b
