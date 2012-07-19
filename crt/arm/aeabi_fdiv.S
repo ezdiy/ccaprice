@@ -123,7 +123,7 @@ LOCAL_LABEL(fdiv_d)
     
 LOCAL_LABEL(fdiv_s)
     and            r3, ip, r1, lsr #23
-    req            r2, ip
+    teq            r2, ip
     bne            1f
     movs           r2, r0, lsl #9
     bne            LOCAL_SYM(fmul_n)
