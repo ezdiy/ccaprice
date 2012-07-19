@@ -144,6 +144,7 @@ ASMARM =  crt/arm/crt1.S                 \
           crt/arm/crtn.S                 \
           crt/arm/aeabi_d2iz.S           \
           crt/arm/aeabi_dmul.S           \
+          crt/arm/aeabi_fdiv.S           \
           crt/arm/aeabi_fmul.S           \
           crt/arm/aeabi_uidiv.S          \
           crt/arm/aeabi_uidivmod.S       \

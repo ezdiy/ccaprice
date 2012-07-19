@@ -71,6 +71,8 @@
 #define sret     bx         lr
 #define mret(X)  bx##X      lr
 
+#define IMPORT_LOCAL_SYM(N) \
+    .global LOCAL_SYM(N)
 
 /*
  * Handy utility for returning based on registers
