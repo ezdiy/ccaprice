@@ -43,12 +43,18 @@ sys/                This is where all system specific headers go, and os specifi
                     This directory contains folders of the architecture and inside those
                     The operating system (if it's OS specific) and finally the headers.
                 
-sys/x86_64          All x86_64 specific headers here
-sys/x86_32          All x86_32 specific hraders here
+sys/x86_64/         All x86_64 specific headers here
+sys/x86_32/         All x86_32 specific headers here
+sys/arm/            All arm    specific headers here
 
 [RUNTIME]
 crt/                This contains the runtime stuff for _start for the architecture
                     and OS.
+                    
+crt/x86_32/         All x86_32 specific runtime support here
+crt/x86_64/         All x86_64 specific runtime support here
+crt/arm/            All arm    specific runtime support here
+
 I request this directory structure is followed so things are trivial to
 find, and so things don't get easily mixed up.  This list should be updated
 when new directories are added.
