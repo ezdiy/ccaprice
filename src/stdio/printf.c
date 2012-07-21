@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+
 static int __ccaprice_printf_extract(uint64_t *x, uint32_t radix) {
     uint32_t hi  = *x >> 32;
     uint32_t lo  = *x;
@@ -39,10 +40,7 @@ static int __ccaprice_printf_extract(uint64_t *x, uint32_t radix) {
     return mod;
 }
 
-int printf(const char *format, ...) {
-    va_list  ap;
-    va_start(ap, format);
-
+int vfprintf(FILE *fp, const char *format, va_list ap) {
     while (*format) {
         int zero      = 0x00;
         int prec      = 0x00;
@@ -51,7 +49,7 @@ int printf(const char *format, ...) {
         int is_signed = 0x01;
 
         if (*format != '%') {
-            fputc(*format++, stdout);
+            fputc(*format++, fp);
             continue;
         }
         if (*++format == '0')
@@ -62,14 +60,14 @@ int printf(const char *format, ...) {
             ll++, format++;
 
         switch (*format++) {
-            case '%': fputc('%',                stdout); break;
-            case 'c': fputc(va_arg(ap, int)   , stdout); break;
-            case 's': fputs(va_arg(ap, char *), stdout); break;
+            case '%': fputc('%',                fp); break;
+            case 'c': fputc(va_arg(ap, int)   , fp); break;
+            case 's': fputs(va_arg(ap, char *), fp); break;
             case 'f': ;
                 double f = va_arg(ap, double);
                 int   ip =  (int)f;
                 int   dp = ((int)(f*1000)%1000); // 3 decmials only
-                printf("%d.%d", ip, dp);
+                fprintf(fp, "%d.%d", ip, dp);
                 break;
             case 'x': radix     = 16;
             case 'u': is_signed = 00;
@@ -103,11 +101,28 @@ int printf(const char *format, ...) {
                 if (is_signed)
                     *--hld = '-';
                 while (len++ < prec)
-                    fputc(zero ? '0' : ' ', stdout);
-                fputs(hld, stdout);
+                    fputc(zero ? '0' : ' ', fp);
+                fputs(hld, fp);
         }
     }
-    fflush(stdout);
-    va_end(ap);
+    fflush(fp);
     return 0;
+}
+
+int fprintf(FILE *fp, const char *format, ...) {
+    int      r = 0;
+    va_list  ap;
+    va_start(ap, format);
+    vfprintf(fp, format, ap);
+    va_end  (ap);
+    return r;
+}
+
+int printf(const char *format, ...) {
+    int      r = 0;
+    va_list  ap;
+    va_start(ap, format);
+    r = vfprintf(stdout, format, ap);
+    va_end  (ap);
+    return r;
 }

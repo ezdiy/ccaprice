@@ -22,7 +22,7 @@
  */
 #include <stdio.h>
 #include <bits/fcntl.h>
-#include "crt/runtime.h" /* TODO: fix! fix! fix! remove */
+__CCAPRICE_INTERNAL_FUNC(int, open, (const char *, int));
 
 /* manage list of all open files here */
 FILE   __ccaprice_stdio_file_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN];

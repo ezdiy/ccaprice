@@ -20,18 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
-
-void __ccaprice_assert(const char *file, int line, int expr) {
-    __CCAPRICE_INTERNAL_FUNC(int, printf, (const char *, ...));
-    /*
-     * Standard states the output needs to look as such:
-     *     program_name: file.c:line function: Assertion `code` failed.
-     */
-    if (!expr) {
-        /* TODO to move stderr: according to the spec */
-        printf("assertion failed: %s on line %d\n", file, line);
-        abort();
-    }
+void __ccaprice_assert(const char *expr, const char *file, int line, const char *func) {
+    __CCAPRICE_INTERNAL_FUNC(int, fprintf, (FILE *, const char *, ...));
+    __CCAPRICE_INTERNAL_FUNC(void, abort, (void));
+    
+    fprintf(stderr, "Assertion failed: %s (%s: %s: %d)\n", expr, file, func, line);
+    abort();
 }

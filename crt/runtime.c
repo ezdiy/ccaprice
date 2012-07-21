@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "runtime.h" /* TODO: fix! fix! fix! */
+#include "runtime.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>

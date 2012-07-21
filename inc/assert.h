@@ -24,15 +24,20 @@
 #define __CCAPRICE_ASSERT_HDR__
 #include <ccaprice.h>
 
-#if !defined(NDEBUG)
-# define assert(expr) __ccaprice_assert(__FILE__,__LINE__,(expr))
+#ifdef NDEBUG
+#   define assert(X) (void)0
 #else
-# define assert(expr) ((void)0) /* As per standard */
+#   define assert(X) ((X) || (__ccaprice_assert(#X, __FILE__, __LINE__, __func__),0))
 #endif
 
 /*
  * Internal function not to be used outside scope of library
  */
-__CCAPRICE_EXPORT void __ccaprice_assert(const char*,int,int);
+__CCAPRICE_EXPORT void __ccaprice_assert(
+    const char *expr,
+    const char *file,
+    int         line,
+    const char *func
+);
 
 #endif

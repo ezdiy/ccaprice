@@ -21,6 +21,8 @@
  * SOFTWARE.
  */
 #define __CCAPRICE_EXTENSIONS /* Enable extensions in ccaprice */
+
+#define NDEBUG /* stop assert fail */
 #include "inc/stdlib.h"
 #include "inc/stdio.h"
 #include "inc/string.h"
@@ -33,6 +35,7 @@
 #include "inc/limits.h"
 #include "inc/stdnoreturn.h"
 #include "inc/setjmp.h"
+#include "inc/assert.h"
 
 int PADD = 80;
 #define TEST_DEF(SPACE, NAME, ...)    \
@@ -403,6 +406,11 @@ TEST_DEF("math  ", ceill,  {
     volatile long double b = 3.0;
     TEST_RET(a==b);
 })
+
+TEST_DEF("assert", assert, {
+    assert(1!=1);
+    TEST_RET(1);
+})
 /*
  * TODO: fabs, fabsf, fabsl, sqrt, sqrtf, sqrtl tests
  */
@@ -486,5 +494,7 @@ int main(int argc, char **argv, char **argp) {
     TEST_TRY(atan2l);
     TEST_TRY(ceil);
     TEST_TRY(ceill);
+    
+    TEST_TRY(assert);
     return 0;
 }

@@ -23,20 +23,26 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <stdio.h>
-#include "crt/runtime.h" /* TODO: fix! fix! fix! */
+__CCAPRICE_INTERNAL_FUNC(void, _exit, (int));
+
 /* this is nasty ... */
 FILE *__ccaprice_o_dat = ((void*)0);
 FILE *__ccaprice_i_dat = ((void*)0);
+FILE *__ccaprice_e_dat = ((void*)0);
+
 FILE *__ccaprice_stdout() { return __ccaprice_o_dat; }
 FILE *__ccaprice_stdin () { return __ccaprice_i_dat; }
+FILE *__ccaprice_stderr() { return __ccaprice_e_dat; }
 
 void __ccaprice_init() {
     __CCAPRICE_INTERNAL_TYPE(FILE, __ccaprice_stdio_file_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN]);
     /* setup stdout at startup */
     __ccaprice_i_dat     = &__ccaprice_stdio_file_dat[0]; //malloc(sizeof(FILE));
     __ccaprice_o_dat     = &__ccaprice_stdio_file_dat[1]; //malloc(sizeof(FILE));
+    __ccaprice_e_dat     = &__ccaprice_stdio_file_dat[2];
     __ccaprice_i_dat->fd = 0;
     __ccaprice_o_dat->fd = 1;
+    __ccaprice_e_dat->fd = 2;
 }
 
 void __ccaprice_exit(int status) {

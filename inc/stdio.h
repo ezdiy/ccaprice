@@ -24,6 +24,7 @@
 #define __CCAPRICE_STDIO_HDR__
 #include <ccaprice.h>
 #include <bits/types.h>
+#include <stdarg.h> /*TODO: FIX! */
 
 #define __CCAPRICE_STDIO_FILE_BUFFER_LEN 2048
 typedef struct ccaprice_file {
@@ -38,8 +39,10 @@ typedef struct ccaprice_file {
 #define EOF -1
 #define stdout          __ccaprice_stdout()  /* because symbol of alignment issues */
 #define stdin           __ccaprice_stdin ()  /* because symbol of alignment issues */
+#define stderr          __ccaprice_stderr()  /* because symbol of alignment issues */
 __CCAPRICE_EXPORT FILE *__ccaprice_stdout(); /* because symbol of alignment issues */
 __CCAPRICE_EXPORT FILE *__ccaprice_stdin (); /* because symbol of alignment issues */
+__CCAPRICE_EXPORT FILE *__ccaprice_stderr(); /* because symbol of alignment issues */
 
 __CCAPRICE_EXPORT int    fclose(FILE *);
 __CCAPRICE_EXPORT int    feof  (FILE *);
@@ -52,5 +55,7 @@ __CCAPRICE_EXPORT int    fputs (const char *, FILE*);
 __CCAPRICE_EXPORT int    puts  (const char*);
 __CCAPRICE_EXPORT int    remove(const char*);
 __CCAPRICE_EXPORT int    printf(const char *, ...);
+__CCAPRICE_EXPORT int  vfprintf(FILE *, const char *, va_list);
+__CCAPRICE_EXPORT int   fprintf(FILE *, const char *, ...);
 
 #endif /* !CCAPRICE_STDIO_HDR      */
