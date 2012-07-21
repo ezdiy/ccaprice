@@ -33,14 +33,11 @@
 char **__ccaprice_enviroment = NULL;
 int   *__ccaprice_errno      = NULL;
 
-#define ISTR1(C) ISTR2(C)
-#define ISTR2(C) #C
-    const char *__ccaprice_build_date __CCAPRICE_USED = __DATE__;
-    const char *__ccaprice_build_time __CCAPRICE_USED = __TIME__;
-    const char *__ccaprice_build_comp __CCAPRICE_USED = __COMP__;
-    const char *__ccaprice_build_info __CCAPRICE_USED = ISTR1(__INFO__);
-#undef ISTR1
-#undef ISTR2
+
+const char *__ccaprice_build_date __CCAPRICE_USED = __DATE__;
+const char *__ccaprice_build_time __CCAPRICE_USED = __TIME__;
+const char *__ccaprice_build_comp __CCAPRICE_USED = __COMP__;
+const char *__ccaprice_build_info __CCAPRICE_USED = __INFO__;
 
 /*
  * This can be extended when more OS's are actually supported.  I think this

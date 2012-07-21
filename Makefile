@@ -363,7 +363,7 @@ else
 	endif
 	endif
 	
-	override CFLAGS  += -D__INFO__="$(shell echo `uname -a`)"
+	override CFLAGS  += -D__INFO__="\" $(shell uname -a) "\"
 	override INC      = -I.
 	override EDGE     = -c $< -o $@
 	override OBJC     = $(SRC:.c=.o)
