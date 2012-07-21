@@ -22,7 +22,10 @@
  */
 #include <signal.h>
 #include <errno.h>
-#include "crt/runtime.h" /*TODO: fix!*/
+#include <bits/types.h>
+
+__CCAPRICE_INTERNAL_FUNC(int,   kill,   (pid_t, int));
+__CCAPRICE_INTERNAL_FUNC(pid_t, getpid, ());
 
 /*
  * Proper signum's
@@ -55,6 +58,7 @@
 
 /* internal handlers */
 int __ccaprice_signal_dfl(int sig) {
+    
     return kill (
         getpid(),
         __ccaprice_signal_selector[sig]
