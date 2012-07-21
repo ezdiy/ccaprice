@@ -20,6 +20,57 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
+
+# to use this makefile you need a few programs installed.  Virtually any *nix
+# system should have these included with the base distribution
+#
+#	bash,     uname, echo, sed
+#	binutils, find,  true, stty
+#	rm,       grep,  find
+
+# we search for them here and ensure they're installed!
+ifneq ($(shell `which bash &> /dev/null`), no)
+	APP = bash
+else
+ifneq ($(shell `which uname &> /dev/null`), no)
+	APP = uname
+else
+ifneq ($(shell `which echo &> /dev/null`), no)
+	APP = echo
+else
+ifneq ($(shell `which sed &> /dev/null`), no)
+	APP = sed
+else
+ifneq ($(shell `which find &> /dev/null`), no)
+	APP = find
+else
+ifneq ($(shell `which true &> /dev/null`), no)
+	APP = true
+else
+ifneq ($(shell `which stty &> /dev/null`), no)
+	APP = stty
+else
+ifneq ($(shell `which rm &> /dev/null`), no)
+	APP = rm
+else
+ifneq ($(shell `which grep &> /dev/null`), no)
+	APP = grep
+else
+ifneq ($(shell `which find &> /dev/null`), no)
+	APP = find
+else
+	APP = 0
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+
 CFLAGS += -Wall                          \
           -nostdlib                      \
           -nostdinc                      \
@@ -321,6 +372,7 @@ ifneq ($(OS), WIN)
 		RED     = -e "\033[1;31m
 		CYAN    = \033[1;36m
 		RRED    = \033[1;31m
+		RGREEN  = \033[1;32m
 		RPURPLE = \033[1;35m
 		ENDSUP  = \033[m\c"
 		ENDCOL  = \033[m"
@@ -339,18 +391,28 @@ ifeq (, $(CCC))
 	endif
 endif
 
+# prevent on missing app
+ifeq (0, $(APP))
+	override CCC      =
+endif
+
 # Prepreation
 ifeq (, $(CCC))
-	
 	override CCC      = @echo
 	override VERBOSE  = 1
 	override AFLAGS   =
-	override CFLAGS   = $(GREEN)Error: No target specified; try $(CYAN)\`make CC=[gcc/clang/pathcc] $(ENDSUP)
 	override INC      =
 	override EDGE     =
 	override OBJC     = src/assert.o
-	override OBJA     = src/crt/x86_64.o
+	override OBJA     =
 	override DONOT    = 1
+	
+	#select right error message
+	ifneq (, $(APP))
+		override CFLAGS   = $(GREEN)Error: missing program $(CYAN)$(APP)$(RGREEN) (please install before continuing)\n$(ENDSUP)
+	else
+		override CFLAGS   = $(GREEN)Error: No target specified, or missing program try $(CYAN)\`make CC=[gcc/clang/pathcc]\n$(ENDSUP)
+	endif
 else
 	# prevent pathcc from adding it's own stdlib stuff
     ifeq (pathcc, $(CCC))
@@ -363,7 +425,7 @@ else
 	endif
 	endif
 	
-	override CFLAGS  += -D__INFO__="\" $(shell uname -a) "\"
+	override CFLAGS  += -D__INFO__="\"$(shell uname -a)"\"
 	override INC      = -I.
 	override EDGE     = -c $< -o $@
 	override OBJC     = $(SRC:.c=.o)
