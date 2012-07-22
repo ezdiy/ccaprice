@@ -31,12 +31,16 @@
 #define SEEK_CUR (SEEK_SET + 1)
 #define SEEK_END (SEEK_CUR + 1)
 
+/* reserved */
 #define __CCAPRICE_F_PERM  1
 #define __CCAPRICE_F_NORD (1 << 2)
 #define __CCAPRICE_F_NOWR (1 << 3)
 #define __CCAPRICE_F_EOF  (1 << 4)
 #define __CCAPRICE_F_ERR  (1 << 5)
 #define __CCAPRICE_F_SVB  (1 << 6)
+
+#define __CCAPRICE_UNGET   8
+#define __CCAPRICE_BUFSIZE 1024
 
 typedef struct __ccaprice_file {
     unsigned          flags;

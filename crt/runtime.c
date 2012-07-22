@@ -21,73 +21,8 @@
  * SOFTWARE.
  */
 #include "runtime.h"
-#include <stdarg.h>
-#include <stdio.h>
 #include <string.h>
 #include <locale.h>
-
-#define UNGET   8
-#define BUFSIZE 1024
-
-/*
- * STDOUT, STDERR, STDIN static implementations for stdio code.
- * These are part of the runtime currently.
- * 
- * TODO: move to src/stdio
- */
-static unsigned char __ccaprice_stdin_buf [BUFSIZE+UNGET];
-static unsigned char __ccaprice_stdout_buf[BUFSIZE+UNGET];
-static unsigned char __ccaprice_stderr_buf[UNGET];
-
-static int __ccaprice_stdio_close(FILE *f) {
-    return close(f->fd);
-}
-
-static size_t __ccaprice_stdio_write(FILE *fp, const unsigned char *buf, size_t len) {
-    /*
-     * TODO: all of it
-     */
-    return 0;
-}
-
-static FILE __ccaprice_stdin_impl = {
-    .buf      = __ccaprice_stdin_buf+UNGET,
-    .buf_size = sizeof(__ccaprice_stdin_buf-UNGET),
-    .fd       = 0,
-    .flags    = __CCAPRICE_F_PERM | __CCAPRICE_F_NOWR,
-    
-};
-
-static FILE __ccaprice_stdout_impl = {
-    .buf      = __ccaprice_stdout_buf+UNGET,
-    .buf_size = sizeof(__ccaprice_stdout_buf-UNGET),
-    .fd       = 1,
-    .flags    = __CCAPRICE_F_PERM | __CCAPRICE_F_NORD,
-    .lbf      = '\n',
-    .write    = &__ccaprice_stdio_write,
-    .close    = &__ccaprice_stdio_close,
-};
-
-static FILE __ccaprice_stderr_impl = {
-    .buf      = __ccaprice_stderr_buf+UNGET,
-    .buf_size = 0,
-    .fd       = 2,
-    .flags    = __CCAPRICE_F_PERM | __CCAPRICE_F_NORD,
-    .lbf      = -1,
-    .write    = &__ccaprice_stdio_write,
-    .close    = &__ccaprice_stdio_close,
-};
-
-/*
- * These will be initialized by the static constructors stage which is
- * handled by the runtime code.
- */
-FILE *const __ccaprice_stdout = &__ccaprice_stdout_impl;
-FILE *const __ccaprice_stderr = &__ccaprice_stderr_impl;
-FILE *const __ccaprice_stdin  = &__ccaprice_stdin_impl;
-
-#undef BUFSIZE
-#undef UNGET
 
 /* returns a thread safe caprice instance */
 __ccaprice_instance *__ccaprice (void) {
@@ -121,7 +56,7 @@ int __ccaprice_start (
     int arno;
     __ccaprice_errno      = &arno;
     __ccaprice_enviroment = &argv[argc+1];
-    __ccaprice_locale_init();
+    __ccaprice_locale_init(); /* TODO: rewrite all this local hack */
     
     __CCAPRICE_INSTANCE.fini = fini;
     

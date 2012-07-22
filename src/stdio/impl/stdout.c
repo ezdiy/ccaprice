@@ -21,45 +21,14 @@
  * SOFTWARE.
  */
 #include <stdio.h>
-#include <string.h>
-#include <bits/fcntl.h>
+ 
+static unsigned char __ccaprice_stdout_buf[__CCAPRICE_BUFSIZE + __CCAPRICE_UNGET];
+static FILE __ccaprice_stdout_impl = {
+    .buf      = __ccaprice_stdout_buf+__CCAPRICE_UNGET,
+    .buf_size = sizeof(__ccaprice_stdout_buf-__CCAPRICE_UNGET),
+    .fd       = 1,
+    .flags    = __CCAPRICE_F_PERM | __CCAPRICE_F_NORD,
+    .lbf      = '\n',
+};
 
-__CCAPRICE_INTERNAL_FUNC(int, open,  (const char *, int));
-__CCAPRICE_INTERNAL_FUNC(int, close, (int));
-
-
-FILE *fdopen(int fd, const char *name) {
-    /*
-     * TODO: implement
-     */
-     
-    return __ccaprice_stdout;
-}
-
-FILE *fopen(const char *file, const char *mode) {
-    FILE *fp;
-    int   fd;
-    int   flags;
-    
-    if (!strchr("rwa", *mode))
-        return 0;
-        
-    flags = (!!strchr(mode, '+')) ?
-        O_RDWR   :  (*mode=='r')  ?
-        O_RDONLY :
-        O_WRONLY ;
-    
-    if (*mode != 'r') flags |= O_CREAT;
-    if (*mode == 'w') flags |= O_TRUNC;
-    if (*mode == 'a') flags |= O_APPEND;
-    
-    if ((fd = open(file, flags|O_LARGEFILE)) < 0)
-        return 0;
-        
-    if ((fp = fdopen(fd, mode)))
-        return fp;
-    
-    /* made it this far close and die */
-    close(fd);
-    return 0;
-}
+FILE *const __ccaprice_stdout = &__ccaprice_stdout_impl;
