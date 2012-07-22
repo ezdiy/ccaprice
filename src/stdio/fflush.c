@@ -22,11 +22,7 @@
  */
 #include <stdio.h>
 
-/*
- * TODO:
- *  locked version.
- */
-int fflush(FILE *fp) {
+static int __ccaprice_fflush(FILE *fp) {
     if (fp->wpos > fp->base) {
         fp->write(fp, 0, 0);
         if (!fp->wpos)
@@ -41,5 +37,30 @@ int fflush(FILE *fp) {
     fp->wend = 0;
     fp->rpos = 0;
     fp->rend = 0;
+    
+    return 0;
+}
+
+int fflush(FILE *fp) {
+    int r;
+    
+    if (fp) {
+        //__CCAPRICE_FDOLOCK(fp);
+        r = __ccaprice_fflush(fp);
+        //__CCAPRICE_FUNLOCK(fp);
+        
+        return r;
+    }
+    
+    //r = fflush(stdout);
+    
+    __CCAPRICE_OFDOLOCK();
+    for (fp = (FILE*)__CCAPRICE_INSTANCE.file_head; fp; fp=fp->next) {
+        //__CCAPRICE_FDOLOCK(fp);
+        if (fp->wpos > fp->base)
+            r |= fflush(fp);
+        //__CCAPRICE_FUNLOCK(fp);
+    }
+    __CCAPRICE_OFUNLOCK();
     return 0;
 }
