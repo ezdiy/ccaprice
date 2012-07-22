@@ -38,7 +38,7 @@
  
 #define _DWMALLOC_GETPAGESIZE 1
 /*#define _DWMALLOC_THREADSAFE*/
-/*#define _DWMALLOC_DEBUG     */
+#define _DWMALLOC_DEBUG     
 
 
 #include <stddef.h>   /* size_t / ptrdiff_t / NULL */

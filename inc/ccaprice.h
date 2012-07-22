@@ -150,6 +150,7 @@ __CCAPRICE_EXPORT const char *__ccaprice_build_host;
 
 #define __CCAPRICE_COMPILE_TIME_ASSERT(name, x) \
  typedef int __CompileTimeAssertFailed_##name[(x)?1:-1]
+ 
 
 /* TODO: everything here on down needs to be removed! */
 
@@ -171,5 +172,33 @@ __CCAPRICE_EXPORT const char *__ccaprice_build_host;
 #  define __STDLIB_RANDOM_OPTIMAL_SSE2
 # endif
 #endif
+
+/*
+ * Stores a threadsafe running instance for the library.  Contains the
+ * thread stuff and static destructor call function pointer
+ * 
+ * TODO:
+ *  FILE locking
+ *  ldso destructors
+ */
+typedef struct {
+    volatile int thread_item;
+    void       (*fini)(void);
+} __ccaprice_instance;
+
+__CCAPRICE_EXPORT __ccaprice_instance *__ccaprice(void);
+
+#define __CCAPRICE_INSTANCE (*__ccaprice())
+
+/*
+ * Thread utility functions for lock/unlock.  These only allow thread
+ * safety in the implementation.  These shouldn't be used outside of the
+ * implementation.
+ */
+__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_thread_lock,  (volatile int *));
+__CCAPRICE_INTERNAL_FUNC(void, __ccaprice_thread_unlock,(volatile int *));
+#define __CCAPRICE_DOLOCK(X) (__CCAPRICE_INSTANCE.thread_item ? (__ccaprice_thread_lock  (X), 1) : ((void)(X), 1))
+#define __CCAPRICE_UNLOCK(X) (__CCAPRICE_INSTANCE.thread_item ? (__ccaprice_thread_unlock(X), 1) : ((void)(X), 1))
+
 
 #endif

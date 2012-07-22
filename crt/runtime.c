@@ -26,6 +26,12 @@
 #include <string.h>
 #include <locale.h>
 
+/* returns a thread safe caprice instance */
+__ccaprice_instance *__ccaprice (void) {
+    static __ccaprice_instance instance;
+    return &instance;
+}
+
 /*
  * These are global: TODO: guard for thread safe support in C11
  * I really dislike errno since in ANSI C it can only be two values
@@ -54,6 +60,8 @@ int __ccaprice_start (
     __ccaprice_enviroment = &argv[argc+1];
     __ccaprice_locale_init();
     __ccaprice_init();
+    
+    __CCAPRICE_INSTANCE.fini = fini;
     
      /* static constructors */
     if (init) {

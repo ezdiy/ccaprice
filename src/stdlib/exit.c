@@ -23,6 +23,10 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <stdio.h>
+
+
+#include <atomic.h>
+#include <bits/syscall.h>
 __CCAPRICE_INTERNAL_FUNC(void, _exit, (int));
 
 /* this is nasty ... */
@@ -78,11 +82,31 @@ void atexit(void (*fun)()) {
 }
 
 void exit(int status) {
+    /*
+     * When more than one thread calls exit we must hang and wait for the
+     * actual call to exit kills it all.
+     */
+    static int lock;
+    while (__ccaprice_atomic_swap(&lock, 1))
+        __ccaprice_syscall_args_0(SYS_pause);
+        
     int   i=sizeof(__ccaprice_atexit_functions)/sizeof(*__ccaprice_atexit_functions);
     while(i-->0) {
         if (__ccaprice_atexit_functions[i]) {
             __ccaprice_atexit_functions[i](); /* call in reverse order */
         }
     }
+
+    /* static destructors */
+    if (__CCAPRICE_INSTANCE.fini)
+        __CCAPRICE_INSTANCE.fini();
+    
+    /*
+     *  TODO:
+     *  seeks_on_exit,
+     *  flush_on_exit
+     */
+    
     _exit(status&0xFF);
+    for (;;);
 }

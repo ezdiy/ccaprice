@@ -156,7 +156,10 @@ SRC     = src/assert.c                   \
           src/fenv/fegetexceptflag.c     \
           src/fenv/feholdexcept.c        \
           src/fenv/fesetexceptflag.c     \
-          src/fenv/feupdateenv.c
+          src/fenv/feupdateenv.c         \
+          src/thread/lock.c              \
+          src/thread/wait.c              \
+          src/thread/wake.c
           
 ASM64  =  crt/x86_64/crt1.S              \
           crt/x86_64/crti.S              \
@@ -451,6 +454,7 @@ ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *string/* ]]; then echo $(PURPLE) [string] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *math/*   ]]; then echo $(PURPLE) [math]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *fenv/*   ]]; then echo $(PURPLE) [fenv]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *thread/* ]]; then echo $(PURPLE) [thread] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 endif
 
 #S rule
