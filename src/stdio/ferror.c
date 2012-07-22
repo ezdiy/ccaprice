@@ -23,6 +23,5 @@
 #include <stdio.h>
 
 int ferror(FILE *fp) {
-    if (!fp) return 0;
-    return fp->err;
+    return !!(fp->flags & __CCAPRICE_F_ERR);
 }

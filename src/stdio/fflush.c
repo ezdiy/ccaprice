@@ -22,14 +22,24 @@
  */
 #include <stdio.h>
 
-__CCAPRICE_INTERNAL_TYPE(size_t, __ccaprice_stdio_file_pos);
-__CCAPRICE_INTERNAL_TYPE(FILE  , __ccaprice_stdio_file_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN]);
-
+/*
+ * TODO:
+ *  locked version.
+ */
 int fflush(FILE *fp) {
-
-    fwrite(fp->buffer_dat, fp->buffer_pos, 1, fp);
-    fp->buffer_dat[0] = 0;
-    fp->buffer_pos    = 0;
-    fp->self          = 0;
+    if (fp->wpos > fp->base) {
+        fp->write(fp, 0, 0);
+        if (!fp->wpos)
+            return EOF;
+    }
+    
+    if (fp->rpos < fp->rend)
+        fp->seek(fp, fp->rpos-fp->rend, SEEK_CUR);
+        
+    fp->wpos = 0;
+    fp->base = 0;
+    fp->wend = 0;
+    fp->rpos = 0;
+    fp->rend = 0;
     return 0;
 }

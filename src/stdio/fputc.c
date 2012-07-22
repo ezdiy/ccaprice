@@ -21,16 +21,50 @@
  * SOFTWARE.
  */
 #include <stdio.h>
-int fputc(int c, FILE *fp) {
-    if (!fp) {
+
+static int __ccaprice_ftowrite(FILE *f) {
+    f->mode |= f->mode-1;
+    
+    if (f->flags  & __CCAPRICE_F_NOWR) {
+        f->flags |= __CCAPRICE_F_ERR;
         return EOF;
     }
-
-    if (fp->buffer_pos + 1 > sizeof(fp->buffer_pos))
-        fflush(fp);
-
-    /* buffer the data */
-    fp->buffer_dat[fp->buffer_pos] = c;
-    fp->buffer_pos ++;
+    
+    /* clear the read buffer */
+    f->rpos = 0;
+    f->rend = 0;
+    
+    /* setup the writer */
+    f->wpos = f->buf;
+    f->base = f->buf;
+    f->wend = f->buf + f->buf_size;
+    
     return 0;
+}
+
+static int __ccaprice_foverflow(FILE *f, int c) {
+    unsigned char d = c;
+    
+    if (!f->wend && __ccaprice_ftowrite(f))
+        return EOF;
+    
+    if (f->wpos < f->wend && d != f->lbf)
+        return *f->wpos++ = d;
+        
+    if (f->write(f, &d, 1) != 1)
+        return EOF;
+        
+    return d;
+    
+}
+
+int fputc(int c, FILE *f) {
+    /*
+     * TODO: locking for thread safety
+     */
+    return (
+        (c != f->lbf && f->wpos < f->wend) ?
+             *f->wpos++ = c :
+        __ccaprice_foverflow(f,c)
+    );
 }

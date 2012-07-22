@@ -22,9 +22,15 @@
  */
 #include <stdio.h>
 
+/*
+ * TODO: when the stdio code is thread-safe this will be swaped over to
+ * use the thready buffer queue base system.  For now it's not because
+ * fputs is based off this and the direct write call is what is currently
+ * allowing the implementation to work for the test suite (printf)
+ */
+
 __CCAPRICE_INTERNAL_FUNC(int, write, (int, const void *, size_t));
 size_t fwrite(const void *p, size_t size, size_t count, FILE *fp) {
-    /* TODO use fputc ... */
     size_t times = count;
     while (times-->0)
         if(write(fp->fd, p, size) == -1)

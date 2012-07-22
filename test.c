@@ -48,7 +48,7 @@ fwrite(c, strlen(c), 1, stdout);      \
 fflush(stdout);                       \
 size_t l=PADD-strlen(c)-7;            \
 while (l-->0) {                       \
-    fputc((l%4)?' ':'.', stdout);     \
+    fputs((l%4)?" ":".", stdout);     \
 }                                     \
 __VA_ARGS__                           \
     }

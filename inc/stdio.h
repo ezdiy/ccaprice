@@ -26,23 +26,53 @@
 #include <bits/types.h>
 #include <stdarg.h> /*TODO: FIX! */
 
-#define __CCAPRICE_STDIO_FILE_BUFFER_LEN 2048
-typedef struct ccaprice_file {
- int    fd;
- int    eof;
- int    self; /* SELF'ed itself? */
- int    err;
- char   buffer_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN];
- size_t buffer_pos;
+#define EOF -1
+#define SEEK_SET (EOF      + 1)
+#define SEEK_CUR (SEEK_SET + 1)
+#define SEEK_END (SEEK_CUR + 1)
+
+#define __CCAPRICE_F_PERM  1
+#define __CCAPRICE_F_NORD (1 << 2)
+#define __CCAPRICE_F_NOWR (1 << 3)
+#define __CCAPRICE_F_EOF  (1 << 4)
+#define __CCAPRICE_F_ERR  (1 << 5)
+#define __CCAPRICE_F_SVB  (1 << 6)
+
+typedef struct __ccaprice_file {
+    unsigned          flags;
+    unsigned char    *buf;
+    signed char       mode;
+    signed char       lbf;
+    size_t            buf_size;
+    int               fd;
+    
+    /* buffering */
+    unsigned char *rpos;
+    unsigned char *rend;
+    unsigned char *wpos;
+    unsigned char *wend;
+    unsigned char *base;
+    
+    
+    /* function pointer callbacks */
+    int    (*close)(struct __ccaprice_file *);
+    size_t (*read) (struct __ccaprice_file *,       unsigned char *, size_t);
+    size_t (*write)(struct __ccaprice_file *, const unsigned char *, size_t);
+    off_t  (*seek) (struct __ccaprice_file *, off_t, int);
+    
+    /* it's also a linked list :P */
+    struct __ccaprice_file *prev;
+    struct __ccaprice_file *next;
+    
 }  FILE;
 
-#define EOF -1
-#define stdout          __ccaprice_stdout()  /* because symbol of alignment issues */
-#define stdin           __ccaprice_stdin ()  /* because symbol of alignment issues */
-#define stderr          __ccaprice_stderr()  /* because symbol of alignment issues */
-__CCAPRICE_EXPORT FILE *__ccaprice_stdout(); /* because symbol of alignment issues */
-__CCAPRICE_EXPORT FILE *__ccaprice_stdin (); /* because symbol of alignment issues */
-__CCAPRICE_EXPORT FILE *__ccaprice_stderr(); /* because symbol of alignment issues */
+extern FILE * const __ccaprice_stdout;
+extern FILE * const __ccaprice_stdin ;
+extern FILE * const __ccaprice_stderr;
+
+#define stdout  (__ccaprice_stdout)
+#define stdin   (__ccaprice_stdin )
+#define stderr  (__ccaprice_stderr)
 
 __CCAPRICE_EXPORT int    fclose(FILE *);
 __CCAPRICE_EXPORT int    feof  (FILE *);

@@ -23,5 +23,5 @@
 #include <stdio.h>
 
 int feof(FILE *fp) {
-    return fp->eof;
+    return !!(fp->flags & __CCAPRICE_F_EOF);
 }

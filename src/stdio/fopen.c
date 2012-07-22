@@ -21,53 +21,45 @@
  * SOFTWARE.
  */
 #include <stdio.h>
+#include <string.h>
 #include <bits/fcntl.h>
-__CCAPRICE_INTERNAL_FUNC(int, open, (const char *, int));
 
-/* manage list of all open files here */
-FILE   __ccaprice_stdio_file_dat[__CCAPRICE_STDIO_FILE_BUFFER_LEN];
-size_t __ccaprice_stdio_file_pos = 0;
+__CCAPRICE_INTERNAL_FUNC(int, open,  (const char *, int));
+__CCAPRICE_INTERNAL_FUNC(int, close, (int));
+
+
+FILE *fdopen(int fd, const char *name) {
+    /*
+     * TODO: implement
+     */
+     
+    return __ccaprice_stdout;
+}
 
 FILE *fopen(const char *file, const char *mode) {
-
-    size_t flags = O_RDONLY;
-    size_t other = 0;
-
-    /*
-     * Determine file mode.
-     */
-    while (*mode) {
-        switch (*mode) {
-            case 'r': flags = O_RDONLY;                      break;
-            case 'w': flags = O_WRONLY | O_CREAT | O_TRUNC;  break;
-            case 'a': flags = O_WRONLY | O_CREAT | O_APPEND; break;
-            case '+': other = 1;                             break;
-        }
-        mode++;
-    }
-
-    if (other) {
-        flags = (flags &~(O_RDONLY|O_WRONLY))|O_RDWR;
-    }
-    /*
-     * On 32-bit systems  O_LARGEFILE needs  to be used to
-     * ensure file opens are 64-bit safe; otherwise errors
-     * could occur.
-     */
-    #ifdef __CCAPRICE_TARGET_X86_32
-        /*
-         * (LFS) Allow files whose sizes cannot be represented in an off_t
-         * (but can be represented in an off64_t) to be opened.
-         **/
-        flags |= O_LARGEFILE;
-    #endif
-
-    FILE *fp       = &__ccaprice_stdio_file_dat[__ccaprice_stdio_file_pos];
-    fp->fd         = open(file, flags);
-    fp->buffer_pos = 0;
-    fp->eof        = 0;
-    fp->err        = 0;
-
-    __ccaprice_stdio_file_pos ++;
-    return fp;
+    FILE *fp;
+    int   fd;
+    int   flags;
+    
+    if (!strchr("rwa", *mode))
+        return 0;
+        
+    flags = (!!strchr(mode, '+')) ?
+        O_RDWR   : (*mode=='r')   ?
+        O_RDONLY :
+        O_WRONLY ;
+    
+    if (*mode != 'r') flags |= O_CREAT;
+    if (*mode == 'w') flags |= O_TRUNC;
+    if (*mode == 'a') flags |= O_APPEND;
+    
+    if ((fd = open(file, flags|O_LARGEFILE)) < 0)
+        return 0;
+        
+    if ((fp = fdopen(fd, mode)))
+        return fp;
+    
+    /* made it this far close and die */
+    close(fd);
+    return 0;
 }

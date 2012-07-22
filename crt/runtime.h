@@ -41,8 +41,9 @@
 #define __SYS_CLOSE   int     close (int         A1)
 #define __SYS_EXIT    void   _exit  (int         A1)
 #define __SYS_GETPID  pid_t   getpid()
-#define __SYS_MMAP    void*  _mmap  (void       *A1, size_t      A2, int    A3, int A4, int A5, off_t A6)
+#define __SYS_MMAP    void*  _mmap  (void       *A1, size_t      A2, int    A3, int   A4, int  A5, off_t A6)
 #define __SYS_MUNMAP  int     munmap(void       *A1, size_t      A2)
+#define __SYS_FUTEX   int     futex (int        *A1, int         A2, int    A3, void *A4, int *A5, int   A6)
 
 
 /*
@@ -75,6 +76,7 @@ __CCAPRICE_EXPORT void    _exit (int);
 __CCAPRICE_EXPORT pid_t   getpid();
 __CCAPRICE_EXPORT void  *_mmap  (void *, size_t, int, int, int, off_t);
 __CCAPRICE_EXPORT int     munmap(void *, size_t);
+__CCAPRICE_EXPORT int     futex (int*, int, int, void*, int*, int);
 
 /* TODO: hack! fix! workaround! */
 #ifdef SYS_mmap2
