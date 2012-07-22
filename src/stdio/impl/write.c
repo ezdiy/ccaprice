@@ -21,21 +21,14 @@
  * SOFTWARE.
  */
 #include <stdio.h>
-__CCAPRICE_INTERNAL_FUNC(size_t, __ccaprice_stdio_write, (FILE *, const unsigned char *, size_t));
-__CCAPRICE_INTERNAL_FUNC(off_t,  __ccaprice_stdio_seek,  (FILE *, off_t, int));
-__CCAPRICE_INTERNAL_FUNC(int,    __ccaprice_stdio_close, (FILE *));
+__CCAPRICE_INTERNAL_FUNC(int, write, (int, const void*, size_t));
 
-static unsigned char __ccaprice_stdout_buf[__CCAPRICE_BUFSIZE + __CCAPRICE_UNGET];
-static FILE __ccaprice_stdout_impl = {
-    .buf      = __ccaprice_stdout_buf+__CCAPRICE_UNGET,
-    .buf_size = sizeof(__ccaprice_stdout_buf-__CCAPRICE_UNGET),
-    .fd       = 1,
-    .flags    = __CCAPRICE_F_PERM | __CCAPRICE_F_NORD,
-    .lbf      = '\n',
-    .write    = &__ccaprice_stdio_write,
-    .seek     = &__ccaprice_stdio_seek,
-    .close    = &__ccaprice_stdio_close,
-    .lock     = -1,
-};
-
-FILE *const __ccaprice_stdout = &__ccaprice_stdout_impl;
+size_t __ccaprice_stdio_write(FILE *fp, const unsigned char *buf, size_t len) {
+    /*
+     * TODO: proper implementatation of this.
+     */
+    void   *baseb = (void*)buf;
+    size_t  sizeb = len;
+    
+    return  write(fp->fd, baseb, sizeb);
+}

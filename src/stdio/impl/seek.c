@@ -21,21 +21,14 @@
  * SOFTWARE.
  */
 #include <stdio.h>
-__CCAPRICE_INTERNAL_FUNC(size_t, __ccaprice_stdio_write, (FILE *, const unsigned char *, size_t));
-__CCAPRICE_INTERNAL_FUNC(off_t,  __ccaprice_stdio_seek,  (FILE *, off_t, int));
-__CCAPRICE_INTERNAL_FUNC(int,    __ccaprice_stdio_close, (FILE *));
-
-static unsigned char __ccaprice_stdout_buf[__CCAPRICE_BUFSIZE + __CCAPRICE_UNGET];
-static FILE __ccaprice_stdout_impl = {
-    .buf      = __ccaprice_stdout_buf+__CCAPRICE_UNGET,
-    .buf_size = sizeof(__ccaprice_stdout_buf-__CCAPRICE_UNGET),
-    .fd       = 1,
-    .flags    = __CCAPRICE_F_PERM | __CCAPRICE_F_NORD,
-    .lbf      = '\n',
-    .write    = &__ccaprice_stdio_write,
-    .seek     = &__ccaprice_stdio_seek,
-    .close    = &__ccaprice_stdio_close,
-    .lock     = -1,
-};
-
-FILE *const __ccaprice_stdout = &__ccaprice_stdout_impl;
+__CCAPRICE_INTERNAL_FUNC(int, lseek, (int, off_t, int));
+off_t __ccaprice_stdio_seek(FILE *fp, off_t off, int whence) {
+    off_t ret;
+#ifdef SYS__llseek
+    if (__ccaprice_syscall_args_5(SYS__llseek, fp->fd, off>>32, off, &r, whence) < 0)
+        ret = -1;
+#else
+    ret = lseek(fp->fd, off, whence);
+#endif
+    return ret;
+}

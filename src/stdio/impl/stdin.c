@@ -21,14 +21,20 @@
  * SOFTWARE.
  */
 #include <stdio.h>
- 
+__CCAPRICE_INTERNAL_FUNC(size_t, __ccaprice_stdio_read , (FILE *, unsigned char *, size_t));
+__CCAPRICE_INTERNAL_FUNC(off_t,  __ccaprice_stdio_seek,  (FILE *, off_t, int));
+__CCAPRICE_INTERNAL_FUNC(int,    __ccaprice_stdio_close, (FILE *));
+
 static unsigned char __ccaprice_stdin_buf[__CCAPRICE_BUFSIZE + __CCAPRICE_UNGET];
 static FILE __ccaprice_stdin_impl = {
     .buf      = __ccaprice_stdin_buf + __CCAPRICE_UNGET,
     .buf_size = sizeof(__ccaprice_stdin_buf-__CCAPRICE_UNGET),
     .fd       = 0,
     .flags    = __CCAPRICE_F_PERM | __CCAPRICE_F_NOWR,
-    
+    .read     = &__ccaprice_stdio_read,
+    .seek     = &__ccaprice_stdio_seek,
+    .close    = &__ccaprice_stdio_close,
+    .lock     = -1,
 };
 
 FILE *const __ccaprice_stdin  = &__ccaprice_stdin_impl;

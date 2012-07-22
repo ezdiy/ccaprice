@@ -22,18 +22,66 @@
  */
 #include <stdio.h>
 
-/*
- * TODO: when the stdio code is thread-safe this will be swaped over to
- * use the thready buffer queue base system.  For now it's not because
- * fputs is based off this and the direct write call is what is currently
- * allowing the implementation to work for the test suite (printf)
- */
+/* stdlib.h */
+__CCAPRICE_INTERNAL_FUNC(void *, memcpy, (void *, const void *, size_t));
 
-__CCAPRICE_INTERNAL_FUNC(int, write, (int, const void *, size_t));
+static int __ccaprice_towrite(FILE *fp) {
+    fp->mode |= fp->mode - 1;
+    
+    if (fp->flags  & __CCAPRICE_F_NOWR) {
+        fp->flags |= __CCAPRICE_F_ERR;
+        
+        return EOF;
+    }
+    
+    fp->rpos = 0;
+    fp->rend = 0;
+    
+    fp->wpos = fp->buf;
+    fp->base = fp->buf;
+    fp->wend = fp->buf + fp->buf_size;
+    
+    return 0;
+}
+
+static size_t __ccaprice_fwritex(const unsigned char *s, size_t l, FILE *fp) {
+    size_t i = 0;
+    
+    if (!fp->wend && __ccaprice_towrite(fp))
+        return 0;
+        
+    if (l > fp->wend - fp->wpos)
+        return fp->write(fp, s, l);
+        
+    if (fp->lbf >= 0) {
+        /* /^(.*\n|)/ */
+        
+        for (i=l; i && s[i-l] != '\n'; i--);
+        
+        if (i) {
+            if (fp->write(fp,s,i) < i)
+                return i;
+                
+            s += i;
+            l -= i;
+        }
+    }
+    
+    memcpy(fp->wpos, s, l);
+    fp->wpos += l;
+    return l+i;
+}
+
 size_t fwrite(const void *p, size_t size, size_t count, FILE *fp) {
-    size_t times = count;
-    while (times-->0)
-        if(write(fp->fd, p, size) == -1)
-            break;
-    return (times==0)?count:times;
+    size_t k;
+    size_t l = size * count;
+    
+    if (!l)
+        return l;
+    
+    //__CCAPRICE_FDOLOCK(fp);
+    k = __ccaprice_fwritex(p, l, fp);
+    //__CCAPRICE_FUNLOCK(fp);
+    
+    return k==l ? count : k/size;
 }

@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int fputs(const char *str, FILE *f) {
+int fputs(const char *str, FILE *fp) {
     size_t  l = strlen(str);
-    return (l) ? (int)fwrite(str, l, 1, f) - 1 : 0;
+    return (l) ? (int)fwrite(str, l, 1, fp) - 1 : 0;
 }

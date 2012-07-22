@@ -68,6 +68,9 @@ typedef struct __ccaprice_file {
     struct __ccaprice_file *prev;
     struct __ccaprice_file *next;
     
+    /* threading */
+    int lock;
+    
 }  FILE;
 
 extern FILE * const __ccaprice_stdout;

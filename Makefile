@@ -153,9 +153,13 @@ SRC     = src/assert.c                   \
           src/stdio/fwrite.c             \
           src/stdio/printf.c             \
           src/stdio/remove.c             \
+          src/stdio/impl/close.c         \
+          src/stdio/impl/read.c          \
+          src/stdio/impl/seek.c          \
           src/stdio/impl/stderr.c        \
           src/stdio/impl/stdin.c         \
           src/stdio/impl/stdout.c        \
+          src/stdio/impl/write.c         \
           src/fenv/fegetexceptflag.c     \
           src/fenv/feholdexcept.c        \
           src/fenv/fesetexceptflag.c     \

@@ -25,14 +25,16 @@
 
 __CCAPRICE_INTERNAL_FUNC(int, close, (int));
 int fclose(FILE *fp) {
-    int r,p=fp->flags & __CCAPRICE_F_PERM;
+    int r,p;
     
-    if (!p) {
-        /*
-         * TODO:
-         *  lock, linked-list CCAPRICE_INSTANCE head
-         *  unlock.
-         */
+    if (!(p = fp->flags & __CCAPRICE_F_PERM)) {
+        __CCAPRICE_OFDOLOCK();
+            if (fp->prev) fp->prev->next = fp->next;
+            if (fp->next) fp->next->prev = fp->prev;
+            
+            if (__CCAPRICE_INSTANCE.file_head == (void*)fp)
+                __CCAPRICE_INSTANCE.file_head =  (void*)fp->next;
+        __CCAPRICE_OFUNLOCK();
     }
     
     r  = fflush(fp);

@@ -183,6 +183,10 @@ __CCAPRICE_EXPORT const char *__ccaprice_build_host;
  */
 typedef struct {
     volatile int thread_item;
+    int          threaded;
+    void        *file_head;
+    int          file_lock[2];
+    
     void       (*fini)(void);
 } __ccaprice_instance;
 
@@ -199,6 +203,12 @@ __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_thread_lock,  (volatile int *));
 __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_thread_unlock,(volatile int *));
 #define __CCAPRICE_DOLOCK(X) (__CCAPRICE_INSTANCE.thread_item ? (__ccaprice_thread_lock  (X), 1) : ((void)(X), 1))
 #define __CCAPRICE_UNLOCK(X) (__CCAPRICE_INSTANCE.thread_item ? (__ccaprice_thread_unlock(X), 1) : ((void)(X), 1))
+
+#define __CCAPRICE_OFDOLOCK() __CCAPRICE_DOLOCK(__CCAPRICE_INSTANCE.file_lock)
+#define __CCAPRICE_OFUNLOCK() __CCAPRICE_UNLOCK(__CCAPRICE_INSTANCE.file_lock)
+
+#define __CCAPRICE_FDOLOCK(F) int __ccaprice_locked_file = ((F)->lock>=0 ? __ccaprice_file_dolock((F)) : 0)
+#define __CCAPRICE_FUNLOCK(F) if (__ccaprice_locked_file) __ccaprice_file_unlock((F)); else
 
 
 #endif

@@ -75,12 +75,6 @@ void exit(int status) {
     if (__CCAPRICE_INSTANCE.fini)
         __CCAPRICE_INSTANCE.fini();
     
-    /*
-     *  TODO:
-     *  seeks_on_exit,
-     *  flush_on_exit
-     */
-    
     _exit(status&0xFF);
     for (;;);
 }

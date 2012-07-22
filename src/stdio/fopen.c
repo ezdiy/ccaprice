@@ -24,16 +24,62 @@
 #include <string.h>
 #include <bits/fcntl.h>
 
+/* runtime.h */
 __CCAPRICE_INTERNAL_FUNC(int, open,  (const char *, int));
 __CCAPRICE_INTERNAL_FUNC(int, close, (int));
+__CCAPRICE_INTERNAL_FUNC(int, fcntl, (int, int, int));
+/* stdlib.h */
+__CCAPRICE_INTERNAL_FUNC(void*, malloc, (size_t));
+/* impl/ */
+__CCAPRICE_INTERNAL_FUNC(size_t, __ccaprice_stdio_read , (FILE *, unsigned char *, size_t));
+__CCAPRICE_INTERNAL_FUNC(size_t, __ccaprice_stdio_write, (FILE *, const unsigned char *, size_t));
+__CCAPRICE_INTERNAL_FUNC(off_t,  __ccaprice_stdio_seek,  (FILE *, off_t, int));
+__CCAPRICE_INTERNAL_FUNC(int,    __ccaprice_stdio_close, (FILE *));
 
 
-FILE *fdopen(int fd, const char *name) {
-    /*
-     * TODO: implement
-     */
-     
-    return __ccaprice_stdout;
+static FILE *__ccaprice_fdopen(int fd, const char *mode) {
+    FILE *fp;
+    
+    if (!strchr("rwa", *mode))
+        return 0;
+        
+    if (!(fp = malloc(sizeof(FILE) + __CCAPRICE_UNGET + __CCAPRICE_BUFSIZE)))
+        return 0;
+        
+    memset(fp, 0, sizeof(FILE));
+    
+    if (!!strchr(mode, '+'))
+        fp->flags = (*mode == 'r') ? __CCAPRICE_F_NOWR :__CCAPRICE_F_NORD;
+        
+    if (*mode == 'a') {
+        fcntl(fd, F_SETFL, fcntl(fd, F_GETFL, 0) | O_APPEND);
+    }
+    
+    fp->fd       = fd;
+    fp->buf      = (unsigned char*)fp + sizeof(FILE) + __CCAPRICE_UNGET;
+    fp->buf_size = __CCAPRICE_BUFSIZE;
+    fp->lbf      = EOF;
+    
+    
+    //if (!(fp->flags & __CCAPRICE_F_NOWR) /* TODO: check TCGETS for '\n' */)
+    //    fp->lbf = '\n';
+    
+    fp->read    = &__ccaprice_stdio_read;
+    fp->write   = &__ccaprice_stdio_write;
+    fp->seek    = &__ccaprice_stdio_seek;
+    fp->close   = &__ccaprice_stdio_close;
+    
+    if (!__CCAPRICE_INSTANCE.threaded)
+        fp->lock = -1;
+        
+    __CCAPRICE_OFDOLOCK();
+        fp->next = __CCAPRICE_INSTANCE.file_head;
+        if (__CCAPRICE_INSTANCE.file_head)
+            ((FILE*)__CCAPRICE_INSTANCE.file_head)->prev = fp;
+        __CCAPRICE_INSTANCE.file_head = (void*)fp;
+    __CCAPRICE_OFUNLOCK();
+    
+    return fp;
 }
 
 FILE *fopen(const char *file, const char *mode) {
@@ -56,7 +102,7 @@ FILE *fopen(const char *file, const char *mode) {
     if ((fd = open(file, flags|O_LARGEFILE)) < 0)
         return 0;
         
-    if ((fp = fdopen(fd, mode)))
+    if ((fp = __ccaprice_fdopen(fd, mode)))
         return fp;
     
     /* made it this far close and die */

@@ -49,7 +49,7 @@ int vfprintf(FILE *fp, const char *format, va_list ap) {
         int is_signed = 0x01;
 
         if (*format != '%') {
-            fputs((char[]){*format++}, fp);
+            fputc(*format++, fp);
             continue;
         }
         if (*++format == '0')
@@ -60,8 +60,8 @@ int vfprintf(FILE *fp, const char *format, va_list ap) {
             ll++, format++;
 
         switch (*format++) {
-            case '%': fputs("%",                fp); break;
-            case 'c': fputs((char[]){va_arg(ap, int)}, fp); break;
+            case '%': fputc('%',                fp); break;
+            case 'c': fputc(va_arg(ap, int),    fp); break;
             case 's': fputs(va_arg(ap, char *), fp); break;
             case 'f': ;
                 double f = va_arg(ap, double);
@@ -101,7 +101,7 @@ int vfprintf(FILE *fp, const char *format, va_list ap) {
                 if (is_signed)
                     *--hld = '-';
                 while (len++ < prec)
-                    fputs(zero ? "0" : " ", fp);
+                    fputc(zero ? '0' : ' ', fp);
                 fputs(hld, fp);
         }
     }
