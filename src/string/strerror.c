@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include <errno.h>
+
 char *strerror(int errnum) {
     return "strerror(int) is unimplemented";
 }

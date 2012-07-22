@@ -430,7 +430,7 @@ else
 	override EDGE     = -c $< -o $@
 	override OBJC     = $(SRC:.c=.o)
 	override OBJA     = $(ASM:.S=.o)
-	override CFLAGS  += -D$(OS)
+	override CFLAGS  += -D$(OS) -D__OSOS__="\"$(OS)"\"
 	override AFLAGS  += -D$(OS)
 endif
 

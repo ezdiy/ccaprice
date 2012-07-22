@@ -33,22 +33,11 @@
 char **__ccaprice_enviroment = NULL;
 int   *__ccaprice_errno      = NULL;
 
-
 const char *__ccaprice_build_date __CCAPRICE_USED = __DATE__;
 const char *__ccaprice_build_time __CCAPRICE_USED = __TIME__;
 const char *__ccaprice_build_comp __CCAPRICE_USED = __COMP__;
 const char *__ccaprice_build_info __CCAPRICE_USED = __INFO__;
-
-/*
- * This can be extended when more OS's are actually supported.  I think this
- * would do much better as a build step somehow so this doesn't need to be
- * modified on each new supported OS.
- */
-#if defined(BSD)
-    const char *__ccaprice_build_host __CCAPRICE_USED = "BSD";
-#elif defined(LINUX)
-    const char *__ccaprice_build_host __CCAPRICE_USED = "LINUX";
-#endif
+const char *__ccaprice_build_host __CCAPRICE_USED = __OSOS__;
 
 int __ccaprice_start (
     int  (*main)(int, char **, char **), int argc, char **argv,
