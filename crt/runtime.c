@@ -80,7 +80,7 @@ int __ccaprice_start (
 }
 
 /*
- * There is only a required 12 system calls to implement the entire functionality
+ * There is only a required 15 system calls to implement the entire functionality
  * of the standard library.  We assume all systems have these.  We also assume
  * the way at invoking them is by syscall which is why there is a syscall template
  * to easily implement the functionality to call the kernel.  We use the SYS_*
@@ -100,3 +100,4 @@ __SYS_MUNMAP { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_munmap, 2); }
 __SYS_FUTEX  { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_futex,  6); }
 __SYS_LSEEK  { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_lseek,  3); }
 __SYS_FCNTL  { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_fcntl,  3); }
+__SYS_WRITEV { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_writev, 3); }

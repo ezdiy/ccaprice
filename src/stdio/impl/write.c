@@ -28,7 +28,7 @@ struct iovec {
     size_t size;
 };
 
-__CCAPRICE_INTERNAL_FUNC(int, write, (int, const void*, size_t));
+__CCAPRICE_INTERNAL_FUNC(ssize_t, writev, (int, const void*, int));
 
 size_t __ccaprice_stdio_write(FILE *fp, const unsigned char *buf, size_t len) {
     struct iovec iovs[] = {
@@ -42,7 +42,7 @@ size_t __ccaprice_stdio_write(FILE *fp, const unsigned char *buf, size_t len) {
     ssize_t cnt;
     
     for (;;) {
-        cnt = (ssize_t)__ccaprice_syscall_args_3(SYS_writev, fp->fd, (long int)iov, icn);
+        cnt = writev(fp->fd, (const void*)iov, icn);
         if (cnt == rem) {
             fp->wend = fp->buf + fp->buf_size;
             fp->wpos = fp->buf;

@@ -29,7 +29,7 @@
 #include <bits/syscall.h>
 
 /*
- * Only need 14 interfaces with the kernel so far: that's not bad at all!
+ * Only need 15 interfaces with the kernel so far: that's not bad at all!
  * for an ANSI library.
  */
 #define __SYS_WRITE   ssize_t write (int         A1, const void *A2, size_t A3)
@@ -46,6 +46,7 @@
 #define __SYS_FUTEX   int     futex (int        *A1, int         A2, int    A3, void *A4, int *A5, int   A6)
 #define __SYS_LSEEK   off_t   lseek (int         A1, off_t       A2, int    A3)
 #define __SYS_FCNTL   int     fcntl (int         A1, int         A2, int    A3)
+#define __SYS_WRITEV  ssize_t writev(int         A1, const void *A2, int    A3)
 
 /*
  * Systemcall fillers to make life simpler in princible.  This is all nasty
@@ -80,6 +81,7 @@ __CCAPRICE_EXPORT int     munmap(void *, size_t);
 __CCAPRICE_EXPORT int     futex (int*, int, int, void*, int*, int);
 __CCAPRICE_EXPORT off_t   lseek (int, off_t, int);
 __CCAPRICE_EXPORT int     fcntl (int, int, int);
+__CCAPRICE_EXPORT ssize_t writev(int, const void*, int);
 
 /* TODO: hack! fix! workaround! */
 #ifdef SYS_mmap2
