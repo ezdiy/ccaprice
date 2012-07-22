@@ -46,12 +46,14 @@ char  c[]= {                          \
 };                                    \
 fwrite(c, strlen(c), 1, stdout);      \
 fflush(stdout);                       \
-size_t l=PADD-strlen(c);              \
-while (l-->0) { fputc(' ', stdout); } \
+size_t l=PADD-strlen(c)-7;            \
+while (l-->0) {                       \
+    fputc((l%4)?' ':'.', stdout);     \
+}                                     \
 __VA_ARGS__                           \
     }
 #define TEST_RET(CONDITIONS) return (CONDITIONS);
-#define TEST_TRY(NAME) printf("%s\n", NAME##_test()?"\033[32mpassed\033[0m":"\033[31mfailed\033[0m")
+#define TEST_TRY(NAME) printf("%s\n", NAME##_test()?"\033[32m[P A S S E D]\033[0m":"\033[31m[F A I L E D]\033[0m")
 
 /* global compare for qsort/bsearch etc */
 int cmp(const void *a, const void *b) {
