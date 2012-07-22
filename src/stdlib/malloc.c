@@ -37,7 +37,7 @@
  */
  
 #define _DWMALLOC_GETPAGESIZE 1
-/*#define _DWMALLOC_THREADSAFE*/
+#define _DWMALLOC_THREADSAFE
 #define _DWMALLOC_DEBUG     
 
 
@@ -60,10 +60,16 @@
  *       some sort of atomic memory barriers.
  */
 #ifdef _DWMALLOC_THREADSAFE
-#    include <pthread.h>
-#    define _DWMALLOC_LOCK()   do { pthread_mutex_lock  (&_dwmalloc_mutex); } while (0)
-#    define _DWMALLOC_UNLOCK() do { pthread_mutex_unlock(&_dwmalloc_mutex); } while (0)
-     static pthread_mutex_t _dwmalloc_mutex = PTHREAD_MUTEX_INITIALIZER;
+#   ifdef _DWMALLOC_PTHREAD
+#       include <pthread.h>
+#       define _DWMALLOC_LOCK()   do { pthread_mutex_lock  (&_dwmalloc_mutex); } while (0)
+#       define _DWMALLOC_UNLOCK() do { pthread_mutex_unlock(&_dwmalloc_mutex); } while (0)
+        static pthread_mutex_t _dwmalloc_mutex = PTHREAD_MUTEX_INITIALIZER;
+#   else
+#       define _DWMALLOC_LOCK()   do { __CCAPRICE_DOLOCK(&_dwmalloc_lock); } while (0)
+#       define _DWMALLOC_UNLOCK() do { __CCAPRICE_UNLOCK(&_dwmalloc_lock); } while (0)
+        static int _dwmalloc_lock;
+#   endif
 #else
 #    define _DWMALLOC_LOCK()
 #    define _DWMALLOC_UNLOCK()
