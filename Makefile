@@ -150,9 +150,12 @@ SRC     = src/assert.c                   \
           src/stdio/fopen.c              \
           src/stdio/fputc.c              \
           src/stdio/fputs.c              \
+          src/stdio/fseek.c              \
           src/stdio/fwrite.c             \
           src/stdio/printf.c             \
+          src/stdio/putchar.c            \
           src/stdio/remove.c             \
+          src/stdio/rename.c             \
           src/stdio/impl/close.c         \
           src/stdio/impl/read.c          \
           src/stdio/impl/seek.c          \

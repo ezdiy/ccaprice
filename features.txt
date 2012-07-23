@@ -156,18 +156,27 @@ stddef.h:
 stdio.h:
     FILE
     EOF
+    SEEK_SET
+    SEEK_CUR
+    SEEK_END
     stdout
     stdin
-    fclose()
-    feof  ()
-    ferror()
-    fflush()
-    fopen ()
-    fputc ()
-    fputs ()
-    fwrite()
-    printf() [incompleted! only supports a few things]
-    remove()
+    stderr
+    fclose  ()
+    feof    ()
+    ferror  ()
+    fflush  ()
+    fopen   ()
+    fputc   ()
+    fputs   ()
+    fseek   ()
+    fwrite  ()
+    vfprintf()
+    fprintf ()
+    printf  ()
+    putchar ()
+    remove  ()
+    rename  ()
     
 stdlib.h:
     EXIT_SUCCESS
