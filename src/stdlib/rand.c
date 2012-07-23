@@ -47,7 +47,7 @@
         }
 
         #define DATA(X) \
-        static const unsigned int data_##X[4]
+        static const unsigned int __attribute__((aligned(16))) data_##X[4] 
 
         int rand() {
             __m128i split;
