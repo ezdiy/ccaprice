@@ -20,22 +20,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#define __CCAPRICE_EXTENSIONS /* Enable extensions in ccaprice */
-
 #define NDEBUG /* stop assert fail */
-#include "inc/stdlib.h"
-#include "inc/stdio.h"
-#include "inc/string.h"
-#include "inc/ctype.h"
-#include "inc/locale.h"
-#include "inc/math.h"
-#include "inc/errno.h"
-#include "inc/stdint.h"
-#include "inc/fenv.h"
-#include "inc/limits.h"
-#include "inc/stdnoreturn.h"
-#include "inc/setjmp.h"
-#include "inc/assert.h"
+
+#if !defined(__CCAPRICE_CP)
+#   define MIN(X,Y) (X < Y ? X : Y)
+#   define MAX(X,Y) (X > Y ? X : Y)
+#   define __CCAPRICE_BUILD_COMP "????"
+#   define __CCAPRICE_BUILD_DATE __DATE__
+#   define __CCAPRICE_BUILD_HOST "????"
+#   define __CCAPRICE_BUILD_INFO "????"
+#   define __CCAPRICE_BUILD_TIME __TIME__
+#else
+#   define __CCAPRICE_EXTENSIONS
+#endif
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <locale.h>
+#include <math.h>
+#include <errno.h>
+#include <stdint.h>
+#include <fenv.h>
+#include <limits.h>
+#include <stdnoreturn.h>
+#include <setjmp.h>
+#include <assert.h>
 
 int PADD = 80;
 #define TEST_DEF(SPACE, NAME, ...)    \
@@ -414,6 +425,7 @@ TEST_DEF("assert", assert, {
     assert(1!=1);
     TEST_RET(1);
 })
+
 /*
  * TODO: fabs, fabsf, fabsl, sqrt, sqrtf, sqrtl tests
  */
