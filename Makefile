@@ -198,10 +198,12 @@ ASM32  =  crt/x86_32/crt1.S              \
           src/math/x86_32/asin.S         \
           src/math/x86_32/atan.S         \
           src/math/x86_32/ceil.S         \
+          src/math/x86_32/cos.S          \
           src/math/x86_32/fabs.S         \
           src/math/x86_32/fmod.S         \
           src/math/x86_32/log.S          \
           src/math/x86_32/log10.S        \
+          src/math/x86_32/sin.S          \
           src/math/x86_32/sqrt.S
           
 ASMARM =  crt/arm/crt1.S                 \
