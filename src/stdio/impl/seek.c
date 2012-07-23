@@ -22,6 +22,13 @@
  */
 #include <stdio.h>
 __CCAPRICE_INTERNAL_FUNC(int, lseek, (int, off_t, int));
+
+/*
+ * TODO: better syscall for __llseek support. For systems that support it
+ * we try not to use the __ccaprice_syscall_args inside the library because
+ * it makes porting harder.  Everything is based from runtime.[c/h] to make
+ * the interface easier to port.
+ */
 off_t __ccaprice_stdio_seek(FILE *fp, off_t off, int whence) {
     off_t ret;
 #ifdef SYS__llseek

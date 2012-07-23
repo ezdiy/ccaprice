@@ -23,10 +23,12 @@
 #include <limits.h>
 #include <bits/syscall.h>
 #include "futex.h"
+__CCAPRICE_INTERNAL_FUNC(int, futex, (int *, int, int, const void *, int *, int));
 
 void __ccaprice_thread_wake(volatile int *a, int c, int p) {
     p = (p)   ? 128     : 0;
     c = (c<0) ? INT_MAX : c;
     
-    __ccaprice_syscall_args_3(SYS_futex, (long)a, FUTEX_WAKE | p, c);
+    //__ccaprice_syscall_args_3(SYS_futex, (long)a, FUTEX_WAKE | p, c);
+    futex((int*)a, FUTEX_WAKE|p, c, 0, 0, 0);
 }

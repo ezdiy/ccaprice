@@ -28,6 +28,7 @@
 #include <atomic.h>
 #include <bits/syscall.h>
 __CCAPRICE_INTERNAL_FUNC(void, _exit, (int));
+__CCAPRICE_INTERNAL_FUNC(int, pause, (void));
 
 void __ccaprice_exit(int status) {
     exit(status);
@@ -62,7 +63,7 @@ void exit(int status) {
      */
     static int lock;
     while (__ccaprice_atomic_swap(&lock, 1))
-        __ccaprice_syscall_args_0(SYS_pause);
+        pause();
         
     int   i=sizeof(__ccaprice_atexit_functions)/sizeof(*__ccaprice_atexit_functions);
     while(i-->0) {

@@ -20,9 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include "ccaprice.h"
 #include <atomic.h>
 #include <bits/syscall.h>
 #include "futex.h"
+__CCAPRICE_INTERNAL_FUNC(int, futex, (int *, int, int, const void *, int *, int));
 
 void __ccaprice_thread_wait(volatile int *a, volatile int *w, int v, int p) {
     int spins = 10000;
@@ -36,7 +38,9 @@ void __ccaprice_thread_wait(volatile int *a, volatile int *w, int v, int p) {
     }
     
     if (w) __ccaprice_atomic_increment(w);
-    while (*a == v)
-        __ccaprice_syscall_args_4(SYS_futex, (long)a, FUTEX_WAIT|p, v, 0);
+    while (*a == v) {
+        //__ccaprice_syscall_args_4(SYS_futex, (long)a, FUTEX_WAIT|p, v, 0);
+        futex((int *)a, FUTEX_WAIT|p, v, 0, 0, 0);
+    }
     if (w) __ccaprice_atomic_decrement(w);
 }
