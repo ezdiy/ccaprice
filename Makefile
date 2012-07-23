@@ -515,6 +515,7 @@ compare: test_core
 	$(ECHO) $(GREEN) Comparing system libc ... $(ENDCOL)
 	$(ECHO) $(GREEN) systems:  $(RPURPLE)`du -s test_system` (bytes) $(ENDCOL)
 	$(ECHO) $(GREEN) ccaprice: $(RPURPLE)`du -s test`        (bytes) $(ENDCOL)
+	@ rm -f test test_system
 
 printendian:
 ifneq ($(DONOT), 1)
@@ -576,4 +577,4 @@ clean:
 	$(AT) find . -type f -name "*.o" -not -path "*/.*/*" -not -name ".*" -exec rm -f {} \;
 	$(AT) rm -f ccaprice.lib ccaprice.a
 	$(AT) rm -f endian endian.c endian_type endian_info endian_data endian.h
-	$(AT) rm -f test
+	$(AT) rm -f test test_system
