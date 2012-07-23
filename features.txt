@@ -177,6 +177,7 @@ stdio.h:
     putchar ()
     remove  ()
     rename  ()
+    rewind  ()
     
 stdlib.h:
     EXIT_SUCCESS

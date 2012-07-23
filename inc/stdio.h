@@ -94,6 +94,7 @@ __CCAPRICE_EXPORT int    remove  (const char*);
 __CCAPRICE_EXPORT int    printf  (const char *, ...);
 __CCAPRICE_EXPORT int    vfprintf(FILE *, const char *, va_list);
 __CCAPRICE_EXPORT int    fprintf (FILE *, const char *, ...);
-__CCAPRICE_EXPORT int    fsee    (FILE *, long, int);
+__CCAPRICE_EXPORT int    fseek   (FILE *, long, int);
+__CCAPRICE_EXPORT void   rewind  (FILE *);
 
 #endif /* !CCAPRICE_STDIO_HDR      */

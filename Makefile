@@ -156,6 +156,7 @@ SRC     = src/assert.c                   \
           src/stdio/putchar.c            \
           src/stdio/remove.c             \
           src/stdio/rename.c             \
+          src/stdio/rewind.c             \
           src/stdio/impl/close.c         \
           src/stdio/impl/read.c          \
           src/stdio/impl/seek.c          \
