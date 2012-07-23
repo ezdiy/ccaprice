@@ -30,5 +30,5 @@
  * if defined in errno.c in <src/posic/errno.c>.
  */
 __CCAPRICE_EXPORT int* __ccaprice_errno;
-#define errno (*__ccaprice_errno);
+#define errno (*__ccaprice_errno)
 #endif

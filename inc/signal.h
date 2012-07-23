@@ -22,6 +22,11 @@
  */
 #ifndef __CCAPRICE_SIGNAL_HDR__
 #define __CCAPRICE_SIGNAL_HDR__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <ccaprice.h>
 /*
  * The C standard only states that the following be implemented:
@@ -62,4 +67,9 @@ __CCAPRICE_EXPORT int __ccaprice_signal_ign(int);
 
 /* exposed functions */
 __CCAPRICE_EXPORT int raise(int);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

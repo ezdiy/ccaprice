@@ -504,6 +504,17 @@ test: test_core
 	$(ECHO) $(GREEN) Completed Build for test $(RPURPLE)(`file test | sed -r -e 's@.*: *@@'`) $(ENDCOL)
 	$(ECHO) $(RED) Executing ./test `stty -a | grep 'columns' | sed -e 's/.*columns //' -e 's/;.*//' `$(ENDCOL)
 	@ ./test `stty -a | grep 'columns' | sed -e 's/.*columns //' -e 's/;.*//'`
+	
+compare: test_core
+	@ gcc test.c -static-libgcc -Wl,-Bstatic -lc -lm -o test_system
+	$(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
+	@ echo $(BLUE)   Before `du -s test_system` $(ENDCOL)
+	@ strip test_system
+	@ echo $(BLUE)   After  `du -s test_system` $(ENDCOL)
+	@ echo
+	$(ECHO) $(GREEN) Comparing system libc ... $(ENDCOL)
+	$(ECHO) $(GREEN) systems:  $(RPURPLE)`du -s test_system` (bytes) $(ENDCOL)
+	$(ECHO) $(GREEN) ccaprice: $(RPURPLE)`du -s test`        (bytes) $(ENDCOL)
 
 printendian:
 ifneq ($(DONOT), 1)

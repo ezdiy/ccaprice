@@ -22,6 +22,11 @@
  */
 #ifndef  __CCAPRICE_STRING_HDR__
 #define  __CCAPRICE_STRING_HDR__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <ccaprice.h>
 #include <bits/types.h>
 
@@ -72,5 +77,9 @@ __CCAPRICE_EXPORT size_t  strlen  (const char*);
  5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
  6,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0, \
  5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0
+ 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* !CCAPRICE_STRING_HDR */

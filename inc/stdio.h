@@ -22,9 +22,19 @@
  */
 #ifndef __CCAPRICE_STDIO_HDR__
 #define __CCAPRICE_STDIO_HDR__
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <ccaprice.h>
 #include <bits/types.h>
 #include <stdarg.h> /*TODO: FIX! */
+
+/* NULL ... */
+#ifdef NULL
+#   undef NULL
+#endif
+#define NULL __CCAPRICE_NULL
 
 #define EOF -1
 #define SEEK_SET (EOF      + 1)
@@ -41,6 +51,13 @@
 
 #define __CCAPRICE_UNGET   8
 #define __CCAPRICE_BUFSIZE 1024
+
+#define BUFSIZ __CCAPRICE_BUFSIZE
+
+/* _IO macros */
+#define _IOFBF 0
+#define _IOLBF (_IOFBF+1)
+#define _IONBF (_IOLBF+1)
 
 typedef struct __ccaprice_file {
     unsigned          flags;
@@ -96,5 +113,9 @@ __CCAPRICE_EXPORT int    vfprintf(FILE *, const char *, va_list);
 __CCAPRICE_EXPORT int    fprintf (FILE *, const char *, ...);
 __CCAPRICE_EXPORT int    fseek   (FILE *, long, int);
 __CCAPRICE_EXPORT void   rewind  (FILE *);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* !CCAPRICE_STDIO_HDR      */

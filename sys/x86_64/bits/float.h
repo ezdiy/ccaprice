@@ -49,7 +49,7 @@
 #define DBL_MIN_10_EXP   (-307)
 #define DBL_MAX_10_EXP   308
 
-#defime FLT_ROUNDS       1
+#define FLT_ROUNDS       1
 
 #define LDBL_MIN         3.3621031431120935063e-4932L
 #define LDBL_MAX         1.1897314953572317650e+4932L

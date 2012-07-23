@@ -22,6 +22,11 @@
  */
 #ifndef __CCAPRICE_MATH_HDR__
 #define __CCAPRICE_MATH_HDR__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <ccaprice.h>
 #if defined(__CCAPRICE_TARGET_X86_32) || defined(__CCAPRICE_TARGET_X86_64)
 	#define __CCAPRICE_MATH_HI_L(X) *(1+((int*)(&X)))
@@ -86,5 +91,8 @@ __CCAPRICE_EXPORT double      sqrt  (double);
 __CCAPRICE_EXPORT float       sqrtf (float);
 __CCAPRICE_EXPORT long double sqrtl (long double);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* !CCAPRICE_MATH_HDR */

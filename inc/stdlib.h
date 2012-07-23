@@ -22,6 +22,11 @@
  */
 #ifndef __CCAPRICE_STDLIB_HDR__
 #define __CCAPRICE_STDLIB_HDR__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <ccaprice.h>
 #include <bits/types.h>
 
@@ -117,5 +122,9 @@ __CCAPRICE_EXPORT int       puts   (const char *);
 __CCAPRICE_EXPORT void      qsort  (void *, size_t, size_t, int (*)(const void *, const void *));
 __CCAPRICE_EXPORT void      srand  (unsigned int);
 __CCAPRICE_EXPORT int       rand   ();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

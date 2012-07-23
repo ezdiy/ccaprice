@@ -22,9 +22,19 @@
  */
 #ifndef __CCAPRICE_SETJMP_HDR__
 #define __CCAPRICE_SETJMP_HDR__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <ccaprice.h>
 #include <bits/setjmp.h>
 
 __CCAPRICE_EXPORT int  setjmp (jmp_buf);
 __CCAPRICE_EXPORT void longjmp(jmp_buf, int);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

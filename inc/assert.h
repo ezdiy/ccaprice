@@ -30,6 +30,10 @@
 #   define assert(X) ((X) || (__ccaprice_assert(#X, __FILE__, __LINE__, __func__),0))
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Internal function not to be used outside scope of library
  */
@@ -39,5 +43,9 @@ __CCAPRICE_EXPORT void __ccaprice_assert(
     int         line,
     const char *func
 );
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

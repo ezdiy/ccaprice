@@ -22,6 +22,11 @@
  */
 #ifndef __CCAPRICE_FENV_HDR__
 #define __CCAPRICE_FENV_HDR__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 #include <ccaprice.h>
 #include <bits/fenv.h>
 
@@ -39,4 +44,9 @@ __CCAPRICE_EXPORT int feholdexcept   (fenv_t*);
 
 __CCAPRICE_EXPORT int fesetenv       (const fenv_t*);
 __CCAPRICE_EXPORT int feupdateenv    (const fenv_t*);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif
