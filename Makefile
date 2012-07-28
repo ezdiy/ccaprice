@@ -56,9 +56,6 @@ else
 ifneq ($(shell `which grep &> /dev/null`), no)
 	APP = grep
 else
-ifneq ($(shell `which find &> /dev/null`), no)
-	APP = find
-else
 ifneq ($(shell `which mkdir &> /dev/null`), no)
 	APP = mkdir
 else
@@ -66,7 +63,6 @@ ifneq ($(shell `which cp &> /dev/null/`), no)
 	APP = cp
 else
 	APP = 0
-endif
 endif
 endif
 endif
