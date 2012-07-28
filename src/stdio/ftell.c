@@ -27,7 +27,7 @@ static off_t __ccaprice_ftellu(FILE *fp) {
 	if (pos < 0)
 		return pos;
 		
-	return pos = (fp->rend - fp->rpos) + (fp->wpos - fp->base);
+	return pos - (fp->rend - fp->rpos) + (fp->wpos - fp->base);
 }
 
 static off_t __ccaprice_ftell(FILE *fp) {
