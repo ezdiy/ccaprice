@@ -35,18 +35,27 @@ longjmp:
     mov   ip,  r0
     movs  r0,  r1
     moveq r0,  #1
+    
+#if 0 /* 1 for thumb */
     ldmia ip!, {v1,v2,v3,v4,v5,v6,sl,fp}
     ldr   sp, [ip], #4
     ldr   lr, [ip], #4
+#else
+	ldmia ip!, {v1,v2,v3,v4,v5,v6,sl,fp,sp,lr}
+#endif
     tst   lr,  #1
     moveq pc,  lr
     bx    lr
 
 setjmp:
     mov   ip, r0
+#if 0 /* 1 for thumb */
     stmia ip, {v1,v2,v3,v4,v5,v6,sl,fp}
     mov   r2, sp
     stmia ip!,{r2,lr}
+#else
+	stmia ip!, {v1,v2,v3,v4,v5,v6,sl,fp,sp,lr}
+#endif
     mov   r0, #0
     tst   lr, #1
     moveq pc, lr
