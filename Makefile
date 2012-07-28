@@ -75,7 +75,7 @@ endif
 endif
 endif
 
-CFLAGS += -Wall                          \
+CFLAGS +=  -Wall                         \
           -nostdlib                      \
           -nostdinc                      \
           -fno-builtin                   \
@@ -517,10 +517,10 @@ test: test_core
 compare: test_core
 	@ gcc test.c -static-libgcc -Wl,-Bstatic -lc -lm -o test_system
 	$(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
-	@ echo $(BLUE)   Before `du -s test_system` $(ENDCOL)
+	$(ECHO) $(BLUE)   Before `du -s test_system` $(ENDCOL)
 	@ strip test_system
-	@ echo $(BLUE)   After  `du -s test_system` $(ENDCOL)
-	@ echo
+	$(ECHO) $(BLUE)   After  `du -s test_system` $(ENDCOL)
+	$(ECHO)
 	$(ECHO) $(GREEN) Comparing system libc ... $(ENDCOL)
 	$(ECHO) $(GREEN) systems:  $(RPURPLE)`du -s test_system` (bytes) $(ENDCOL)
 	$(ECHO) $(GREEN) ccaprice: $(RPURPLE)`du -s test`        (bytes) $(ENDCOL)
@@ -604,7 +604,7 @@ clean:
 	$(AT) rm -f ccaprice.lib ccaprice.a
 	$(AT) rm -f endian endian.c endian_type endian_info endian_data endian.h
 	$(AT) rm -f test test_system
-	$(AT) echo $(GREEN) Clean complete $(ENDCOL)
+	$(ECHO) $(GREEN) Clean complete $(ENDCOL)
 	
 # nukes any install and cleans the current build
 # this is convience recipe
