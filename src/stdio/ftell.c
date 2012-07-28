@@ -42,6 +42,6 @@ long ftell(FILE *fp) {
 	off_t pos = __ccaprice_ftell(fp);
 	if (pos > LONG_MAX)
 		return -1;
-		
+
 	return pos;
 }

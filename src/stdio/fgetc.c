@@ -26,7 +26,7 @@ static int __ccaprice_toread(FILE *fp) {
 	fp->mode |= fp->mode - 1;
 
 	if (fp->wpos > fp->buf)
-		fp->write(fp, 0, 0);
+	f	p->write(fp, 0, 0);
 
 	fp->wpos = 0;
 	fp->base = 0;
@@ -36,7 +36,7 @@ static int __ccaprice_toread(FILE *fp) {
 		if (fp->flags & __CCAPRICE_F_NORD)
 			fp->flags |= __CCAPRICE_F_ERR;
 
-		return EOF;
+	return EOF;
 	}
 	fp->rpos = fp->buf;
 	fp->rend = fp->buf;
