@@ -79,9 +79,9 @@ size_t fwrite(const void *p, size_t size, size_t count, FILE *fp) {
     if (!l)
         return l;
     
-    //__CCAPRICE_FDOLOCK(fp);
+    __CCAPRICE_FDOLOCK(fp);
     k = __ccaprice_fwritex(p, l, fp);
-    //__CCAPRICE_FUNLOCK(fp);
+    __CCAPRICE_FUNLOCK(fp);
     
     return k==l ? count : k/size;
 }

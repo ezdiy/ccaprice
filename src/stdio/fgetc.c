@@ -21,27 +21,46 @@
  * SOFTWARE.
  */
 #include <stdio.h>
-#include <limits.h>
-static off_t __ccaprice_ftellu(FILE *fp) {
-	off_t pos = fp->seek(fp, 0, SEEK_CUR);
-	if (pos < 0)
-		return pos;
+
+static int __ccaprice_toread(FILE *fp) {
+	fp->mode |= fp->mode - 1;
+	
+	if (fp->wpos > fp->buf)
+		fp->write(fp, 0, 0);
 		
-	return pos - (fp->rend - fp->rpos) + (fp->wpos - fp->base);
+	fp->wpos = 0;
+	fp->base = 0;
+	fp->wend = 0;
+	
+	if (fp->flags & (__CCAPRICE_F_EOF | __CCAPRICE_F_NORD)) {
+		if (fp->flags & __CCAPRICE_F_NORD)
+			fp->flags |= __CCAPRICE_F_ERR;
+			
+		return EOF;
+	}
+	fp->rpos = fp->buf;
+	fp->rend = fp->buf;
+	
+	return 0;
 }
 
-static off_t __ccaprice_ftell(FILE *fp) {
-	off_t pos;
-	__CCAPRICE_FDOLOCK(fp);
-	pos = __ccaprice_ftellu(fp);
-	__CCAPRICE_FUNLOCK(fp);
-	return pos;
+static int __ccaprice_uflow(FILE *fp) {
+	unsigned char c;
+	if ((fp->rend || !__ccaprice_toread(fp)) && fp->read(fp, &c, 1) == 1)
+		return c;
+		
+	return EOF;
 }
 
-long ftell(FILE *fp) {
-	off_t pos = __ccaprice_ftell(fp);
-	if (pos > LONG_MAX)
-		return -1;
-		
-	return pos;
+static int __ccaprice_fgetc(FILE *fp) {
+	return ((fp->rpos < fp->rend) ? *fp->rpos++ : __ccaprice_uflow(fp));
+}
+
+int fgetc(FILE *fp) {
+	int c;
+	if (fp->lock < 0 || !__ccaprice_file_dolock(fp))
+		return __ccaprice_fgetc(fp);
+	c = __ccaprice_fgetc(fp);
+	__ccaprice_file_unlock(fp);
+	return c;
 }

@@ -207,8 +207,14 @@ __CCAPRICE_INTERNAL_FUNC(void, __ccaprice_thread_unlock,(volatile int *));
 #define __CCAPRICE_OFDOLOCK() __CCAPRICE_DOLOCK(__CCAPRICE_INSTANCE.file_lock)
 #define __CCAPRICE_OFUNLOCK() __CCAPRICE_UNLOCK(__CCAPRICE_INSTANCE.file_lock)
 
+/*
+ * TODO: actual file locking / unlocking
+ * for threadsafety -- C11 (threading too)
+ */
+#define __ccaprice_file_dolock(F) 1
+#define __ccaprice_file_unlock(F)
+
 #define __CCAPRICE_FDOLOCK(F) int __ccaprice_locked_file = ((F)->lock>=0 ? __ccaprice_file_dolock((F)) : 0)
 #define __CCAPRICE_FUNLOCK(F) if (__ccaprice_locked_file) __ccaprice_file_unlock((F)); else
-
 
 #endif

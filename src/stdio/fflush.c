@@ -45,9 +45,9 @@ int fflush(FILE *fp) {
     int r;
     
     if (fp) {
-        //__CCAPRICE_FDOLOCK(fp);
+        __CCAPRICE_FDOLOCK(fp);
         r = __ccaprice_fflush(fp);
-        //__CCAPRICE_FUNLOCK(fp);
+        __CCAPRICE_FUNLOCK(fp);
         
         return r;
     }
@@ -56,10 +56,10 @@ int fflush(FILE *fp) {
     
     __CCAPRICE_OFDOLOCK();
     for (fp = (FILE*)__CCAPRICE_INSTANCE.file_head; fp; fp=fp->next) {
-        //__CCAPRICE_FDOLOCK(fp);
+        __CCAPRICE_FDOLOCK(fp);
         if (fp->wpos > fp->base)
             r |= fflush(fp);
-        //__CCAPRICE_FUNLOCK(fp);
+        __CCAPRICE_FUNLOCK(fp);
     }
     __CCAPRICE_OFUNLOCK();
     return 0;

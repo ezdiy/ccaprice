@@ -114,6 +114,7 @@ __CCAPRICE_EXPORT int    fprintf (FILE *, const char *, ...);
 __CCAPRICE_EXPORT int    fseek   (FILE *, long, int);
 __CCAPRICE_EXPORT void   rewind  (FILE *);
 __CCAPRICE_EXPORT long   ftell   (FILE *);
+__CCAPRICE_EXPORT int    fgetc   (FILE *);
 
 #ifdef __cplusplus
 }

@@ -22,8 +22,8 @@
  */
 #include <stdio.h>
 void rewind(FILE *fp) {
-    //__CCAPRICE_FDOLOCK(fp);
+    __CCAPRICE_FDOLOCK(fp);
     fseek(fp, 0L, SEEK_SET);
     fp->flags &= ~__CCAPRICE_F_ERR;
-    //__CCAPRICE_FUNLOCK(fp);
+    __CCAPRICE_FUNLOCK(fp);
 }

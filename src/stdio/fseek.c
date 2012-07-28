@@ -48,8 +48,8 @@ static int __ccaprice_fseek(FILE *fp, off_t off, int whence) {
 
 int fseek(FILE *fp, long off, int whence) {
     int r;
-    //__CCAPRICE_FDOLOCK(fp);
+    __CCAPRICE_FDOLOCK(fp);
     r = __ccaprice_fseek(fp, off, whence);
-    //__CCAPRICE_FUNLOCK(fp);
+    __CCAPRICE_FUNLOCK(fp);
     return r;
 }
