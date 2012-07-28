@@ -151,6 +151,7 @@ SRC     = src/assert.c                   \
           src/stdio/fputc.c              \
           src/stdio/fputs.c              \
           src/stdio/fseek.c              \
+          src/stdio/ftell.c              \
           src/stdio/fwrite.c             \
           src/stdio/printf.c             \
           src/stdio/putchar.c            \
@@ -437,7 +438,9 @@ else
 	
 	#supress clang's 
 	ifeq (clang, $(CCC))
-		override CFLAGS += -Qunused-arguments
+		override CFLAGS +=     \
+			-Qunused-arguments \
+			-Wno-unused-value
 	endif
 	endif
 	
