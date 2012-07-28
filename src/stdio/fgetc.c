@@ -24,23 +24,23 @@
 
 static int __ccaprice_toread(FILE *fp) {
 	fp->mode |= fp->mode - 1;
-	
+
 	if (fp->wpos > fp->buf)
 		fp->write(fp, 0, 0);
-		
+
 	fp->wpos = 0;
 	fp->base = 0;
 	fp->wend = 0;
-	
+
 	if (fp->flags & (__CCAPRICE_F_EOF | __CCAPRICE_F_NORD)) {
 		if (fp->flags & __CCAPRICE_F_NORD)
 			fp->flags |= __CCAPRICE_F_ERR;
-			
+
 		return EOF;
 	}
 	fp->rpos = fp->buf;
 	fp->rend = fp->buf;
-	
+
 	return 0;
 }
 
@@ -48,7 +48,7 @@ static int __ccaprice_uflow(FILE *fp) {
 	unsigned char c;
 	if ((fp->rend || !__ccaprice_toread(fp)) && fp->read(fp, &c, 1) == 1)
 		return c;
-		
+
 	return EOF;
 }
 

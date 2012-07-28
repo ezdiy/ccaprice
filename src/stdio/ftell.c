@@ -26,7 +26,7 @@ static off_t __ccaprice_ftellu(FILE *fp) {
 	off_t pos = fp->seek(fp, 0, SEEK_CUR);
 	if (pos < 0)
 		return pos;
-		
+
 	return pos - (fp->rend - fp->rpos) + (fp->wpos - fp->base);
 }
 
