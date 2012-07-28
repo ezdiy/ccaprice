@@ -494,7 +494,7 @@ ifneq ($(DONOT), 1)
 endif
 
 # test target
-test_core: test.o
+test_core: $(OUT) test.o
 ifneq ($(DONOT), 1)
 	$(AT) ld $(LFLAGS) -o test test.o $(OUT)
 endif
@@ -565,6 +565,23 @@ ifneq ($(DONOT), 1)
 	$(AT) rm -f endian_type endian_info endian_data endian.c
 endif
 
+install: $(OUT)
+	$(AT) mkdir -p    /usr/include/ccaprice/int/
+	$(AT) mkdir -p    /usr/include/ccaprice/inc/
+	$(AT) cp -r int/* /usr/include/ccaprice/int
+	$(AT) cp -r inc/* /usr/include/ccaprice/inc
+	$(AT) cp ccaprice.a /usr/lib/ccaprice.a
+	$(AT) echo $(GREEN) Installed to: $(ENDCOL)
+	$(AT) echo $(PURPLE)  /usr/include/ccaprice/  $(RRED)<include>$(ENDCOL)
+	$(AT) echo $(PURPLE)  /usr/lib/               $(RRED)<library>$(ENDCOL)
+	
+uninstall:
+	$(AT) rm -rf /usr/include/ccaprice
+	$(AT) rm -f  /usr/lib/ccaprice.a
+	$(AT) echo $(GREEN) Uninstalled from directories:$(ENDCOL)
+	$(AT) echo $(PURPLE)  /usr/include/ccaprice/  $(RRED)<include>$(ENDCOL)
+	$(AT) echo $(PURPLE)  /usr/lib/               $(RRED)<library>$(ENDCOL)
+
 .PHONY: printendian
 
 
@@ -583,3 +600,8 @@ clean:
 	$(AT) rm -f ccaprice.lib ccaprice.a
 	$(AT) rm -f endian endian.c endian_type endian_info endian_data endian.h
 	$(AT) rm -f test test_system
+	$(AT) echo $(GREEN) Clean complete $(ENDCOL)
+	
+# nukes any install and cleans the current build
+# this is convience recipe
+nuke: uninstall clean
