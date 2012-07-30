@@ -147,13 +147,17 @@ SRC     = src/assert.c                   \
           src/stdlib/puts.c              \
           src/stdlib/qsort.c             \
           src/stdlib/rand.c              \
+          src/stdio/clearerr.c           \
           src/stdio/fclose.c             \
           src/stdio/feof.c               \
           src/stdio/ferror.c             \
           src/stdio/fflush.c             \
+          src/stdio/fgetc.c              \
+          src/stdio/fgetpos.c            \
           src/stdio/fopen.c              \
           src/stdio/fputc.c              \
           src/stdio/fputs.c              \
+          src/stdio/fread.c              \
           src/stdio/fseek.c              \
           src/stdio/ftell.c              \
           src/stdio/fwrite.c             \

@@ -162,14 +162,19 @@ stdio.h:
     stdout
     stdin
     stderr
+    clearerr()
     fclose  ()
     feof    ()
     ferror  ()
     fflush  ()
+    fgetc   ()
+    fgetpos ()
     fopen   ()
     fputc   ()
     fputs   ()
+    fread   ()
     fseek   ()
+    ftell   ()
     fwrite  ()
     vfprintf()
     fprintf ()

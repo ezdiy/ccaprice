@@ -21,7 +21,6 @@
  * SOFTWARE.
  */
 #include <stdio.h>
-#include <bits/syscall.h>
 
 struct iovec {
     void  *base;

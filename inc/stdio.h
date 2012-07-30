@@ -59,6 +59,11 @@ extern "C" {
 #define _IOLBF (_IOFBF+1)
 #define _IONBF (_IOLBF+1)
 
+typedef union {
+    char   ___O[16];
+    double ___A;
+} fpos_t;
+
 typedef struct __ccaprice_file {
     unsigned          flags;
     unsigned char    *buf;
@@ -98,23 +103,27 @@ extern FILE * const __ccaprice_stderr;
 #define stdin   (__ccaprice_stdin )
 #define stderr  (__ccaprice_stderr)
 
+__CCAPRICE_EXPORT void   clearerr(FILE *);
 __CCAPRICE_EXPORT int    fclose  (FILE *);
 __CCAPRICE_EXPORT int    feof    (FILE *);
+__CCAPRICE_EXPORT int    ferror  (FILE *);
 __CCAPRICE_EXPORT int    fflush  (FILE *);
+__CCAPRICE_EXPORT int    fgetc   (FILE *);
+__CCAPRICE_EXPORT int    fgetpos (FILE *, fpos_t *);
 __CCAPRICE_EXPORT FILE * fopen   (const char *, const char *);
 __CCAPRICE_EXPORT int    fputc   (int, FILE*);
 __CCAPRICE_EXPORT int    fputs   (const char *, FILE*);
+__CCAPRICE_EXPORT size_t fread   (void *, size_t, size_t, FILE *);
+__CCAPRICE_EXPORT int    fseek   (FILE *, long int, int);
+__CCAPRICE_EXPORT long   ftell   (FILE *);
 __CCAPRICE_EXPORT size_t fwrite  (const void *, size_t, size_t, FILE*);
-__CCAPRICE_EXPORT int    fputs   (const char *, FILE*);
-__CCAPRICE_EXPORT int    puts    (const char*);
-__CCAPRICE_EXPORT int    remove  (const char*);
 __CCAPRICE_EXPORT int    printf  (const char *, ...);
 __CCAPRICE_EXPORT int    vfprintf(FILE *, const char *, va_list);
 __CCAPRICE_EXPORT int    fprintf (FILE *, const char *, ...);
-__CCAPRICE_EXPORT int    fseek   (FILE *, long, int);
+__CCAPRICE_EXPORT int    putchar (int);
+__CCAPRICE_EXPORT int    remove  (const char*);
+__CCAPRICE_EXPORT int    rename  (const char *, const char *);
 __CCAPRICE_EXPORT void   rewind  (FILE *);
-__CCAPRICE_EXPORT long   ftell   (FILE *);
-__CCAPRICE_EXPORT int    fgetc   (FILE *);
 
 #ifdef __cplusplus
 }
