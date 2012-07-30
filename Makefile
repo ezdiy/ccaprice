@@ -573,22 +573,31 @@ ifneq ($(DONOT), 1)
 	$(AT) rm -f endian_type endian_info endian_data endian.c
 endif
 
-install: $(OUT)
+config:
+	$(AT) $(CCC) config.c -DARCH=\"$(TARGET)\" -o ccaprice-config
+
+install: config $(OUT)
 	$(AT) mkdir -p    /usr/include/ccaprice/int/
 	$(AT) mkdir -p    /usr/include/ccaprice/inc/
+	$(AT) mkdir -p    /usr/include/ccaprice/sys/
 	$(AT) cp -r int/* /usr/include/ccaprice/int
 	$(AT) cp -r inc/* /usr/include/ccaprice/inc
-	$(AT) cp ccaprice.a /usr/lib/ccaprice.a
+	$(AT) cp -r sys/* /usr/include/ccaprice/sys
+	$(AT) cp ccaprice.a      /usr/lib/ccaprice.a
+	$(AT) cp ccaprice-config /bin/ccaprice-config
 	$(AT) echo $(GREEN) Installed to: $(ENDCOL)
-	$(AT) echo $(PURPLE)  /usr/include/ccaprice/  $(RRED)<include>$(ENDCOL)
-	$(AT) echo $(PURPLE)  /usr/lib/               $(RRED)<library>$(ENDCOL)
+	$(AT) echo $(PURPLE)  /usr/include/ccaprice/  $(RRED)include$(ENDCOL)
+	$(AT) echo $(PURPLE)  /usr/lib/               $(RRED)library$(ENDCOL)
+	$(AT) echo $(PURPLE)  /bin/                   $(RRED)config $(ENDCOL)
 	
 uninstall:
 	$(AT) rm -rf /usr/include/ccaprice
 	$(AT) rm -f  /usr/lib/ccaprice.a
+	$(AT) rm -f  /bin/ccaprice-config
 	$(AT) echo $(GREEN) Uninstalled from directories:$(ENDCOL)
-	$(AT) echo $(PURPLE)  /usr/include/ccaprice/  $(RRED)<include>$(ENDCOL)
-	$(AT) echo $(PURPLE)  /usr/lib/               $(RRED)<library>$(ENDCOL)
+	$(AT) echo $(PURPLE)  /usr/include/ccaprice/  $(RRED)include$(ENDCOL)
+	$(AT) echo $(PURPLE)  /usr/lib/               $(RRED)library$(ENDCOL)
+	$(AT) echo $(PURPLE)  /bin/                   $(RRED)config $(ENDCOL)
 
 .PHONY: printendian
 
@@ -607,7 +616,7 @@ clean:
 	$(AT) find . -type f -name "*.o" -not -path "*/.*/*" -not -name ".*" -exec rm -f {} \;
 	$(AT) rm -f ccaprice.lib ccaprice.a
 	$(AT) rm -f endian endian.c endian_type endian_info endian_data endian.h
-	$(AT) rm -f test test_system
+	$(AT) rm -f test test_system ccaprice-config
 	$(ECHO) $(GREEN) Clean complete $(ENDCOL)
 	
 # nukes any install and cleans the current build
