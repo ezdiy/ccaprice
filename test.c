@@ -454,6 +454,9 @@ int main(int argc, char **argv, char **argp) {
     printf(  "CCAPRICE_BUILD_HOST: \033[33m%s\033[0m\n",   __CCAPRICE_BUILD_HOST);
     printf(  "CCAPRICE_BUILD_COMP: \033[33m%s\033[0m\n\n", __CCAPRICE_BUILD_COMP);
 
+    //__CCAPRICE_VERSION_STRING(foo);
+    printf("version: %s\n", __CCAPRICE_VERSION_STRING());
+
     /* <string.h> */
     TEST_TRY(memchr);
     TEST_TRY(memcmp);

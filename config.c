@@ -27,9 +27,11 @@
  * These may be modified to further relfect the target system directory
  * structure.
  */ 
-#define LIB_DIR "/usr/lib"
-#define INC_DIR "/usr/include/ccaprice"
+
+#define LIB_DIR "/lib"
+#define INC_DIR "/include/ccaprice"
 #define BIN_DIR "/bin"
+#define PRF_DIR "/usr"
 
 /*
  * Bump when needed.  There is rarely anything that needs to be changed
@@ -39,6 +41,8 @@
 #define LIBS    "ccaprice.a"
 
 int main(int argc, char **argv) {
+    char *prefix = PRF_DIR;
+
     argc--;
     argv++;
 
@@ -53,14 +57,15 @@ int main(int argc, char **argv) {
              * All commandline option checks go here.  We're using the
              * standard --cflags and --libs options present in literally
              * every library config helper program.
-             */  
-            if (!strcmp(cmp, "cflags")) {
-                printf("-I%s/inc -I%s/int -I%s/sys/%s %s ", INC_DIR, INC_DIR, INC_DIR, ARCH, CFLAGS);
-            }
+             */
+            if (!strncmp(cmp, "prefix", 6) && cmp[6] == '=' && strlen(&cmp[7]))
+                prefix = strdup(&cmp[7]);
 
-            if (!strcmp(cmp, "libs")) {
-                printf("%s/ccaprice.a", LIB_DIR);
-            }
+            if (!strcmp(cmp, "cflags"))
+                printf("-I%s%s/inc -I%s%s/int -I%s%s/sys/%s %s\n", prefix, INC_DIR, prefix, INC_DIR, prefix, INC_DIR, ARCH, CFLAGS);
+
+            if (!strcmp(cmp, "libs"))
+                printf("%s%s/ccaprice.a\n", prefix, LIB_DIR);
         }
         argv++;
         argc--;

@@ -22,6 +22,23 @@
  */
 #ifndef __CCAPRICE_CCAPRICE_HDR__
 #define __CCAPRICE_CCAPRICE_HDR__
+
+#define __CCAPRICE_VERSION_MAJOR 0
+#define __CCAPRICE_VERSION_MINOR 1
+#define __CCAPRICE_VERSION_PATCH 4
+
+/*
+ * This macro is very specific and requires a compiler with support for
+ * compound literals.  I suspect to further improve this in the future.
+ */  
+#define __CCAPRICE_VERSION_STRING()          \
+    (char[]){                                \
+        '0' + __CCAPRICE_VERSION_MAJOR, '.', \
+        '0' + __CCAPRICE_VERSION_MINOR, '.', \
+        '0' + __CCAPRICE_VERSION_PATCH,'\0'  \
+    }
+
+
 /*
  * When not compiling and including we need to determine
  * the architecture at compile-time without asking the
