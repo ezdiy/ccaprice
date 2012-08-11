@@ -75,10 +75,11 @@ endif
 endif
 endif
 
-CFLAGS +=  -Wall                         \
+CFLAGS += -Wall                          \
           -nostdlib                      \
           -nostdinc                      \
           -fno-builtin                   \
+          -fno-leading-underscore        \
           -nostartfiles                  \
           -nodefaultlibs                 \
           -Wno-uninitialized             \
@@ -254,6 +255,19 @@ ifneq (,$(findstring Linux,$(shell uname -s)))
 	SYSDIR_ARM    = sys/arm/
 	LFLAGS        =
 	OUT           = ccaprice.a
+else
+ifneq (,$(findstring MING,$(shell uname -s)))
+	SHELL         = /bin/bash
+	LARCH_X86_32  = i386pe
+	LARCH_X86_64  = x64pe
+	LARCH_ARM     = armpe
+	OS            = WINDOWS
+	SYSDIR_X86_32 = sys/x86_32/
+	SYSDIR_X86_64 = sys/x86_64/
+	SYSDIR_ARM    = sys/arm/
+	LFLAGS        = --subsystem=native --entry=_start
+	OUT           = ccaprice.lib
+endif
 endif
 endif
 
@@ -262,55 +276,55 @@ ifeq (, $(TARGET))
 		TARGET  = x86_64
 		CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64 -I$(SYSDIR_X86_64)
 		LFLAGS += -m$(LARCH_X86_64)
-		AFLAGS  = -m64
+		AFLAGS  = -m64 -I$(SYSDIR_X86_64)
 		ASM     = $(ASM64)
 	else
 	ifneq (,$(findstring amd64, $(shell uname -m)))
 		TARGET  = x86_64
 		CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64 -I$(SYSDIR_X86_64)
 		LFLAGS += -m$(LARCH_X86_64)
-		AFLAGS  = -m64
+		AFLAGS  = -m64 -I$(SYSDIR_X86_64)
 		ASM     = $(ASM64)
 	else
 	ifneq (,$(findstring x86_32, $(shell uname -m)))
 		TARGET  = x86_32
 		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 		LFLAGS += -m$(LARCH_X86_32)
-		AFLAGS  = -m32
+		AFLAGS  = -m32 -I$(SYSDIR_X86_32)
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i386, $(shell uname -m)))
 		TARGET  = i386
 		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 		LFLAGS += -m$(LARCH_X86_32)
-		AFLAGS  = -m32
+		AFLAGS  = -m32 -I$(SYSDIR_X86_32)
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i486, $(shell uname -m)))
 		TARGET  = i486
 		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 		LFLAGS += -m$(LARCH_X86_32)
-		AFLAGS  = -m32
+		AFLAGS  = -m32 -I$(SYSDIR_X86_32)
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i586, $(shell uname -m)))
 		TARGET  = i586
 		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 		LFLAGS += -m$(LARCH_X86_32)
-		AFLAGS  = -m32
+		AFLAGS  = -m32 -I$(SYSDIR_X86_32)
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring i686, $(shell uname -m)))
 		TARGET  = i686
 		CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 		LFLAGS += -m$(LARCH_X86_32)
-		AFLAGS  = -m32
+		AFLAGS  = -m32 -I$(SYSDIR_X86_32)
 		ASM     = $(ASM32)
 	else
 	ifneq (,$(findstring arm, $(shell uname -m)))
 		TARGET  = arm
 		CFLAGS += -D__CCAPRICE_TARGET_ARM -I$(SYSDIR_ARM)
-		LFLAGS += -m$(LARCH_ARM)
+		LFLAGS += -m$(LARCH_ARM) -I$(SYSDIR_ARM)
 		ASM     = $(ASMARM)
 	endif
 	endif
@@ -325,55 +339,55 @@ ifeq (x86_64, $(TARGET))
 	TARGET  = x86_64
 	CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64 -I$(SYSDIR_X86_64)
 	LFLAGS += -m$(LARCH_X86_64)
-	AFLAGS  = -m64
+	AFLAGS  = -m64 -I$(SYSDIR_X86_64)
 	ASM     = $(ASM64)
 else
 ifeq (amd64, $(TARGET))
 	TARGET  = x86_64
 	CFLAGS += -D__CCAPRICE_TARGET_X86_64 -m64 -I$(SYSDIR_X86_64)
 	LFLAGS += -m$(LARCH_X86_64)
-	AFLAGS  = -m64
+	AFLAGS  = -m64 -I$(SYSDIR_X86_64)
 	ASM     = $(ASM64)
 else
 ifeq (x86_32, $(TARGET))
 	TARGET  = i386
 	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 	LFLAGS += -m$(LARCH_X86_32)
-	AFLAGS  = -m32
+	AFLAGS  = -m32 -I$(SYSDIR_X86_32)
 	ASM     = $(ASM32)
 else
 ifeq (i386, $(TARGET))
 	TARGET  = i386
 	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 	LFLAGS += -m$(LARCH_X86_32)
-	AFLAGS  = -m32
+	AFLAGS  = -m32 -I$(SYSDIR_X86_32)
 	ASM     = $(ASM32)
 else
 ifeq (i486, $(TARGET))
 	TARGET  = i386
 	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 	LFLAGS += -m$(LARCH_X86_32)
-	AFLAGS  = -m32
+	AFLAGS  = -m32 -I$(SYSDIR_X86_32)
 	ASM     = $(ASM32)
 else
 ifeq (i586, $(TARGET))
 	TARGET  = i386
 	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 	LFLAGS += -m$(LARCH_X86_32)
-	AFLAGS  = -m32
+	AFLAGS  = -m32 -I$(SYSDIR_X86_32)
 	ASM     = $(ASM32)
 else
 ifeq (i686, $(TARGET))
 	TARGET  = i386
 	CFLAGS += -D__CCAPRICE_TARGET_X86_32 -m32 -I$(SYSDIR_X86_32)
 	LFLAGS += -m$(LARCH_X86_32)
-	AFLAGS  = -m32
+	AFLAGS  = -m32 -I$(SYSDIR_X86_32)
 	ASM     = $(ASM32)
 else
 ifeq (arm, $(TARGET))
 	TARGET  = arm
 	CFLAGS += -D__CCAPRICE_TARGET_ARM -I$(SYSDIR_ARM)
-	LFLAGS += -m$(LARCH_ARM)
+	LFLAGS += -m$(LARCH_ARM) -I$(SYSDIR_ARM)
 	ASM     = $(ASMARM)
 endif
 endif
@@ -389,19 +403,17 @@ endif
 ifeq (,$(VERBOSE))
 	AT = @
 endif
-ifneq ($(OS), WIN)
-	ifeq (,$(NOCOLOR))
-		GREEN   = -e "\033[1;32m
-		BLUE    = -e "\033[1;34m
-		PURPLE  = -e "\033[1;35m
-		RED     = -e "\033[1;31m
-		CYAN    = \033[1;36m
-		RRED    = \033[1;31m
-		RGREEN  = \033[1;32m
-		RPURPLE = \033[1;35m
-		ENDSUP  = \033[m\c"
-		ENDCOL  = \033[m"
-	endif
+ifeq (,$(NOCOLOR))
+	GREEN   = -e "\033[1;32m
+	BLUE    = -e "\033[1;34m
+	PURPLE  = -e "\033[1;35m
+	RED     = -e "\033[1;31m
+	CYAN    = \033[1;36m
+	RRED    = \033[1;31m
+	RGREEN  = \033[1;32m
+	RPURPLE = \033[1;35m
+	ENDSUP  = \033[m\c"
+	ENDCOL  = \033[m"
 endif
 
 # allow debug
@@ -508,9 +520,9 @@ ifneq ($(DONOT), 1)
 endif
 ifeq (, $(DEBUG))
 	$(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
-	@ echo $(BLUE)   Before `du -s test` $(ENDCOL)
+	@ echo $(BLUE)   Before `wc -c < test` $(ENDCOL)
 	@ strip test
-	@ echo $(BLUE)   After  `du -s test` $(ENDCOL)
+	@ echo $(BLUE)   After  `wc -c < test` $(ENDCOL)
 endif
 	
 test: test_core
@@ -521,13 +533,13 @@ test: test_core
 compare: test_core
 	@ gcc test.c -static-libgcc -Wl,-Bstatic -lc -lm -o test_system
 	$(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
-	$(ECHO) $(BLUE)   Before `du -s test_system` $(ENDCOL)
+	$(ECHO) $(BLUE)   Before `du -c < test_system` $(ENDCOL)
 	@ strip test_system
-	$(ECHO) $(BLUE)   After  `du -s test_system` $(ENDCOL)
+	$(ECHO) $(BLUE)   After  `du -c < test_system` $(ENDCOL)
 	$(ECHO)
 	$(ECHO) $(GREEN) Comparing system libc ... $(ENDCOL)
-	$(ECHO) $(GREEN) systems:  $(RPURPLE)`du -s test_system` (bytes) $(ENDCOL)
-	$(ECHO) $(GREEN) ccaprice: $(RPURPLE)`du -s test`        (bytes) $(ENDCOL)
+	$(ECHO) $(GREEN) systems:  $(RPURPLE)`du -c < test_system` (bytes) $(ENDCOL)
+	$(ECHO) $(GREEN) ccaprice: $(RPURPLE)`du -c < test`        (bytes) $(ENDCOL)
 	@ rm -f test test_system
 
 printendian:
@@ -615,8 +627,10 @@ uninstall:
 clean:
 	$(AT) find . -type f -name "*.o" -not -path "*/.*/*" -not -name ".*" -exec rm -f {} \;
 	$(AT) rm -f ccaprice.lib ccaprice.a
-	$(AT) rm -f endian endian.c endian_type endian_info endian_data endian.h
+	$(AT) rm -f endian.c endian.h
+	$(AT) rm -f endian endian_type endian_info endian_data
 	$(AT) rm -f test test_system ccaprice-config
+	$(AT) rm -f *.exe
 	$(ECHO) $(GREEN) Clean complete $(ENDCOL)
 	
 # nukes any install and cleans the current build

@@ -20,28 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global cos
-.global cosf
-.global cosl
-/*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type cos,   @function
-    .type cosf,  @function
-    .type cosl,  @function
-#endif
+#include <bits/asm.h>
+.global LABEL(cos)
+.global LABEL(cosf)
+.global LABEL(cosl)
 
-cos:
+LABEL(cos):
     fldl   4(%esp)
     jmp    L3
     
-cosl:
+LABEL(cosl):
     fldt   4(%esp)
     jmp    L3
     
-cosf:
+LABEL(cosf):
     flds   4(%esp)
     jmp    L3
     

@@ -20,18 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global log
-.global logf
-.global logl
-/*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type log,   @function
-    .type logf,  @function
-    .type logl,  @function
-#endif
+#include <bits/asm.h>
+.global LABEL(log)
+.global LABEL(logf)
+.global LABEL(logl)
 
 #define LOG(X) \
     fldln2;    \
@@ -39,8 +31,8 @@
     fyl2x;     \
     ret
     
-log:  LOG(fldl)
-logf: LOG(flds)
-logl: LOG(fldt)
+LABEL(log):  LOG(fldl)
+LABEL(logf): LOG(flds)
+LABEL(logl): LOG(fldt)
 
 #undef LOG

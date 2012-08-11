@@ -20,30 +20,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include <bits/asm.h>
-.global LABEL(ceil)
-.global LABEL(ceilf)
-.global LABEL(ceill)
-/*
- * This is terrible looking I suppose there should be
- * a nicer way at doing this without all the mov.
- */
-1:  fstcw 4(%esp)      // control word store
-    mov   5(%esp), %ah
-    mov   %al, 5(%esp)
-    fldcw 4(%esp)      // load modified control
-    frndint            // round
-    mov   %ah, 5(%esp)
-    fldcw 4(%esp)      // restore original
-    ret
-
-#define CEIL(X)      \
-    X 4(%esp);       \
-    mov $0xB, %al;   \
-    jmp 1b
-    
-LABEL(ceil):   CEIL(fldl)
-LABEL(ceilf):  CEIL(flds)
-LABEL(ceill):  CEIL(fldt)
-    
-#undef CEIL
+#define LABEL(X) X

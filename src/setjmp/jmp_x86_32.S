@@ -20,18 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global longjmp
-.global setjmp
-/*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type longjmp,@function
-    .type setjmp, @function
-#endif
+#include <bits/asm.h>
+.globl LABEL(longjmp)
+.globl LABEL(setjmp)
 
-longjmp:
+LABEL(longjmp):
     mov    4(%esp),    %edx
     mov    8(%esp),    %eax
     test    %eax,    %eax
@@ -49,7 +42,7 @@ longjmp:
     mov    20(%edx),    %ecx
     jmp *%ecx
     
-setjmp:
+LABEL(setjmp):
     mov    4(%esp),    %eax
     mov    %ebx,    (%eax)
     mov    %esi,    4(%eax)

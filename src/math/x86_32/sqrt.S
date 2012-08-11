@@ -20,18 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global sqrt
-.global sqrtf
-.global sqrtl
-/*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type sqrt,   @function
-    .type sqrtf,  @function
-    .type sqrtl,  @function
-#endif
+#include <bits/asm.h>
+.global LABEL(sqrt)
+.global LABEL(sqrtf)
+.global LABEL(sqrtl)
 
 /*
  * All of the following is required to stay conformant with the way
@@ -39,7 +31,7 @@
  * to use and return with isn't actually what the standard says we
  * have to do.  However sqrtf, and sqrtl can.
  */
-sqrt:
+LABEL(sqrt):
     fldl 4(%esp)
     fsqrt
     fstsw %ax
@@ -61,14 +53,14 @@ sqrt:
     fldl   4(%esp)
     ret
     
-sqrtf:
+LABEL(sqrtf):
     flds  4(%esp)
     fsqrt
     fstps 4(%esp)
     flds  4(%esp)
     ret
     
-sqrtl:
+LABEL(sqrtl):
     fldt  4(%esp)
     fsqrt
     ret

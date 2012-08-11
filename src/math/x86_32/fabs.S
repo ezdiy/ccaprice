@@ -20,26 +20,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global fabs
-.global fabsf
-.global fabsl
-/*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type fabs,   @function
-    .type fabsf,  @function
-    .type fabsl,  @function
-#endif
+#include <bits/asm.h>
+.global LABEL(fabs)
+.global LABEL(fabsf)
+.global LABEL(fabsl)
 
 #define FABS(X)  \
     X 4(%esp);   \
     fabs;        \
     ret
 
-fabs:  FABS(fldl)
-fabsf: FABS(flds)
-fabsl: FABS(fldt)
+LABEL(fabs):  FABS(fldl)
+LABEL(fabsf): FABS(flds)
+LABEL(fabsl): FABS(fldt)
 
 #undef FABS

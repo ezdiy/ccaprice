@@ -20,28 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global asinf
-.global asinl
-.global asin
-/*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type sinf, @function
-    .type asinl,@function
-    .type asin, @function
-#endif
+#include <bits/asm.h>
+.global LABEL(asinf)
+.global LABEL(asinl)
+.global LABEL(asin)
 
-asinf:
+LABEL(asinf):
     flds 4(%esp)
     jmp  1f
 
-asinl:
+LABEL(asinl):
     fldt 4(%esp)
     jmp  1f
     
-asin:
+LABEL(asin):
     fldl 4(%esp)
 1:  fld  %st(0)
     fld1

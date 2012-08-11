@@ -53,7 +53,11 @@ __CCAPRICE_INTERNAL_FUNC(pid_t, getpid, ());
         /* SIGTERM */ 15
     };
 #else
-#    error "No implemented __ccaprice_signal_selector for OS"
+#	ifdef WINDOWS
+	int __ccaprice_signal_selector[6] = { 0, 0, 0, 0, 0, 0 };
+#	else
+#		error "No implemented __ccaprice_signal_selector for OS"
+#	endif
 #endif
 
 /* internal handlers */

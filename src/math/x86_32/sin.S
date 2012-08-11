@@ -20,18 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include <bits/asm.h>
 .global sin
 .global sinf
 .global sinl
-/*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type sin,   @function
-    .type sinf,  @function
-    .type sinl,  @function
-#endif
 
 sin:
     fldl   4(%esp)

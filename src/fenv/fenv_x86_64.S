@@ -28,19 +28,6 @@
 .global fesetenv
 .global fegetenv
 /*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type feclearexcept,@function
-    .type feraiseexcept,@function
-    .type fetestexcept, @function
-    .type fegetround,   @function
-    .type fesetround,   @function
-    .type fesetenv,     @function
-    .type fegetenv,     @function
-#endif
-/*
  * FENV stub macro incase additional underscores need to be added later
  * for another assembler or linker who can't resolve symbols.
  */
@@ -148,12 +135,4 @@ FENV(setenv)
     ldmxcsr    (%rsp)
     add    $0x28,        %rsp
     ret
-
-.size feclearexcept, .-feclearexcept
-.size feraiseexcept, .-feraiseexcept
-.size fetestexcept,  .-fetestexcept
-.size fegetround,    .-fegetround
-.size fesetround,    .-fesetround
-.size fesetenv,      .-fesetenv
-.size fegetenv,      .-fegetenv
 #undef FENV

@@ -20,20 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global acosf
-.global acosl
-.global acos
-/*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type acosf,@function
-    .type acosl,@function
-    .type acos, @function
-#endif
+#include <bits/asm.h>
+.global LABEL(acosf)
+.global LABEL(acosl)
+.global LABEL(acos)
 
-acosf:
+LABEL(acosf):
     flds   4(%esp)
     fld    %st
     fmul   %st(0)
@@ -45,7 +37,7 @@ acosf:
     fpatan
     ret
     
-acosl:
+LABEL(acosl):
     fldt   4(%esp)
     fld    %st
     fld1
@@ -59,7 +51,7 @@ acosl:
     fpatan
     ret
     
-acos:
+LABEL(acos):
     fldl   4(%esp)
     fld    %st
     fld1

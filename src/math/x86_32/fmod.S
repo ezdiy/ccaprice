@@ -20,18 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global fmod
-.global fmodf
-.global fmodl
-/*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type fmod,   @function
-    .type fmodf,  @function
-    .type lmodl,  @function
-#endif
+#include <bits/asm.h>
+.global LABEL(fmod)
+.global LABEL(fmodf)
+.global LABEL(fmodl)
 
 #define FMOD(X,Y) \
     X Y (%esp);   \
@@ -44,8 +36,8 @@
     ret
 
 /* INC(4) */
-fmodf: FMOD(flds, 8)
-fmod:  FMOD(fldl, 12)
-fmodl: FMOD(fldt, 16)
+LABEL(fmodf): FMOD(flds, 8)
+LABEL(fmod):  FMOD(fldl, 12)
+LABEL(fmodl): FMOD(fldt, 16)
 
 #undef FMOD

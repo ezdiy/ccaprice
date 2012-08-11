@@ -20,31 +20,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-.global feclearexcept
-.global feraiseexcept
-.global fetestexcept
-.global fegetround
-.global fesetround
-.global fesetenv
-.global fegetenv
-/*
- * Pathscale doesn't like .type.  Despite it being valid GAS syntax
- * and the idea that it should work since pathscale is a GCC fork.
- */
-#ifndef __PATHCC__
-    .type feclearexcept,@function
-    .type feraiseexcept,@function
-    .type fetestexcept, @function
-    .type fegetround,   @function
-    .type fesetround,   @function
-    .type fesetenv,     @function
-    .type fegetenv,     @function
-#endif
+#include <bits/asm.h>
+.global LABEL(feclearexcept)
+.global LABEL(feraiseexcept)
+.global LABEL(fetestexcept)
+.global LABEL(fegetround)
+.global LABEL(fesetround)
+.global LABEL(fesetenv)
+.global LABEL(fegetenv)
 /*
  * FENV stub macro incase additional underscores need to be added later
  * for another assembler or linker who can't resolve symbols.
  */
-#define FENV(X) fe##X:
+#define FENV(X) LABEL(fe##X):
 /*
  * The following <fenv.h> functions here:
  *
@@ -137,12 +125,4 @@ FENV(setenv)
     fldenv    (%esp)
     add    $0x1C,        %esp
     ret
-
-.size feclearexcept, .-feclearexcept
-.size feraiseexcept, .-feraiseexcept
-.size fetestexcept,  .-fetestexcept
-.size fegetround,    .-fegetround
-.size fesetround,    .-fesetround
-.size fesetenv,      .-fesetenv
-.size fegetenv,      .-fegetenv
 #undef FENV
