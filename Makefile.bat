@@ -249,7 +249,7 @@ Sub ObtainBuildEnviroment()
 	WriteBashRC.Close()
 	
 	' cleanup the downloads
-	'Call DeleteByExtension(".", "tar,zip,exe,lzma")
+	Call DeleteByExtension(".", "tar,zip,exe,lzma")
 End Sub
 
 Sub ValidateBuildEnviroment()
