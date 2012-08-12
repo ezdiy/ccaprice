@@ -62,6 +62,7 @@ typedef void           VOID;
 typedef CHAR          *LPSTR;
 typedef WCHAR         *LPWSTR;
 typedef size_t         SIZE_T;
+typedef const CHAR    *LPCSTR;
 
 #ifdef UNICODE
     typedef LPWSTR LPTSTR;
@@ -254,21 +255,6 @@ typedef VOID (WINAPI *PFNKERNEL32_EXITPROCESS_PROC)(UINT);
 typedef LPSTR (WINAPI *PFNKERNEL32_GETCOMMANDLINE_PROC)(VOID);
 
 /*
- * HeapFree:
- * http://msdn.microsoft.com/en-us/library/windows/desktop/aa366701%28v=vs.85%29.aspx
- */
-typedef BOOL (WINAPI *PFNKERNEL32_HEAPFREE_PROC)(HANDLE, DWORD, LPVOID);
-
-/*
- * HeapAlloc:
- * http://msdn.microsoft.com/en-us/library/windows/desktop/aa366597%28v=vs.85%29.aspx
- */
-#define HEAP_GENERATE_EXCEPTIONS 0x00000004
-#define HEAP_NO_SERIALIZE        0x00000001
-#define HEAP_ZERO_MEMORY         0x00000008
-typedef LPVOID (WINAPI *PFNKERNEL32_HEAPALLOC_PROC)(HANDLE, DWORD, SIZE_T);
-
-/*
  * GetProcessHeap:
  * http://msdn.microsoft.com/en-us/library/windows/desktop/aa366569%28v=vs.85%29.aspx
  */
@@ -286,6 +272,68 @@ typedef HANDLE (WINAPI *PFNKERNEL32_GETPROCESSHEAP_PROC)(VOID);
 #define FILE_TYPE_REMOTE  0x8000
 #define FILE_TYPE_UNKNOWN 0x0000
 typedef DWORD (WINAPI *PFNKERNEL32_GETFILETYPE_PROC)(HANDLE);
+
+/*
+ * MoveFile:
+ * http://msdn.microsoft.com/en-us/library/aa365239%28v=vs.85%29.aspx
+ */
+typedef BOOL (WINAPI *PFNKERNEL32_MOVEFILE_PROC)(LPCSTR, LPCSTR);
+
+/*
+ * GetProcessId:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/ms683215%28v=vs.85%29.aspx
+ */
+typedef DWORD (WINAPI *PFNKERNEL32_GETPROCESSID_PROC)(HANDLE);
+
+/*
+ * GetCurrentProcess:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/ms683179%28v=vs.85%29.aspx
+ */
+typedef HANDLE (WINAPI *PFNKERNEL32_GETCURRENTPROCESS_PROC)(VOID);
+
+/*
+ * VirtualAlloc:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/aa366887%28v=vs.85%29.aspx
+ */
+#define MEM_COMMIT      0x00001000
+#define MEM_RESERVE     0x00002000
+#define MEM_RESET       0x00080000
+#define MEM_RESET_UNDO  0x10000000
+#define MEM_LARGE_PAGES 0x20000000
+#define MEM_PHYSICAL    0x00400000
+#define MEM_TOP_DOWN    0x00100000
+#define MEM_WRITE_WATCH 0x00200000
+typedef LPVOID (WINAPI *PFNKERNEL32_VIRTUALALLOC_PROC)(LPVOID, SIZE_T, DWORD, DWORD);
+
+/*
+ * VirtualFree:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/aa366892%28v=vs.85%29.aspx
+ */
+#define MEM_DECOMMIT    0x4000
+#define MEM_RELEASE     0x8000
+typedef BOOL (WINAPI *PFNKERNEL32_VIRTUALFREE_PROC)(LPVOID, SIZE_T, DWORD);
+
+/*
+ * DeleteFile:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/aa363915%28v=vs.85%29.aspx
+ */
+typedef BOOL (WINAPI *PFNKERNEL32_DELETEFILE_PROC)(LPCSTR);
+
+/*
+ * Memory Protection Constants:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/aa366786%28v=vs.85%29.aspx
+ */
+#define PAGE_EXECUTE            0x10
+#define PAGE_EXECUTE_READ       0x20
+#define PAGE_EXECUTE_READWRITE  0x40
+#define PAGE_EXECUTE_WRITECOPY  0x80
+#define PAGE_NOACCESS           0x01
+#define PAGE_READONLY           0x02
+#define PAGE_READWRITE          0x04
+#define PAGE_WRITECOPY          0x08
+#define PAGE_GUARD              0x100
+#define PAGE_NOCACHE            0x200
+#define PAGE_WRITECOMBINE       0x400
 
 #undef __STRUCT_TYPEDEF
 #endif

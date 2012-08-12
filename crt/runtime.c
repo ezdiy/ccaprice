@@ -125,15 +125,19 @@ __SYS_PAUSE  { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_pause,  0); }
  * All of the function pointers to interface with the kernel to perform
  * kernel calls are here.
  */
-PFNKERNEL32_SETFILEPOINTER_PROC SetFilePointer = NULL;
-PFNKERNEL32_WRITEFILE_PROC      WriteFile      = NULL;
-PFNKERNEL32_GETSTDHANDLE_PROC   GetStdHandle   = NULL;
-PFNKERNEL32_EXITPROCESS_PROC    ExitProcess    = NULL;
-PFNKERNEL32_GETCOMMANDLINE_PROC GetCommandLine = NULL;
-PFNKERNEL32_HEAPALLOC_PROC      HeapAlloc      = NULL;
-PFNKERNEL32_HEAPFREE_PROC       HeapFree       = NULL;
-PFNKERNEL32_GETPROCESSHEAP_PROC GetProcessHeap = NULL;
-PFNKERNEL32_GETFILETYPE_PROC    GetFileType    = NULL;
+PFNKERNEL32_SETFILEPOINTER_PROC    SetFilePointer    = NULL;
+PFNKERNEL32_WRITEFILE_PROC         WriteFile         = NULL;
+PFNKERNEL32_GETSTDHANDLE_PROC      GetStdHandle      = NULL;
+PFNKERNEL32_EXITPROCESS_PROC       ExitProcess       = NULL;
+PFNKERNEL32_GETCOMMANDLINE_PROC    GetCommandLine    = NULL;
+PFNKERNEL32_VIRTUALALLOC_PROC      VirtualAlloc      = NULL;
+PFNKERNEL32_VIRTUALFREE_PROC       VirtualFree       = NULL;
+PFNKERNEL32_GETPROCESSHEAP_PROC    GetProcessHeap    = NULL;
+PFNKERNEL32_GETFILETYPE_PROC       GetFileType       = NULL;
+PFNKERNEL32_MOVEFILE_PROC          MoveFile          = NULL;
+PFNKERNEL32_GETPROCESSID_PROC      GetProcessId      = NULL;
+PFNKERNEL32_GETCURRENTPROCESS_PROC GetCurrentProcess = NULL;
+PFNKERNEL32_DELETEFILE_PROC        DeleteFile        = NULL;
 
 /*
  * This needs to be gurded by a critical section some day.  Yes I know it's
@@ -171,6 +175,7 @@ void *__ccaprice_func_find(void *lib, const char *name) {
     /* TODO: forwarded lookups */
     return NULL;
 }
+
 void __ccaprice_start (int (WINAPI *main)(int, char **)) {
     void *PEB  = NULL;
     void *BASE = NULL;
@@ -194,15 +199,19 @@ void __ccaprice_start (int (WINAPI *main)(int, char **)) {
      * Obtain all the required functions for ccaprice from kernel32.dll.
      * Now that we have a valid handle.
      */
-    SetFilePointer = __ccaprice_func_find(BASE, "SetFilePointer");
-    WriteFile      = __ccaprice_func_find(BASE, "WriteFile");
-    GetStdHandle   = __ccaprice_func_find(BASE, "GetStdHandle");
-    ExitProcess    = __ccaprice_func_find(BASE, "ExitProcess");
-    GetCommandLine = __ccaprice_func_find(BASE, "GetCommandLineA");
-    HeapAlloc      = __ccaprice_func_find(BASE, "HeapAlloc");
-    GetProcessHeap = __ccaprice_func_find(BASE, "GetProcessHeap");
-    HeapFree       = __ccaprice_func_find(BASE, "HeapFree");
-    GetFileType    = __ccaprice_func_find(BASE, "GetFileType");
+    WriteFile         = __ccaprice_func_find(BASE, "WriteFile");     // must be first!
+    GetStdHandle      = __ccaprice_func_find(BASE, "GetStdHandle");  // must be second!
+    SetFilePointer    = __ccaprice_func_find(BASE, "SetFilePointer");
+    ExitProcess       = __ccaprice_func_find(BASE, "ExitProcess");
+    GetCommandLine    = __ccaprice_func_find(BASE, "GetCommandLineA");
+    GetProcessHeap    = __ccaprice_func_find(BASE, "GetProcessHeap");
+    GetFileType       = __ccaprice_func_find(BASE, "GetFileType");
+    MoveFile          = __ccaprice_func_find(BASE, "MoveFileA");
+    GetProcessId      = __ccaprice_func_find(BASE, "GetProcessId");
+    GetCurrentProcess = __ccaprice_func_find(BASE, "GetCurrentProcess");
+    VirtualAlloc      = __ccaprice_func_find(BASE, "VirtualAlloc");
+    VirtualFree       = __ccaprice_func_find(BASE, "VirtualFree");
+    DeleteFile        = __ccaprice_func_find(BASE, "DeleteFileA");
     
     /*
      * TODO: the stack is all fucked up.  I can't seem to beable to
@@ -234,22 +243,22 @@ HFILE __ccaprice_filehandle(int fd) {
  * emulate the entier interface of these 17 functions for windows.
  */
 __SYS_WRITE  {
-    DWORD wrote;
-    WriteFile(__ccaprice_filehandle(A1), A2, A3, &wrote, ((LPOVERLAPPED)NULL));
-    return wrote;
+    HANDLE       fileh; // file handle
+    DWORD        wrote;
+    
+    if ((fileh = __ccaprice_filehandle(A1)) == NULL)
+        return -1;
+    
+    /* not a standard descriptor ?*/
+    if (!WriteFile(fileh, A2, A3, &wrote, ((LPOVERLAPPED)NULL)))
+        return -1;
+        
+    return ((ssize_t)wrote);
 }
 
-__SYS_READ   { /*TODO*/ }
-__SYS_OPEN   { /*TODO*/ }
-__SYS_KILL   { /*TODO*/ }
-__SYS_UNLINK { /*TODO*/ }
-__SYS_IOCTL  { /*TODO*/ }
-__SYS_CLOSE  { /*TODO*/ }
-__SYS_EXIT   { /*TODO*/ }
-__SYS_GETPID { /*TODO*/ }
-__SYS_MMAP   { /*TODO*/ }
-__SYS_MUNMAP { /*TODO*/ }
-__SYS_FUTEX  { /*TODO*/ }
+__SYS_UNLINK { return (DeleteFile((LPCSTR)A1) != 0); }
+__SYS_EXIT   { ExitProcess(A1); }
+__SYS_GETPID { return GetProcessId(GetCurrentProcess()); }
 __SYS_LSEEK  { 
     HFILE *file = __ccaprice_filehandle(A1);
     DWORD  head;
@@ -277,10 +286,63 @@ __SYS_LSEEK  {
     return 0;
 }
 
-__SYS_FCNTL  {  }
 __SYS_WRITEV {
-    //return write(A1, A2, A3);
+    /*
+     * Implements writev in a brute-force sort of way.  Don't expect this to be
+     * anywhere near the speed as the writev syscall on linux.
+     */
+    typedef struct { char *base; size_t len; } data;
+    data    *obtain = (data*)A2;
+    ssize_t  totals = 0;
+    ssize_t  amount = 0;
+    ssize_t  checks = 0;
+    for (; amount < A3; amount++) {
+        if ((checks = write(A1, obtain[amount].base, obtain[amount].len)) == -1)
+            return -1;
+        totals += checks;
+    }
+        
+    return totals;
 }
-__SYS_RENAME {  }
-__SYS_PAUSE  {  }
+__SYS_RENAME { return MoveFile((LPCSTR)A1, (LPCSTR)A2); }
+
+/*
+ * These are trivial to implement if you don't need to support vminfo
+ * or any of that crazy shit.
+ */
+__SYS_MUNMAP {
+    if (!VirtualFree(A1, 0, MEM_RELEASE))
+        goto stop;
+stop:
+    return 0;
+}
+
+__SYS_MMAP   {
+    A1 = VirtualAlloc(A1, A2, MEM_RESERVE | MEM_COMMIT | MEM_TOP_DOWN, PAGE_READWRITE);
+    if (!A1) {
+        A1 = NULL;
+        goto stop;
+    }
+/*
+ * The jump makes debugging much simpler.  Also we're going to implement
+ * a spinlock later which will be rel ptr fixed.
+ */
+stop:
+    /* rel ptr */
+    return A1;
+}
+
+/*
+ * All of these need to be implemented yet.  There is going to be a ton
+ * of work getting the spinlocks right.
+ */
+__SYS_READ   { /*TODO*/ return -1; }
+__SYS_OPEN   { /*TODO*/ return -1; }
+__SYS_FCNTL  { /*TODO*/ return -1; }
+__SYS_KILL   { /*TODO*/ return -1; }
+__SYS_IOCTL  { /*TODO*/ return -1; }
+__SYS_CLOSE  { /*TODO*/ return -1; }
+__SYS_FUTEX  { /*TODO*/ return -1; }
+__SYS_PAUSE  { /*TODO*/ return -1; }
+
 #endif

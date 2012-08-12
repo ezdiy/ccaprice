@@ -265,7 +265,7 @@ ifneq (,$(findstring MING,$(shell uname -s)))
 	SYSDIR_X86_32 = sys/x86_32/
 	SYSDIR_X86_64 = sys/x86_64/
 	SYSDIR_ARM    = sys/arm/
-	LFLAGS        = --subsystem=native --entry=_start
+	LFLAGS        = --entry=_start
 	OUT           = ccaprice.lib
 endif
 endif
@@ -519,10 +519,10 @@ ifneq ($(DONOT), 1)
 	$(AT) ld $(LFLAGS) -o test test.o $(OUT)
 endif
 ifeq (, $(DEBUG))
-	$(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
-	@ echo $(BLUE)   Before `wc -c < test` $(ENDCOL)
+# $(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
+#@ echo $(BLUE)   Before `wc -c < test` $(ENDCOL)
 	@ strip test
-	@ echo $(BLUE)   After  `wc -c < test` $(ENDCOL)
+#@ echo $(BLUE)   After  `wc -c < test` $(ENDCOL)
 endif
 	
 test: test_core
