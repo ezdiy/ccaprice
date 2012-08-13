@@ -30,14 +30,15 @@
 
 /*
  * The following documentation was used to implement these structures
- *  ImageHlp Structures         -- http://msdn.microsoft.com/en-us/library/windows/desktop/ms680198%28v=vs.85%29.aspx
- *  IMAGE_EXPORT_DIRECTORY      -- http://www.csie.ntu.edu.tw/~r92094/win32asm/PE/IMAGE_EXPORT_DIRECTORY
- *  IMAGE_DOS_HEADER            -- http://www.nirsoft.net/kernel_struct/vista/IMAGE_DOS_HEADER.html
- *  PEB                         -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa813706%28v=vs.85%29.aspx
- *  PEB_LDR_DATA                -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa813708%28v=vs.85%29.aspx
- *  RTL_USER_PROCESS_PARAMETERS -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa813741%28v=vs.85%29.aspx
- *  UNICODE_STRING              -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa380518%28v=vs.85%29.aspx
- *  Windows Data Types          -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa383751%28v=vs.85%29.aspx
+ *  ImageHlp Structures            -- http://msdn.microsoft.com/en-us/library/windows/desktop/ms680198%28v=vs.85%29.aspx
+ *  IMAGE_EXPORT_DIRECTORY         -- http://www.csie.ntu.edu.tw/~r92094/win32asm/PE/IMAGE_EXPORT_DIRECTORY
+ *  IMAGE_DOS_HEADER               -- http://www.nirsoft.net/kernel_struct/vista/IMAGE_DOS_HEADER.html
+ *  PEB                            -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa813706%28v=vs.85%29.aspx
+ *  PEB_LDR_DATA                   -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa813708%28v=vs.85%29.aspx
+ *  RTL_USER_PROCESS_PARAMETERS    -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa813741%28v=vs.85%29.aspx
+ *  UNICODE_STRING                 -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa380518%28v=vs.85%29.aspx
+ *  Windows Data Types             -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa383751%28v=vs.85%29.aspx
+ *  Windows Data Types for Strings -- http://msdn.microsoft.com/en-us/library/windows/desktop/dd374131%28v=vs.85%29.aspx
  */
 
 typedef unsigned short WCHAR;
@@ -63,12 +64,17 @@ typedef CHAR          *LPSTR;
 typedef WCHAR         *LPWSTR;
 typedef size_t         SIZE_T;
 typedef const CHAR    *LPCSTR;
+typedef void          *HMODULE;
 
 #ifdef UNICODE
     typedef LPWSTR LPTSTR;
+    typedef WCHAR  TCHAR;
 #else
     typedef LPSTR  LPTSTR;
+    typedef CHAR   TCHAR;
 #endif
+
+typedef TCHAR     *LPTCH;
 
 /*
  * We emulate the posix open/close/read/write functions which required
@@ -318,6 +324,33 @@ typedef BOOL (WINAPI *PFNKERNEL32_VIRTUALFREE_PROC)(LPVOID, SIZE_T, DWORD);
  * http://msdn.microsoft.com/en-us/library/windows/desktop/aa363915%28v=vs.85%29.aspx
  */
 typedef BOOL (WINAPI *PFNKERNEL32_DELETEFILE_PROC)(LPCSTR);
+
+/*
+ * HeapAlloc:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/aa366597%28v=vs.85%29.aspx
+ */
+#define HEAP_GENERATE_EXCEPTIONS 0x00000004
+#define HEAP_NO_SERIALIZE        0x00000001
+#define HEAP_ZERO_MEMORY         0x00000008
+typedef LPVOID (WINAPI *PFNKERNEL32_HEAPALLOC_PROC)(HANDLE, DWORD, SIZE_T);
+
+/*
+ * HeapFree:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/aa366701%28v=vs.85%29.aspx
+ */
+typedef BOOL (WINAPI *PFNKERNEL32_HEAPFREE_PROC)(HANDLE, DWORD, LPVOID);
+
+/*
+ * GetModuleHandle:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/ms683199%28v=vs.85%29.aspx
+ */
+typedef HMODULE (WINAPI *PFNKERNEL32_GETMODULEHANDLE_PROC)(LPCSTR);
+
+/*
+ * GetEnviromentStrings:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/ms683187%28v=vs.85%29.aspx
+ */
+typedef LPTCH (WINAPI *PFNKERNEL32_GETENVIROMENTSTRINGS_PROC)(VOID);
 
 /*
  * Memory Protection Constants:

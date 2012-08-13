@@ -24,6 +24,9 @@
 #include <string.h>
 #include <locale.h>
 
+__CCAPRICE_INTERNAL_FUNC(void, free, (void*));
+__CCAPRICE_INTERNAL_FUNC(int,  main, (int, char **, char **));
+
 const char *__ccaprice_build_date __CCAPRICE_USED = __DATE__;
 const char *__ccaprice_build_time __CCAPRICE_USED = __TIME__;
 const char *__ccaprice_build_comp __CCAPRICE_USED = __COMP__;
@@ -125,27 +128,38 @@ __SYS_PAUSE  { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_pause,  0); }
  * All of the function pointers to interface with the kernel to perform
  * kernel calls are here.
  */
-PFNKERNEL32_SETFILEPOINTER_PROC    SetFilePointer    = NULL;
-PFNKERNEL32_WRITEFILE_PROC         WriteFile         = NULL;
-PFNKERNEL32_GETSTDHANDLE_PROC      GetStdHandle      = NULL;
-PFNKERNEL32_EXITPROCESS_PROC       ExitProcess       = NULL;
-PFNKERNEL32_GETCOMMANDLINE_PROC    GetCommandLine    = NULL;
-PFNKERNEL32_VIRTUALALLOC_PROC      VirtualAlloc      = NULL;
-PFNKERNEL32_VIRTUALFREE_PROC       VirtualFree       = NULL;
-PFNKERNEL32_GETPROCESSHEAP_PROC    GetProcessHeap    = NULL;
-PFNKERNEL32_GETFILETYPE_PROC       GetFileType       = NULL;
-PFNKERNEL32_MOVEFILE_PROC          MoveFile          = NULL;
-PFNKERNEL32_GETPROCESSID_PROC      GetProcessId      = NULL;
-PFNKERNEL32_GETCURRENTPROCESS_PROC GetCurrentProcess = NULL;
-PFNKERNEL32_DELETEFILE_PROC        DeleteFile        = NULL;
-
+PFNKERNEL32_SETFILEPOINTER_PROC       SetFilePointer       = NULL;
+PFNKERNEL32_WRITEFILE_PROC            WriteFile            = NULL;
+PFNKERNEL32_GETSTDHANDLE_PROC         GetStdHandle         = NULL;
+PFNKERNEL32_EXITPROCESS_PROC          ExitProcess          = NULL;
+PFNKERNEL32_GETCOMMANDLINE_PROC       GetCommandLine       = NULL;
+PFNKERNEL32_VIRTUALALLOC_PROC         VirtualAlloc         = NULL;
+PFNKERNEL32_VIRTUALFREE_PROC          VirtualFree          = NULL;
+PFNKERNEL32_GETPROCESSHEAP_PROC       GetProcessHeap       = NULL;
+PFNKERNEL32_GETFILETYPE_PROC          GetFileType          = NULL;
+PFNKERNEL32_MOVEFILE_PROC             MoveFile             = NULL;
+PFNKERNEL32_GETPROCESSID_PROC         GetProcessId         = NULL;
+PFNKERNEL32_GETCURRENTPROCESS_PROC    GetCurrentProcess    = NULL;
+PFNKERNEL32_DELETEFILE_PROC           DeleteFile           = NULL;
+PFNKERNEL32_HEAPALLOC_PROC            HeapAlloc            = NULL;
+PFNKERNEL32_HEAPFREE_PROC             HeapFree             = NULL;
+PFNKERNEL32_GETMODULEHANDLE_PROC      GetModuleHandle      = NULL;
+PFNKERNEL32_GETENVIROMENTSTRINGS_PROC GetEnviromentStrings = NULL;
 /*
  * This needs to be gurded by a critical section some day.  Yes I know it's
  * nasty.
  */
 __ccaprice_win_filehandle __ccaprice_filehandles[__CCCAPRICE_MAXFILE_HANDLES];
 
-void *__ccaprice_func_find(void *lib, const char *name) {
+#ifdef  __CCAPRICE_DEBUG
+#define DEBUG_SYM(NAME, SPACE) printf("[ccaprice] %s %s found -> 0x%x\n", SPACE, #NAME, NAME)
+#define DEBUG_LOG(NAME,   ...) printf(NAME, __VA_ARGS__)
+#else
+#define DEBUG_SYM(NAME, SPACE)
+#define DEBUG_LOG(NAME,   ...)
+#endif
+
+void *__ccaprice_func_find(void *lib, const char *name) {    
     PIMAGE_NT_HEADERS       header      = ((PIMAGE_NT_HEADERS)((char*)lib+((PIMAGE_DOS_HEADER)lib)->e_lfanew));
     PIMAGE_DATA_DIRECTORY   export_dat  = (PIMAGE_DATA_DIRECTORY)(&header->OptionalHeader.DataDirectory[0]);
     PIMAGE_EXPORT_DIRECTORY export_dir  = (PIMAGE_EXPORT_DIRECTORY)((char*)lib + export_dat->VirtualAddress);
@@ -153,6 +167,8 @@ void *__ccaprice_func_find(void *lib, const char *name) {
     void **function_table = (void**)((char*)lib + export_dir->AddressOfFunctions);
     WORD  *ordinals_table = (WORD*) ((char*)lib + export_dir->AddressOfNameOrdinals);
     char **wordname_table = (char**)((char*)lib + export_dir->AddressOfNames);
+    
+    void *address = NULL;
     
     /*
      * Ordinal import is faster than name import. No need to do strange things
@@ -165,20 +181,140 @@ void *__ccaprice_func_find(void *lib, const char *name) {
         if (ordinal < base || ordinal > base + export_dir->NumberOfFunctions)
             return NULL;
             
-        return (void*)((char*)lib + (DWORD)function_table[ordinal - base]);
+        address = (void*)((char*)lib + (DWORD)function_table[ordinal - base]);
     } else {
         DWORD i;
         for (i = 0; i < export_dir->NumberOfNames; i++)
             if (!strcmp(name,  (char*)lib + (DWORD)wordname_table[i]))
-                return (void*)((char*)lib + (DWORD)function_table[ordinals_table[i]]);
+                address = (void*)((char*)lib + (DWORD)function_table[ordinals_table[i]]);
     }
-    /* TODO: forwarded lookups */
-    return NULL;
+    
+    /* forwarded? */
+    if ((char*)address >= (char*)export_dir && (char*)address < (char*)export_dir + export_dat->Size) {
+        char   *library  = strdup((char*)address);
+        char   *function;
+        HMODULE module;
+        
+        if (!library)
+            return NULL;
+           
+        /* name and terminate */
+        function = strchr(library, '.');
+        *function++ = '\0';
+        
+        DEBUG_LOG("[ccaprice] function %s is forwarded to %s (patching...)\n", name, function);
+        
+        /* try forward */
+        address = (module = GetModuleHandle((LPCSTR)library)) ?
+                    (__ccaprice_func_find(module, function))  :
+                    (NULL);
+    
+        free(library);
+    }
+    return address;
 }
 
-void __ccaprice_start (int (WINAPI *main)(int, char **)) {
+/*
+ * This is some serious magic to get the command line arguments
+ * and size from the kernel to pass to main.
+ */
+typedef struct {
+    char *argv[32+1];
+    int   argc;
+    char *done;
+} __ccaprice_commandline_data;
+
+void __ccaprice_calculate_commandline(__ccaprice_commandline_data *data) {
+    
+    char *sys = (char*)GetCommandLine();
+    int   len = strlen(sys);
+    
+    /* copy */
+    char *cmd = (char*)HeapAlloc(GetProcessHeap(), 0, sizeof(char*) * (len + 1));
+    data->done = cmd;
+    if (!cmd) return;
+    strcpy(cmd, sys);
+    
+    /* step 1: handle quoted file names) */
+    if (*cmd == '"') {
+        cmd ++;
+        data->argv[0] = cmd; /* exe name */
+        
+        /* skip to next quote */
+        while (*cmd && *cmd != '"')
+            cmd++;
+        
+        /* terminate */
+        if (*cmd)
+            *cmd ++ = '\0';
+        else
+            return;
+    } else {
+        data->argv[0] = cmd; /* exe name */
+        
+        /* skip to next white space */
+        while (*cmd && *cmd != ' ')
+            cmd++;
+        
+        /* terminate */
+        if (*cmd)
+            *cmd ++ = '\0';
+    }
+    /* main loop to calculate argument list */
+    for (;;) {
+        
+        /* skip whitespace */
+        while (*cmd && *cmd == ' ')
+            cmd++;
+        
+        if (*cmd == 0)
+            return;
+            
+        /* argument starts with quote */
+        if (*cmd == '"') {
+            cmd++;
+            
+            /* add to list */
+            data->argv[data->argc++] = cmd;
+            data->argv[data->argc]   = NULL;
+            
+            /* skip all to end quote */
+            while (*cmd && *cmd != '"')
+                cmd++;
+                
+            if (*cmd == 0)
+                return;
+            
+            /* terminate */
+            if (*cmd)
+                *cmd++ = '\0';
+        } else {
+            /* add to list */
+            data->argv[data->argc++] = cmd;
+            data->argv[data->argc]   = 0;
+            
+            /* skip to next space */
+            while (*cmd && *cmd != ' ')
+                cmd++;
+                
+            if (*cmd == 0)
+                return;
+            
+            /* terminate */
+            if (*cmd)
+                *cmd = '\0';
+        }
+        
+        if (data->argc >= 32)
+            return;
+    }
+}
+
+void __ccaprice_start () {
     void *PEB  = NULL;
     void *BASE = NULL;
+    __ccaprice_commandline_data cmd = { {0}, 1, 0 };
+    int                         ret =   0;
     
     /*
      * Store address of PEB in PEB.  Then work down the PEB structure
@@ -199,25 +335,66 @@ void __ccaprice_start (int (WINAPI *main)(int, char **)) {
      * Obtain all the required functions for ccaprice from kernel32.dll.
      * Now that we have a valid handle.
      */
-    WriteFile         = __ccaprice_func_find(BASE, "WriteFile");     // must be first!
-    GetStdHandle      = __ccaprice_func_find(BASE, "GetStdHandle");  // must be second!
-    SetFilePointer    = __ccaprice_func_find(BASE, "SetFilePointer");
-    ExitProcess       = __ccaprice_func_find(BASE, "ExitProcess");
-    GetCommandLine    = __ccaprice_func_find(BASE, "GetCommandLineA");
-    GetProcessHeap    = __ccaprice_func_find(BASE, "GetProcessHeap");
-    GetFileType       = __ccaprice_func_find(BASE, "GetFileType");
-    MoveFile          = __ccaprice_func_find(BASE, "MoveFileA");
-    GetProcessId      = __ccaprice_func_find(BASE, "GetProcessId");
-    GetCurrentProcess = __ccaprice_func_find(BASE, "GetCurrentProcess");
-    VirtualAlloc      = __ccaprice_func_find(BASE, "VirtualAlloc");
-    VirtualFree       = __ccaprice_func_find(BASE, "VirtualFree");
-    DeleteFile        = __ccaprice_func_find(BASE, "DeleteFileA");
+    WriteFile            = __ccaprice_func_find(BASE, "WriteFile");     // must be first!
+    GetStdHandle         = __ccaprice_func_find(BASE, "GetStdHandle");  // must be second!
+    
+    DEBUG_LOG("[ccaprice] Found kernel32.dll base address 0x%x\n\nFinding functions ...\n", BASE);
+    
+    SetFilePointer       = __ccaprice_func_find(BASE, "SetFilePointer");
+    ExitProcess          = __ccaprice_func_find(BASE, "ExitProcess");
+    GetModuleHandle      = __ccaprice_func_find(BASE, "GetModuleHandleA");
+    GetCommandLine       = __ccaprice_func_find(BASE, "GetCommandLineA");
+    GetProcessHeap       = __ccaprice_func_find(BASE, "GetProcessHeap");
+    GetFileType          = __ccaprice_func_find(BASE, "GetFileType");
+    MoveFile             = __ccaprice_func_find(BASE, "MoveFileA");
+    GetProcessId         = __ccaprice_func_find(BASE, "GetProcessId");
+    GetCurrentProcess    = __ccaprice_func_find(BASE, "GetCurrentProcess");
+    VirtualAlloc         = __ccaprice_func_find(BASE, "VirtualAlloc");
+    VirtualFree          = __ccaprice_func_find(BASE, "VirtualFree");
+    DeleteFile           = __ccaprice_func_find(BASE, "DeleteFileA");
+    HeapAlloc            = __ccaprice_func_find(BASE, "HeapAlloc");
+    HeapFree             = __ccaprice_func_find(BASE, "HeapFree");
+    GetEnviromentStrings = __ccaprice_func_find(BASE, "GetEnvironmentStringsA");
+    
+    DEBUG_SYM(WriteFile,"            ");
+    DEBUG_SYM(GetStdHandle,"         ");
+    DEBUG_SYM(SetFilePointer,"       ");
+    DEBUG_SYM(ExitProcess,"          ");
+    DEBUG_SYM(GetCommandLine,"       ");
+    DEBUG_SYM(GetProcessHeap,"       ");
+    DEBUG_SYM(GetFileType,"          ");
+    DEBUG_SYM(MoveFile,"             ");
+    DEBUG_SYM(GetProcessId,"         ");
+    DEBUG_SYM(GetCurrentProcess,"    ");
+    DEBUG_SYM(VirtualAlloc,"         ");
+    DEBUG_SYM(VirtualFree,"          ");
+    DEBUG_SYM(HeapAlloc,"            ");
+    DEBUG_SYM(HeapFree,"             ");
+    DEBUG_SYM(GetEnviromentStrings," ");
     
     /*
-     * TODO: the stack is all fucked up.  I can't seem to beable to
-     * use GetCommandLine to setup the stuff required to call main
+     * This will actually allocate memory that needs to be freed
+     * and this needs to yet be parsed into a list.
+     * 
+     * TODO: fix this!
      */
-    ExitProcess(0);
+    __ccaprice_enviroment = (char**)GetEnviromentStrings();
+    
+    /*
+     * Invoke main and store the return status of it some where
+     * it will be used for the call to the kernel via ExitProcess.
+     */
+    __ccaprice_calculate_commandline(&cmd);
+    ret = main(cmd.argc, cmd.argv, __ccaprice_enviroment);
+    
+    /*
+     * Cleanup any used heap space for command line agruments
+     * since the calculation of them above.
+     */
+    if (cmd.done)
+        HeapFree(GetProcessHeap(), 0, cmd.done);
+        
+    ExitProcess(ret);
 }
 
 HFILE __ccaprice_filehandle(int fd) {

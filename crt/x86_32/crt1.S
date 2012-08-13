@@ -31,8 +31,8 @@ _start:
     pop  %ecx
     mov  %esp, %eax
     and  $-16, %esp
-#ifndef WINDOWS
     push %esp
+#ifndef WINDOWS
     push %esp
     push %edx
     push $_fini
@@ -42,14 +42,13 @@ _start:
     push main
     call LABEL(__ccaprice_start)
 #else
-    push main
     call LABEL(__ccaprice_start)
 .global __main
 __main:
-1:  jmp  1b
+    ret
 #endif
 
-#ifdef WINDOWS
+#if 0
 /*
  * CFI directive uses 8 for WIN64 (future support?)
  */

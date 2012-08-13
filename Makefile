@@ -86,6 +86,7 @@ CFLAGS += -Wall                          \
           -Wno-unused-parameter          \
           -Wno-sign-compare              \
           -fno-strict-aliasing           \
+          -mno-stack-arg-probe           \
           -D__CCAPRICE_CP                \
           -DCCAPRICE_LOCALE_SET=en_US    \
           -Iinc/                         \
