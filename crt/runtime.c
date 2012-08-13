@@ -388,6 +388,14 @@ void __ccaprice_start () {
     DEBUG_SYM(CreateFile,"           ");
     
     /*
+     * Specify some filetypes from the getgo. So our structure accuratly
+     * reflects the correct values.
+     */
+    __ccaprice_filehandles[0].text = !!(GetFileType(__ccaprice_filehandle(0)) == FILE_TYPE_CHAR);
+    __ccaprice_filehandles[1].text = !!(GetFileType(__ccaprice_filehandle(1)) == FILE_TYPE_CHAR);
+    __ccaprice_filehandles[2].text = !!(GetFileType(__ccaprice_filehandle(2)) == FILE_TYPE_CHAR);
+    
+    /*
      * This will actually allocate memory that needs to be freed
      * and this needs to yet be parsed into a list.
      * 
