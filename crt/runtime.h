@@ -27,6 +27,7 @@
 #include <stddef.h>
 #include <bits/types.h>
 #include <bits/syscall.h>
+#include <bits/fcntl.h>
 
 /*
  * Only need 17 interfaces with the kernel so far: that's not bad at all!

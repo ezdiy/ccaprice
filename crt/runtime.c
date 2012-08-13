@@ -125,6 +125,18 @@ __SYS_PAUSE  { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_pause,  0); }
 #include "windows.h"
 
 /*
+ * We emulate the posix open/close/read/write functions which required
+ * file descriptors.  This is how we handle the mapping between them
+ * and actual file handles.
+ */
+#define __CCAPRICE_MAXFILE_HANDLES 4099
+typedef struct {
+    HANDLE             file;
+    BOOL               text;
+    BOOL               used;
+} __ccaprice_win_filehandle;
+
+/*
  * All of the function pointers to interface with the kernel to perform
  * kernel calls are here.
  */
@@ -145,11 +157,12 @@ PFNKERNEL32_HEAPALLOC_PROC            HeapAlloc            = NULL;
 PFNKERNEL32_HEAPFREE_PROC             HeapFree             = NULL;
 PFNKERNEL32_GETMODULEHANDLE_PROC      GetModuleHandle      = NULL;
 PFNKERNEL32_GETENVIROMENTSTRINGS_PROC GetEnviromentStrings = NULL;
+PFNKERNEL32_CREATEFILE_PROC           CreateFile           = NULL;
 /*
  * This needs to be gurded by a critical section some day.  Yes I know it's
  * nasty.
  */
-__ccaprice_win_filehandle __ccaprice_filehandles[__CCCAPRICE_MAXFILE_HANDLES];
+__ccaprice_win_filehandle __ccaprice_filehandles[__CCAPRICE_MAXFILE_HANDLES];
 
 #ifdef  __CCAPRICE_DEBUG
 #define DEBUG_SYM(NAME, SPACE) printf("[ccaprice] %s %s found -> 0x%x\n", SPACE, #NAME, NAME)
@@ -355,6 +368,7 @@ void __ccaprice_start () {
     HeapAlloc            = __ccaprice_func_find(BASE, "HeapAlloc");
     HeapFree             = __ccaprice_func_find(BASE, "HeapFree");
     GetEnviromentStrings = __ccaprice_func_find(BASE, "GetEnvironmentStringsA");
+    CreateFile           = __ccaprice_func_find(BASE, "CreateFileA");
     
     DEBUG_SYM(WriteFile,"            ");
     DEBUG_SYM(GetStdHandle,"         ");
@@ -371,6 +385,7 @@ void __ccaprice_start () {
     DEBUG_SYM(HeapAlloc,"            ");
     DEBUG_SYM(HeapFree,"             ");
     DEBUG_SYM(GetEnviromentStrings," ");
+    DEBUG_SYM(CreateFile,"           ");
     
     /*
      * This will actually allocate memory that needs to be freed
@@ -405,7 +420,7 @@ HFILE __ccaprice_filehandle(int fd) {
         case 1: return GetStdHandle(STD_OUTPUT_HANDLE);
         case 2: return GetStdHandle(STD_ERROR_HANDLE);
         default:
-            if ((fd >= 3) && (fd < __CCCAPRICE_MAXFILE_HANDLES)) {
+            if ((fd >= 3) && (fd < __CCAPRICE_MAXFILE_HANDLES)) {
                 handle = &__ccaprice_filehandles[(size_t)fd - 3];
                 if (handle->used)
                     return handle->file;
@@ -413,6 +428,44 @@ HFILE __ccaprice_filehandle(int fd) {
         /* no break, fall to null */
     }
     return NULL;
+}
+
+/*
+ * Adds a file handle to with the file-descriptor id to the file
+ * handle table.
+ */
+int __ccaprice_fileadd(HANDLE file) {
+    __ccaprice_win_filehandle *handle = NULL;
+    ssize_t                    search;
+        
+    /*
+     * Find the next valid handle in the list that we can use
+     * by checking all the handle->used fields.
+     * 
+     * We start the search from offset 3 because STDOUT,
+     * STDIN, and STDERR exist within those first three entries.
+     */
+    for (search = 3; search < __CCAPRICE_MAXFILE_HANDLES; search++) {
+        handle = &__ccaprice_filehandles[search];
+        if (!handle->used)
+            break;
+    }
+    
+    /*
+     * Couldn't find a mapping for a file handle?  We probably exceeded
+     * the limit.
+     */
+    if (handle->used)
+        return 0;
+    
+    handle->used = 1;
+    handle->file = file;
+    
+    /*
+     * Search is an interesting value, it's actually the file descriptor
+     * (the location in the file handles table to the real file handle)
+     */
+    return search;
 }
 
 /*
@@ -509,12 +562,26 @@ stop:
     return A1;
 }
 
+__SYS_OPEN   {
+    DWORD access = (A2 & O_RDONLY) ? GENERIC_READ  : GENERIC_WRITE;
+    DWORD select = (A2 & O_APPEND) ? OPEN_EXISTING : CREATE_ALWAYS;
+    
+    HANDLE file  = CreateFile((LPCSTR)A1, access, 0, 0, select, 0, 0);
+    if (file == INVALID_HANDLE_VALUE)
+        return 0;
+    
+    /*
+     * Add the file mapping to the file descriptor table.  We will return
+     * this file descriptor from fileadd(open.<<>>)
+     */
+    return __ccaprice_fileadd(file);
+}
+
 /*
  * All of these need to be implemented yet.  There is going to be a ton
  * of work getting the spinlocks right.
  */
 __SYS_READ   { /*TODO*/ return -1; }
-__SYS_OPEN   { /*TODO*/ return -1; }
 __SYS_FCNTL  { /*TODO*/ return -1; }
 __SYS_KILL   { /*TODO*/ return -1; }
 __SYS_IOCTL  { /*TODO*/ return -1; }

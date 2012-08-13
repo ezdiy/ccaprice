@@ -482,7 +482,7 @@ int main(int argc, char **argv, char **argp) {
 
     /* <stdlib.h> */
     TEST_TRY(abs);
-   //TEST_TRY(atoi); (why u no work?)
+    //TEST_TRY(atoi); (why u no work?)
     //TEST_TRY(atol); (why u no work?)
     //TEST_TRY(atoll); (why u no work?)
     TEST_TRY(bsearch);

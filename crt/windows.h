@@ -27,7 +27,6 @@
 #define CONST  const
 
 #define LOWORD(l) ((WORD)(((unsigned long)(l)) & 0xffff))
-
 /*
  * The following documentation was used to implement these structures
  *  ImageHlp Structures            -- http://msdn.microsoft.com/en-us/library/windows/desktop/ms680198%28v=vs.85%29.aspx
@@ -40,6 +39,21 @@
  *  Windows Data Types             -- http://msdn.microsoft.com/en-us/library/windows/desktop/aa383751%28v=vs.85%29.aspx
  *  Windows Data Types for Strings -- http://msdn.microsoft.com/en-us/library/windows/desktop/dd374131%28v=vs.85%29.aspx
  */
+ 
+/*
+ * TODO: more WIN64 stuff for future porting.
+ * We implement some WIN64 ifdef configurations
+ * for types (for a future port)
+ */
+#if defined(_WIN64)
+    /*
+     * GCC implements the MSVC __int types as keywords! Not as library
+     * typedefs.
+     */
+    typedef __int64 LONG_PTR;
+#else
+    typedef long    LONG_PTR;
+#endif
 
 typedef unsigned short WCHAR;
 typedef unsigned char  BYTE;
@@ -75,18 +89,6 @@ typedef void          *HMODULE;
 #endif
 
 typedef TCHAR     *LPTCH;
-
-/*
- * We emulate the posix open/close/read/write functions which required
- * file descriptors.  This is how we handle the mapping between them
- * and actual file handles.
- */
-#define __CCCAPRICE_MAXFILE_HANDLES 4099
-typedef struct {
-    HANDLE             file;
-    BOOL               text;
-    BOOL               used;
-} __ccaprice_win_filehandle;
 
 #define __STRUCT_TYPEDEF(X) X, *P##X
 
@@ -207,6 +209,12 @@ typedef struct {
     LONG                           e_lfanew;                    
 } __STRUCT_TYPEDEF(IMAGE_DOS_HEADER);
 
+typedef struct {
+    DWORD  nLength;
+    LPVOID lpSecurityDescriptor;
+    BOOL   bInheritHandle;
+} __STRUCT_TYPEDEF(SECURITY_ATTRIBUTES), *LPSECURITY_ATTRIBUTES;
+
 /* 
  * OVERLAPPED:
  * http://msdn.microsoft.com/en-us/library/windows/desktop/ms684342%28v=vs.85%29.aspx
@@ -223,6 +231,12 @@ typedef struct {
     };
     HANDLE                hEvent;
 } OVERLAPPED, *LPOVERLAPPED;
+
+/*
+ * Some various macro constants that should evaluate to constant expressions
+ * according to the microsoft documentation.
+ */
+#define INVALID_HANDLE_VALUE ((HANDLE)(LONG_PTR)-1)
 
 /* 
  * SetFilePointer:
@@ -353,6 +367,43 @@ typedef HMODULE (WINAPI *PFNKERNEL32_GETMODULEHANDLE_PROC)(LPCSTR);
 typedef LPTCH (WINAPI *PFNKERNEL32_GETENVIROMENTSTRINGS_PROC)(VOID);
 
 /*
+ * CreateFile:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/aa363858%28v=vs.85%29.aspx
+ */
+#define FILE_SHARE_DELETE            0x00000004
+#define FILE_SHARE_READ              0x00000001
+#define FILE_SHARE_WRITE             0x00000002
+
+#define CREATE_ALWAYS                2
+#define CREATE_NEW                   1
+#define OPEN_ALWAYS                  4
+#define OPEN_EXISTING                3
+#define TRUNCATE_EXISTING            5
+
+#define FILE_ATTRIBUTE_ARCHIVE       0x0020
+#define FILE_ATTRIBUTE_ENCRYPTED     0x4000
+#define FILE_ATTRIBUTE_HIDDEN        0x0002
+#define FILE_ATTRIBUTE_NORMAL        0x0080
+#define FILE_ATTRIBUTE_OFFLINE       0x1000
+#define FILE_ATTRIBUTE_READONLY      0x0001
+#define FILE_ATTRIBUTE_SYSTEM        0x0004
+#define FILE_ATTRIBUTE_TEMPORARY     0x0100
+
+#define FILE_FLAG_BACKUP_SEMANTICS   0x02000000
+#define FILE_FLAG_DELETE_ON_CLOSE    0x04000000
+#define FILE_FLAG_NO_BUFFERING       0x20000000
+#define FILE_FLAG_OPEN_NO_RECALL     0x00100000
+#define FILE_FLAG_OPEN_REPARSE_POINT 0x00200000
+#define FILE_FLAG_OVERLAPPED         0x40000000
+#define FILE_FLAG_POSIX_SEMANTICS    0x01000000
+#define FILE_FLAG_RANDOM_ACCESS      0x10000000
+#define FILE_FLAG_SECCION_AWARE      0x00800000
+#define FILE_FLAG_SEQUENTIAL_SCAN    0x08000000
+#define FILE_FLAG_WRITE_THROUGH      0x80000000
+
+typedef HANDLE (WINAPI *PFNKERNEL32_CREATEFILE_PROC)(LPCSTR, DWORD, DWORD, LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE);
+
+/*
  * Memory Protection Constants:
  * http://msdn.microsoft.com/en-us/library/windows/desktop/aa366786%28v=vs.85%29.aspx
  */
@@ -367,6 +418,15 @@ typedef LPTCH (WINAPI *PFNKERNEL32_GETENVIROMENTSTRINGS_PROC)(VOID);
 #define PAGE_GUARD              0x100
 #define PAGE_NOCACHE            0x200
 #define PAGE_WRITECOMBINE       0x400
+
+/*
+ * Generic Rights:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/aa363874%28v=vs.85%29.aspx
+ */
+#define GENERIC_READ            0x80000000
+#define GENERIC_WRITE           0x40000000
+#define GENERIC_EXECUTE         0x20000000
+#define GENERIC_ALL             0x10000000
 
 #undef __STRUCT_TYPEDEF
 #endif
