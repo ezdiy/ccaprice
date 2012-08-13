@@ -140,33 +140,35 @@ typedef struct {
  * All of the function pointers to interface with the kernel to perform
  * kernel calls are here.
  */
-PFNKERNEL32_SETFILEPOINTER_PROC       SetFilePointer       = NULL;
-PFNKERNEL32_WRITEFILE_PROC            WriteFile            = NULL;
-PFNKERNEL32_GETSTDHANDLE_PROC         GetStdHandle         = NULL;
-PFNKERNEL32_EXITPROCESS_PROC          ExitProcess          = NULL;
-PFNKERNEL32_GETCOMMANDLINE_PROC       GetCommandLine       = NULL;
-PFNKERNEL32_VIRTUALALLOC_PROC         VirtualAlloc         = NULL;
-PFNKERNEL32_VIRTUALFREE_PROC          VirtualFree          = NULL;
-PFNKERNEL32_GETPROCESSHEAP_PROC       GetProcessHeap       = NULL;
-PFNKERNEL32_GETFILETYPE_PROC          GetFileType          = NULL;
-PFNKERNEL32_MOVEFILE_PROC             MoveFile             = NULL;
-PFNKERNEL32_GETPROCESSID_PROC         GetProcessId         = NULL;
-PFNKERNEL32_GETCURRENTPROCESS_PROC    GetCurrentProcess    = NULL;
-PFNKERNEL32_DELETEFILE_PROC           DeleteFile           = NULL;
-PFNKERNEL32_HEAPALLOC_PROC            HeapAlloc            = NULL;
-PFNKERNEL32_HEAPFREE_PROC             HeapFree             = NULL;
-PFNKERNEL32_GETMODULEHANDLE_PROC      GetModuleHandle      = NULL;
-PFNKERNEL32_GETENVIROMENTSTRINGS_PROC GetEnviromentStrings = NULL;
-PFNKERNEL32_CREATEFILE_PROC           CreateFile           = NULL;
+static PFNKERNEL32_SETFILEPOINTER_PROC       SetFilePointer       = NULL;
+static PFNKERNEL32_WRITEFILE_PROC            WriteFile            = NULL;
+static PFNKERNEL32_GETSTDHANDLE_PROC         GetStdHandle         = NULL;
+static PFNKERNEL32_EXITPROCESS_PROC          ExitProcess          = NULL;
+static PFNKERNEL32_GETCOMMANDLINE_PROC       GetCommandLine       = NULL;
+static PFNKERNEL32_VIRTUALALLOC_PROC         VirtualAlloc         = NULL;
+static PFNKERNEL32_VIRTUALFREE_PROC          VirtualFree          = NULL;
+static PFNKERNEL32_GETPROCESSHEAP_PROC       GetProcessHeap       = NULL;
+static PFNKERNEL32_GETFILETYPE_PROC          GetFileType          = NULL;
+static PFNKERNEL32_MOVEFILE_PROC             MoveFile             = NULL;
+static PFNKERNEL32_GETPROCESSID_PROC         GetProcessId         = NULL;
+static PFNKERNEL32_GETCURRENTPROCESS_PROC    GetCurrentProcess    = NULL;
+static PFNKERNEL32_DELETEFILE_PROC           DeleteFile           = NULL;
+static PFNKERNEL32_HEAPALLOC_PROC            HeapAlloc            = NULL;
+static PFNKERNEL32_HEAPFREE_PROC             HeapFree             = NULL;
+static PFNKERNEL32_GETMODULEHANDLE_PROC      GetModuleHandle      = NULL;
+static PFNKERNEL32_GETENVIROMENTSTRINGS_PROC GetEnviromentStrings = NULL;
+static PFNKERNEL32_CREATEFILE_PROC           CreateFile           = NULL;
+static PFNKERNEL32_SUSPENDTHREAD_PROC        SuspendThread        = NULL;
+static PFNKERNEL32_GETCURRENTTHREAD_PROC     GetCurrentThread     = NULL;
 /*
  * This needs to be gurded by a critical section some day.  Yes I know it's
  * nasty.
  */
 __ccaprice_win_filehandle __ccaprice_filehandles[__CCAPRICE_MAXFILE_HANDLES];
 
-#ifdef  __CCAPRICE_DEBUG
-#define DEBUG_SYM(NAME, SPACE) printf("[ccaprice] %s %s found -> 0x%x\n", SPACE, #NAME, NAME)
-#define DEBUG_LOG(NAME,   ...) printf(NAME, __VA_ARGS__)
+#ifndef NDEBUG
+#define DEBUG_SYM(NAME, SPACE) do { if (WriteFile && GetStdHandle) { printf("[ccaprice] %s %s found -> 0x%x\n", SPACE, #NAME, NAME); } } while (0)
+#define DEBUG_LOG(NAME,   ...) do { if (WriteFile && GetStdHandle) { printf(NAME, __VA_ARGS__); } } while (0)
 #else
 #define DEBUG_SYM(NAME, SPACE)
 #define DEBUG_LOG(NAME,   ...)
@@ -177,9 +179,18 @@ void *__ccaprice_func_find(void *lib, const char *name) {
     PIMAGE_DATA_DIRECTORY   export_dat  = (PIMAGE_DATA_DIRECTORY)(&header->OptionalHeader.DataDirectory[0]);
     PIMAGE_EXPORT_DIRECTORY export_dir  = (PIMAGE_EXPORT_DIRECTORY)((char*)lib + export_dat->VirtualAddress);
     
+    DEBUG_LOG("[ccaprice] finding %s using:\n", name);
+    DEBUG_LOG("    header          = 0x%x\n", header);
+    DEBUG_LOG("    exportdata      = 0x%x\n", export_dat);
+    DEBUG_LOG("    exportdirectory = 0x%x\n", export_dir);
+    
     void **function_table = (void**)((char*)lib + export_dir->AddressOfFunctions);
     WORD  *ordinals_table = (WORD*) ((char*)lib + export_dir->AddressOfNameOrdinals);
     char **wordname_table = (char**)((char*)lib + export_dir->AddressOfNames);
+    
+    DEBUG_LOG("    functiontable   = 0x%x\n", function_table);
+    DEBUG_LOG("    ordinalstable   = 0x%x\n", ordinals_table);
+    DEBUG_LOG("    wordnametable   = 0x%x\n", wordname_table);
     
     void *address = NULL;
     
@@ -274,6 +285,7 @@ void __ccaprice_calculate_commandline(__ccaprice_commandline_data *data) {
             *cmd ++ = '\0';
     }
     /* main loop to calculate argument list */
+    DEBUG_LOG("[ccaprice] Calculating argument list for main invokation ...\n", "");
     for (;;) {
         
         /* skip whitespace */
@@ -323,6 +335,24 @@ void __ccaprice_calculate_commandline(__ccaprice_commandline_data *data) {
     }
 }
 
+HFILE __ccaprice_filehandle(int fd) {
+    __ccaprice_win_filehandle *handle;
+    /* LOCK ()  */
+    switch (fd) {
+        case 0: return GetStdHandle(STD_INPUT_HANDLE);
+        case 1: return GetStdHandle(STD_OUTPUT_HANDLE);
+        case 2: return GetStdHandle(STD_ERROR_HANDLE);
+        default:
+            if ((fd >= 3) && (fd < __CCAPRICE_MAXFILE_HANDLES)) {
+                handle = &__ccaprice_filehandles[(size_t)fd - 3];
+                if (handle->used)
+                    return handle->file;
+            }
+        /* no break, fall to null */
+    }
+    return NULL;
+}
+
 void __ccaprice_start () {
     void *PEB  = NULL;
     void *BASE = NULL;
@@ -344,13 +374,15 @@ void __ccaprice_start () {
         ) + 0x00))                                            //                                (3rd)
     ) + 0x10));                                               // .BaseAddress (kernel32.dll)
  
+ 
     /*
      * Obtain all the required functions for ccaprice from kernel32.dll.
      * Now that we have a valid handle.
      */
     WriteFile            = __ccaprice_func_find(BASE, "WriteFile");     // must be first!
     GetStdHandle         = __ccaprice_func_find(BASE, "GetStdHandle");  // must be second!
-    
+ 
+    DEBUG_LOG("[ccaprice] Found PEB @ 0x30(FS), points to 0x%x\n", PEB); 
     DEBUG_LOG("[ccaprice] Found kernel32.dll base address 0x%x\n\nFinding functions ...\n", BASE);
     
     SetFilePointer       = __ccaprice_func_find(BASE, "SetFilePointer");
@@ -369,6 +401,8 @@ void __ccaprice_start () {
     HeapFree             = __ccaprice_func_find(BASE, "HeapFree");
     GetEnviromentStrings = __ccaprice_func_find(BASE, "GetEnvironmentStringsA");
     CreateFile           = __ccaprice_func_find(BASE, "CreateFileA");
+    SuspendThread        = __ccaprice_func_find(BASE, "SuspendThread");
+    GetCurrentThread     = __ccaprice_func_find(BASE, "GetCurrentThread");
     
     DEBUG_SYM(WriteFile,"            ");
     DEBUG_SYM(GetStdHandle,"         ");
@@ -386,6 +420,8 @@ void __ccaprice_start () {
     DEBUG_SYM(HeapFree,"             ");
     DEBUG_SYM(GetEnviromentStrings," ");
     DEBUG_SYM(CreateFile,"           ");
+    DEBUG_SYM(SuspendThread,"        ");
+    DEBUG_SYM(GetCurrentThread,"     ");
     
     /*
      * Specify some filetypes from the getgo. So our structure accuratly
@@ -418,24 +454,6 @@ void __ccaprice_start () {
         HeapFree(GetProcessHeap(), 0, cmd.done);
         
     ExitProcess(ret);
-}
-
-HFILE __ccaprice_filehandle(int fd) {
-    __ccaprice_win_filehandle *handle;
-    /* LOCK ()  */
-    switch (fd) {
-        case 0: return GetStdHandle(STD_INPUT_HANDLE);
-        case 1: return GetStdHandle(STD_OUTPUT_HANDLE);
-        case 2: return GetStdHandle(STD_ERROR_HANDLE);
-        default:
-            if ((fd >= 3) && (fd < __CCAPRICE_MAXFILE_HANDLES)) {
-                handle = &__ccaprice_filehandles[(size_t)fd - 3];
-                if (handle->used)
-                    return handle->file;
-            }
-        /* no break, fall to null */
-    }
-    return NULL;
 }
 
 /*
@@ -595,6 +613,6 @@ __SYS_KILL   { /*TODO*/ return -1; }
 __SYS_IOCTL  { /*TODO*/ return -1; }
 __SYS_CLOSE  { /*TODO*/ return -1; }
 __SYS_FUTEX  { /*TODO*/ return -1; }
-__SYS_PAUSE  { /*TODO*/ return -1; }
+__SYS_PAUSE  { return (SuspendThread(GetCurrentThread()) != -1); }
 
 #endif

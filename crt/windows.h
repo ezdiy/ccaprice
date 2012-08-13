@@ -428,5 +428,17 @@ typedef HANDLE (WINAPI *PFNKERNEL32_CREATEFILE_PROC)(LPCSTR, DWORD, DWORD, LPSEC
 #define GENERIC_EXECUTE         0x20000000
 #define GENERIC_ALL             0x10000000
 
+/*
+ * SuspendThread:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/ms686345%28v=vs.85%29.aspx
+ */
+typedef DWORD (WINAPI *PFNKERNEL32_SUSPENDTHREAD_PROC)(HANDLE);
+
+/*
+ * GetCurrentThread:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/ms683182%28v=vs.85%29.aspx
+ */
+typedef HANDLE (WINAPI *PFNKERNEL32_GETCURRENTTHREAD_PROC)(VOID);
+
 #undef __STRUCT_TYPEDEF
 #endif
