@@ -24,8 +24,10 @@
 #include <string.h>
 #include <locale.h>
 
-__CCAPRICE_INTERNAL_FUNC(void, free, (void*));
-__CCAPRICE_INTERNAL_FUNC(int,  main, (int, char **, char **));
+__CCAPRICE_INTERNAL_FUNC(void,  free,   (void*));
+__CCAPRICE_INTERNAL_FUNC(void*, realloc,(void*, size_t));
+__CCAPRICE_INTERNAL_FUNC(int,   main,   (int, char **, char **));
+__CCAPRICE_INTERNAL_FUNC(int,   printf, (const char *, ...));
 
 const char *__ccaprice_build_date __CCAPRICE_USED = __DATE__;
 const char *__ccaprice_build_time __CCAPRICE_USED = __TIME__;
@@ -62,9 +64,6 @@ int __ccaprice_start (
     __ccaprice_errno      = &arno;
     __ccaprice_enviroment = &argv[argc+1];
     __ccaprice_locale_init(); /* TODO: rewrite all this local hack */
-    
-    void __ccaprice_setup();
-    __ccaprice_setup();
     
     __CCAPRICE_INSTANCE.fini  = fini;
     
@@ -160,6 +159,22 @@ static PFNKERNEL32_GETENVIROMENTSTRINGS_PROC GetEnviromentStrings = NULL;
 static PFNKERNEL32_CREATEFILE_PROC           CreateFile           = NULL;
 static PFNKERNEL32_SUSPENDTHREAD_PROC        SuspendThread        = NULL;
 static PFNKERNEL32_GETCURRENTTHREAD_PROC     GetCurrentThread     = NULL;
+
+#define data_add(a,v) ((((a)==0||((int*)(a)-2)[1]+(1)>=((int*)(a)-2)[0])?data_grow((void**)&(a),(1),sizeof(*(a))):0),(a)[((int*)(a)-2)[1]++]=(v))
+#define data_count(a) ((a)? ((int*)(a)-2)[1]:0)
+#define data_free(a)  ((a)?free(((int*)(a)-2)),0:0)
+
+static void *data_grow(void **a, int in, int it) {
+    int m = *a ? 2 * ((int*)(*a)-2)[0]+in : in+1;
+    void *p = realloc(*a ? ((int*)(*a)-2) : 0, it * m + sizeof(int)*2);
+    if (p) {
+        if (!*a) ((int*)p)[1] = 0;
+        *a = (void*)((int*)p+2);
+        ((int*)(*a)-2)[0] = m;
+    }
+    return *a;
+}
+
 /*
  * This needs to be gurded by a critical section some day.  Yes I know it's
  * nasty.
@@ -243,26 +258,37 @@ void *__ccaprice_func_find(void *lib, const char *name) {
  * and size from the kernel to pass to main.
  */
 typedef struct {
-    char *argv[32+1];
-    int   argc;
-    char *done;
+    char **argv;
+    int    argc;
+    char **argp;
+    char  *done;
 } __ccaprice_commandline_data;
 
 void __ccaprice_calculate_commandline(__ccaprice_commandline_data *data) {
+    char   *get  = (char*)GetEnviromentStrings();
+    char   *sys  = (char*)GetCommandLine();
+    char   *cmd  = strdup(sys); /* copy */ 
+    size_t  len  = strlen(sys); /* size */
     
-    char *sys = (char*)GetCommandLine();
-    int   len = strlen(sys);
+    /*
+     * Figure out argp first. Then handle command line stuff for argc
+     * and argv later.
+     */
+    while (*get) {
+        /* find end */
+        char   *itm = NULL;
+        char   *end = get;
+        while (*end != '\0') data_add(itm, *end++);
+        
+        data_add(data->argp, itm); 
+        get = end + 1;
+    }
     
-    /* copy */
-    char *cmd = (char*)HeapAlloc(GetProcessHeap(), 0, sizeof(char*) * (len + 1));
     data->done = cmd;
-    if (!cmd) return;
-    strcpy(cmd, sys);
     
     /* step 1: handle quoted file names) */
     if (*cmd == '"') {
-        cmd ++;
-        data->argv[0] = cmd; /* exe name */
+        data_add(data->argv, cmd); /* exe name */
         
         /* skip to next quote */
         while (*cmd && *cmd != '"')
@@ -274,7 +300,7 @@ void __ccaprice_calculate_commandline(__ccaprice_commandline_data *data) {
         else
             return;
     } else {
-        data->argv[0] = cmd; /* exe name */
+        data_add(data->argv, cmd); /* exe name */
         
         /* skip to next white space */
         while (*cmd && *cmd != ' ')
@@ -300,8 +326,9 @@ void __ccaprice_calculate_commandline(__ccaprice_commandline_data *data) {
             cmd++;
             
             /* add to list */
-            data->argv[data->argc++] = cmd;
-            data->argv[data->argc]   = NULL;
+            data_add(data->argv, cmd);
+            data_add(data->argv, NULL);
+            data->argc++;
             
             /* skip all to end quote */
             while (*cmd && *cmd != '"')
@@ -315,8 +342,9 @@ void __ccaprice_calculate_commandline(__ccaprice_commandline_data *data) {
                 *cmd++ = '\0';
         } else {
             /* add to list */
-            data->argv[data->argc++] = cmd;
-            data->argv[data->argc]   = 0;
+            data_add(data->argv, cmd);
+            data_add(data->argv, NULL);
+            data->argc++;
             
             /* skip to next space */
             while (*cmd && *cmd != ' ')
@@ -329,9 +357,6 @@ void __ccaprice_calculate_commandline(__ccaprice_commandline_data *data) {
             if (*cmd)
                 *cmd = '\0';
         }
-        
-        if (data->argc >= 32)
-            return;
     }
 }
 
@@ -356,6 +381,7 @@ HFILE __ccaprice_filehandle(int fd) {
 void __ccaprice_start () {
     void *PEB  = NULL;
     void *BASE = NULL;
+    
     __ccaprice_commandline_data cmd = { {0}, 1, 0 };
     int                         ret =   0;
     
@@ -432,19 +458,15 @@ void __ccaprice_start () {
     __ccaprice_filehandles[2].text = !!(GetFileType(__ccaprice_filehandle(2)) == FILE_TYPE_CHAR);
     
     /*
-     * This will actually allocate memory that needs to be freed
-     * and this needs to yet be parsed into a list.
-     * 
-     * TODO: fix this!
-     */
-    __ccaprice_enviroment = (char**)GetEnviromentStrings();
-    
-    /*
      * Invoke main and store the return status of it some where
      * it will be used for the call to the kernel via ExitProcess.
      */
     __ccaprice_calculate_commandline(&cmd);
-    ret = main(cmd.argc, cmd.argv, __ccaprice_enviroment);
+    ret = main(cmd.argc, cmd.argv, cmd.argp);
+    
+    data_free(cmd.argv);
+    data_free(cmd.argp);
+    free     (cmd.done);
     
     /*
      * Cleanup any used heap space for command line agruments
