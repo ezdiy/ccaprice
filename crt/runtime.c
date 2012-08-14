@@ -259,16 +259,15 @@ void *__ccaprice_func_find(void *lib, const char *name) {
  */
 typedef struct {
     char **argv;
-    int    argc;
     char **argp;
+    int    argc;
     char  *done;
 } __ccaprice_commandline_data;
 
 void __ccaprice_calculate_commandline(__ccaprice_commandline_data *data) {
     char   *get  = (char*)GetEnviromentStrings();
     char   *sys  = (char*)GetCommandLine();
-    char   *cmd  = strdup(sys); /* copy */ 
-    size_t  len  = strlen(sys); /* size */
+    char   *cmd  = strdup(sys); /* copy */
     
     /*
      * Figure out argp first. Then handle command line stuff for argc
@@ -382,7 +381,7 @@ void __ccaprice_start () {
     void *PEB  = NULL;
     void *BASE = NULL;
     
-    __ccaprice_commandline_data cmd = { {0}, 1, 0 };
+    __ccaprice_commandline_data cmd = { 0, 0, 1, 0 };
     int                         ret =   0;
     
     /*
@@ -390,17 +389,16 @@ void __ccaprice_start () {
      * and linked list for the base address of kernel32.dll.
      */
     __asm__ __volatile__ ("mov %%fs:0x30, %0" : "=r"(PEB));
-    BASE =
-        *((void**)((unsigned char *)( *((void**)((unsigned char *)(                    
-                *((void**)((unsigned char *)(                 
-                    *((void**)((unsigned char *)(             
-                    *((void**)((unsigned char *)PEB + 0x0C))  // Peb->Ldr
-                ) + 0x14))                                    // .InMemoryOrderModuleList.Flink (1st)
-            ) + 0x00))                                        //                                (2nd)
-        ) + 0x00))                                            //                                (3rd)
-    ) + 0x10));                                               // .BaseAddress (kernel32.dll)
- 
- 
+    BASE = *((void**)((unsigned char *)(
+            *((void**)((unsigned char *)(                    
+             *((void**)((unsigned char *)(                 
+              *((void**)((unsigned char *)(             
+               *((void**)((unsigned char *)PEB + 0x0C))
+                ) + 0x14))
+               )  + 0x00))
+              )   + 0x00))
+             )    + 0x10)
+            );
     /*
      * Obtain all the required functions for ccaprice from kernel32.dll.
      * Now that we have a valid handle.
@@ -448,14 +446,6 @@ void __ccaprice_start () {
     DEBUG_SYM(CreateFile,"           ");
     DEBUG_SYM(SuspendThread,"        ");
     DEBUG_SYM(GetCurrentThread,"     ");
-    
-    /*
-     * Specify some filetypes from the getgo. So our structure accuratly
-     * reflects the correct values.
-     */
-    __ccaprice_filehandles[0].text = !!(GetFileType(__ccaprice_filehandle(0)) == FILE_TYPE_CHAR);
-    __ccaprice_filehandles[1].text = !!(GetFileType(__ccaprice_filehandle(1)) == FILE_TYPE_CHAR);
-    __ccaprice_filehandles[2].text = !!(GetFileType(__ccaprice_filehandle(2)) == FILE_TYPE_CHAR);
     
     /*
      * Invoke main and store the return status of it some where
@@ -526,8 +516,50 @@ __SYS_WRITE  {
     
     if ((fileh = __ccaprice_filehandle(A1)) == NULL)
         return -1;
-    
-    /* not a standard descriptor ?*/
+
+    /*
+     * TextMode is always ascii! Translate LF -> CRLF. To respect the
+     * WINDOWS way.
+     */
+    if (A1 <= 3 || (A1 > 3 && __ccaprice_filehandles[(size_t)A1 - 3].text)) {
+        const char *src = (const char *)A2;
+        const char *end = "\r\n"; /* CRLF */
+        size_t      beg = 0;
+        size_t      itr = 0;
+        size_t      put = 0;
+        
+        for (itr = 0; itr < A3; itr++) {
+            if (src[itr] != '\n')
+                continue;
+            
+            /* don't translate this step */
+            if (itr > 0 && src[itr-1] == '\r')
+                continue;
+                
+            if (itr > beg) {
+                if (!WriteFile(fileh, &src[beg], itr-beg, &wrote, ((LPOVERLAPPED)NULL)))
+                    return -1;
+                put += wrote;
+            }
+            
+            if (!WriteFile(fileh, end, 2, &wrote, ((LPOVERLAPPED)NULL)))
+                return -1;
+            
+            /*
+             * Even though we wrote two bytes for CRLF.  We really only wrote
+             * '\n'. Which we must respect here.
+             */
+            put ++;
+            beg = itr+1;
+        }
+        if (itr > beg) {
+            if (!WriteFile(fileh, &src[beg], itr-beg, &wrote, ((LPOVERLAPPED)NULL)))
+                return -1;
+            put += wrote;
+        }
+        return ((ssize_t)put);
+    }
+    /* not a text mode file ? */
     if (!WriteFile(fileh, A2, A3, &wrote, ((LPOVERLAPPED)NULL)))
         return -1;
         

@@ -79,6 +79,7 @@ typedef WCHAR         *LPWSTR;
 typedef size_t         SIZE_T;
 typedef const CHAR    *LPCSTR;
 typedef void          *HMODULE;
+typedef short          SHORT;
 
 #ifdef UNICODE
     typedef LPWSTR LPTSTR;
@@ -168,24 +169,6 @@ typedef struct {
     DWORD                 AddressOfNames;        // RVA
     DWORD                 AddressOfNameOrdinals; // RVA
 } __STRUCT_TYPEDEF(IMAGE_EXPORT_DIRECTORY);
-
-typedef struct _LIST_ENTRY {
-    struct _LIST_ENTRY *Flink;
-    struct _LIST_ENTRY *Blink;
-}__STRUCT_TYPEDEF(LIST_ENTRY);
-    
-typedef struct {
-    BYTE                           Reserved1[16];
-    PVOID                          Reserved2[10];
-    UNICODE_STRING                 ImagePathName;
-    UNICODE_STRING                 CommandLine;
-} __STRUCT_TYPEDEF(RTL_USER_PROCESS_PARAMETERS);
-
-typedef struct {
-    BYTE                           Reserved1[8];
-    PVOID                          Reserved2[3];
-    LIST_ENTRY                     InMemoryOrderModuleList;
-} __STRUCT_TYPEDEF(PEB_LDR_DATA);
 
 typedef struct {
     WORD                           e_magic;
