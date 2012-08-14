@@ -423,5 +423,11 @@ typedef DWORD (WINAPI *PFNKERNEL32_SUSPENDTHREAD_PROC)(HANDLE);
  */
 typedef HANDLE (WINAPI *PFNKERNEL32_GETCURRENTTHREAD_PROC)(VOID);
 
+/*
+ * ReadFile:
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/aa365467%28v=vs.85%29.aspx
+ */
+typedef BOOL (WINAPI *PFNKERNEL32_READFILE_PROC)(HANDLE, LPVOID, DWORD, LPDWORD, LPOVERLAPPED);
+
 #undef __STRUCT_TYPEDEF
 #endif

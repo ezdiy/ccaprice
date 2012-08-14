@@ -26,6 +26,7 @@
 
 __CCAPRICE_INTERNAL_FUNC(void,  free,   (void*));
 __CCAPRICE_INTERNAL_FUNC(void*, realloc,(void*, size_t));
+__CCAPRICE_INTERNAL_FUNC(void*, malloc, (size_t));
 __CCAPRICE_INTERNAL_FUNC(int,   main,   (int, char **, char **));
 __CCAPRICE_INTERNAL_FUNC(int,   printf, (const char *, ...));
 
@@ -159,6 +160,7 @@ static PFNKERNEL32_GETENVIROMENTSTRINGS_PROC GetEnviromentStrings = NULL;
 static PFNKERNEL32_CREATEFILE_PROC           CreateFile           = NULL;
 static PFNKERNEL32_SUSPENDTHREAD_PROC        SuspendThread        = NULL;
 static PFNKERNEL32_GETCURRENTTHREAD_PROC     GetCurrentThread     = NULL;
+static PFNKERNEL32_READFILE_PROC             ReadFile             = NULL;
 
 #define data_add(a,v) ((((a)==0||((int*)(a)-2)[1]+(1)>=((int*)(a)-2)[0])?data_grow((void**)&(a),(1),sizeof(*(a))):0),(a)[((int*)(a)-2)[1]++]=(v))
 #define data_count(a) ((a)? ((int*)(a)-2)[1]:0)
@@ -427,6 +429,7 @@ void __ccaprice_start () {
     CreateFile           = __ccaprice_func_find(BASE, "CreateFileA");
     SuspendThread        = __ccaprice_func_find(BASE, "SuspendThread");
     GetCurrentThread     = __ccaprice_func_find(BASE, "GetCurrentThread");
+    ReadFile             = __ccaprice_func_find(BASE, "ReadFile");
     
     DEBUG_SYM(WriteFile,"            ");
     DEBUG_SYM(GetStdHandle,"         ");
@@ -446,6 +449,7 @@ void __ccaprice_start () {
     DEBUG_SYM(CreateFile,"           ");
     DEBUG_SYM(SuspendThread,"        ");
     DEBUG_SYM(GetCurrentThread,"     ");
+    DEBUG_SYM(ReadFile,"             ");
     
     /*
      * Invoke main and store the return status of it some where
@@ -495,7 +499,8 @@ int __ccaprice_fileadd(HANDLE file) {
      */
     if (handle->used)
         return 0;
-    
+        
+    handle->text = !!(GetFileType(file) == FILE_TYPE_CHAR);
     handle->used = 1;
     handle->file = file;
     
@@ -661,12 +666,73 @@ __SYS_OPEN   {
  * All of these need to be implemented yet.  There is going to be a ton
  * of work getting the spinlocks right.
  */
-__SYS_READ   { /*TODO*/ return -1; }
+__SYS_READ   { 
+    HANDLE file = __ccaprice_filehandle(A1);
+    BOOL   text = (A1 <= 3 || (A1 > 3 && __ccaprice_filehandles[(size_t)A1 - 3].text));
+    char  *core = (text) ? (char*)malloc(A3) : (char*)A2;
+    DWORD  size;
+    
+    if (!ReadFile(file, core, A3, &size, 0)) return -1; /* ERROR */
+    if (!size)                               return  0; /* EOF   */
+    
+    /*
+     * Textmode translate CR -> LF because windows files are strange like
+     * that. For some convoluted reason.
+     */
+    if  (text) {
+        char *dst = (char*)A2;
+        DWORD itr = 0;
+        
+        for (; itr < size; itr++) {
+            if (core[itr] != '\r') {
+                *dst++ = core[itr];
+                continue;
+            }
+            
+            /*
+             * Is the next character LF? If so convert CR to LF otherwise
+             * just copy the byte.
+             */
+            if (itr + 1 < size) {
+                if (core[itr + 1] == '\n')
+                    *dst++ = '\n', itr++;
+                else
+                    *dst++ = core[itr];
+            } else if (size > 1) {
+                /*
+                 * Peak ahead one byte to determine the line ending.
+                 * This is more of a pain in the ass than it is fun.
+                 */
+                DWORD look = 0;
+                char  peek = 0;
+                
+                ReadFile(file, &peek, 1, &look, 0);
+                if (!look)
+                    *dst++ = core[itr];
+                else if(peek == '\n')
+                    *dst++ = '\n';
+                else {
+                    /*
+                     * Move backwards one on the current file to unpeek.
+                     * This is the nasty part.
+                     */
+                    lseek(A1, -1, 1/*SEEK_CUR*/);
+                    *dst++ = core[itr];
+                }
+            } else {
+                *dst++ = core[itr];
+            }
+        }
+        free(core);
+    }
+    return size;
+}
 __SYS_FCNTL  { /*TODO*/ return -1; }
 __SYS_KILL   { /*TODO*/ return -1; }
 __SYS_IOCTL  { /*TODO*/ return -1; }
 __SYS_CLOSE  { /*TODO*/ return -1; }
 __SYS_FUTEX  { /*TODO*/ return -1; }
+
 __SYS_PAUSE  { return (SuspendThread(GetCurrentThread()) != -1); }
 
 #endif
