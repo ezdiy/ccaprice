@@ -520,10 +520,10 @@ ifneq ($(DONOT), 1)
 	$(AT) ld $(LFLAGS) -o test test.o $(OUT)
 endif
 ifeq (, $(DEBUG))
-# $(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
-#@ echo $(BLUE)   Before `wc -c < test` $(ENDCOL)
+	$(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
+	@ echo $(BLUE)   Before `wc -c < test` $(ENDCOL)
 	@ strip test
-#@ echo $(BLUE)   After  `wc -c < test` $(ENDCOL)
+	@ echo $(BLUE)   After  `wc -c < test` $(ENDCOL)
 endif
 	
 test: test_core
@@ -534,13 +534,13 @@ test: test_core
 compare: test_core
 	@ gcc test.c -static-libgcc -Wl,-Bstatic -lc -lm -o test_system
 	$(ECHO) $(PURPLE) Stripping ... $(ENDCOL)
-	$(ECHO) $(BLUE)   Before `du -c < test_system` $(ENDCOL)
+	$(ECHO) $(BLUE)   Before `wc -c < test_system` $(ENDCOL)
 	@ strip test_system
-	$(ECHO) $(BLUE)   After  `du -c < test_system` $(ENDCOL)
+	$(ECHO) $(BLUE)   After  `wc -c < test_system` $(ENDCOL)
 	$(ECHO)
 	$(ECHO) $(GREEN) Comparing system libc ... $(ENDCOL)
-	$(ECHO) $(GREEN) systems:  $(RPURPLE)`du -c < test_system` (bytes) $(ENDCOL)
-	$(ECHO) $(GREEN) ccaprice: $(RPURPLE)`du -c < test`        (bytes) $(ENDCOL)
+	$(ECHO) $(GREEN) systems:  $(RPURPLE) `printf \"%-20s\" \`wc -c < test_system\`` (bytes) $(ENDCOL)
+	$(ECHO) $(GREEN) ccaprice: $(RPURPLE) `printf \"%-20s\" \`wc -c < test\`` (bytes) $(ENDCOL)
 	@ rm -f test test_system
 
 printendian:
