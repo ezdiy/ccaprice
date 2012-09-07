@@ -22,9 +22,12 @@
  */
 #ifndef __CCAPRICE_WINDOWS_HDR
 #define __CCAPRICE_WINDOWS_HDR
+#include <ccaprice.h>
+#include <stdint.h>
 
-#define WINAPI __stdcall
-#define CONST  const
+#define WINAPI   __stdcall
+#define CALLBACK __stdcall
+#define CONST    const
 
 #define LOWORD(l) ((WORD)(((unsigned long)(l)) & 0xffff))
 /*
@@ -203,17 +206,140 @@ typedef struct {
  * http://msdn.microsoft.com/en-us/library/windows/desktop/ms684342%28v=vs.85%29.aspx
  */
 typedef struct {
-    ULONG_PTR             Internal;
-    ULONG_PTR             InternalHigh;
+    ULONG_PTR                 Internal;
+    ULONG_PTR                 InternalHigh;
     union {
         struct {
-            DWORD         Offset;
-            DWORD         OffsetHigh;
+            DWORD             Offset;
+            DWORD             OffsetHigh;
         };
-        PVOID             Pointer;
+        PVOID                 Pointer;
     };
-    HANDLE                hEvent;
+    HANDLE                    hEvent;
 } OVERLAPPED, *LPOVERLAPPED;
+
+
+/*
+ * Context structure only applies to win32 ...
+ * TODO: win64 for 2in64 port some day!
+ */
+#define MAXIMUM_SUPPORTED_EXTENSION     512
+#define SIZE_OF_80387_REGISTERS         80
+
+typedef struct {
+  DWORD   ControlWord;
+  DWORD   StatusWord;
+  DWORD   TagWord;
+  DWORD   ErrorOffset;
+  DWORD   ErrorSelector;
+  DWORD   DataOffset;
+  DWORD   DataSelector;
+  BYTE    RegisterArea[SIZE_OF_80387_REGISTERS];
+  DWORD   Cr0NpxState;
+} __STRUCT_TYPEDEF(FLOATING_SAVE_AREA);
+
+typedef struct {
+  DWORD ContextFlags;
+
+  DWORD   Dr0;
+  DWORD   Dr1;
+  DWORD   Dr2;
+  DWORD   Dr3;
+  DWORD   Dr6;
+  DWORD   Dr7;
+
+  FLOATING_SAVE_AREA FloatSave;
+
+  DWORD   SegGs;
+  DWORD   SegFs;
+  DWORD   SegEs;
+  DWORD   SegDs;
+
+  DWORD   Edi;
+  DWORD   Esi;
+  DWORD   Ebx;
+  DWORD   Edx;
+  DWORD   Ecx;
+  DWORD   Eax;
+
+  DWORD   Ebp;
+  DWORD   Eip;
+  DWORD   SegCs;
+  DWORD   EFlags;
+  DWORD   Esp;
+  DWORD   SegSs;
+
+  BYTE    ExtendedRegisters[MAXIMUM_SUPPORTED_EXTENSION];
+} __STRUCT_TYPEDEF(CONTEXT), *LPCONTEXT;
+
+
+#define STATUS_WAIT_0                       0
+#define STATUS_ABANDONED_WAIT_0             0x80
+#define STATUS_USER_APC                     0xC0
+#define STATUS_TIMEOUT                      0x102
+#define STATUS_PENDING                      0x103
+#define STATUS_SEGMENT_NOTIFICATION         0x40000005
+#define STATUS_GUARD_PAGE_VIOLATION         0x80000001
+#define STATUS_DATATYPE_MISALIGNMENT        0x80000002
+#define STATUS_BREAKPOINT                   0x80000003
+#define STATUS_SINGLE_STEP                  0x80000004
+#define STATUS_ACCESS_VIOLATION             0xC0000005
+#define STATUS_IN_PAGE_ERROR                0xC0000006
+#define STATUS_INVALID_HANDLE               0xC0000008L
+#define STATUS_NO_MEMORY                    0xC0000017
+#define STATUS_ILLEGAL_INSTRUCTION          0xC000001D
+#define STATUS_NONCONTINUABLE_EXCEPTION     0xC0000025
+#define STATUS_INVALID_DISPOSITION          0xC0000026
+#define STATUS_ARRAY_BOUNDS_EXCEEDED        0xC000008C
+#define STATUS_FLOAT_DENORMAL_OPERAND       0xC000008D
+#define STATUS_FLOAT_DIVIDE_BY_ZERO         0xC000008E
+#define STATUS_FLOAT_INEXACT_RESULT         0xC000008F
+#define STATUS_FLOAT_INVALID_OPERATION      0xC0000090
+#define STATUS_FLOAT_OVERFLOW               0xC0000091
+#define STATUS_FLOAT_STACK_CHECK            0xC0000092
+#define STATUS_FLOAT_UNDERFLOW              0xC0000093
+#define STATUS_INTEGER_DIVIDE_BY_ZERO       0xC0000094
+#define STATUS_INTEGER_OVERFLOW             0xC0000095
+#define STATUS_PRIVILEGED_INSTRUCTION       0xC0000096
+#define STATUS_STACK_OVERFLOW               0xC00000FD
+#define STATUS_CONTROL_C_EXIT               0xC000013A
+#define EXCEPTION_ACCESS_VIOLATION	        STATUS_ACCESS_VIOLATION
+#define EXCEPTION_DATATYPE_MISALIGNMENT	    STATUS_DATATYPE_MISALIGNMENT
+#define EXCEPTION_BREAKPOINT	            STATUS_BREAKPOINT
+#define EXCEPTION_SINGLE_STEP	            STATUS_SINGLE_STEP
+#define EXCEPTION_ARRAY_BOUNDS_EXCEEDED	    STATUS_ARRAY_BOUNDS_EXCEEDED
+#define EXCEPTION_FLT_DENORMAL_OPERAND	    STATUS_FLOAT_DENORMAL_OPERAND
+#define EXCEPTION_FLT_DIVIDE_BY_ZERO	    STATUS_FLOAT_DIVIDE_BY_ZERO
+#define EXCEPTION_FLT_INEXACT_RESULT	    STATUS_FLOAT_INEXACT_RESULT
+#define EXCEPTION_FLT_INVALID_OPERATION	    STATUS_FLOAT_INVALID_OPERATION
+#define EXCEPTION_FLT_OVERFLOW	            STATUS_FLOAT_OVERFLOW
+#define EXCEPTION_FLT_STACK_CHECK	        STATUS_FLOAT_STACK_CHECK
+#define EXCEPTION_FLT_UNDERFLOW	            STATUS_FLOAT_UNDERFLOW
+#define EXCEPTION_INT_DIVIDE_BY_ZERO	    STATUS_INTEGER_DIVIDE_BY_ZERO
+#define EXCEPTION_INT_OVERFLOW	            STATUS_INTEGER_OVERFLOW
+#define EXCEPTION_PRIV_INSTRUCTION	        STATUS_PRIVILEGED_INSTRUCTION
+#define EXCEPTION_IN_PAGE_ERROR	            STATUS_IN_PAGE_ERROR
+#define EXCEPTION_ILLEGAL_INSTRUCTION	    STATUS_ILLEGAL_INSTRUCTION
+#define EXCEPTION_NONCONTINUABLE_EXCEPTION	STATUS_NONCONTINUABLE_EXCEPTION
+#define EXCEPTION_STACK_OVERFLOW	        STATUS_STACK_OVERFLOW
+#define EXCEPTION_INVALID_DISPOSITION	    STATUS_INVALID_DISPOSITION
+#define EXCEPTION_GUARD_PAGE	            STATUS_GUARD_PAGE_VIOLATION
+#define EXCEPTION_INVALID_HANDLE	        STATUS_INVALID_HANDLE
+#define EXCEPTION_MAXIMUM_PARAMETERS        15
+
+typedef struct _EXCEPTION_RECORD {
+	DWORD                     ExceptionCode;
+	DWORD                     ExceptionFlags;
+	struct _EXCEPTION_RECORD *ExceptionRecord;
+	PVOID                     ExceptionAddress;
+	DWORD                     NumberParameters;
+	ULONG_PTR                 ExceptionInformation[EXCEPTION_MAXIMUM_PARAMETERS];
+} __STRUCT_TYPEDEF(EXCEPTION_RECORD);
+
+typedef struct {
+	PEXCEPTION_RECORD         ExceptionRecord;
+	PCONTEXT                  ContextRecord;
+} __STRUCT_TYPEDEF(EXCEPTION_POINTERS);
 
 /*
  * Some various macro constants that should evaluate to constant expressions
@@ -429,5 +555,53 @@ typedef HANDLE (WINAPI *PFNKERNEL32_GETCURRENTTHREAD_PROC)(VOID);
  */
 typedef BOOL (WINAPI *PFNKERNEL32_READFILE_PROC)(HANDLE, LPVOID, DWORD, LPDWORD, LPOVERLAPPED);
 
+/*
+ * SetUnhandledExceptionFilter
+ * http://msdn.microsoft.com/en-us/library/windows/desktop/ms680634%28v=vs.85%29.aspx
+ */
+typedef LONG (WINAPI *PTOP_LEVEL_EXCEPTION_FILTER)(PEXCEPTION_POINTERS);
+typedef PTOP_LEVEL_EXCEPTION_FILTER LPTOP_LEVEL_EXCEPTION_FILTER;
+ 
+#define EXCEPTION_EXECUTE_HANDLER    0x01
+#define EXCEPTION_CONTINUE_EXECUTION 0xFFFFFFFF
+#define EXCEPTION_CONTINUE_SEARCH    0x0
+typedef LPTOP_LEVEL_EXCEPTION_FILTER (WINAPI *PFNKERNEL32_SETUNHANDLEDEXCEPTIONFILTER_PROC)(LPTOP_LEVEL_EXCEPTION_FILTER);
+
+/***********************************************************************************
+ ***********************************************************************************
+ ***********************************************************************************
+ ***********************************************************************************
+ ***********************************************************************************
+ ***********************************************************************************
+ ************** ACTUAL EXPORTS FOR THE OUTSIDE WORLD (WINDOWS API) *****************
+ ***********************************************************************************
+ ***********************************************************************************
+ ***********************************************************************************
+ ***********************************************************************************
+ ***********************************************************************************
+ */
+#ifndef __CCAPRICE_WINDOWS_NO_EXPORTS
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_SETFILEPOINTER_PROC,       SetFilePointer       );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_WRITEFILE_PROC,            WriteFile            );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_GETSTDHANDLE_PROC,         GetStdHandle         );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_EXITPROCESS_PROC,          ExitProcess          );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_GETCOMMANDLINE_PROC,       GetCommandLine       );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_VIRTUALALLOC_PROC,         VirtualAlloc         );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_VIRTUALFREE_PROC,          VirtualFree          );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_GETPROCESSHEAP_PROC,       GetProcessHeap       );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_GETFILETYPE_PROC,          GetFileType          );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_MOVEFILE_PROC,             MoveFile             );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_GETPROCESSID_PROC,         GetProcessId         );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_GETCURRENTPROCESS_PROC,    GetCurrentProcess    );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_DELETEFILE_PROC,           DeleteFile           );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_HEAPALLOC_PROC,            HeapAlloc            );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_HEAPFREE_PROC,             HeapFree             );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_GETMODULEHANDLE_PROC,      GetModuleHandle      );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_GETENVIROMENTSTRINGS_PROC, GetEnviromentStrings );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_CREATEFILE_PROC,           CreateFile           );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_SUSPENDTHREAD_PROC,        SuspendThread        );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_GETCURRENTTHREAD_PROC,     GetCurrentThread     );
+__CCAPRICE_INTERNAL_TYPE(PFNKERNEL32_READFILE_PROC,             ReadFile             );
+#endif /*!__CCAPRICE_WINDOWS_NO_EXPORTS */
 #undef __STRUCT_TYPEDEF
 #endif

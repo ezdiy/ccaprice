@@ -122,7 +122,9 @@ __SYS_PAUSE  { __SYSCALL_PERFORM(__SYSCALL_DORETURN,       SYS_pause,  0); }
  * we can find the exports table, iterate the table to find the functions
  * we need to implement the syscalls here.
  */
-#include "windows.h"
+#define __CCAPRICE_WINDOWS_NO_EXPORTS
+#include <windows.h>
+#include <signal.h>
 
 /*
  * We emulate the posix open/close/read/write functions which required
@@ -138,29 +140,30 @@ typedef struct {
 
 /*
  * All of the function pointers to interface with the kernel to perform
- * kernel calls are here.
+ * kernel calls are here (see bottom of windows.h)
  */
-static PFNKERNEL32_SETFILEPOINTER_PROC       SetFilePointer       = NULL;
-static PFNKERNEL32_WRITEFILE_PROC            WriteFile            = NULL;
-static PFNKERNEL32_GETSTDHANDLE_PROC         GetStdHandle         = NULL;
-static PFNKERNEL32_EXITPROCESS_PROC          ExitProcess          = NULL;
-static PFNKERNEL32_GETCOMMANDLINE_PROC       GetCommandLine       = NULL;
-static PFNKERNEL32_VIRTUALALLOC_PROC         VirtualAlloc         = NULL;
-static PFNKERNEL32_VIRTUALFREE_PROC          VirtualFree          = NULL;
-static PFNKERNEL32_GETPROCESSHEAP_PROC       GetProcessHeap       = NULL;
-static PFNKERNEL32_GETFILETYPE_PROC          GetFileType          = NULL;
-static PFNKERNEL32_MOVEFILE_PROC             MoveFile             = NULL;
-static PFNKERNEL32_GETPROCESSID_PROC         GetProcessId         = NULL;
-static PFNKERNEL32_GETCURRENTPROCESS_PROC    GetCurrentProcess    = NULL;
-static PFNKERNEL32_DELETEFILE_PROC           DeleteFile           = NULL;
-static PFNKERNEL32_HEAPALLOC_PROC            HeapAlloc            = NULL;
-static PFNKERNEL32_HEAPFREE_PROC             HeapFree             = NULL;
-static PFNKERNEL32_GETMODULEHANDLE_PROC      GetModuleHandle      = NULL;
-static PFNKERNEL32_GETENVIROMENTSTRINGS_PROC GetEnviromentStrings = NULL;
-static PFNKERNEL32_CREATEFILE_PROC           CreateFile           = NULL;
-static PFNKERNEL32_SUSPENDTHREAD_PROC        SuspendThread        = NULL;
-static PFNKERNEL32_GETCURRENTTHREAD_PROC     GetCurrentThread     = NULL;
-static PFNKERNEL32_READFILE_PROC             ReadFile             = NULL;
+static PFNKERNEL32_SETFILEPOINTER_PROC              SetFilePointer              = NULL;
+static PFNKERNEL32_WRITEFILE_PROC                   WriteFile                   = NULL;
+static PFNKERNEL32_GETSTDHANDLE_PROC                GetStdHandle                = NULL;
+static PFNKERNEL32_EXITPROCESS_PROC                 ExitProcess                 = NULL;
+static PFNKERNEL32_GETCOMMANDLINE_PROC              GetCommandLine              = NULL;
+static PFNKERNEL32_VIRTUALALLOC_PROC                VirtualAlloc                = NULL;
+static PFNKERNEL32_VIRTUALFREE_PROC                 VirtualFree                 = NULL;
+static PFNKERNEL32_GETPROCESSHEAP_PROC              GetProcessHeap              = NULL;
+static PFNKERNEL32_GETFILETYPE_PROC                 GetFileType                 = NULL;
+static PFNKERNEL32_MOVEFILE_PROC                    MoveFile                    = NULL;
+static PFNKERNEL32_GETPROCESSID_PROC                GetProcessId                = NULL;
+static PFNKERNEL32_GETCURRENTPROCESS_PROC           GetCurrentProcess           = NULL;
+static PFNKERNEL32_DELETEFILE_PROC                  DeleteFile                  = NULL;
+static PFNKERNEL32_HEAPALLOC_PROC                   HeapAlloc                   = NULL;
+static PFNKERNEL32_HEAPFREE_PROC                    HeapFree                    = NULL;
+static PFNKERNEL32_GETMODULEHANDLE_PROC             GetModuleHandle             = NULL;
+static PFNKERNEL32_GETENVIROMENTSTRINGS_PROC        GetEnviromentStrings        = NULL;
+static PFNKERNEL32_CREATEFILE_PROC                  CreateFile                  = NULL;
+static PFNKERNEL32_SUSPENDTHREAD_PROC               SuspendThread               = NULL;
+static PFNKERNEL32_GETCURRENTTHREAD_PROC            GetCurrentThread            = NULL;
+static PFNKERNEL32_READFILE_PROC                    ReadFile                    = NULL;
+static PFNKERNEL32_SETUNHANDLEDEXCEPTIONFILTER_PROC SetUnhandledExceptionFilter = NULL;
 
 #define data_add(a,v) ((((a)==0||((int*)(a)-2)[1]+(1)>=((int*)(a)-2)[0])?data_grow((void**)&(a),(1),sizeof(*(a))):0),(a)[((int*)(a)-2)[1]++]=(v))
 #define data_count(a) ((a)? ((int*)(a)-2)[1]:0)
@@ -379,6 +382,61 @@ HFILE __ccaprice_filehandle(int fd) {
     return NULL;
 }
 
+/* structured exception handling (SEH) for signal ... this is fugly
+ * we all hate windows's SEH (ALL OF US EVEN YOU) [YES YOU, THE ONE
+ * READING THIS].
+ */
+/* signal funptrs (stolen from signal.c) */
+__CCAPRICE_INTERNAL_TYPE(void (*__ccaprice_sigfpe)(int),);
+__CCAPRICE_INTERNAL_TYPE(void (*__ccaprice_sigill)(int),);
+__CCAPRICE_INTERNAL_TYPE(void (*__ccaprice_sigsegv)(int),);
+
+static LPTOP_LEVEL_EXCEPTION_FILTER OEH;
+static LONG CALLBACK SEH(EXCEPTION_POINTERS *e) {
+	int    sig;
+	void (*hnd)(int);
+	
+	switch (e->ExceptionRecord->ExceptionCode) {
+		case EXCEPTION_ACCESS_VIOLATION:
+		case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
+		case EXCEPTION_DATATYPE_MISALIGNMENT:
+		case EXCEPTION_GUARD_PAGE:
+		case EXCEPTION_IN_PAGE_ERROR:
+		case EXCEPTION_STACK_OVERFLOW:
+			sig = SIGSEGV;
+			hnd = __ccaprice_sigsegv;
+			break;
+			
+		case EXCEPTION_ILLEGAL_INSTRUCTION:
+        case EXCEPTION_PRIV_INSTRUCTION:
+            sig = SIGILL;
+            hnd = __ccaprice_sigill;
+            break;
+
+        case EXCEPTION_INT_DIVIDE_BY_ZERO:
+        case EXCEPTION_INT_OVERFLOW:
+        case EXCEPTION_FLT_DENORMAL_OPERAND:
+        case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+        case EXCEPTION_FLT_INEXACT_RESULT:
+        case EXCEPTION_FLT_INVALID_OPERATION:
+        case EXCEPTION_FLT_OVERFLOW:
+        case EXCEPTION_FLT_STACK_CHECK:
+        case EXCEPTION_FLT_UNDERFLOW:
+            sig = SIGFPE;
+            hnd = __ccaprice_sigfpe;
+            break;
+
+        default:
+            return OEH ? OEH(e) : EXCEPTION_EXECUTE_HANDLER;
+    }
+
+         if(hnd == SIG_DFL) return EXCEPTION_EXECUTE_HANDLER;
+    else if(hnd == SIG_IGN) return EXCEPTION_CONTINUE_EXECUTION;
+		
+    hnd(sig);
+    return EXCEPTION_CONTINUE_EXECUTION;
+}
+
 void __ccaprice_start () {
     void *PEB  = NULL;
     void *BASE = NULL;
@@ -411,45 +469,51 @@ void __ccaprice_start () {
     DEBUG_LOG("[ccaprice] Found PEB @ 0x30(FS), points to 0x%x\n", PEB); 
     DEBUG_LOG("[ccaprice] Found kernel32.dll base address 0x%x\n\nFinding functions ...\n", BASE);
     
-    SetFilePointer       = __ccaprice_func_find(BASE, "SetFilePointer");
-    ExitProcess          = __ccaprice_func_find(BASE, "ExitProcess");
-    GetModuleHandle      = __ccaprice_func_find(BASE, "GetModuleHandleA");
-    GetCommandLine       = __ccaprice_func_find(BASE, "GetCommandLineA");
-    GetProcessHeap       = __ccaprice_func_find(BASE, "GetProcessHeap");
-    GetFileType          = __ccaprice_func_find(BASE, "GetFileType");
-    MoveFile             = __ccaprice_func_find(BASE, "MoveFileA");
-    GetProcessId         = __ccaprice_func_find(BASE, "GetProcessId");
-    GetCurrentProcess    = __ccaprice_func_find(BASE, "GetCurrentProcess");
-    VirtualAlloc         = __ccaprice_func_find(BASE, "VirtualAlloc");
-    VirtualFree          = __ccaprice_func_find(BASE, "VirtualFree");
-    DeleteFile           = __ccaprice_func_find(BASE, "DeleteFileA");
-    HeapAlloc            = __ccaprice_func_find(BASE, "HeapAlloc");
-    HeapFree             = __ccaprice_func_find(BASE, "HeapFree");
-    GetEnviromentStrings = __ccaprice_func_find(BASE, "GetEnvironmentStringsA");
-    CreateFile           = __ccaprice_func_find(BASE, "CreateFileA");
-    SuspendThread        = __ccaprice_func_find(BASE, "SuspendThread");
-    GetCurrentThread     = __ccaprice_func_find(BASE, "GetCurrentThread");
-    ReadFile             = __ccaprice_func_find(BASE, "ReadFile");
+	/* see bottom of windows.h */
+    SetFilePointer               = __ccaprice_func_find(BASE, "SetFilePointer");
+    ExitProcess                  = __ccaprice_func_find(BASE, "ExitProcess");
+    GetModuleHandle              = __ccaprice_func_find(BASE, "GetModuleHandleA");
+    GetCommandLine               = __ccaprice_func_find(BASE, "GetCommandLineA");
+    GetProcessHeap               = __ccaprice_func_find(BASE, "GetProcessHeap");
+    GetFileType                  = __ccaprice_func_find(BASE, "GetFileType");
+    MoveFile                     = __ccaprice_func_find(BASE, "MoveFileA");
+    GetProcessId                 = __ccaprice_func_find(BASE, "GetProcessId");
+    GetCurrentProcess            = __ccaprice_func_find(BASE, "GetCurrentProcess");
+    VirtualAlloc                 = __ccaprice_func_find(BASE, "VirtualAlloc");
+    VirtualFree                  = __ccaprice_func_find(BASE, "VirtualFree");
+    DeleteFile                   = __ccaprice_func_find(BASE, "DeleteFileA");
+    HeapAlloc                    = __ccaprice_func_find(BASE, "HeapAlloc");
+    HeapFree                     = __ccaprice_func_find(BASE, "HeapFree");
+    GetEnviromentStrings         = __ccaprice_func_find(BASE, "GetEnvironmentStringsA");
+    CreateFile                   = __ccaprice_func_find(BASE, "CreateFileA");
+    SuspendThread                = __ccaprice_func_find(BASE, "SuspendThread");
+    GetCurrentThread             = __ccaprice_func_find(BASE, "GetCurrentThread");
+    ReadFile                     = __ccaprice_func_find(BASE, "ReadFile");
+	SetUnhandledExceptionFilter  = __ccaprice_func_find(BASE, "SetUnhandledExceptionFilter"); 
     
-    DEBUG_SYM(WriteFile,"            ");
-    DEBUG_SYM(GetStdHandle,"         ");
-    DEBUG_SYM(SetFilePointer,"       ");
-    DEBUG_SYM(ExitProcess,"          ");
-    DEBUG_SYM(GetCommandLine,"       ");
-    DEBUG_SYM(GetProcessHeap,"       ");
-    DEBUG_SYM(GetFileType,"          ");
-    DEBUG_SYM(MoveFile,"             ");
-    DEBUG_SYM(GetProcessId,"         ");
-    DEBUG_SYM(GetCurrentProcess,"    ");
-    DEBUG_SYM(VirtualAlloc,"         ");
-    DEBUG_SYM(VirtualFree,"          ");
-    DEBUG_SYM(HeapAlloc,"            ");
-    DEBUG_SYM(HeapFree,"             ");
-    DEBUG_SYM(GetEnviromentStrings," ");
-    DEBUG_SYM(CreateFile,"           ");
-    DEBUG_SYM(SuspendThread,"        ");
-    DEBUG_SYM(GetCurrentThread,"     ");
-    DEBUG_SYM(ReadFile,"             ");
+    DEBUG_SYM(WriteFile,"                   ");
+    DEBUG_SYM(GetStdHandle,"                ");
+    DEBUG_SYM(SetFilePointer,"              ");
+    DEBUG_SYM(ExitProcess,"                 ");
+    DEBUG_SYM(GetCommandLine,"              ");
+    DEBUG_SYM(GetProcessHeap,"              ");
+    DEBUG_SYM(GetFileType,"                 ");
+    DEBUG_SYM(MoveFile,"                    ");
+    DEBUG_SYM(GetProcessId,"                ");
+    DEBUG_SYM(GetCurrentProcess,"           ");
+    DEBUG_SYM(VirtualAlloc,"                ");
+    DEBUG_SYM(VirtualFree,"                 ");
+    DEBUG_SYM(HeapAlloc,"                   ");
+    DEBUG_SYM(HeapFree,"                    ");
+    DEBUG_SYM(GetEnviromentStrings,"        ");
+    DEBUG_SYM(CreateFile,"                  ");
+    DEBUG_SYM(SuspendThread,"               ");
+    DEBUG_SYM(GetCurrentThread,"            ");
+    DEBUG_SYM(ReadFile,"                    ");
+	DEBUG_SYM(SetUnhandledExceptionFilter," ");
+	
+	/* setup SEH for signals */
+	OEH = SetUnhandledExceptionFilter(SEH);
     
     /*
      * Invoke main and store the return status of it some where

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2012
- *  Dale Weiler
+ *     Dale Weiler
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -20,37 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __CCAPRICE_SIGNAL_HDR__
-#define __CCAPRICE_SIGNAL_HDR__
+#include <errno.h>
+#include <signal.h>
+/* These need to be externed for raise.c */
+void (*__ccaprice_sigabrt)(int) = SIG_DFL;
+void (*__ccaprice_sigfpe) (int) = SIG_DFL;
+void (*__ccaprice_sigill) (int) = SIG_DFL;
+void (*__ccaprice_sigint) (int) = SIG_DFL;
+void (*__ccaprice_sigsegv)(int) = SIG_DFL;
+void (*__ccaprice_sigterm)(int) = SIG_DFL;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-#include <ccaprice.h>
- 
-/*
- * Integers are literally atomic always for literally every CPU in
- * existance.
- */
-typedef int sig_atomic_t;
-
-#define SIGABRT 0 /*__ccaprice_signal_selector[0]*/
-#define SIGILL  1 /*__ccaprice_signal_selector[1]*/
-#define SIGSEGV 2 /*__ccaprice_signal_selector[2]*/
-#define SIGFPE  3 /*__ccaprice_signal_selector[3]*/
-#define SIGINT  4 /*__ccaprice_signal_selector[4]*/
-#define SIGTERM 5 /*__ccaprice_signal_selector[5]*/
-
-#define SIG_DFL (void (*)( int ))0
-#define SIG_ERR (void (*)( int ))-1
-#define SIG_IGN (void (*)( int ))1
-
-/* exposed functions */
-__CCAPRICE_EXPORT void (*signal(int, void (*)(int)))(int);
-__CCAPRICE_EXPORT int    raise(int);
-
-#ifdef __cplusplus
+void (*signal(int sig, void (*func)(int)))(int) {
+	void (*old)(int);
+	if (sig <= 0 || func == SIG_ERR)
+		return SIG_ERR;
+		
+	switch (sig) {
+		case SIGABRT: old = __ccaprice_sigabrt, __ccaprice_sigabrt = func; break;
+		case SIGFPE:  old = __ccaprice_sigfpe , __ccaprice_sigfpe  = func; break;
+		case SIGILL:  old = __ccaprice_sigill , __ccaprice_sigill  = func; break;
+		case SIGSEGV: old = __ccaprice_sigsegv, __ccaprice_sigsegv = func; break;
+		case SIGTERM: old = __ccaprice_sigterm, __ccaprice_sigterm = func; break;
+		
+		default:
+			errno = 1;
+			return SIG_ERR;
+	}
+	return old;
 }
-#endif
-
-#endif

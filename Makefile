@@ -108,7 +108,6 @@ CFLAGS += -Wall                          \
           
 SRC     = src/assert.c                   \
           src/locale.c                   \
-          src/signal.c                   \
           crt/runtime.c                  \
           src/string/memchr.c            \
           src/string/memcmp.c            \
@@ -244,6 +243,8 @@ ifneq (,$(findstring BSD,$(shell uname -s)))
 	SYSDIR_ARM    = sys/arm
 	LFLAGS        =
 	OUT           = ccaprice.a
+	SRC          += src/signal/posix/signal.c \
+	                src/signal/posix/raise.c
 else
 ifneq (,$(findstring Linux,$(shell uname -s)))
 	SHELL         = /bin/bash
@@ -256,6 +257,8 @@ ifneq (,$(findstring Linux,$(shell uname -s)))
 	SYSDIR_ARM    = sys/arm/
 	LFLAGS        =
 	OUT           = ccaprice.a
+	SRC          += src/signal/posix/signal.c \
+	                src/signal/posix/raise.c
 else
 ifneq (,$(findstring MING,$(shell uname -s)))
 	SHELL         = /bin/bash
@@ -268,6 +271,8 @@ ifneq (,$(findstring MING,$(shell uname -s)))
 	SYSDIR_ARM    = sys/arm/
 	LFLAGS        = --entry=_start
 	OUT           = ccaprice.lib
+	SRC          += src/signal/win32/signal.c \
+	                src/signal/win32/raise.c
 endif
 endif
 endif
@@ -492,6 +497,7 @@ ifneq ($(VERBOSE), 1)
 	@ if [[ $@ == *math/*   ]]; then echo $(PURPLE) [math]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *fenv/*   ]]; then echo $(PURPLE) [fenv]   $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 	@ if [[ $@ == *thread/* ]]; then echo $(PURPLE) [thread] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
+	@ if [[ $@ == *signal/* ]]; then echo $(PURPLE) [signal] $(RRED) Building a C99 object file $(CYAN) $@ $(ENDCOL); fi
 endif
 
 #S rule
